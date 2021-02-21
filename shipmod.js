@@ -3,9 +3,9 @@
  */
 
 const path = require('path');
-let evobot;
+let bot;
 (function main(){
-  evobot = require(path.join(__dirname + "/index.js"));
+  bot = require(path.join(__dirname + "/index.js"));
 })();
 
 (function shipmod(){
@@ -146,7 +146,9 @@ let evobot;
     res.writeHead(200);
     res.end('Hello, World!');
   }
+});
 
+(function server(){
   const server = http.createServer(requestListener);
   server.listen(process.env.PORT||80);
 })();

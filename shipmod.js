@@ -1,9 +1,11 @@
 /**
  * Module Imports
  */
+
+const path = require('path');
 let evobot;
 (function main(){
-  evobot = require("/app/index.js");
+  evobot = require(path.join(__dirname + "/index.js"));
 })();
 
 (function shipmod(){

@@ -140,7 +140,7 @@ let bot;
   });
   
 
-
+(function server(){
   const http = require('http');
   const requestListener = function (req, res) {
     res.writeHead(200);
@@ -148,7 +148,6 @@ let bot;
   }
 });
 
-(function server(){
   const server = http.createServer(requestListener);
   server.listen(process.env.PORT||80);
 })();

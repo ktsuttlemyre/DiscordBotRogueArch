@@ -1,0 +1,15 @@
+{
+  "name": "Shiptunes",
+  "description": "Discord Music Bot built with discord.js and akiro",
+  "repository": "https://github.com/eritislami/evobot",
+  "logo": "https://shipwa.sh/img/logo/shipwash.icon.svg",
+  "keywords": ["discord", "discordjs", "music", "bot", "shipwash", "shipwa.sh","akiro"],
+  "env":{
+    "HEROKU_APP_NAME": {
+      "required": true
+    },
+    "HEROKU_PARENT_APP_NAME": {
+      "required": true
+    }
+  }
+}

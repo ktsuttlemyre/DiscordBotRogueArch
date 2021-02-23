@@ -40,22 +40,29 @@ class PlayCommand extends Command {
 			}
 			player = this.client.memory.set(message.guild, 'player', new Player(this.client,options));
 		}
-		player.on('queueCreate',function(message,queue){
-			var init=false
-			player.on('trackStart',function(message, track){
-				if(init){
-					return;
-				}
-				init=true;
-				setTimeout(function(){
-					//https://discord-player.js.org/global.html#Filters
-					player.setFilters(message, {
-					 normalizer: true
-					});
-					player.setVolume(message, 20);
-				},0);
-			})
-		});
+		
+		//complidated init event to add volume and filters
+		if(!player.isPlaying(message)){
+			player.on('queueCreate',function(message,queue){
+				var init=false
+				player.on('trackStart',function(message, track){
+					if(init){
+						return;
+					}
+					init=setInterval(function(){
+						if(!player.isPlaying(message)){
+							return
+						}
+						//https://discord-player.js.org/global.html#Filters
+						player.setFilters(message, {
+						 normalizer: true
+						});
+						player.setVolume(message, 20);
+						clearInterval(init);
+					},0);
+				})
+			});
+		}
 		
 		if(!message.attachments){
 			player.play(message, search, { firstResult: true });

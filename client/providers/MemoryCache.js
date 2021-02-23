@@ -11,7 +11,7 @@ class MemoryCache {
 
 	get(guild, key, defaultValue) {
 		const id = this.constructor.getGuildID(guild);
-		let value = (cache[id])?cache[id][key]:cache[id]={} && undefined;
+		let value = (cache[id])?cache[id][key]:(cache[id]={}) && undefined;
 		if(value === undefined){
 			return defaultValue;
 		}
@@ -20,6 +20,9 @@ class MemoryCache {
 
 	set(guild, key, value) {
 		const id = this.constructor.getGuildID(guild);
+		if(!cache[id]){
+			cache[id]={};
+		}
 		return cache[id][key]=value;
 	}
 

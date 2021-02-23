@@ -62,7 +62,7 @@ class PlayCommand extends Command {
 							clearInterval(init);
 						}catch(e){
 						}
-					},0);
+					},10);
 				})
 			});
 		}

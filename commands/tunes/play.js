@@ -21,12 +21,12 @@ class PlayCommand extends Command {
 		});
 	}
 
-	exec(message) {
+	exec(message, { string }) {
 	if (!message.member.voice.channel) return message.channel.send(`${client.emotes.error} - You're not in a voice channel !`);
 	if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${client.emotes.error} - You are not in the same voice channel !`);
-	if (!args[0]) return message.channel.send(`${client.emotes.error} - Please indicate the title of a song !`);
+	if (!string]) return message.channel.send(`${client.emotes.error} - Please indicate the title of a song !`);
 	var player = client.memory.get(client.guild, player) || client.memory.set(client.guild, new Player(client));
-	player.play(message, args.join(" "), { firstResult: true });
+	player.play(message, string, { firstResult: true });
         
         
  /* 

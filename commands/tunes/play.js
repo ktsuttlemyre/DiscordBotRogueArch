@@ -47,12 +47,13 @@ class PlayCommand extends Command {
 					return;
 				}
 				init=true;
-				
-				//https://discord-player.js.org/global.html#Filters
-				player.setFilters(message, {
-				 normalizer: true
-				});
-				player.setVolume(message, 20);
+				setTimeout(function(){
+					//https://discord-player.js.org/global.html#Filters
+					player.setFilters(message, {
+					 normalizer: true
+					});
+					player.setVolume(message, 20);
+				},0);
 			})
 		});
 		

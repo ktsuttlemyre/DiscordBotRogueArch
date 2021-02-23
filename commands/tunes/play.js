@@ -40,11 +40,13 @@ class PlayCommand extends Command {
 			}
 			player = this.client.memory.set(message.guild, 'player', new Player(this.client,options));
 		}
-		//https://discord-player.js.org/global.html#Filters
-		player.setFilters(message, {
-		 normalizer: true
+		player.on('queueCreate',function(message,queue){
+			//https://discord-player.js.org/global.html#Filters
+			player.setFilters(message, {
+			 normalizer: true
+			});
+			player.setVolume(message, 20);
 		});
-		player.setVolume(message, 20);
 		
 		if(!message.attachments){
 			player.play(message, search, { firstResult: true });

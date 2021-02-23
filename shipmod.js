@@ -140,7 +140,7 @@ let bot;
   client.on("voiceChannelLeave", async (member,oldChannel) => {
     // voiceLink.exitVoice(oldChannel,member,guildCashe)
   });
-  
+})();
 
 (function server(){
   const http = require('http');

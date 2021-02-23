@@ -2,19 +2,19 @@ const { Guild } = require('discord.js');
 const cache = {};
 
 class MemoryCache {
-//	constructor(table) {
+	constructor() {
 //		super(table, {
 //			idColumn: 'guildID',
 //			dataColumn: 'settings',
 //		});
-//	}
+	}
 
 	get(guild, key, defaultValue) {
 		const id = this.constructor.getGuildID(guild);
-    let value = (cache[id])?cache[id][key]:cache[id]={} && undefined;
-    if(value === undefined){
-      return defaultValue;
-    }
+		let value = (cache[id])?cache[id][key]:cache[id]={} && undefined;
+		if(value === undefined){
+			return defaultValue;
+		}
 		return value;
 	}
 
@@ -25,8 +25,8 @@ class MemoryCache {
 
 	delete(guild, key) {
 		const id = this.constructor.getGuildID(guild);
-    cache[id][key]=undefined;
-    delete cache[id][key];
+		cache[id][key]=undefined;
+		delete cache[id][key];
 		return undefined;
 	}
 

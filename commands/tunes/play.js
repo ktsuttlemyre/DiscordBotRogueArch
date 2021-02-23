@@ -38,7 +38,7 @@ class PlayCommand extends Command {
 				quality:'high',
 				enableLive: true,	    
 			}
-			this.client.memory.set(message.guild, 'player', new Player(this.client,options));
+			player = this.client.memory.set(message.guild, 'player', new Player(this.client,options));
 		}
 		//https://discord-player.js.org/global.html#Filters
 		player.setFilters(message, {

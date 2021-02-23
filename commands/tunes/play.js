@@ -53,12 +53,15 @@ class PlayCommand extends Command {
 						if(!player.isPlaying(message)){
 							return
 						}
-						//https://discord-player.js.org/global.html#Filters
-						player.setFilters(message, {
-						 normalizer: true
-						});
-						player.setVolume(message, 20);
-						clearInterval(init);
+						try{
+							//https://discord-player.js.org/global.html#Filters
+							player.setFilters(message, {
+							 normalizer: true
+							});
+							player.setVolume(message, 20);
+							clearInterval(init);
+						}catch(e){
+						}
 					},0);
 				})
 			});

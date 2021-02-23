@@ -25,7 +25,7 @@ class PlayCommand extends Command {
 		if (!message.member.voice.channel) return message.channel.send(`${emotes.error} - You're not in a voice channel !`);
 		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${emotes.error} - You are not in the same voice channel !`);
 		if (!search) return message.channel.send(`${emotes.error} - Please indicate the title of a song !`);
-		var player = this.client.memory.get(message.guild, player) || this.client.memory.set(message.guild, new Player(this.client));
+		var player = this.client.memory.get(message.guild, 'player', player) || this.client.memory.set(message.guild, 'player', new Player(this.client));
 		player.play(message, search, { firstResult: true });
         
         

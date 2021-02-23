@@ -25,8 +25,32 @@ class PlayCommand extends Command {
 		if (!message.member.voice.channel) return message.channel.send(`${emotes.error} - You're not in a voice channel !`);
 		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${emotes.error} - You are not in the same voice channel !`);
 		if (!search) return message.channel.send(`${emotes.error} - Please indicate the title of a song !`);
-		var player = this.client.memory.get(message.guild, 'player', player) || this.client.memory.set(message.guild, 'player', new Player(this.client));
-		player.play(message, search, { firstResult: true });
+		var player = this.client.memory.get(message.guild, 'player', player)
+		if(!player){
+			//https://discord-player.js.org/global.html#PlayerOptions
+			let options={
+				leaveOnEnd:true,
+				leaveOnEndCooldown:300,
+				leaveOnStop:false,
+				leaveOnEmpty:true,
+				leaveOnEmptyCooldown:300,	
+				autoSelfDeaf:true,
+				quality:'high',
+				enableLive: true,	    
+			}
+			this.client.memory.set(message.guild, 'player', new Player(this.client,options));
+		}
+		//https://discord-player.js.org/global.html#Filters
+		player.setFilters(message, {
+		 normalizer: true
+		});
+		player.setVolume(message, 20);
+		
+		if(!message.attachments){
+			player.play(message, search, { firstResult: true });
+		}else{
+			player.play(message, search, { isAttachment:true });
+		}
         
         
  /* 

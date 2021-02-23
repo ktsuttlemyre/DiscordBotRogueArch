@@ -15,16 +15,14 @@ class PlayCommand extends Command {
 			{
 				id: 'search',
 				default: '',
+				match: 'content',
 			},
 			],
 		channelRestriction: 'guild', 
 		});
 	}
 
-	exec(message, args) {
-		console.log(args)
-		var search = args.toString();
-		
+	exec(message, { search }) {
 		if (!message.member.voice.channel) return message.channel.send(`${emotes.error} - You're not in a voice channel !`);
 		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${emotes.error} - You are not in the same voice channel !`);
 		if (!search) return message.channel.send(`${emotes.error} - Please indicate the title of a song !`);

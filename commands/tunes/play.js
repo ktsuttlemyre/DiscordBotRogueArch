@@ -1,7 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 const { Command } = require('discord-akairo');
 const { Player } = require("discord-player");
-const client={emotes:{error:":error:"}}
+const emotes={error:":error:"}
 
 
 class PlayCommand extends Command {
@@ -22,10 +22,10 @@ class PlayCommand extends Command {
 	}
 
 	exec(message, { search }) {
-		if (!message.member.voice.channel) return message.channel.send(`${client.emotes.error} - You're not in a voice channel !`);
-		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${client.emotes.error} - You are not in the same voice channel !`);
-		if (!search) return message.channel.send(`${client.emotes.error} - Please indicate the title of a song !`);
-		var player = this.client.memory.get(message.guild, player) || this.client.memory.set(message.guild, new Player(client));
+		if (!message.member.voice.channel) return message.channel.send(`${emotes.error} - You're not in a voice channel !`);
+		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${emotes.error} - You are not in the same voice channel !`);
+		if (!search) return message.channel.send(`${emotes.error} - Please indicate the title of a song !`);
+		var player = this.client.memory.get(message.guild, player) || this.client.memory.set(message.guild, new Player(this.client));
 		player.play(message, search, { firstResult: true });
         
         

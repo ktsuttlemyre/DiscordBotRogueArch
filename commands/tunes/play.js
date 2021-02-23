@@ -7,26 +7,26 @@ const client={emotes:{error:":error:"}}
 class PlayCommand extends Command {
 	constructor() {
 		super('play', {
-      description: { content: 'plays [name/URL]'},
-			aliases: ['play','add','queue'],
-      category: 'tunes',
-			clientPermissions: ['SEND_MESSAGES'],
-      args: [
-				{
-					id: 'search',
-					default: '',
-				},
+		description: { content: 'plays [name/URL]'},
+		aliases: ['play','add','queue'],
+		category: 'tunes',
+		clientPermissions: ['SEND_MESSAGES'],
+		args: [
+			{
+				id: 'search',
+				default: '',
+			},
 			],
-			channelRestriction: 'guild', 
+		channelRestriction: 'guild', 
 		});
 	}
 
 	exec(message, { string }) {
-	if (!message.member.voice.channel) return message.channel.send(`${client.emotes.error} - You're not in a voice channel !`);
-	if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${client.emotes.error} - You are not in the same voice channel !`);
-	if (!string]) return message.channel.send(`${client.emotes.error} - Please indicate the title of a song !`);
-	var player = client.memory.get(client.guild, player) || client.memory.set(client.guild, new Player(client));
-	player.play(message, string, { firstResult: true });
+		if (!message.member.voice.channel) return message.channel.send(`${client.emotes.error} - You're not in a voice channel !`);
+		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${client.emotes.error} - You are not in the same voice channel !`);
+		if (!string]) return message.channel.send(`${client.emotes.error} - Please indicate the title of a song !`);
+		var player = client.memory.get(client.guild, player) || client.memory.set(client.guild, new Player(client));
+		player.play(message, string, { firstResult: true });
         
         
  /* 

@@ -1,5 +1,8 @@
 const { MessageEmbed } = require('discord.js');
 const { Command } = require('discord-akairo');
+const { Player } = require("discord-player");
+const client={emotes:{error:":error:"}}
+
 
 class PlayCommand extends Command {
 	constructor() {

@@ -40,7 +40,7 @@ class PlayCommand extends Command {
 			}
 			player = this.client.memory.set(message.guild, 'player', new Player(this.client,options));
 		}
-		
+		/*
 		//complidated init event to add volume and filters
 		if(!player.isPlaying(message)){
 			player.on('queueCreate',function(message,queue){
@@ -65,7 +65,7 @@ class PlayCommand extends Command {
 					},10);
 				})
 			});
-		}
+		}*/
 		
 		if(!message.attachments){
 			player.play(message, search, { firstResult: true });

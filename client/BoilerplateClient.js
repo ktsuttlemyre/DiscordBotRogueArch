@@ -5,6 +5,8 @@ const { MessageEmbed } = require('discord.js');
 const Database = require('../client/Database');
 // Providers
 const SettingsProvider = require('../client/providers/SettingsProvider');
+const MemoryCache = require('../client/providers/MemoryCache');
+
 // Models
 const Setting = require('../models/settings');
 // Logger
@@ -59,6 +61,8 @@ class BoilerplateClient extends AkairoClient {
 		});
 		// Init Setting
 		this.settings = new SettingsProvider(Setting);
+		//Init Memory Cache
+		this.memory = MemoryCache();
 		// Init client embed
 		this.embed = MessageEmbed;
 		// Run setup

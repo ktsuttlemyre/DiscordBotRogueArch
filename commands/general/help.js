@@ -63,7 +63,7 @@ class HelpCommand extends Command {
 				[
 					'This is a list of commands.',
 					`The bots prefix is \`${prefix}\``,
-					'To view the guide which explains how to use BoilerplateBot in depth, use `;guide`.',
+					'To view the guide which explains how to use BoilerplateBot in depth, use `${prefix}guide`.',
 				]);
 
 		for (const category of this.handler.categories.values()) {

@@ -39,9 +39,14 @@ exports.NowPlayingOverloaded=function(message,track,player){
 	      "title": `${track.title}`,
 	      //"description": `Author:${track.author}\n${track.description}`,
 	      //"description": `[${track.title}](${track.url})`,
-	      "description": '*Next Song:*\n>>> '+((track.queue.tracks[1])?`[${track.queue.tracks[1].title}](${track.queue.tracks[1].url})`:'Add more songs!'),
+	      "description": "‎",
 	      "url": `${track.url}`,
 	      "color": 5814783,
+	      "author": {
+	        "name": track.requestedBy.username+' requested',
+	        //"url": "https://discordapp.com",
+	        "icon_url": track.requestedBy.avatarURL()
+	      },
 	      "fields": [
 		//{
 		//  "name": "Next song:",
@@ -73,11 +78,12 @@ exports.NowPlayingOverloaded=function(message,track,player){
 		  "value": 'Tracks\n'+`${track.queue.tracks.length}`,
 		  "inline": true
 		}
+		{
+		  "name": "‎",
+		  "value": '*Next Song:*\n>>> '+((track.queue.tracks[1])?`[${track.queue.tracks[1].title}](${track.queue.tracks[1].url})`:'Add more songs!'),
+		  "inline": false
+		}
 	      ],
-	      "footer": {
-		"text": track.requestedBy.username+' requested current song',
-		"icon_url":  track.requestedBy.avatarURL() //"https://shipwa.sh/img/logo/shipwash_avatar.png"
-	      },
 	      "thumbnail": {
 		"url": `${track.thumbnail}`
 	      }
@@ -85,6 +91,15 @@ exports.NowPlayingOverloaded=function(message,track,player){
 		//  url: `${track.thumbnail}`,
 		//},
 	}
+	
+	if(track.queue.tracks[1]){
+		track=track.queue.track[1];
+		embedJSON.footer= {
+			"text": track.requestedBy.username+' requested next song',
+			"icon_url":  track.requestedBy.avatarURL() //"https://shipwa.sh/img/logo/shipwash_avatar.png"
+	      	};
+	}
+	
 	message.channel.send({embed:embedJSON});
      }
 

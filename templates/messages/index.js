@@ -93,7 +93,7 @@ exports.NowPlayingOverloaded=function(message,track,player){
 	}
 	
 	if(track.queue.tracks[1]){
-		track=track.queue.track[1];
+		track=track.queue.tracks[1];
 		embedJSON.footer= {
 			"text": track.requestedBy.username+' requested next song',
 			"icon_url":  track.requestedBy.avatarURL() //"https://shipwa.sh/img/logo/shipwash_avatar.png"

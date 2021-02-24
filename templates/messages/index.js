@@ -36,7 +36,7 @@ exports.NowPlayingOverloaded=function(message,track,player){
 	}
 
 	var embedJSON={
-	      "title": `${track.title}`,
+	      "title": `> ${track.title}`,
 	      //"description": `Author:${track.author}\n${track.description}`,
 	      //"description": `[${track.title}](${track.url})`,
 	      "description": "‎",

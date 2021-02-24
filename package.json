@@ -25,6 +25,7 @@
     "discord-player": "^3.2.0",
     "ffmpeg-static": "^4.2.7",
     "dotenv": "^8.2.0",
-    "string-progressbar": "^1.0.3"
+    "string-progressbar": "^1.0.3",
+    "discord-paginationembed": "^2.1.0"
   }
 }

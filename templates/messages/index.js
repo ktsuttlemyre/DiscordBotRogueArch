@@ -77,7 +77,7 @@ exports.NowPlayingOverloaded=function(message,track,player){
 		  "name": "‎",
 		  "value": 'Tracks\n'+`${track.queue.tracks.length}`,
 		  "inline": true
-		}
+		},
 		{
 		  "name": "‎",
 		  "value": '*Next Song:*\n>>> '+((track.queue.tracks[1])?`[${track.queue.tracks[1].title}](${track.queue.tracks[1].url})`:'Add more songs!'),

@@ -1,5 +1,5 @@
 const path = require('path');
-const BoilerplateClient = require(path.join(__dirname + '/client/BoilerplateClient'));
+const BoilerplateClient = require(path.join(__dirname,'/client/BoilerplateClient'));
 require('dotenv').config();
 const client = new BoilerplateClient({ owner: process.env.OWNERS, token: process.env.DISCORD_TOKEN });
 const Sentry = require('@sentry/node');

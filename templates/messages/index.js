@@ -16,11 +16,11 @@ const { MessageEmbed } = require('discord.js');
 
 exports.NowPlayingOverloaded=function(message,player){
     var match = (player.createProgressBar(message,{queue:true,timecodes:true})||'').match(/(\d|:)+/g);
-var duration=moment.duration('00:00:00');
-if(match && match.length==2){
-	duration = moment.duration(match[1]).subtract(moment.duration(match[0]));
-}
-				var stateButton=((track.queue.stopped)?':stop_button:':((track.queue.paused)?':pause_button:':':arrow_forward:'));
+	var duration=moment.duration('00:00:00');
+	if(match && match.length==2){
+		duration = moment.duration(match[1]).subtract(moment.duration(match[0]));
+	}
+	var stateButton=((track.queue.stopped)?':stop_button:':((track.queue.paused)?':pause_button:':':arrow_forward:'));
 	var stateString=((!track.queue.repeatMode)?':blue_square:':':repeat:')+' Repeat '+
 			((!track.queue.loopMode)?':blue_square:':':infinity:')+' Loop '+
 			((!track.queue.loopMode)?':blue_square:':':twisted_rightwards_arrows:')+' Shuffle ';
@@ -90,7 +90,7 @@ if(match && match.length==2){
 
 
 exports.NowPlaying=function(message,player){
-    	var match = (player.createProgressBar(message,{queue:true,timecodes:true})||'').match(/(\d|:)+/g);
+    var match = (player.createProgressBar(message,{queue:true,timecodes:true})||'').match(/(\d|:)+/g);
 	var duration=moment.duration('00:00:00');
 	if(match && match.length==2){
 		duration = moment.duration(match[1]).subtract(moment.duration(match[0]));
@@ -147,9 +147,9 @@ exports.NowPlaying=function(message,player){
 			//  url: `${track.thumbnail}`,
 			//},
 			}
-		}
-	embeds.push(nextPlaying);
+		embeds.push(nextPlaying);
 	}
+	
 	var playerState={
 	      "title": "Player",
 	      "description": "‎",
@@ -198,5 +198,4 @@ exports.NowPlaying=function(message,player){
 		//  url: `${track.thumbnail}`,
 		//},
 	}
-     }
-
+  }

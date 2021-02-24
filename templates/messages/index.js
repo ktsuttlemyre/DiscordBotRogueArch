@@ -70,7 +70,7 @@ exports.NowPlayingOverloaded=function(message,track,player){
 		},
 		{
 		  "name": `Queue:`,
-		  "value": stateButton+player.createProgressBar(message,{queue:true,timecodes:false}).slice(0, -1),
+		  "value": stateButton+player.createProgressBar(message,{queue:true,timecodes:false}).replace('▬', ''),
 		  "inline": true
 		},
 		{

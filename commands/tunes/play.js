@@ -49,9 +49,9 @@ class PlayCommand extends Command {
 			
 			player.on("trackStart",function(message, track){
 				var stateButton=((track.queue.stopped)?':stop_button:':((track.queue.paused)?':pause_button:':':arrow_forward:'));
-				var stateString=((!track.queue.repeatMode)?':blue_square:':':repeat:')+'Repeat'+
-						((!track.queue.loopMode)?':blue_square:':':infinity:')+'Loop'+
-				    		((!track.queue.loopMode)?':twisted_rightwards_arrows:':':twisted_rightwards_arrows:')+'Shuffle';
+				var stateString=((!track.queue.repeatMode)?':blue_square:':':repeat:')+' Repeat '+
+						((!track.queue.loopMode)?':blue_square:':':infinity:')+' Loop '+
+				    		((!track.queue.loopMode)?':blue_square:':':twisted_rightwards_arrows:')+' Shuffle ';
 				var volumeLevel=':mute:';
 				if(track.queue.volume){
 					if(track.queue.volume<25){
@@ -83,7 +83,7 @@ class PlayCommand extends Command {
 					},
 					{
 					  "name": "‎",
-					  "value": volumeLevel+' '+(track.queue.volume>=100)?':100:':track.queue.volume,
+					  "value": volumeLevel+' '+((track.queue.volume>=100)?':100:':track.queue.volume),
 					  "inline": true
 					},
 					{

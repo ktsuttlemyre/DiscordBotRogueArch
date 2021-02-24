@@ -48,13 +48,13 @@ class PlayCommand extends Command {
 				      "color": 5814783,
 				      "fields": [
 					{
-					  "name": "Queue info:",
-					  "value": `Tracks:${track.queue.tracks.length}`,
+					  "name": "State:",
+					  "value": `:blue_square:${track.queue.repeatMode}`,
 					  "inline": true
 					},
 					{
 					  "name": "‎",
-					  "value": `Remaining Queue Time:${track.queue.additionalStreamTime}`,
+					  "value": `:blue_square:${track.queue.repeatMode}`,
 					  "inline": true
 					},
 					{
@@ -63,12 +63,23 @@ class PlayCommand extends Command {
 					  "inline": true
 					},
 					{
-					  "name": "Queue Length",
-					  "value": player.createProgressBar(message,{queue:true,timecodes:false})
+					  "name": `Remaining:`,
+					  "value": 'Queue\n'+(track.queue.stopped)?':arrow_forward:':':stop_button'+player.createProgressBar(message,{queue:true,timecodes:false})
+					  "inline": true
+					},
+					{
+					  "name": "‎",
+					  "value": 'Time\n'+`${track.queue.additionalStreamTime}`
+					  "inline": true
+					},
+					{
+					  "name": "‎",
+					  "value": 'Tracks\n'+`${track.queue.tracks.length}`
+					  "inline": true
 					}
 				      ],
 				      "footer": {
-					"text": `${track.requestedBy.tag} requested current song`,
+					"text": `${track.requestedBy.username} requested this song`,
 					"icon_url":  track.requestedBy.avatarURL() //"https://shipwa.sh/img/logo/shipwash_avatar.png"
 				      },
 				      "thumbnail": {

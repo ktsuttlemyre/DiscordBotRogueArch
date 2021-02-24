@@ -42,43 +42,39 @@ class PlayCommand extends Command {
 			player = this.client.memory.set(message.guild, 'player', new Player(this.client,options));
 			player.on("trackStart",function(message, track){
 				var embedJSON={
-					  "content": "",
-					  "embeds": [
-					    {
-					      "title": "${track.title}",
-					      "description": "${track.description}",
-					      "url": "http://track.url",
-					      "color": 5814783,
-					      "fields": [
-						{
-						  "name": "‎",
-						  "value": "${track.author}",
-						  "inline": true
-						},
-						{
-						  "name": "‎",
-						  "value": "‎",
-						  "inline": true
-						},
-						{
-						  "name": "‎",
-						  "value": "${track.playlist}",
-						  "inline": true
-						},
-						{
-						  "value": "Duration bar ================="
-						}
-					      ],
-					      "footer": {
-						"text": "Requested By: ${track.requestedBy} - shiptunes",
-						"icon_url": "http://shipwa.sh/img/logo/shipwash_avatar.png"
-					      },
-					      "thumbnail": {
-						"url": "http://shipwa.sh/img/logo/shipwash_avatar.png"
-					      }
-					    }
-					  ]
+				  "content": null,
+				  "embeds": [
+				    {
+				      "title": "${track.title}",
+				      "description": "${track.description}",
+				      "url": "http://track.url",
+				      "color": 5814783,
+				      "fields": [
+					{
+					  "name": "Author",
+					  "value": "${track.author}",
+					  "inline": true
+					},
+					{
+					  "name": "Playlist",
+					  "value": "${track.playlist}",
+					  "inline": true
+					},
+					{
+					  "name": "Duration",
+					  "value": "================="
 					}
+				      ],
+				      "footer": {
+					"text": "Requested By: ${track.requestedBy} - shiptunes",
+					"icon_url": "http://shipwa.sh/img/logo/shipwash_avatar.png"
+				      },
+				      "thumbnail": {
+					"url": "http://shipwa.sh/img/logo/shipwash_avatar.png"
+				      }
+				    }
+				  ]
+				}
 				message.channel.send({embed:embedJSON})
 				//message.channel.send(`Now playing ${track.title} requested by @${track.requestedBy.username} `)
 			})

@@ -14,7 +14,7 @@ const { MessageEmbed } = require('discord.js');
 		return message.channel.send(embed);
     */
 
-exports.NowPlayingOverloaded=function(message,player){
+exports.NowPlayingOverloaded=function(message,track,player){
     var match = (player.createProgressBar(message,{queue:true,timecodes:true})||'').match(/(\d|:)+/g);
 	var duration=moment.duration('00:00:00');
 	if(match && match.length==2){
@@ -85,11 +85,12 @@ exports.NowPlayingOverloaded=function(message,player){
 		//  url: `${track.thumbnail}`,
 		//},
 	}
+	message.channel.send({embed:embedJSON});
      }
 
 
 
-exports.NowPlaying=function(message,player){
+exports.NowPlaying=function(message,track,player){
     var match = (player.createProgressBar(message,{queue:true,timecodes:true})||'').match(/(\d|:)+/g);
 	var duration=moment.duration('00:00:00');
 	if(match && match.length==2){
@@ -198,4 +199,6 @@ exports.NowPlaying=function(message,player){
 		//  url: `${track.thumbnail}`,
 		//},
 	}
+	embeds.push(playerState);
+	message.channel.send({embeds:embeds});
   }

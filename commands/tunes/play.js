@@ -42,32 +42,32 @@ class PlayCommand extends Command {
 			player = this.client.memory.set(message.guild, 'player', new Player(this.client,options));
 			player.on("trackStart",function(message, track){
 				var embedJSON={
-				      "title": "${track.title}",
-				      "description": "${track.description}",
-				      "url": "http://track.url",
+				      "title": `${track.title}`,
+				      "description": `${track.description}`,
+				      "url": `${track.url}`,
 				      "color": 5814783,
 				      "fields": [
 					{
 					  "name": "Author",
-					  "value": "${track.author}",
+					  "value": `${track.author}`,
 					  "inline": true
 					},
 					{
 					  "name": "Playlist",
-					  "value": "${track.playlist}",
+					  "value": `${track.playlist}`,
 					  "inline": true
 					},
 					{
-					  "name": "====================",
+					  "name": player.createProgressBar(message),
 					  "value": "‎"
 					}
 				      ],
 				      "footer": {
-					"text": "Requested By: ${track.requestedBy} - shiptunes",
-					"icon_url": "http://shipwa.sh/img/logo/shipwash_avatar.png"
+					"text": `Requested By: ${track.requestedBy.username} - shiptunes`,
+					"icon_url": `https://shipwa.sh/img/logo/shipwash_avatar.png`
 				      },
 				      "thumbnail": {
-					"url": "http://shipwa.sh/img/logo/shipwash_avatar.png"
+					"url": track.requestedBy.avatarURL()
 				      }
 				}
 				message.channel.send({embed:embedJSON})

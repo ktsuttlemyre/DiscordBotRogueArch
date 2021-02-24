@@ -59,15 +59,15 @@ class PlayCommand extends Command {
 					},
 					{
 					  "name": player.createProgressBar(message),
-					  "value": "‎"
+					  "value": `‎viewes: ${track.views}`
 					}
 				      ],
 				      "footer": {
-					"text": `Requested By: ${track.requestedBy.username} - shiptunes`,
-					"icon_url": `https://shipwa.sh/img/logo/shipwash_avatar.png`
+					"text": `Requested By: @${track.requestedBy.username}`,
+					"icon_url":  track.requestedBy.avatarURL() //"https://shipwa.sh/img/logo/shipwash_avatar.png"
 				      },
 				      "thumbnail": {
-					"url": track.requestedBy.avatarURL()
+					"url": `${track.thumbnail}`
 				      }
 				}
 				message.channel.send({embed:embedJSON})

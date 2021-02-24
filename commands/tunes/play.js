@@ -54,9 +54,9 @@ class PlayCommand extends Command {
 				    		((!track.queue.loopMode)?':blue_square:':':twisted_rightwards_arrows:')+' Shuffle ';
 				var volumeLevel=':mute:';
 				if(track.queue.volume){
-					if(track.queue.volume<25){
+					if(track.queue.volume<=30){
 						volumeLevel=':speaker:';
-					}else if(track.queue.volume<100){
+					}else if(track.queue.volume<=80){
 						volumeLevel=':sound:';
 					}else{
 						volumeLevel=':loud_sound:'

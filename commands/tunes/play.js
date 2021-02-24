@@ -64,11 +64,6 @@ class PlayCommand extends Command {
 					}
 				}
 					
-					
-					((!track.queue.volume)?':mute:':':infinity:')+'loop'+      `:sound:${track.queue.volume}`
-				    
-				
-				:blue_square:${track.queue.repeatMode}  :blue_square:${track.queue.repeatMode}`
 				var embedJSON={
 				      "title": `${track.title}`,
 				      //"description": `Author:${track.author}\n${track.description}`,
@@ -108,7 +103,7 @@ class PlayCommand extends Command {
 					}
 				      ],
 				      "footer": {
-					"text": `${track.requestedBy.username} requested current song`,
+					"text": track.requestedBy.username+' requested current song\n\t\t[View Queue](https://shiptunes.shipwa.sh/).',
 					"icon_url":  track.requestedBy.avatarURL() //"https://shipwa.sh/img/logo/shipwash_avatar.png"
 				      },
 				      "thumbnail": {

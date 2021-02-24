@@ -42,7 +42,7 @@ class PlayCommand extends Command {
 			player = this.client.memory.set(message.guild, 'player', new Player(this.client,options));
 			var match = (player.createProgressBar(message,{queue:true,timecodes:true})||'').match(/(\d|:)+/g);
 			var duration=moment.duration('00:00:00');
-			if(match.length==2){
+			if(match && match.length==2){
 				duration = moment.duration(match[1]).diff(moment.duration(match[0]));
 			}
 			

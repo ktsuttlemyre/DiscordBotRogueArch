@@ -51,7 +51,6 @@ class PlayCommand extends Command {
 				var stateButton=((track.queue.stopped)?':stop_button:':((track.queue.paused)?':pause_button:':':arrow_forward:'));
 				var stateString=((!track.queue.repeatMode)?':blue_square:':':repeat:')+'Repeat'+
 						((!track.queue.loopMode)?':blue_square:':':infinity:')+'Loop'+
-				    		((!track.queue.loopMode)?':bell:':':bell:')+'Attention'+
 				    		((!track.queue.loopMode)?':twisted_rightwards_arrows:':':twisted_rightwards_arrows:')+'Shuffle';
 				var volumeLevel=':mute:';
 				if(track.queue.volume){
@@ -67,7 +66,8 @@ class PlayCommand extends Command {
 				var embedJSON={
 				      "title": `${track.title}`,
 				      //"description": `Author:${track.author}\n${track.description}`,
-				      "description": (track.queue.tracks[1])?`Next song:\n${track.queue.tracks[1].title}`:'Add more songs!',
+				      "description": (track.queue.tracks[1])?`Next song:\n${track.queue.tracks[1].title}`:'Add more songs!'+
+					'\n\t\t[View Queue](https://shiptunes.shipwa.sh/)',
 				      "url": `${track.url}`,
 				      "color": 5814783,
 				      "fields": [
@@ -78,7 +78,7 @@ class PlayCommand extends Command {
 					},
 					{
 					  "name": "‎",
-					  "value": "‎",
+					  "value": ((!track.queue.loopMode)?':bell:':':bell:')+'Attention',
 					  "inline": true
 					},
 					{
@@ -103,7 +103,7 @@ class PlayCommand extends Command {
 					}
 				      ],
 				      "footer": {
-					"text": track.requestedBy.username+' requested current song\n\t\t[View Queue](https://shiptunes.shipwa.sh/).',
+					"text": track.requestedBy.username+' requested current song.',
 					"icon_url":  track.requestedBy.avatarURL() //"https://shipwa.sh/img/logo/shipwash_avatar.png"
 				      },
 				      "thumbnail": {

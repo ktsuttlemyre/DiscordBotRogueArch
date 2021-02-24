@@ -43,40 +43,40 @@ class PlayCommand extends Command {
 			player.on("trackStart",function(message, track){
 				var embedJSON={
 				      "title": `${track.title}`,
-				      "description": `${track.description}`,
+				      "description": `Author:${track.author}\n${track.description}`,
 				      "url": `${track.url}`,
 				      "color": 5814783,
 				      "fields": [
 					{
-					  "name": "Author",
-					  "value": `${track.author}`,
+					  "name": "Queue info:",
+					  "value": `Tracks:${track.queue.tracks.length}`,
 					  "inline": true
 					},
 					{
-					  "name": "Playlist",
-					  "value": `${track.fromPlaylist}`,
+					  "name": "‎",
+					  "value": `Remaining Queue Time:${track.queue.additionalStreamTime}`,
 					  "inline": true
 					},
 					{
-					  "name": "Queue",
-					  "value": `${track.queue}`,
+					  "name": "‎",
+					  "value": `Volume:${track.queue.volume}`,
 					  "inline": true
 					},
 					{
-					  "name": "Queue length",
-					  "value": `Tracks:${track.queue.tracks.length}‎\n`+player.createProgressBar(message,{queue:true,timecodes:true})
+					  "name": "Queue Length",
+					  "value": `+player.createProgressBar(message,{queue:true,timecodes:false})
 					}
 				      ],
 				      "footer": {
-					"text": `${track.requestedBy.tag} requested - shiptunes`,
+					"text": `${track.requestedBy.tag} requested current song`,
 					"icon_url":  track.requestedBy.avatarURL() //"https://shipwa.sh/img/logo/shipwash_avatar.png"
 				      },
-				      //"thumbnail": {
-					//"url": `${track.thumbnail}`
-				      //}
-					image: {
-					  url: `${track.thumbnail}`,
-					},
+				      "thumbnail": {
+					"url": `${track.thumbnail}`
+				      }
+					//image: {
+					//  url: `${track.thumbnail}`,
+					//},
 				}
 				message.channel.send({embed:embedJSON})
 				//message.channel.send(`Now playing ${track.title} requested by @${track.requestedBy.username} `)

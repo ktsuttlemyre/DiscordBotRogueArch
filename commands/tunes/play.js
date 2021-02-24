@@ -42,9 +42,7 @@ class PlayCommand extends Command {
 			player = this.client.memory.set(message.guild, 'player', new Player(this.client,options));
 			player.on("trackStart",function(message, track){
 				var embedJSON={
-				  "content": null,
-				  "embeds": [
-				    {
+				  "embed": {
 				      "title": "${track.title}",
 				      "description": "${track.description}",
 				      "url": "http://track.url",
@@ -61,8 +59,8 @@ class PlayCommand extends Command {
 					  "inline": true
 					},
 					{
-					  "name": "Duration",
-					  "value": "================="
+					  "name": "====================",
+					  "value": "‎"
 					}
 				      ],
 				      "footer": {
@@ -73,7 +71,6 @@ class PlayCommand extends Command {
 					"url": "http://shipwa.sh/img/logo/shipwash_avatar.png"
 				      }
 				    }
-				  ]
 				}
 				message.channel.send({embed:embedJSON})
 				//message.channel.send(`Now playing ${track.title} requested by @${track.requestedBy.username} `)

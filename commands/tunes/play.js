@@ -43,11 +43,32 @@ class PlayCommand extends Command {
 			var match = (player.createProgressBar(message,{queue:true,timecodes:true})||'').match(/(\d|:)+/g);
 			var duration=moment.duration('00:00:00');
 			if(match && match.length==2){
-				duration = moment.duration(match[1]).diff(moment.duration(match[0]));
+				duration = moment.duration(match[1]).subtract(moment.duration(match[0]));
 			}
 			
 			
 			player.on("trackStart",function(message, track){
+				var stateButton=((track.queue.stopped)?':stop_button:':((track.queue.paused)?':pause_button:':':arrow_forward:'));
+				var stateString=((!track.queue.repeatMode)?':blue_square:':':repeat:')+'repeat'+
+						((!track.queue.loopMode)?':blue_square:':':infinity:')+'loop'+
+				    		((!track.queue.loopMode)?':blue_square:':':infinity:')+'loop'+
+				    		((!track.queue.loopMode)?':blue_square:':':infinity:')+'loop'+
+				var volumeLevel=':mute:';
+				if(track.queue.volume){
+					if(track.queue.volume<25){
+						volumeLevel=':speaker:';
+					}else if(track.queue.volume<100){
+						volumeLevel=':sound:';
+					}else{
+						volumeLevel=':loud_sound:'
+					}
+				}
+					
+					
+					((!track.queue.volume)?':mute:':':infinity:')+'loop'+      `:sound:${track.queue.volume}`
+				    
+				
+				:blue_square:${track.queue.repeatMode}  :blue_square:${track.queue.repeatMode}`
 				var embedJSON={
 				      "title": `${track.title}`,
 				      //"description": `Author:${track.author}\n${track.description}`,
@@ -57,7 +78,7 @@ class PlayCommand extends Command {
 				      "fields": [
 					{
 					  "name": "State:",
-					  "value": `:blue_square:${track.queue.repeatMode}  :blue_square:${track.queue.repeatMode}  :blue_square:${track.queue.repeatMode}`,
+					  "value": stateString,
 					  "inline": true
 					},
 					{
@@ -67,12 +88,12 @@ class PlayCommand extends Command {
 					},
 					{
 					  "name": "‎",
-					  "value": `Volume:${track.queue.volume}`,
+					  "value": volumeLevel+' '+(track.queue.volume>=100)?':100:':track.queue.volume,
 					  "inline": true
 					},
 					{
 					  "name": `Queue:`,
-					  "value": ((track.queue.stopped)?':arrow_forward:':':stop_button:')+player.createProgressBar(message,{queue:true,timecodes:false}),
+					  "value": stateButton+player.createProgressBar(message,{queue:true,timecodes:false}),
 					  "inline": true
 					},
 					{
@@ -87,7 +108,7 @@ class PlayCommand extends Command {
 					}
 				      ],
 				      "footer": {
-					"text": `${track.requestedBy.username} requested this song`,
+					"text": `${track.requestedBy.username} requested current song`,
 					"icon_url":  track.requestedBy.avatarURL() //"https://shipwa.sh/img/logo/shipwash_avatar.png"
 				      },
 				      "thumbnail": {

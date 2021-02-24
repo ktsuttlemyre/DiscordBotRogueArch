@@ -64,15 +64,19 @@ class PlayCommand extends Command {
 				}
 					
 				var embedJSON={
-				      "title": `${track.title}`,
+				      "title": "Now Playing",
 				      //"description": `Author:${track.author}\n${track.description}`,
-				      "description": (track.queue.tracks[1])?`Next song:\n${track.queue.tracks[1].title}`:'Add more songs!'+
-					'\n\t\t[View Queue](https://shiptunes.shipwa.sh/)',
-				      "url": `${track.url}`,
+				      "description": `[${track.title}](${track.url})`,
+				      "url": 'https://shiptunes.shipwa.sh/',
 				      "color": 5814783,
 				      "fields": [
 					{
-					  "name": "State:",
+					  "name": "Next song:",
+					  "value": (track.queue.tracks[1])?`[${track.queue.tracks[1].title}](${track.queue.tracks[1].url})`:'Add more songs!',
+					  "inline": false
+					},
+					{
+					  "name": "Player:",
 					  "value": stateString,
 					  "inline": true
 					},
@@ -103,7 +107,7 @@ class PlayCommand extends Command {
 					}
 				      ],
 				      "footer": {
-					"text": track.requestedBy.username+' requested current song.',
+					"text": track.requestedBy.username+' requested current song',
 					"icon_url":  track.requestedBy.avatarURL() //"https://shipwa.sh/img/logo/shipwash_avatar.png"
 				      },
 				      "thumbnail": {

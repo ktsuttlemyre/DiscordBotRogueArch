@@ -1,9 +1,9 @@
+const path = require('path');
+const GUIMessages = require(path.join(__dirname, '/GUIMessages'));
 
 const { Command } = require('discord-akairo');
 const { Player } = require("discord-player");
 const emotes={error:":error:"}
-
-const GUIMessages = requre('GUIMessages');
 
 class PlayCommand extends Command {
 	constructor() {

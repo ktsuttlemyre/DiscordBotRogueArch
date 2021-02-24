@@ -64,9 +64,14 @@ exports.NowPlayingOverloaded=function(message,track,player){
 		  "inline": true
 		},
 		{
+		  "name": "‎",
+		  "value": "‎",
+		  "inline": true
+		},
+		{
 		  "name": `Queue:`,
 		  "value": stateButton+player.createProgressBar(message,{queue:true,timecodes:false}),
-		  "inline": false
+		  "inline": true
 		},
 		{
 		  "name": "‎",

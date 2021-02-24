@@ -40,11 +40,14 @@ class PlayCommand extends Command {
 				enableLive: true,	    
 			}
 			player = this.client.memory.set(message.guild, 'player', new Player(this.client,options));
+			var match = player.createProgressBar(message,{queue:true,timecodes:true}).match(/(\d|:)+/g);
+			var duration = moment.duration(match[0]).subtract(moment.duration(match[1]));
+			
 			player.on("trackStart",function(message, track){
 				var embedJSON={
 				      "title": `${track.title}`,
 				      //"description": `Author:${track.author}\n${track.description}`,
-				      "description": `Next song:\n${track.queue[0].title}`,
+				      "description": `Next song:\n${track.queue.tracks[1].title}`,
 				      "url": `${track.url}`,
 				      "color": 5814783,
 				      "fields": [
@@ -70,7 +73,7 @@ class PlayCommand extends Command {
 					},
 					{
 					  "name": "‎",
-					  "value": 'Remaining\n'+`${track.queue.additionalStreamTime}`,
+					  "value": 'Remaining\n'+`${duration}`,
 					  "inline": true
 					},
 					{

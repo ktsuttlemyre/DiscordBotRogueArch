@@ -41,7 +41,7 @@ class PlayCommand extends Command {
 			}
 			player = this.client.memory.set(message.guild, 'player', new Player(this.client,options));
 			var match = player.createProgressBar(message,{queue:true,timecodes:true}).match(/(\d|:)+/g);
-			var duration = moment.duration(match[0]).subtract(moment.duration(match[1]));
+			var duration = moment.duration(match[1]).diff(moment.duration(match[0]));
 			
 			player.on("trackStart",function(message, track){
 				var embedJSON={
@@ -73,7 +73,7 @@ class PlayCommand extends Command {
 					},
 					{
 					  "name": "‎",
-					  "value": 'Remaining\n'+`${duration}`,
+					  "value": 'Remaining\n'+duration.format("HH:mm:ss"),
 					  "inline": true
 					},
 					{

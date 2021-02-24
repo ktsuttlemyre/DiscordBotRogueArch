@@ -67,7 +67,7 @@ class PlayCommand extends Command {
 				      "title": `${track.title}`,
 				      //"description": `Author:${track.author}\n${track.description}`,
 				      //"description": `[${track.title}](${track.url})`,
-				      "description": '*Next Song*\n>>> '+(track.queue.tracks[1])?`[${track.queue.tracks[1].title}](${track.queue.tracks[1].url})`:'Add more songs!',
+				      "description": '*Next Song:*\n>>> '+((track.queue.tracks[1])?`[${track.queue.tracks[1].title}](${track.queue.tracks[1].url})`:'Add more songs!'),
 				      "url": `${track.url}`,
 				      "color": 5814783,
 				      "fields": [

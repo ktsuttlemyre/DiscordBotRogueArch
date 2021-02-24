@@ -1,4 +1,4 @@
-const GUIMessages = require.main.require('/GUIMessages/index.js');
+const GUIMessages = require.main.require('./templates/messages');
 const { Command } = require('discord-akairo');
 const { Player } = require("discord-player");
 const emotes={error:":error:"}

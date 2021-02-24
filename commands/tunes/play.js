@@ -43,7 +43,7 @@ class PlayCommand extends Command {
 			player.on("trackStart",function(message, track){
 
 				//alert the user of what is now playing
-				GUIMessages.NowPlaying(message,track,player);
+				GUIMessages.NowPlayingOverloaded(message,track,player);
 				//message.channel.send(`Now playing ${track.title} requested by @${track.requestedBy.username} `)
 			})
 		}

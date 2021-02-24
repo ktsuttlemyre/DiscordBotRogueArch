@@ -83,18 +83,13 @@ class PlayCommand extends Command {
 					},
 					{
 					  "name": "‎",
-					  "value": ((!track.queue.loopMode)?':bell:':':bell:')+'Attention',
-					  "inline": true
-					},
-					{
-					  "name": "‎",
-					  "value": volumeLevel+' '+((track.queue.volume>=100)?':100:':track.queue.volume),
+					  "value": ((!track.queue.loopMode)?':bell:':':bell:')+'Attention '+volumeLevel+' '+((track.queue.volume>=100)?':100:':track.queue.volume),
 					  "inline": true
 					},
 					{
 					  "name": `Queue:`,
 					  "value": stateButton+player.createProgressBar(message,{queue:true,timecodes:false}),
-					  "inline": true
+					  "inline": false
 					},
 					{
 					  "name": "‎",

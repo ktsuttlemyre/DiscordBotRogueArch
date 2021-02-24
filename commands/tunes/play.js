@@ -44,7 +44,7 @@ class PlayCommand extends Command {
 				var embedJSON={
 				      "title": `${track.title}`,
 				      //"description": `Author:${track.author}\n${track.description}`,
-				      "description": `Next song:\n${track.queue[0].title`,
+				      "description": `Next song:\n${track.queue[0].title}`,
 				      "url": `${track.url}`,
 				      "color": 5814783,
 				      "fields": [

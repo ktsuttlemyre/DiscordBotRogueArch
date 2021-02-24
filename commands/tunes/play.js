@@ -64,7 +64,7 @@ class PlayCommand extends Command {
 					},
 					{
 					  "name": "Queue Length",
-					  "value": `+player.createProgressBar(message,{queue:true,timecodes:false})
+					  "value": player.createProgressBar(message,{queue:true,timecodes:false})
 					}
 				      ],
 				      "footer": {

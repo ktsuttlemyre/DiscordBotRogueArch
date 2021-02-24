@@ -64,7 +64,7 @@ class PlayCommand extends Command {
 					},
 					{
 					  "name": `Remaining:`,
-					  "value": 'Queue\n'+(track.queue.stopped)?':arrow_forward:':':stop_button'+player.createProgressBar(message,{queue:true,timecodes:false}),
+					  "value": 'Queue\n'+((track.queue.stopped)?':arrow_forward:':':stop_button:')+player.createProgressBar(message,{queue:true,timecodes:false}),
 					  "inline": true
 					},
 					{

@@ -64,17 +64,18 @@ class PlayCommand extends Command {
 				}
 					
 				var embedJSON={
-				      "title": "Now Playing",
+				      "title": `${track.title}`,
 				      //"description": `Author:${track.author}\n${track.description}`,
-				      "description": `[${track.title}](${track.url})`,
-				      "url": 'https://shiptunes.shipwa.sh/',
+				      //"description": `[${track.title}](${track.url})`,
+				      "description": '*Next Song*\n>>> '+(track.queue.tracks[1])?`[${track.queue.tracks[1].title}](${track.queue.tracks[1].url})`:'Add more songs!',
+				      "url": `${track.url}`,
 				      "color": 5814783,
 				      "fields": [
-					{
-					  "name": "Next song:",
-					  "value": (track.queue.tracks[1])?`[${track.queue.tracks[1].title}](${track.queue.tracks[1].url})`:'Add more songs!',
-					  "inline": false
-					},
+					//{
+					//  "name": "Next song:",
+					//  "value": '>>> '+(track.queue.tracks[1])?`[${track.queue.tracks[1].title}](${track.queue.tracks[1].url})`:'Add more songs!',
+					//  "inline": false
+					//},
 					{
 					  "name": "Player:",
 					  "value": stateString,

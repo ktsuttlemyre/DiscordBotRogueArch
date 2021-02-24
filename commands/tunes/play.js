@@ -77,7 +77,7 @@ class PlayCommand extends Command {
 					},
 					{
 					  "name": "‎",
-					  "value": 'Remaining\n'+duration.format("HH:mm:ss"),
+					  "value": 'Remaining\n'+moment.utc(duration).format("HH:mm:ss"),
 					  "inline": true
 					},
 					{

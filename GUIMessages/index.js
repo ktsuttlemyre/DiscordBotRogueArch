@@ -1,0 +1,88 @@
+const moment = require("moment");
+const { MessageEmbed } = require('discord.js');
+ /* 
+		const embed = new MessageEmbed()
+			.setColor(0xFFAC33)
+			.setTitle('About Discord Akairo Boilerplate')
+			.addField('Creator', [
+				'**Discord**: Snipey#0001',
+				'**Twitter**: https://twitter.com/snipeydev',
+				'**Patreon**: https://patreon.com/snipeydev',
+				'**Github**: https://github.com/snipey',
+			], true);
+
+		return message.channel.send(embed);
+    */
+
+exports.NowPlayingOverloaded=function(message,player){
+    var match = (player.createProgressBar(message,{queue:true,timecodes:true})||'').match(/(\d|:)+/g);
+			var duration=moment.duration('00:00:00');
+			if(match && match.length==2){
+				duration = moment.duration(match[1]).subtract(moment.duration(match[0]));
+			}
+							var stateButton=((track.queue.stopped)?':stop_button:':((track.queue.paused)?':pause_button:':':arrow_forward:'));
+				var stateString=((!track.queue.repeatMode)?':blue_square:':':repeat:')+' Repeat '+
+						((!track.queue.loopMode)?':blue_square:':':infinity:')+' Loop '+
+				    		((!track.queue.loopMode)?':blue_square:':':twisted_rightwards_arrows:')+' Shuffle ';
+				var volumeLevel=':mute:';
+				if(track.queue.volume){
+					if(track.queue.volume<=30){
+						volumeLevel=':speaker:';
+					}else if(track.queue.volume<=80){
+						volumeLevel=':sound:';
+					}else{
+						volumeLevel=':loud_sound:'
+					}
+				}
+					
+				var embedJSON={
+				      "title": `${track.title}`,
+				      //"description": `Author:${track.author}\n${track.description}`,
+				      //"description": `[${track.title}](${track.url})`,
+				      "description": '*Next Song:*\n>>> '+((track.queue.tracks[1])?`[${track.queue.tracks[1].title}](${track.queue.tracks[1].url})`:'Add more songs!'),
+				      "url": `${track.url}`,
+				      "color": 5814783,
+				      "fields": [
+					//{
+					//  "name": "Next song:",
+					//  "value": '>>> '+(track.queue.tracks[1])?`[${track.queue.tracks[1].title}](${track.queue.tracks[1].url})`:'Add more songs!',
+					//  "inline": false
+					//},
+					{
+					  "name": "Player:",
+					  "value": stateString,
+					  "inline": true
+					},
+					{
+					  "name": "‎",
+					  "value": ((!track.queue.loopMode)?':bell:':':bell:')+'Attention '+volumeLevel+' '+((track.queue.volume>=100)?':100:':track.queue.volume),
+					  "inline": true
+					},
+					{
+					  "name": `Queue:`,
+					  "value": stateButton+player.createProgressBar(message,{queue:true,timecodes:false}),
+					  "inline": false
+					},
+					{
+					  "name": "‎",
+					  "value": 'Remaining\n'+moment.utc(duration).format("HH:mm:ss"),
+					  "inline": true
+					},
+					{
+					  "name": "‎",
+					  "value": 'Tracks\n'+`${track.queue.tracks.length}`,
+					  "inline": true
+					}
+				      ],
+				      "footer": {
+					"text": track.requestedBy.username+' requested current song',
+					"icon_url":  track.requestedBy.avatarURL() //"https://shipwa.sh/img/logo/shipwash_avatar.png"
+				      },
+				      "thumbnail": {
+					"url": `${track.thumbnail}`
+				      }
+					//image: {
+					//  url: `${track.thumbnail}`,
+					//},
+				}
+     }

@@ -54,21 +54,29 @@ class PlayCommand extends Command {
 					},
 					{
 					  "name": "Playlist",
-					  "value": `${track.playlist}`,
+					  "value": `${track.fromPlaylist}`,
 					  "inline": true
 					},
 					{
-					  "name": player.createProgressBar(message),
-					  "value": `‎viewes: ${track.views}`
+					  "name": "Queue",
+					  "value": `${track.queue}`,
+					  "inline": true
+					},
+					{
+					  "name": "Queue length",
+					  "value": `Tracks:${track.queue.tracks.length}‎\n`+player.createProgressBar(message,{queue:true,timecodes:true})
 					}
 				      ],
 				      "footer": {
-					"text": `Requested By: @${track.requestedBy.username}`,
+					"text": `${track.requestedBy.tag} requested - shiptunes`,
 					"icon_url":  track.requestedBy.avatarURL() //"https://shipwa.sh/img/logo/shipwash_avatar.png"
 				      },
-				      "thumbnail": {
-					"url": `${track.thumbnail}`
-				      }
+				      //"thumbnail": {
+					//"url": `${track.thumbnail}`
+				      //}
+					image: {
+					  url: `${track.thumbnail}`,
+					},
 				}
 				message.channel.send({embed:embedJSON})
 				//message.channel.send(`Now playing ${track.title} requested by @${track.requestedBy.username} `)

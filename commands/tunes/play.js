@@ -52,7 +52,7 @@ class PlayCommand extends Command {
 				//message.channel.send(`Now playing ${track.title} requested by @${track.requestedBy.username} `)
 			})
 			// Send a message when something is added to the queue
-			.on('trackAdd',function(message, queue, track){
+			.on('trackAdd',async (message, queue, track) =>{
 				message.react(reactions.shipwash);
 				//message.react('☑️');
 				var reply = await message.send(`Adding [${track.title}](${track.url}) to the queue.`)

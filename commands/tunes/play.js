@@ -2,6 +2,12 @@ const GUIMessages = require.main.require('./templates/messages');
 const { Command } = require('discord-akairo');
 const { Player } = require("discord-player");
 const emotes={error:":error:"}
+const reactions={	      
+	      upvote:'✅',
+	      downvote:'❌',
+	      shipwash:'802028980739768320'
+	     }
+
 
 class PlayCommand extends Command {
 	constructor() {
@@ -47,16 +53,16 @@ class PlayCommand extends Command {
 			})
 			// Send a message when something is added to the queue
 			.on('trackAdd',function(message, queue, track){
-				message.react('🤖');
+				message.react(reactions.shipwash);
 				//message.react('☑️');
 				var reply = await message.send(`Adding [${track.title}](${track.url}) to the queue.`)
-				await reply.react('✅');
-				await reply.react('❌');
+				await reply.react(reactions.upvote);
+				await reply.react(reactions.downvote);
 				
 				GUIMessages.NowPlayingOverloaded(message,player,`${message.member.displayName} has added ${track.title}`);
 			})
 			.on('playlistAdd',function(message, queue, playlist){
-				message.react('🤖');
+				message.react(reactions.shipwash);
 				//message.react('☑️');
 				GUIMessages.NowPlayingOverloaded(message,player,`${message.member.displayName} has added playlist ${playlist.title}`);
 			})

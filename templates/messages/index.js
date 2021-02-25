@@ -15,7 +15,8 @@ const { MessageEmbed } = require('discord.js');
     */
 
 var cache={}
-exports.NowPlayingOverloaded=function(message,track,player){
+exports.NowPlayingOverloaded=function(message,player,announce){
+    var track=player.nowPlaying(message);
     var match = (player.createProgressBar(message,{queue:true,timecodes:true})||'').match(/(\d|:)+/g);
 	var duration=moment.duration('00:00:00');
 	if(match && match.length==2){
@@ -40,7 +41,7 @@ exports.NowPlayingOverloaded=function(message,track,player){
 	      "title": `> ${track.title}`,
 	      //"description": `Author:${track.author}\n${track.description}`,
 	      //"description": `[${track.title}](${track.url})`,
-	      "description": "‎",
+	      "description": "```"+announce+"```",
 	      "url": `${track.url}`,
 	      "color": 5814783,
 	      "author": {
@@ -49,41 +50,41 @@ exports.NowPlayingOverloaded=function(message,track,player){
 	        "icon_url": track.requestedBy.avatarURL()
 	      },
 	      "fields": [
-		//{
-		//  "name": "Next song:",
-		//  "value": '>>> '+(track.queue.tracks[1])?`[${track.queue.tracks[1].title}](${track.queue.tracks[1].url})`:'Add more songs!',
-		//  "inline": false
-		//},
-		{
-		  "name": "Player:",
-		  "value": stateString,
-		  "inline": true
-		},
-		{
-		  "name": "‎",
-		  "value": ((!track.queue.loopMode)?':bell:':':bell:')+'Attention '+volumeLevel+' '+((track.queue.volume>=100)?':100:':track.queue.volume),
-		  "inline": true
-		},
-		{
-		  "name": "‎",
-		  "value": "‎",
-		  "inline": true
-		},
-		{
-		  "name": `Queue:`,
-		  "value": stateButton+player.createProgressBar(message,{queue:true,timecodes:false}).replace('▬', '').replace('▬', ''),
-		  "inline": true
-		},
-		{
-		  "name": "‎",
-		  "value": 'Remaining\n'+moment.utc(duration).format("HH:mm:ss"),
-		  "inline": true
-		},
-		{
-		  "name": "‎",
-		  "value": 'Tracks\n'+`${track.queue.tracks.length}`,
-		  "inline": true
-		},
+// 		//{
+// 		//  "name": "Next song:",
+// 		//  "value": '>>> '+(track.queue.tracks[1])?`[${track.queue.tracks[1].title}](${track.queue.tracks[1].url})`:'Add more songs!',
+// 		//  "inline": false
+// 		//},
+// 		{
+// 		  "name": "Player:",
+// 		  "value": stateString,
+// 		  "inline": true
+// 		},
+// 		{
+// 		  "name": "‎",
+// 		  "value": ((!track.queue.loopMode)?':bell:':':bell:')+'Attention '+volumeLevel+' '+((track.queue.volume>=100)?':100:':track.queue.volume),
+// 		  "inline": true
+// 		},
+// 		{
+// 		  "name": "‎",
+// 		  "value": "‎",
+// 		  "inline": true
+// 		},
+// 		{
+// 		  "name": `Queue:`,
+// 		  "value": stateButton+player.createProgressBar(message,{queue:true,timecodes:false}).replace('▬', '').replace('▬', ''),
+// 		  "inline": true
+// 		},
+// 		{
+// 		  "name": "‎",
+// 		  "value": 'Remaining\n'+moment.utc(duration).format("HH:mm:ss"),
+// 		  "inline": true
+// 		},
+// 		{
+// 		  "name": "‎",
+// 		  "value": 'Tracks\n'+`${track.queue.tracks.length}`,
+// 		  "inline": true
+// 		},
 		{
 		  "name": "‎",
 		  "value": '*Next Song:*\n> '+((track.queue.tracks[1])?`[${track.queue.tracks[1].title}](${track.queue.tracks[1].url})\n*Requested by:*`:'Add more songs!'),

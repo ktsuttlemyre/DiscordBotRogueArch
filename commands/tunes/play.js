@@ -62,7 +62,7 @@ class PlayCommand extends Command {
 						"url": `https://shiptunes.shipwa.sh/${track.requestedBy.id}`,
 						"icon_url": track.requestedBy.avatarURL()
 					},
-					"description":`[${track.title}](${track.url}) to the queue.`,
+					"description":`[${track.title}](${track.url}) to \`the queue\`.`,
 					"thumbnail": {
 						"url": `${track.thumbnail}`
 					}

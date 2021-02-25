@@ -14,6 +14,7 @@ const { MessageEmbed } = require('discord.js');
 		return message.channel.send(embed);
     */
 
+var lastNowPlayingMessage=null
 exports.NowPlayingOverloaded=function(message,track,player){
     var match = (player.createProgressBar(message,{queue:true,timecodes:true})||'').match(/(\d|:)+/g);
 	var duration=moment.duration('00:00:00');
@@ -104,7 +105,9 @@ exports.NowPlayingOverloaded=function(message,track,player){
 			"icon_url":  track.requestedBy.avatarURL() //"https://shipwa.sh/img/logo/shipwash_avatar.png"
 	      	};
 	}
-	
+	if(lastNowPlayingMessage){
+		lastNowPlayingMessage.delete()
+	}
 	message.channel.send({embed:embedJSON});
      }
 

@@ -16,6 +16,7 @@ const { MessageEmbed } = require('discord.js');
 
 var cache={}
 exports.NowPlayingOverloaded=function(message,player,announce){
+    announce=(announce!=null)?"```"+announce+"```":"‎";
     var track=player.nowPlaying(message);
     var match = (player.createProgressBar(message,{queue:true,timecodes:true})||'').match(/(\d|:)+/g);
 	var duration=moment.duration('00:00:00');
@@ -41,7 +42,7 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 	      "title": `> ${track.title}`,
 	      //"description": `Author:${track.author}\n${track.description}`,
 	      //"description": `[${track.title}](${track.url})`,
-	      "description": "```"+announce+"```",
+	      "description": announce,
 	      "url": `${track.url}`,
 	      "color": 5814783,
 	      "author": {

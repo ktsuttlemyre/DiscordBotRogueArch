@@ -41,7 +41,7 @@ class PlayCommand extends Command {
 				leaveOnEmpty:true,
 				leaveOnEmptyCooldown:300,	
 				autoSelfDeaf:true,
-				//quality:'high',
+				quality:'high',
 				enableLive: true,	    
 			}
 			player = this.client.memory.set(message.guild, 'player', new Player(this.client,options));

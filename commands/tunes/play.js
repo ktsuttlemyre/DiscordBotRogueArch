@@ -54,7 +54,7 @@ class PlayCommand extends Command {
 			// Send a message when something is added to the queue
 			.on('trackAdd',async (message, queue, track) =>{
 				message.react(reactions.shipwash); //THIS should be handled elsewhere
-				message.delete();
+				//message.delete();
 
 				var embed={
 					"author": {
@@ -68,7 +68,7 @@ class PlayCommand extends Command {
 					}
 				}
 				
-				var reply = await message.channel.send({content:message.content,embed:embed})
+				var reply = await message.channel.send({embed:embed}) //content:message.content
 				await reply.react(reactions.upvote);
 				await reply.react(reactions.downvote);
 				

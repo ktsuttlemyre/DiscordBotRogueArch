@@ -58,11 +58,12 @@ class PlayCommand extends Command {
 
 				var embed={
 					"author": {
-						"name": track.requestedBy.username+`\n\`${message.content}\``,
+						"name": track.requestedBy.username,
 						"url": `https://shiptunes.shipwa.sh/${track.requestedBy.id}`,
 						"icon_url": track.requestedBy.avatarURL()
 					},
-					"description":`Added:[${track.title}](${track.url})\nto the queue.`,
+					//"title":+`\n>>>${message.content}`
+					"description":'> '+message.content.split('\n').join('\n> ')+`\nAdded: [${track.title}](${track.url})\nto the queue.`,
 					"thumbnail": {
 						"url": `${track.thumbnail}`
 					}

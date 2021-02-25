@@ -54,7 +54,7 @@ class PlayCommand extends Command {
 			// Send a message when something is added to the queue
 			.on('trackAdd',async (message, queue, track) =>{
 				message.react(reactions.shipwash); //THIS should be handled elsewhere
-				//message.delete();
+				message.delete();
 
 				var embed={
 					"author": {
@@ -62,7 +62,7 @@ class PlayCommand extends Command {
 						"url": `https://shiptunes.shipwa.sh/${track.requestedBy.id}`,
 						"icon_url": track.requestedBy.avatarURL()
 					},
-					"description":`[${track.title}](${track.url}) to \`the queue\`.`,
+					"description":`${message.content}\n[${track.title}](${track.url})\nto the queue.`,
 					"thumbnail": {
 						"url": `${track.thumbnail}`
 					}

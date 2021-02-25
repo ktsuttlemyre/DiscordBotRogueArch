@@ -58,18 +58,17 @@ class PlayCommand extends Command {
 
 				var embed={
 					"author": {
-						"name": track.requestedBy.displayName+' is playing',
-						"url": `https://shiptunes.shipwa.sh/track.requestedBy.id`,
+						"name": track.requestedBy.username+' added',
+						"url": `https://shiptunes.shipwa.sh/${track.requestedBy.id}`,
 						"icon_url": track.requestedBy.avatarURL()
 					},
-					"content":message.content,
-					"description":`Adding [${track.title}](${track.url}) to the queue.`,
+					"description":`[${track.title}](${track.url}) to the queue.`,
 					"thumbnail": {
 						"url": `${track.thumbnail}`
 					}
 				}
 				
-				var reply = await message.channel.send({embed})
+				var reply = await message.channel.send({content:message.content,embed:embed})
 				await reply.react(reactions.upvote);
 				await reply.react(reactions.downvote);
 				

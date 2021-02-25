@@ -48,12 +48,16 @@ class PlayCommand extends Command {
 			// Send a message when something is added to the queue
 			.on('trackAdd',function(message, queue, track){
 				message.react('🤖');
-				message.react('✔️');
+				//message.react('☑️');
+				var reply = await message.send(`Adding [${track.title}](${track.url}) to the queue.`)
+				await reply.react('✅');
+				await reply.react('❌');
+				
 				GUIMessages.NowPlayingOverloaded(message,player,`${message.member.displayName} has added ${track.title}`);
 			})
 			.on('playlistAdd',function(message, queue, playlist){
 				message.react('🤖');
-				message.react('✔️');
+				//message.react('☑️');
 				GUIMessages.NowPlayingOverloaded(message,player,`${message.member.displayName} has added playlist ${playlist.title}`);
 			})
 			// Send messages to format search results
@@ -80,9 +84,15 @@ class PlayCommand extends Command {
 			.on('noResults', (message, query) => message.channel.send(`No results found on YouTube for ${query}!`))
 
 			// Send a message when the music is stopped
-			.on('queueEnd', (message, queue) => message.channel.send('Music stopped as there is no more music in the queue!'))
-			.on('channelEmpty', (message, queue) => message.channel.send('Music stopped as there is no more member in the voice channel!'))
-			.on('botDisconnect', (message) => message.channel.send('Music stopped as I have been disconnected from the channel!'))
+			.on('queueEnd',function(message, queue){
+				GUIMessages.NowPlayingOverloaded(message,player,'Music stopped as there is no more music in the queue!');
+			})
+			.on('channelEmpty',function(message, queue){
+				message.channel.send('Music stopped as there is no more member in the voice channel!')
+			})
+			.on('botDisconnect',function(message){
+				message.channel.send('Music stopped as I have been disconnected from the channel!')
+			})
 
 			// Error handling
 			.on('error', (error, message) => {

@@ -55,7 +55,7 @@ class PlayCommand extends Command {
 			.on('trackAdd',async (message, queue, track) =>{
 				message.react(reactions.shipwash);
 				//message.react('☑️');
-				var reply = await message.channel.send(`Adding [${track.title}](${track.url}) to the queue.`)
+				var reply = await message.channel.send({embed:{description:`Adding [${track.title}](${track.url}) to the queue.`}})
 				await reply.react(reactions.upvote);
 				await reply.react(reactions.downvote);
 				

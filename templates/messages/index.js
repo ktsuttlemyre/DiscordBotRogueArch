@@ -108,7 +108,9 @@ exports.NowPlayingOverloaded=function(message,track,player){
 	if(lastNowPlayingMessage){
 		lastNowPlayingMessage.delete()
 	}
-	message.channel.send({embed:embedJSON});
+	message.channel.send({embed:embedJSON}).then(function(sentMessage) {
+	    sentMessage.delete();
+	});
      }
 
 

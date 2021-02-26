@@ -45,12 +45,12 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 	      "title": `> ${track.title}`,
 	      //"description": `Author:${track.author}\n${track.description}`,
 	      //"description": `[${track.title}](${track.url})`,
-	      "description": announce,
-	      "url": track.messageLink||track.url,
+	      "description": `[queue](${track.messageLink})\n`+announce,
+	      "url": track.url,
 	      "color": 5814783,
 	      "author": {
 	        "name": track.requestedBy.username+' is playing',
-	        //"url": "https://discordapp.com",
+	        "url": track.messageLink,
 	        "icon_url": track.requestedBy.avatarURL()
 	      },
 	      "fields": [
@@ -122,7 +122,7 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 	if(cache[message.guild.id].lastNowPlayingMessage){
 		cache[message.guild.id].lastNowPlayingMessage.delete()
 	}
-	message.channel.send({embed:embedJSON}).then(function(sentMessage) {
+	message.channel.send({content:`[queue](${track.messageLink})`,embed:embedJSON}).then(function(sentMessage) {
 	    cache[message.guild.id].lastNowPlayingMessage=sentMessage;
 	});
      }

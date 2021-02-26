@@ -161,7 +161,7 @@ class PlayCommand extends Command {
 				})
 			});
 		}*/
-		var g = async (function(){
+		var g = async () => {
 			if(!message.attachments){
 				await player.play(message, search, { firstResult: true });
 			}else{

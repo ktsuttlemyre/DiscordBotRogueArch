@@ -93,10 +93,12 @@ class PlayCommand extends Command {
 							reply.delete();
 							
 							//delete track from queue
-							//common.filterInPlace(track.queue.tracks,function(o) {
-							//    return o.url == track.url;
-							//});
-							track.skip=true;
+							common.filterInPlace(track.queue.tracks,function(o) {
+							   console.log('comparing',o.url,track.url)
+							   return o.url !== track.url;
+							});
+
+							//track.skip=true;
 							
 							//if it is currently playing then skip
 							var nowPlaying=player.nowPlaying(message)
@@ -104,12 +106,12 @@ class PlayCommand extends Command {
 								player.skip(message);
 							}
 							//alert everyone
-							GUIMessages.NowPlayingOverloaded(message,player,`${user.displayName} removed ${track.title}`);
+							GUIMessages.NowPlayingOverloaded(message,player,`${user.username} removed ${track.title}`);
 						}else{ //these are just users that don't like the song and we will pass on their message
-							GUIMessages.NowPlayingOverloaded(message,player,`${user.displayName} does not like ${track.title}`);
+							GUIMessages.NowPlayingOverloaded(message,player,`${user.username} does not like ${track.title}`);
 						}
 					}else if(reaction.emoji.name === reactions.upvote){ //these are users that like the song and we will pass on their message
-						GUIMessages.NowPlayingOverloaded(message,player,`${user.displayName} likes ${track.title}`);
+						GUIMessages.NowPlayingOverloaded(message,player,`${user.username} likes ${track.title}`);
 					}
 					console.log(`Collected ${reaction.emoji.name} from ${user.tag}`);
 				});

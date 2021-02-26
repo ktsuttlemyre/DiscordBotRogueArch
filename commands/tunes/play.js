@@ -91,12 +91,16 @@ class PlayCommand extends Command {
 						if(user.id === track.messageCommand.author.id){ //if original poster
 							//delete message
 							reply.delete();
-							//track.skip=true;
+							
+							//set it to be skipped
+							track.skip=true;
 							
 							//if it is currently playing then skip
 							var nowPlaying=player.nowPlaying(message)
 							if(nowPlaying && nowPlaying===track){ //or message maybe?
 								player.skip(message);
+							}else{ //if it isn't playing then delete it
+								player.remove(message,track);
 							}
 							
 							//delete track from queue
@@ -104,7 +108,7 @@ class PlayCommand extends Command {
 // 							   console.log('comparing',o.url,track.url)
 // 							   return o.url !== track.url;
 // 							});
-							player.remove(message,track);
+							
 
 							//alert everyone
 							GUIMessages.NowPlayingOverloaded(message,player,`${user.username} removed ${track.title}`);

@@ -66,7 +66,7 @@ class PlayCommand extends Command {
 				}
 				
 				var reply = await message.channel.send({embed:embed}) //content:message.content
-				reply.orignalMessage=message;
+				reply.originalMessage=message;
 				track.messageLink=common.permalinkMessage(message.guild,message.channel,reply);
 				
 				await reply.react(reactions.upvote);

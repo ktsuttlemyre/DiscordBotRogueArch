@@ -58,12 +58,13 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 	}
 
         var nextSongURL=(queue.tracks[1])?(queue.tracks[1].messageQEntry.permalink||queue.tracks[1].url):'';
+	var permalink = track.messageQEntry.permalink||''
 	announce=(announce!=null)?"\n```"+announce+"```":'‎';
 	var embedJSON={
 	      "title": `> ${track.title}`,
 	      //"description": `Author:${track.author}\n${track.description}`,
 	      //"description": `[${track.title}](${track.url})`,
-	      "description": `[queue](${track.messageQEntry.permalink})\n`+announce,
+	      "description": `[queue](${permalink})\n`+announce,
 	      "url": track.url,
 	      "color": 5814783,
 	      "fields": [

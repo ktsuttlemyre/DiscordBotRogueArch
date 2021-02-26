@@ -91,13 +91,6 @@ class PlayCommand extends Command {
 						if(user.id === track.messageCommand.author.id){ //if original poster
 							//delete message
 							reply.delete();
-							
-							//delete track from queue
-							common.filterInPlace(track.queue.tracks,function(o) {
-							   console.log('comparing',o.url,track.url)
-							   return o.url !== track.url;
-							});
-
 							//track.skip=true;
 							
 							//if it is currently playing then skip
@@ -105,6 +98,13 @@ class PlayCommand extends Command {
 							if(nowPlaying && nowPlaying.url===track.url){ //or message maybe?
 								player.skip(message);
 							}
+							
+							//delete track from queue
+							common.filterInPlace(track.queue.tracks,function(o) {
+							   console.log('comparing',o.url,track.url)
+							   return o.url !== track.url;
+							});
+
 							//alert everyone
 							GUIMessages.NowPlayingOverloaded(message,player,`${user.username} removed ${track.title}`);
 						}else{ //these are just users that don't like the song and we will pass on their message

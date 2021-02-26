@@ -161,15 +161,21 @@ class PlayCommand extends Command {
 				})
 			});
 		}*/
-		var g = async () => {
-			if(!message.attachments){
-				await player.play(message, search, { firstResult: true });
-			}else{
-				await player.play(message, search, { isAttachment:true });
-			}
-			player.emit('trackAdd',message,player.queue,player.queue.tracks[0])
-		};
-		g();
+// 		var g = async () => {
+// 			if(!message.attachments){
+// 				await player.play(message, search, { firstResult: true });
+// 			}else{
+// 				await player.play(message, search, { isAttachment:true });
+// 			}
+// 			player.emit('trackAdd',message,player.queue,player.queue.tracks[0])
+// 		};
+// 		g();
+		if(!message.attachments){
+			player.play(message, search, { firstResult: true });
+		}else{
+			player.play(message, search, { isAttachment:true });
+		}
+
 		
 
 	}

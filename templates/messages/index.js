@@ -17,7 +17,11 @@ const common = require.main.require('./common');
 
 var cache={}
 exports.NowPlayingOverloaded=function(message,player,announce){
-    
+    cache[message.guild.id]=cache[message.guild.id]||{};
+	
+    announce=announce||cache[message.guild.id].announce;
+    cache[message.guild.id].announce=announce;
+	
     var track=player.nowPlaying(message);
     var match = (player.createProgressBar(message,{queue:true,timecodes:true})||'').match(/(\d|:)+/g);
 	var duration=moment.duration('00:00:00');
@@ -118,7 +122,7 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 	      	};
 	}
 	
-	cache[message.guild.id]=cache[message.guild.id]||{};
+	
 	if(cache[message.guild.id].lastNowPlayingMessage){
 		cache[message.guild.id].lastNowPlayingMessage.delete()
 	}

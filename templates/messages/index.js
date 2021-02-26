@@ -64,7 +64,7 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 	      "title": `> ${track.title}`,
 	      //"description": `Author:${track.author}\n${track.description}`,
 	      //"description": `[${track.title}](${track.url})`,
-	      "description": player.createProgressBar(message,{queue:false,timecodes:true}).replace('▬','').replace('🔘',stateButton)+`[:arrow_double_up:](${permalink})`,
+	      "description": player.createProgressBar(message,{queue:false,timecodes:true}).replace('▬','').replace('🔘',stateButton).replace('┃ ','|').replace(' ┃','|')+` [:arrow_double_up:](${permalink})`,
 	      "url": track.url,
 	      "color": 5814783,
 	      "fields": [

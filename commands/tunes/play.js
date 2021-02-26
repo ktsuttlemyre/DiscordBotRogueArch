@@ -45,6 +45,9 @@ class PlayCommand extends Command {
 			player.on("trackStart",function(message, track){
 				//alert the user of what is now playing
 				GUIMessages.NowPlayingOverloaded(message,player);
+				if(track.skip){
+					player.skip(message);
+				}
 				//message.channel.send(`Now playing ${track.title} requested by @${track.requestedBy.username} `)
 			})
 			// Send a message when something is added to the queue
@@ -90,14 +93,15 @@ class PlayCommand extends Command {
 							reply.delete();
 							
 							//delete track from queue
-							common.filterInPlace(track.queue.tracks,function(o) {
-							    return o.url == track.url;
-							});
+							//common.filterInPlace(track.queue.tracks,function(o) {
+							//    return o.url == track.url;
+							//});
+							track.skip=true;
 							
 							//if it is currently playing then skip
-							var nowPlaying=player.nowPlaying(track.messageCommand)
+							var nowPlaying=player.nowPlaying(message)
 							if(nowPlaying && nowPlaying.url===track.url){ //or message maybe?
-								player.skip(track.messageCommand);
+								player.skip(message);
 							}
 							//alert everyone
 							GUIMessages.NowPlayingOverloaded(message,player,`${user.displayName} removed ${track.title}`);

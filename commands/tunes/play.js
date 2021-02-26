@@ -81,7 +81,7 @@ class PlayCommand extends Command {
 
 				const collector = reply.createReactionCollector((reaction, user) => {
 					return [reactions.upvote, reactions.downvote].includes(reaction.emoji.name) 
-				};); //{ time: 15000 }
+				}); //{ time: 15000 }
 
 				collector.on('collect', (reaction, user) => {
 					if(reaction.emoji.name === reactions.downvote){ //if downvote

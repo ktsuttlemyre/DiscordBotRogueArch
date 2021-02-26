@@ -2,8 +2,8 @@ const GUIMessages = require.main.require('./templates/messages');
 const { Command } = require('discord-akairo');
 const { Player } = require("discord-player");
 const emotes={error:":error:"}
-const {reactions,defaultAvatar} = require.main.require('common');
-const common = require.main.require('common');
+const {reactions,defaultAvatar} = require.main.require('./common');
+const common = require.main.require('./common');
 
 class PlayCommand extends Command {
 	constructor() {

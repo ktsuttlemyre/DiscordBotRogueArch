@@ -13,6 +13,7 @@ const { MessageEmbed } = require('discord.js');
 
 		return message.channel.send(embed);
     */
+const common = require.main.require('common');
 
 var cache={}
 exports.NowPlayingOverloaded=function(message,player,announce){
@@ -38,13 +39,14 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 		}
 	}
 
+        var nextSongURL=(track.queue.tracks[1])?(track.queue.tracks[1].messageLink||track.queue.tracks[1].url):'';
 	announce=(announce!=null)?"\n```"+announce+"```":'‎';
 	var embedJSON={
 	      "title": `> ${track.title}`,
 	      //"description": `Author:${track.author}\n${track.description}`,
 	      //"description": `[${track.title}](${track.url})`,
 	      "description": announce,
-	      "url": `${track.url}`,
+	      "url": track.messageLink||track.url,
 	      "color": 5814783,
 	      "author": {
 	        "name": track.requestedBy.username+' is playing',

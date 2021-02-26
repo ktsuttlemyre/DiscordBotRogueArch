@@ -28,22 +28,36 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 	if(match && match.length==2){
 		duration = moment.duration(match[1]).subtract(moment.duration(match[0]));
 	}
-	var stateButton=((track.queue.stopped)?':stop_button:':((track.queue.paused)?':pause_button:':':arrow_forward:'));
-	var stateString=((!track.queue.repeatMode)?':blue_square:':':repeat:')+' Repeat '+
-			((!track.queue.loopMode)?':blue_square:':':infinity:')+' Loop '+
-			((!track.queue.loopMode)?':blue_square:':':twisted_rightwards_arrows:')+' Shuffle ';
+	
+	
+	var queue=track.queue
+	if(!queue){
+		queue={
+			stopped:true,
+			paused:true,
+			repeatMode:false,
+			loopMode:false,
+			volume:0,
+			tracks:[],
+		}
+	}
+	
+	var stateButton=((queue.stopped)?':stop_button:':((queue.paused)?':pause_button:':':arrow_forward:'));
+	var stateString=((!queue.repeatMode)?':blue_square:':':repeat:')+' Repeat '+
+			((!queue.loopMode)?':blue_square:':':infinity:')+' Loop '+
+			((!queue.loopMode)?':blue_square:':':twisted_rightwards_arrows:')+' Shuffle ';
 	var volumeLevel=':mute:';
-	if(track.queue.volume){
-		if(track.queue.volume<=30){
+	if(queue.volume){
+		if(queue.volume<=30){
 			volumeLevel=':speaker:';
-		}else if(track.queue.volume<=80){
+		}else if(queue.volume<=80){
 			volumeLevel=':sound:';
 		}else{
 			volumeLevel=':loud_sound:'
 		}
 	}
 
-        var nextSongURL=(track.queue.tracks[1])?(track.queue.tracks[1].messageLink||track.queue.tracks[1].url):'';
+        var nextSongURL=(queue.tracks[1])?(queue.tracks[1].messageLink||queue.tracks[1].url):'';
 	announce=(announce!=null)?"\n```"+announce+"```":'‎';
 	var embedJSON={
 	      "title": `> ${track.title}`,
@@ -60,7 +74,7 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 	      "fields": [
 // 		//{
 // 		//  "name": "Next song:",
-// 		//  "value": '>>> '+(track.queue.tracks[1])?`[${track.queue.tracks[1].title}](${track.queue.tracks[1].url})`:'Add more songs!',
+// 		//  "value": '>>> '+(queue.tracks[1])?`[${queue.tracks[1].title}](${queue.tracks[1].url})`:'Add more songs!',
 // 		//  "inline": false
 // 		//},
 // 		{
@@ -70,7 +84,7 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 // 		},
 // 		{
 // 		  "name": "‎",
-// 		  "value": ((!track.queue.loopMode)?':bell:':':bell:')+'Attention '+volumeLevel+' '+((track.queue.volume>=100)?':100:':track.queue.volume),
+// 		  "value": ((!queue.loopMode)?':bell:':':bell:')+'Attention '+volumeLevel+' '+((queue.volume>=100)?':100:':queue.volume),
 // 		  "inline": true
 // 		},
 // 		{
@@ -91,7 +105,7 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 // 		},
 // 		{
 // 		  "name": "‎",
-// 		  "value": 'Tracks\n'+`${track.queue.tracks.length}`,
+// 		  "value": 'Tracks\n'+`${queue.tracks.length}`,
 // 		  "inline": true
 // 		},
 		{
@@ -102,7 +116,7 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 		},
 		{
 		  "name": "‎",
-		  "value": '*Next Song:*\n> '+((track.queue.tracks[1])?`[${track.queue.tracks[1].title}](${track.queue.tracks[1].url})\n*Requested by:*`:'Add more songs!'),
+		  "value": '*Next Song:*\n> '+((queue.tracks[1])?`[${queue.tracks[1].title}](${queue.tracks[1].url})\n*Requested by:*`:'Add more songs!'),
 		  "inline": false
 		}
 	      ],
@@ -114,8 +128,8 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 		//},
 	}
 	
-	if(track.queue.tracks[1]){
-		track=track.queue.tracks[1];
+	if(queue.tracks[1]){
+		track=queue.tracks[1];
 		embedJSON.footer= {
 			"text": track.requestedBy.username,
 			"icon_url":  track.requestedBy.avatarURL()||common.defaultAvatar //"https://shipwa.sh/img/logo/shipwash_avatar.png"

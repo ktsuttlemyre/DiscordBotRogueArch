@@ -50,7 +50,7 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 	      "color": 5814783,
 	      "author": {
 	        "name": track.requestedBy.username+' is playing',
-	        "url": track.messageLink,
+	        "url": 'https://shiptunes.shipwa.sh/'+track.requetedBy.id,
 	        "icon_url": track.requestedBy.avatarURL()||common.defaultAvatar
 	      },
 	      "fields": [

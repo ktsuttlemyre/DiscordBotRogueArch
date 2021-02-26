@@ -64,10 +64,15 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 	      "title": `> ${track.title}`,
 	      //"description": `Author:${track.author}\n${track.description}`,
 	      //"description": `[${track.title}](${track.url})`,
-	      "description": `[queue](${permalink})\n`+announce,
+	      "description": `[queue](${permalink})` ,
 	      "url": track.url,
 	      "color": 5814783,
 	      "fields": [
+		{
+		  "name": "‎",
+		  "value": stateButton+player.createProgressBar(message,{queue:false,timecodes:true}),
+		  "inline": false
+		},
 // 		//{
 // 		//  "name": "Next song:",
 // 		//  "value": '>>> '+(queue.tracks[1])?`[${queue.tracks[1].title}](${queue.tracks[1].url})`:'Add more songs!',
@@ -83,11 +88,7 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 // 		  "value": ((!queue.loopMode)?':bell:':':bell:')+'Attention '+volumeLevel+' '+((queue.volume>=100)?':100:':queue.volume),
 // 		  "inline": true
 // 		},
-// 		{
-// 		  "name": "‎",
-// 		  "value": "‎",
-// 		  "inline": true
-// 		},
+
 // 		{ //queue length
 // 		  "name": `Queue:`,
 // 		  "value": stateButton+player.createProgressBar(message,{queue:true,timecodes:false}).replace('▬', '').replace('▬', ''),
@@ -106,7 +107,7 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 // 		},
 		{
  		  "name": "‎",
- 		  "value": stateButton+player.createProgressBar(message,{queue:false,timecodes:true}),
+ 		  "value": `[queue](${permalink})\n`+announce,
  		  "inline": false
 			
 		},

@@ -161,14 +161,15 @@ class PlayCommand extends Command {
 				})
 			});
 		}*/
-		async (function(){
+		var g = async (function(){
 			if(!message.attachments){
 				await player.play(message, search, { firstResult: true });
 			}else{
 				await player.play(message, search, { isAttachment:true });
 			}
 			player.emit('trackAdd',message,player.queue,player.queue.tracks[0])
-		})();
+		};
+		g();
 		
 
 	}

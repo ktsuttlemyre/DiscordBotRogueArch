@@ -50,7 +50,6 @@ class PlayCommand extends Command {
 			// Send a message when something is added to the queue
 			.on('trackAdd',async (message, queue, track) =>{
 				message.react(reactions.shipwash); //THIS should be handled elsewhere
-				track.messageLink=common.permalinkMessage(message.guild,message.channel,message)
 				message.delete();
 
 				var embed={
@@ -67,6 +66,8 @@ class PlayCommand extends Command {
 				}
 				
 				var reply = await message.channel.send({embed:embed}) //content:message.content
+				track.messageLink=common.permalinkMessage(message.guild,message.channel,reply);
+				
 				await reply.react(reactions.upvote);
 				await reply.react(reactions.downvote);
 				

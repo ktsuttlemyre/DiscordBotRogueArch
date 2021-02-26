@@ -66,21 +66,26 @@ class PlayCommand extends Command {
 				}
 				
 				var reply = await message.channel.send({embed:embed}) //content:message.content
-				reply.originalMessage=message;
-				track.messageLink=common.permalinkMessage(message.guild,message.channel,reply);
 				
+				//add custom properties 
+				//to track
+				track.messageCommand=message
+				track.messageQEntry=reply
+	
+				//add custom properties permalinks to entries			
+				//message.permalink=common.permalinkMessage(message.guild,message.channel,reply);
+				reply.permalink=common.permalinkMessage(reply.guild,reply.channel,reply);
+
 				await reply.react(reactions.upvote);
 				await reply.react(reactions.downvote);
-				
-				const filter = (reaction, user) => {
-					return [reactions.upvote, reactions.downvote].includes(reaction.emoji.name) 
-				};
 
-				const collector = reply.createReactionCollector(filter); //{ time: 15000 }
+				const collector = reply.createReactionCollector((reaction, user) => {
+					return [reactions.upvote, reactions.downvote].includes(reaction.emoji.name) 
+				};); //{ time: 15000 }
 
 				collector.on('collect', (reaction, user) => {
 					if(reaction.emoji.name === reactions.downvote){ //if downvote
-						if(user.id === reply.originalMessage.author.id){ //if original poster
+						if(user.id === track.messageCommand.author.id){ //if original poster
 							//delete message
 							reply.delete();
 							
@@ -90,9 +95,9 @@ class PlayCommand extends Command {
 							});
 							
 							//if it is currently playing then skip
-							var nowPlaying=player.nowPlaying(reply)
+							var nowPlaying=player.nowPlaying(track.messageCommand)
 							if(nowPlaying && nowPlaying.url===track.url){ //or message maybe?
-								player.skip(reply);
+								player.skip(track.messageCommand);
 							}
 							//alert everyone
 							GUIMessages.NowPlayingOverloaded(message,player,`${user.displayName} removed ${track.title}`);

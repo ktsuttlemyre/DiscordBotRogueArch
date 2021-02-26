@@ -59,20 +59,20 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 
         var nextSongURL=(queue.tracks[1])?(queue.tracks[1].messageQEntry.permalink||queue.tracks[1].url):'';
 	var permalink = (track.messageQEntry)?track.messageQEntry.permalink:'';
-	announce=(announce!=null)?"\n```"+announce+"```":'‎';
+	announce=(announce!=null)?"```"+announce+"```":'‎';
 	var embedJSON={
 	      "title": `> ${track.title}`,
 	      //"description": `Author:${track.author}\n${track.description}`,
 	      //"description": `[${track.title}](${track.url})`,
-	      "description": `[queue](${permalink})` ,
+	      "description":  player.createProgressBar(message,{queue:false,timecodes:true}).replace('▬'',').replace('🔘',stateButton)+`[:arrow_double_up:](${permalink})\n`,
 	      "url": track.url,
 	      "color": 5814783,
 	      "fields": [
-		{
-		  "name": "‎",
-		  "value": stateButton+player.createProgressBar(message,{queue:false,timecodes:true}),
-		  "inline": false
-		},
+// 		{
+// 		  "name": "‎",
+// 		  "value": stateButton+player.createProgressBar(message,{queue:false,timecodes:true}),
+// 		  "inline": false
+// 		},
 // 		//{
 // 		//  "name": "Next song:",
 // 		//  "value": '>>> '+(queue.tracks[1])?`[${queue.tracks[1].title}](${queue.tracks[1].url})`:'Add more songs!',
@@ -105,11 +105,20 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 // 		  "value": 'Tracks\n'+`${queue.tracks.length}`,
 // 		  "inline": true
 // 		},
+// 		{
+//  		  "name": "‎",
+//  		  "value": "‎",
+//  		  "inline": true
+// 		},
+// 		{
+//  		  "name": "‎",
+//  		  "value": "‎",
+//  		  "inline": true
+// 		},
 		{
  		  "name": "‎",
- 		  "value": `[queue](${permalink})\n`+announce,
- 		  "inline": false
-			
+ 		  "value": announce,
+ 		  "inline": true
 		},
 		{
 		  "name": "‎",

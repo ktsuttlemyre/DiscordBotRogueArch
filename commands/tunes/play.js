@@ -94,16 +94,17 @@ class PlayCommand extends Command {
 							//track.skip=true;
 							
 							//if it is currently playing then skip
-							var nowPlaying=player.nowPlaying(message)
-							if(nowPlaying && nowPlaying.url===track.url){ //or message maybe?
-								player.skip(message);
-							}
+// 							var nowPlaying=player.nowPlaying(message)
+// 							if(nowPlaying && nowPlaying.url===track.url){ //or message maybe?
+// 								player.skip(message);
+// 							}
 							
 							//delete track from queue
-							common.filterInPlace(track.queue.tracks,function(o) {
-							   console.log('comparing',o.url,track.url)
-							   return o.url !== track.url;
-							});
+// 							common.filterInPlace(track.queue.tracks,function(o) {
+// 							   console.log('comparing',o.url,track.url)
+// 							   return o.url !== track.url;
+// 							});
+							player.remove(message,track);
 
 							//alert everyone
 							GUIMessages.NowPlayingOverloaded(message,player,`${user.username} removed ${track.title}`);

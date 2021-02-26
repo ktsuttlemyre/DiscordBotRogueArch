@@ -66,10 +66,48 @@ class PlayCommand extends Command {
 				}
 				
 				var reply = await message.channel.send({embed:embed}) //content:message.content
+				reply.orignalMessage=message;
 				track.messageLink=common.permalinkMessage(message.guild,message.channel,reply);
 				
 				await reply.react(reactions.upvote);
 				await reply.react(reactions.downvote);
+				
+				const filter = (reaction, user) => {
+					return [reactions.upvote, reactions.downvote].includes(reaction.emoji.name) 
+				};
+
+				const collector = reply.createReactionCollector(filter); //{ time: 15000 }
+
+				collector.on('collect', (reaction, user) => {
+					if(reaction.emoji.name === reactions.downvote){ //if downvote
+						if(user.id === reply.originalMessage.author.id){ //if original poster
+							//delete message
+							reply.delete();
+							
+							//delete track from queue
+							track.queue.tracks = track.queue.tracks.filter(function(o) {
+							    return o.url == track.url;
+							});
+							
+							//if it is currently playing then skip
+							var nowPlaying=player.nowPlaying(reply)
+							if(nowPlaying && nowPlaying.url===track.url){ //or message maybe?
+								player.skip(reply);
+							}
+							//alert everyone
+							GUIMessages.NowPlayingOverloaded(message,player,`${user.displayName} removed ${track.title}`);
+						}else{ //these are just users that don't like the song and we will pass on their message
+							GUIMessages.NowPlayingOverloaded(message,player,`${user.displayName} does not like ${track.title}`);
+						}
+					}else if(reaction.emoji.name === reactions.upvote){ //these are users that like the song and we will pass on their message
+						GUIMessages.NowPlayingOverloaded(message,player,`${user.displayName} likes ${track.title}`);
+					}
+					console.log(`Collected ${reaction.emoji.name} from ${user.tag}`);
+				});
+
+// 				collector.on('end', collected => {
+// 					console.log(`Collected ${collected.size} items`);
+// 				});
 				
 				GUIMessages.NowPlayingOverloaded(message,player,`${message.member.displayName} has added ${track.title}`);
 			})

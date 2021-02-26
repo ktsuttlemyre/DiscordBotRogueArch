@@ -51,7 +51,7 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 	      "author": {
 	        "name": track.requestedBy.username+' is playing',
 	        "url": track.messageLink,
-	        "icon_url": track.requestedBy.avatarURL()
+	        "icon_url": track.requestedBy.avatarURL()||common.defaultAvatar
 	      },
 	      "fields": [
 // 		//{
@@ -114,7 +114,7 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 		track=track.queue.tracks[1];
 		embedJSON.footer= {
 			"text": track.requestedBy.username,
-			"icon_url":  track.requestedBy.avatarURL() //"https://shipwa.sh/img/logo/shipwash_avatar.png"
+			"icon_url":  track.requestedBy.avatarURL()||common.defaultAvatar //"https://shipwa.sh/img/logo/shipwash_avatar.png"
 	      	};
 	}
 	
@@ -122,7 +122,7 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 	if(cache[message.guild.id].lastNowPlayingMessage){
 		cache[message.guild.id].lastNowPlayingMessage.delete()
 	}
-	message.channel.send({content:`[queue](${track.messageLink})`,embed:embedJSON}).then(function(sentMessage) {
+	message.channel.send({embed:embedJSON}).then(function(sentMessage) {
 	    cache[message.guild.id].lastNowPlayingMessage=sentMessage;
 	});
      }

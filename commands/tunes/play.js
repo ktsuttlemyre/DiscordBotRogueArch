@@ -38,7 +38,7 @@ class PlayCommand extends Command {
 				leaveOnEmptyCooldown:300,	
 				autoSelfDeaf:true,
 				quality:'high',
-				enableLive: true,	    
+				enableLive: false,	    
 			}
 			player = this.client.memory.set(message.guild, 'player', new Player(this.client,options));
 						
@@ -103,7 +103,7 @@ class PlayCommand extends Command {
 
 			// Send a message when the music is stopped
 			.on('queueEnd',async function(message, queue){
-				player.play(message, 'dj cutman radio', { firstResult: true });
+				player.play(message, 'chill nintendo beats', { firstResult: true });
 				player.backgroundPlaylist=true;
 				GUIMessages.NowPlayingOverloaded(message,player,'Playing DJ cutman till someone adds more music'); //'Music stopped. There no more music in the queue!'
 			})

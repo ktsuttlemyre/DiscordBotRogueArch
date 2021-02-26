@@ -38,12 +38,12 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 		}
 	}
 
-	announce=(announce!=null)?"\n```"+announce+"```":'';
+	announce=(announce!=null)?"\n```"+announce+"```":'‎';
 	var embedJSON={
 	      "title": `> ${track.title}`,
 	      //"description": `Author:${track.author}\n${track.description}`,
 	      //"description": `[${track.title}](${track.url})`,
-	      "description": stateButton+player.createProgressBar(message,{queue:false,timecodes:true})+announce,
+	      "description": announce,
 	      "url": `${track.url}`,
 	      "color": 5814783,
 	      "author": {
@@ -88,6 +88,12 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 // 		  "value": 'Tracks\n'+`${track.queue.tracks.length}`,
 // 		  "inline": true
 // 		},
+		{
+ 		  "name": "‎",
+ 		  "value": stateButton+player.createProgressBar(message,{queue:false,timecodes:true}),
+ 		  "inline": false
+			
+		},
 		{
 		  "name": "‎",
 		  "value": '*Next Song:*\n> '+((track.queue.tracks[1])?`[${track.queue.tracks[1].title}](${track.queue.tracks[1].url})\n*Requested by:*`:'Add more songs!'),

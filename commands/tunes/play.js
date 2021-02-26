@@ -31,10 +31,10 @@ class PlayCommand extends Command {
 		if(!player){
 			//https://discord-player.js.org/global.html#PlayerOptions
 			let options={
-				leaveOnEnd:true,
+				leaveOnEnd:false,
 				leaveOnEndCooldown:300,
 				leaveOnStop:false,
-				leaveOnEmpty:true,
+				leaveOnEmpty:false,
 				leaveOnEmptyCooldown:300,	
 				autoSelfDeaf:true,
 				quality:'high',
@@ -103,13 +103,15 @@ class PlayCommand extends Command {
 
 			// Send a message when the music is stopped
 			.on('queueEnd',function(message, queue){
-				GUIMessages.NowPlayingOverloaded(message,player,'Music stopped as there is no more music in the queue!');
+				player.play(message, 'dj cutman radio', { firstResult: true });
+				player.backgroundPlaylist=true;
+				GUIMessages.NowPlayingOverloaded(message,player,'Playing DJ cutman till someone adds more music'); //'Music stopped. There no more music in the queue!'
 			})
 			.on('channelEmpty',function(message, queue){
-				message.channel.send('Music stopped as there is no more member in the voice channel!')
+				GUIMessages.NowPlayingOverloaded(message,player,'There are no members in the voice channel.:frowning:');
 			})
 			.on('botDisconnect',function(message){
-				message.channel.send('Music stopped as I have been disconnected from the channel!')
+				GUIMessages.NowPlayingOverloaded(message,player,'Music stopped I have been disconnected from the channel!');
 			})
 
 			// Error handling
@@ -161,20 +163,24 @@ class PlayCommand extends Command {
 				})
 			});
 		}*/
-// 		var g = async () => {
-// 			if(!message.attachments){
-// 				await player.play(message, search, { firstResult: true });
-// 			}else{
-// 				await player.play(message, search, { isAttachment:true });
-// 			}
-// 			player.emit('trackAdd',message,player.queue,player.queue.tracks[0])
-// 		};
-// 		g();
-		if(!message.attachments){
-			player.play(message, search, { firstResult: true });
-		}else{
-			player.play(message, search, { isAttachment:true });
-		}
+		
+		var g = async () => {	
+			if(!message.attachments){
+				await player.play(message, search, { firstResult: true });
+			}else{
+				await player.play(message, search, { isAttachment:true });
+			}
+			
+			//background playlist handle
+			if(player.backgroundPlaylist){
+				player.backgroundPlaylist=false;
+				await player.skip(message);
+			}
+			//player.emit('trackAdd',message,player.queue,player.queue.tracks[0])
+		};
+		g();
+		
+
 
 		
 

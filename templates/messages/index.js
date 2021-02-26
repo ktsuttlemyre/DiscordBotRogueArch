@@ -116,10 +116,10 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 		}
 	      ],
 	      "thumbnail": {
-		"url": `${track.thumbnail}`
+		"url": track.thumbnail||common.defaultAvatar
 	      }
 		//image: {
-		//  url: `${track.thumbnail}`,
+		//  url: ${track.thumbnail||common.defaultAvatar,
 		//},
 	}
 	

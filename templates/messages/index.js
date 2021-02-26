@@ -66,11 +66,6 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 	      "description": `[queue](${track.messageLink})\n`+announce,
 	      "url": track.url,
 	      "color": 5814783,
-	      "author": {
-	        "name": track.requestedBy.username+' is playing',
-	        "url": 'https://shiptunes.shipwa.sh/'+track.requestedBy.id,
-	        "icon_url": track.requestedBy.avatarURL()||common.defaultAvatar
-	      },
 	      "fields": [
 // 		//{
 // 		//  "name": "Next song:",
@@ -126,6 +121,14 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 		//image: {
 		//  url: `${track.thumbnail}`,
 		//},
+	}
+	
+	if(track.requestedBy){
+	   embedJSON.author = {
+	        "name": track.requestedBy.username+' is playing',
+	        "url": 'https://shiptunes.shipwa.sh/'+track.requestedBy.id,
+	        "icon_url": track.requestedBy.avatarURL()||common.defaultAvatar
+	      }
 	}
 	
 	if(queue.tracks[1]){

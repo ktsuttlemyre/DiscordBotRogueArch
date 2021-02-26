@@ -58,7 +58,7 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 	}
 
         var nextSongURL=(queue.tracks[1])?(queue.tracks[1].messageQEntry.permalink||queue.tracks[1].url):'';
-	var permalink = track.messageQEntry.permalink||''
+	var permalink = (track.messageQEntry)?track.messageQEntry.permalink:'';
 	announce=(announce!=null)?"\n```"+announce+"```":'‎';
 	var embedJSON={
 	      "title": `> ${track.title}`,

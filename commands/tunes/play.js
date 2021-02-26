@@ -2,12 +2,7 @@ const GUIMessages = require.main.require('./templates/messages');
 const { Command } = require('discord-akairo');
 const { Player } = require("discord-player");
 const emotes={error:":error:"}
-const reactions={	      
-	      upvote:'✅',
-	      downvote:'❌',
-	      shipwash:'802028980739768320'
-	     }
-
+const {reactions,defaultAvatar} = require('./common');
 
 class PlayCommand extends Command {
 	constructor() {
@@ -60,7 +55,7 @@ class PlayCommand extends Command {
 					"author": {
 						"name": track.requestedBy.username,
 						"url": `https://shiptunes.shipwa.sh/${track.requestedBy.id}`,
-						"icon_url": track.requestedBy.avatarURL()
+						"icon_url": track.requestedBy.avatarURL()||defaultAvatar
 					},
 					//"title":+`\n>>>${message.content}`
 					"description":'> '+message.content.split('\n').join('\n> ')+`\nAdded: [${track.title}](${track.url})\nto the queue.`,

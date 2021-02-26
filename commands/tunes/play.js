@@ -90,7 +90,7 @@ class PlayCommand extends Command {
 							reply.delete();
 							
 							//delete track from queue
-							track.queue.tracks = track.queue.tracks.filter(function(o) {
+							common.filterInPlace(track.queue.tracks,function(o) {
 							    return o.url == track.url;
 							});
 							

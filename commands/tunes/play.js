@@ -3,7 +3,7 @@ const { Command } = require('discord-akairo');
 const { Player } = require("discord-player");
 const emotes={error:":error:"}
 const {reactions,defaultAvatar} = require('common');
-const common = require('common');
+const common = require('./common');
 
 class PlayCommand extends Command {
 	constructor() {

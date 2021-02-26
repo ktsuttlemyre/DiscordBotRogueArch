@@ -102,7 +102,7 @@ class PlayCommand extends Command {
 			.on('noResults', (message, query) => message.channel.send(`No results found on YouTube for ${query}!`))
 
 			// Send a message when the music is stopped
-			.on('queueEnd',function(message, queue){
+			.on('queueEnd',await function(message, queue){
 				player.play(message, 'dj cutman radio', { firstResult: true });
 				player.backgroundPlaylist=true;
 				GUIMessages.NowPlayingOverloaded(message,player,'Playing DJ cutman till someone adds more music'); //'Music stopped. There no more music in the queue!'

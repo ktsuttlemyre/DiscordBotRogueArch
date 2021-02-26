@@ -13,7 +13,7 @@ const { MessageEmbed } = require('discord.js');
 
 		return message.channel.send(embed);
     */
-const common = require.main.require('common');
+const common = require.main.require('./common');
 
 var cache={}
 exports.NowPlayingOverloaded=function(message,player,announce){

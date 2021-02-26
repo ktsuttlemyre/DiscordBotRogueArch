@@ -2,7 +2,8 @@ const GUIMessages = require.main.require('./templates/messages');
 const { Command } = require('discord-akairo');
 const { Player } = require("discord-player");
 const emotes={error:":error:"}
-const {reactions,defaultAvatar} = require('./common');
+const {reactions,defaultAvatar} = require('common');
+const common = require('common');
 
 class PlayCommand extends Command {
 	constructor() {
@@ -49,6 +50,7 @@ class PlayCommand extends Command {
 			// Send a message when something is added to the queue
 			.on('trackAdd',async (message, queue, track) =>{
 				message.react(reactions.shipwash); //THIS should be handled elsewhere
+				track.messageLink=common.permalinkMessage(message.guild,message.channel,message)
 				message.delete();
 
 				var embed={

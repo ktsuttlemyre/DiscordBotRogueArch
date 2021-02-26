@@ -16,7 +16,7 @@ const { MessageEmbed } = require('discord.js');
 
 var cache={}
 exports.NowPlayingOverloaded=function(message,player,announce){
-    announce=(announce!=null)?"```"+announce+"```":"‎";
+    
     var track=player.nowPlaying(message);
     var match = (player.createProgressBar(message,{queue:true,timecodes:true})||'').match(/(\d|:)+/g);
 	var duration=moment.duration('00:00:00');
@@ -38,11 +38,12 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 		}
 	}
 
+	announce=(announce!=null)?"\n```"+announce+"```":'';
 	var embedJSON={
 	      "title": `> ${track.title}`,
 	      //"description": `Author:${track.author}\n${track.description}`,
 	      //"description": `[${track.title}](${track.url})`,
-	      "description": announce,
+	      "description": stateButton+player.createProgressBar(message,{queue:false,timecodes:true})+announce,
 	      "url": `${track.url}`,
 	      "color": 5814783,
 	      "author": {
@@ -71,11 +72,12 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 // 		  "value": "‎",
 // 		  "inline": true
 // 		},
-// 		{
+// 		{ //queue length
 // 		  "name": `Queue:`,
 // 		  "value": stateButton+player.createProgressBar(message,{queue:true,timecodes:false}).replace('▬', '').replace('▬', ''),
 // 		  "inline": true
 // 		},
+		
 // 		{
 // 		  "name": "‎",
 // 		  "value": 'Remaining\n'+moment.utc(duration).format("HH:mm:ss"),

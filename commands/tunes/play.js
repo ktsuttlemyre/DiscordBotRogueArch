@@ -41,7 +41,7 @@ class PlayCommand extends Command {
 		}
 
 		if(!player){
-			palyer = this.client.memory.set(message.guild, 'player', createPlayer(message,this.client));
+			player = this.client.memory.set(message.guild, 'player', createPlayer(message,this.client));
 		}
 
 		

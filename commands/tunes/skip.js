@@ -25,11 +25,18 @@ class PlayCommand extends Command {
 		channelRestriction: 'guild', 
 		});
 	}
+	
+	userPermissions(message) {
+		if (!message.member.roles.cache.some(role => role.name === 'DJ')) {
+		    return true;
+		}
 
-	exec(message) {
+		return null;
+	}
+
+	async exec(message) {
 		if (!message.member.voice.channel) return message.channel.send(`${emotes.error} - You're not in a voice channel !`);
 		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${emotes.error} - You are not in the same voice channel !`);
-		if (!search) return message.channel.send(`${emotes.error} - Please indicate the title of a song !`);
 		var player = this.client.memory.get(message.guild, 'player', player)
 		if(!player){
 			cmessage.channel.send('No player playing to skip')

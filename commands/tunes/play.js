@@ -220,15 +220,19 @@ class PlayCommand extends Command {
 					'https://www.youtube.com/watch?v=q_rxsPa_YCk',
 					]
 				var selection = _.sample(backgrounds)
-				player.play(message, selection, { firstResult: true });
 				player.backgroundPlaylist=true;
-				GUIMessages.NowPlayingOverloaded(message,player,'Playing DJ cutman till someone adds more music'); //'Music stopped. There no more music in the queue!'
+				player.play(message, selection, { firstResult: true });
+				GUIMessages.NowPlayingOverloaded(message,player,'Playing background music until I get a new request'); //'Music stopped. There no more music in the queue!'
 			})
 			.on('channelEmpty',function(message, queue){
-				GUIMessages.NowPlayingOverloaded(message,player,'There are no members in the voice channel.:frowning:');
+				GUIMessages.NowPlayingOverloaded(message,player,'I am alone in the voice channel. :frowning:');
+				var channel=message.guild.me.voiceChannel.leave();
+				if(channel){
+					channel.leave();
+				}
 			})
 			.on('botDisconnect',function(message){
-				GUIMessages.NowPlayingOverloaded(message,player,'Music stopped I have been disconnected from the channel!');
+				GUIMessages.NowPlayingOverloaded(message,player,'Music stopped. I have been disconnected from the channel!');
 			})
 
 			// Error handling

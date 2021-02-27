@@ -56,7 +56,7 @@ class PlayCommand extends Command {
 				player.setFilters(message, {
 				 normalizer: true
 				});
-				player.setVolume(message, 30);
+				player.setVolume(message, 50);
 			})
 			// Send a message when something is added to the queue
 			.on('trackAdd', async (message, queue, track) =>{

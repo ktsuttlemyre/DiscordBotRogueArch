@@ -53,11 +53,16 @@ class PlayCommand extends Command {
 				}
 				GUIMessages.NowPlayingOverloaded(message,player);
 				
-				setImmediate(function(){
+				var toID=setInterval(function(){
+					var dispatcher = player.getQueue(message).voiceConnection.dispatcher
+					if(!dispatcher){
+						return
+					}
 					player.setFilters(message, {
 					 normalizer: true
 					});
 					player.setVolume(message, 50);
+					clearInterval(toID);
 				})
 			})
 			// Send a message when something is added to the queue

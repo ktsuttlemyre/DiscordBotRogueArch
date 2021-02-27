@@ -319,7 +319,7 @@ function createPlayer(message,client){
 	.on('error', (error, message) => {
 	    switch(error){
 		case 'NotPlaying':
-		    message.channel.send('There is no music being played on this server!')
+		    console.error(error);
 		    break;
 		case 'NotConnected':
 		    message.channel.send('You are not connected in any voice channel!')

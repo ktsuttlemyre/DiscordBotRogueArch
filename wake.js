@@ -1,9 +1,10 @@
 const { Client, Collection } = require("discord.js");
 const { readdirSync } = require("fs");
 const { join } = require("path");
-let { TOKEN, PREFIX, LOCALE } = require("./util/EvobotUtil");
-PREFIX =  '_';
-TOKEN = process.env.SHIPMOD_TOKEN;
+//let { TOKEN, PREFIX, LOCALE } = require("./util/EvobotUtil");
+const PREFIX =  '_';
+const TOKEN = process.env.SHIPMOD_TOKEN;
+const LOCALE = process.env.LOACAL||'en';
 const path = require("path");
 const i18n = require("i18n");
 

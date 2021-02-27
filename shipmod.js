@@ -140,6 +140,37 @@ let bot;
   client.on("voiceChannelLeave", async (member,oldChannel) => {
     // voiceLink.exitVoice(oldChannel,member,guildCashe)
   });
+  
+  
+//   process
+//   .on('SIGTERM', shutdown('SIGTERM'))
+//   .on('SIGINT', shutdown('SIGINT'))
+//   .on('uncaughtException', shutdown('uncaughtException'));
+
+
+
+//   function shutdown(signal) {
+//     return (err) => {
+//       console.log(`${ signal }...`);
+//       if (err){
+//         console.error(err.stack || err);
+//       }
+//       const Guilds = client.guilds.cache.forEach(function(guild){
+        
+//         var player=''
+//         if(player.isPlaying(message)){
+//           common.nowPlaying(message,null,'I have crashed!')
+//         }
+//       });
+//       process.exit(err ? 1 : 0);
+
+//     };
+//   }
+  
+  
+  
+  
+  
 })();
 
 (function server(){
@@ -156,21 +187,5 @@ let bot;
 
 
 
-process
-  .on('SIGTERM', shutdown('SIGTERM'))
-  .on('SIGINT', shutdown('SIGINT'))
-  .on('uncaughtException', shutdown('uncaughtException'));
 
-
-
-function shutdown(signal) {
-  return (err) => {
-    console.log(`${ signal }...`);
-    if (err) console.error(err.stack || err);
-    setTimeout(() => {
-      console.log('...waited 5s, exiting.');
-      process.exit(err ? 1 : 0);
-    }, 5000).unref();
-  };
-}
 

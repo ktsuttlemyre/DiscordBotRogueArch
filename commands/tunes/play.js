@@ -149,7 +149,6 @@ function createPlayer(message,client){
 			//alert the user of what is now playing
 			GUIMessages.nowPlaying(message,player,"Skipping ${track.name} for reason:${track.skip}");
 		}
-		GUIMessages.nowPlaying(message,player);
 
 		if(!init){
 			var toID=setInterval(function(){
@@ -163,8 +162,11 @@ function createPlayer(message,client){
 				player.setVolume(message, 50);
 				console.log('set volume and filter properly')
 				clearInterval(toID);
+				GUIMessages.nowPlaying(message,player);
 			})
 			init=true;
+		}else{
+			GUIMessages.nowPlaying(message,player);
 		}
 		
 				/*

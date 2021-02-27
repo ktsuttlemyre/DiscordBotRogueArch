@@ -6,6 +6,8 @@ const {reactions,defaultAvatar} = require.main.require('./common');
 const common = require.main.require('./common');
 var _ = require('lodash');
 
+//sound effects https://www.youtube.com/channel/UCok6P4rwxBMun9ghaIV4ufQ
+
 class PlayCommand extends Command {
 	constructor() {
 		super('play', {
@@ -54,7 +56,7 @@ class PlayCommand extends Command {
 				player.setFilters(message, {
 				 normalizer: true
 				});
-				player.setVolume(message, 20);
+				player.setVolume(message, 30);
 			})
 			// Send a message when something is added to the queue
 			.on('trackAdd', async (message, queue, track) =>{

@@ -62,6 +62,7 @@ class PlayCommand extends Command {
 					 normalizer: true
 					});
 					player.setVolume(message, 50);
+					console.log('set volume and filter properly')
 					clearInterval(toID);
 				})
 			})

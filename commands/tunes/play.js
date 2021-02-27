@@ -41,7 +41,7 @@ class PlayCommand extends Command {
 		}
 
 		if(!player){
-			palyer = this.client.memory.set(message.guild, 'player', createPlayer(message));
+			palyer = this.client.memory.set(message.guild, 'player', createPlayer(message,this.client));
 		}
 
 		
@@ -133,7 +133,7 @@ function playBackgroundPlaylist(message,player){
 	return player.play(message, selection, { firstResult: true });
 }
 
-function createPlayer(message){
+function createPlayer(message,client){
 	//https://discord-player.js.org/global.html#PlayerOptions
 	let options={
 		leaveOnEnd:false,
@@ -145,7 +145,7 @@ function createPlayer(message){
 		quality:'high',
 		enableLive: false,	    
 	}
-	var player = new Player(this.client,options);
+	var player = new Player(client,options);
 	var init=false;
 
 	player.on("trackStart",function(message, track){

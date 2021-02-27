@@ -29,7 +29,7 @@ class PlayCommand extends Command {
 	async exec(message, { search }) {
 		if (!message.member.voice.channel) return message.channel.send(`${emotes.error} - You're not in a voice channel !`);
 		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${emotes.error} - You are not in the same voice channel !`);
-		var player = this.client.memory.get(message.guild, 'player', player)
+		var player = this.client.memory.get(message.guild, 'player')
 		if (!search){
 			if(player){ //already have a player
 				if(player.isPlaying(message)){
@@ -41,7 +41,7 @@ class PlayCommand extends Command {
 		}
 
 		if(!player){
-			palyer = createPlayer(message);
+			palyer = this.client.memory.set(message.guild, 'player', createPlayer(message));
 		}
 
 		
@@ -145,7 +145,7 @@ function createPlayer(message){
 		quality:'high',
 		enableLive: false,	    
 	}
-	var player = this.client.memory.set(message.guild, 'player', new Player(this.client,options));
+	var player = new Player(this.client,options);
 	var init=false;
 
 	player.on("trackStart",function(message, track){

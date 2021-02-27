@@ -11,7 +11,7 @@ var _ = require('lodash');
 class PlayCommand extends Command {
 	constructor() {
 		super('pause', {
-		description: { content: 'skip'},
+		description: { content: 'pause'},
 		aliases: ['pause','stop'],
 		category: 'tunes',
 		clientPermissions: ['SEND_MESSAGES'],

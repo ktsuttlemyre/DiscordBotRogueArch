@@ -46,19 +46,22 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 	var stateString=((!queue.repeatMode)?':blue_square:':':repeat:')+' Repeat '+
 			((!queue.loopMode)?':blue_square:':':infinity:')+' Loop '+
 			((!queue.loopMode)?':blue_square:':':twisted_rightwards_arrows:')+' Shuffle ';
-	var volumeLevel=':mute:';
-	if(queue.volume){
-		if(queue.volume<=30){
-			volumeLevel=':speaker:';
-		}else if(queue.volume<=80){
-			volumeLevel=':sound:';
-		}else{
-			volumeLevel=':loud_sound:'
-		}
-	}
 	
+	
+// 	var volumeLevel=':mute:';
+// 	if(queue.volume){
+// 		if(queue.volume<=30){
+// 			volumeLevel=':speaker:';
+// 		}else if(queue.volume<=80){
+// 			volumeLevel=':sound:';
+// 		}else{
+// 			volumeLevel=':loud_sound:'
+// 		}
+// 	}
+	volumeLevel = common.progressString('vertical-bar,queue.volume)
 	
 	var progressBar=(player.createProgressBar(message,{queue:false,timecodes:true})||'').replace('▬','').replace('🔘',stateButton).replace('┃ ','|').replace(' ┃','|')
+	progressBar+=volumeLevel;
         var nextSongURL=(queue.tracks[1])?(queue.tracks[1].messageQEntry.permalink||queue.tracks[1].url):'';
 	var permalink = (track.messageQEntry)?track.messageQEntry.permalink:'';
 	announce=(announce!=null)?"```"+announce+"```":'‎';

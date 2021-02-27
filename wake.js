@@ -8,7 +8,7 @@ const LOCALE = process.env.LOACAL||'en';
 const path = require("path");
 const i18n = require("i18n");
 
-const voiceLink = require('./modules/voicetext-channel-linking.js')
+//const voiceLink = require('./modules/voicetext-channel-linking.js')
 
 const client = new Client({ 
   disableMentions: "everyone",

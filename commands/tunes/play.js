@@ -26,7 +26,7 @@ class PlayCommand extends Command {
 		});
 	}
 
-	exec(message, { search }) {
+	async exec(message, { search }) {
 		if (!message.member.voice.channel) return message.channel.send(`${emotes.error} - You're not in a voice channel !`);
 		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${emotes.error} - You are not in the same voice channel !`);
 		var player = this.client.memory.get(message.guild, 'player')
@@ -45,25 +45,24 @@ class PlayCommand extends Command {
 		}
 
 		
-		var g = async () => {
-			if(!search){
-				await playBackgroundPlaylist(message,player);
-				return
-			}
-			if(!message.attachments){
-				await player.play(message, search, { firstResult: true });
-			}else{
-				await player.play(message, search, { isAttachment:true });
-			}
-			
-			//background playlist handle
-			if(player.backgroundPlaylist){
-				player.backgroundPlaylist=false;
-				await player.skip(message);
-			}
-			//player.emit('trackAdd',message,player.queue,player.queue.tracks[0])
-		};
-		g();
+
+		if(!search){
+			await playBackgroundPlaylist(message,player);
+			return
+		}
+		if(!message.attachments){
+			await player.play(message, search, { firstResult: true });
+		}else{
+			await player.play(message, search, { isAttachment:true });
+		}
+
+		//background playlist handle
+		if(player.backgroundPlaylist){
+			player.backgroundPlaylist=false;
+			await player.skip(message);
+		}
+		//player.emit('trackAdd',message,player.queue,player.queue.tracks[0])
+
 		
 
 

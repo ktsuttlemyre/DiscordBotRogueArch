@@ -58,9 +58,9 @@ class PlayCommand extends Command {
 				if(track.skip){
 					player.skip(message);
 					//alert the user of what is now playing
-					GUIMessages.NowPlayingOverloaded(message,player,"Skipping ${track.name} for reason:${track.skip}");
+					GUIMessages.nowPlaying(message,player,"Skipping ${track.name} for reason:${track.skip}");
 				}
-				GUIMessages.NowPlayingOverloaded(message,player);
+				GUIMessages.nowPlaying(message,player);
 				
 				var toID=setInterval(function(){
 					var dispatcher = player.getQueue(message).voiceConnection.dispatcher
@@ -136,12 +136,12 @@ class PlayCommand extends Command {
 							
 
 							//alert everyone
-							GUIMessages.NowPlayingOverloaded(message,player,`${user.username} removed ${track.title}`);
+							GUIMessages.nowPlaying(message,player,`${user.username} removed ${track.title}`);
 						}else{ //these are just users that don't like the song and we will pass on their message
-							GUIMessages.NowPlayingOverloaded(message,player,`${user.username} does not like ${track.title}`);
+							GUIMessages.nowPlaying(message,player,`${user.username} does not like ${track.title}`);
 						}
 					}else if(reaction.emoji.name === reactions.upvote){ //these are users that like the song and we will pass on their message
-						GUIMessages.NowPlayingOverloaded(message,player,`${user.username} likes ${track.title}`);
+						GUIMessages.nowPlaying(message,player,`${user.username} likes ${track.title}`);
 					}
 					console.log(`Collected ${reaction.emoji.name} from ${user.tag}`);
 				});
@@ -150,12 +150,12 @@ class PlayCommand extends Command {
 // 					console.log(`Collected ${collected.size} items`);
 // 				});
 				
-				GUIMessages.NowPlayingOverloaded(message,player,`${message.member.displayName} has added ${track.title}`);
+				GUIMessages.nowPlaying(message,player,`${message.member.displayName} has added ${track.title}`);
 			})
 			.on('playlistAdd',function(message, queue, playlist){
 				message.react(reactions.shipwash);
 				//message.react('☑️');
-				GUIMessages.NowPlayingOverloaded(message,player,`${message.member.displayName} has added playlist ${playlist.title}`);
+				GUIMessages.nowPlaying(message,player,`${message.member.displayName} has added playlist ${playlist.title}`);
 			})
 			// Send messages to format search results
 			.on('searchResults', (message, query, tracks) => {
@@ -239,17 +239,17 @@ class PlayCommand extends Command {
 				var selection = _.sample(backgrounds)
 				player.backgroundPlaylist=true;
 				player.play(message, selection, { firstResult: true });
-				GUIMessages.NowPlayingOverloaded(message,player,'Playing background music until I get a new request'); //'Music stopped. There no more music in the queue!'
+				GUIMessages.nowPlaying(message,player,'Playing background music until I get a new request'); //'Music stopped. There no more music in the queue!'
 			})
 			.on('channelEmpty',function(message, queue){
-				GUIMessages.NowPlayingOverloaded(message,player,'I am alone in the voice channel. :frowning:');
+				GUIMessages.nowPlaying(message,player,'I am alone in the voice channel. :frowning:');
 				var channel=message.guild.me.voiceChannel.leave();
 				if(channel){
 					channel.leave();
 				}
 			})
 			.on('botDisconnect',function(message){
-				GUIMessages.NowPlayingOverloaded(message,player,'Music stopped. I have been disconnected from the channel!');
+				GUIMessages.nowPlaying(message,player,'Music stopped. I have been disconnected from the channel!');
 			})
 
 			// Error handling

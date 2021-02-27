@@ -29,8 +29,17 @@ class PlayCommand extends Command {
 	async exec(message, { search }) {
 		if (!message.member.voice.channel) return message.channel.send(`${emotes.error} - You're not in a voice channel !`);
 		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${emotes.error} - You are not in the same voice channel !`);
-		if (!search) return message.channel.send(`${emotes.error} - Please indicate the title of a song !`);
 		var player = this.client.memory.get(message.guild, 'player', player)
+		if (!search){
+			if(player){ //already have a player
+				if(player.isPlaying(message)){
+					return message.channel.send(`${emotes.error} - Please indicate the title of a song !`);
+				}else{
+					return player.resume(message)
+				}
+			}
+		}
+
 		if(!player){
 			//https://discord-player.js.org/global.html#PlayerOptions
 			let options={

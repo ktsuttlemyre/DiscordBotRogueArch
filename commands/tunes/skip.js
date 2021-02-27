@@ -41,7 +41,12 @@ class PlayCommand extends Command {
 			return message.channel.send('No player playing to act on')
 		}
 		player.skip(message);
-
+		var queue=player.queue
+		if(queue){
+			GUIMessages.nowPlaying(message,player,'Skipped: '+queue.previousTracks[0].title)
+		}else{
+			GUIMessages.nowPlaying(message,player,'Skipped: last track');
+		}
 
 	}
 }

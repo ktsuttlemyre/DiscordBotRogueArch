@@ -39,7 +39,7 @@ class PlayCommand extends Command {
 		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${emotes.error} - You are not in the same voice channel !`);
 		var player = this.client.memory.get(message.guild, 'player')
 		if(!player){
-			message.channel.send('No player playing to pause')
+			return message.channel.send('No player playing to pause')
 		}
 		player.pause(message);
 

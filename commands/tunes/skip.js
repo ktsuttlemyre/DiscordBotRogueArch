@@ -28,7 +28,6 @@ class PlayCommand extends Command {
 	
 	userPermissions(message) {
 		if (!message.member.roles.cache.some(role => role.name === 'DJ')) {
-			message.channel.send('You are not a DJ')
 			return 'DJ';
 		}
 		return null;

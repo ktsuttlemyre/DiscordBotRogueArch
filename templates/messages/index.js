@@ -16,7 +16,64 @@ const { MessageEmbed } = require('discord.js');
 const common = require.main.require('./common');
 
 var cache={}
-exports.NowPlayingOverloaded=function(message,player,announce){
+
+exports.nowPlaying=function(message,player,announce){
+	return nowPlayingOverloaded(message,player,announce);
+}
+
+var nowPlayingPageinated=function(message,player,announce){
+	const Pagination = require('discord-paginationembed');
+
+	const FieldsEmbed = new Pagination.FieldsEmbed()
+	  .setArray([{ name: 'John Doe' }, { name: 'Jane Doe' }])
+	  .setAuthorizedUsers([message.author.id])
+	  .setChannel(message.channel)
+	  .setElementsPerPage(1)
+	  // Initial page on deploy
+	  .setPage(2)
+	  .setPageIndicator(true)
+	  .formatField('Name', i => i.name)
+	  // Deletes the embed upon awaiting timeout
+	  .setDeleteOnTimeout(true)
+	  // Disable built-in navigation emojis, in this case: 🗑 (Delete Embed)
+	  .setDisabledNavigationEmojis(['delete'])
+	  // Set your own customised emojis
+	  .setFunctionEmojis({
+	    '🔄': (user, instance) => {
+	      const field = instance.embed.fields[0];
+
+	      if (field.name === 'Name')
+		field.name = user.tag;
+	      else
+		field.name = 'Name';
+	    }
+	  })
+	  // Similar to setFunctionEmojis() but this one takes only one emoji
+	  .addFunctionEmoji('🅱', (_, instance) => {
+	    const field = instance.embed.fields[0];
+
+	    if (field.name.includes('🅱'))
+	      field.name = 'Name';
+	    else
+	      field.name = 'Na🅱e';
+	  })
+	  // Sets whether function emojis should be deployed after navigation emojis
+	  .setEmojisFunctionAfterNavigation(false);
+
+	FieldsEmbed.embed
+	  .setColor(0xFF00AE)
+	  .setDescription('Test Description');
+
+	await FieldsEmbed.build();
+
+	// Will not log until the instance finished awaiting user responses
+	// (or techinically emitted either `expire` or `finish` event)
+	console.log('done');
+	
+}
+
+
+var nowPlayingOverloaded=function(message,player,announce){
     cache[message.guild.id]=cache[message.guild.id]||{};
 	
     announce=announce||cache[message.guild.id].announce;
@@ -166,7 +223,7 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 
 
 
-exports.NowPlaying=function(message,track,player){
+var nowPlayingSegments=function(message,track,player){
     var match = (player.createProgressBar(message,{queue:true,timecodes:true})||'').match(/(\d|:)+/g);
 	var duration=moment.duration('00:00:00');
 	if(match && match.length==2){

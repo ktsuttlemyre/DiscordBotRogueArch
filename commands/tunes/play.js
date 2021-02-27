@@ -32,7 +32,8 @@ class PlayCommand extends Command {
 		var player = this.client.memory.get(message.guild, 'player')
 		if (!search){
 			if(player){ //already have a player
-				if(player.queue.paused || player.queue.stopped){
+				var queue=player.queue
+				if(queue && (queue.paused || queue.stopped)){
 					return player.resume(message);
 				}else if(player.isPlaying(message)){
 					return message.channel.send(`${emotes.error} - Please indicate the title of a song !`);

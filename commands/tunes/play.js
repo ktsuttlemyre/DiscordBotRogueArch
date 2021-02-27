@@ -4,6 +4,7 @@ const { Player } = require("discord-player");
 const emotes={error:":error:"}
 const {reactions,defaultAvatar} = require.main.require('./common');
 const common = require.main.require('./common');
+var _ = require('lodash');
 
 class PlayCommand extends Command {
 	constructor() {
@@ -43,12 +44,17 @@ class PlayCommand extends Command {
 			player = this.client.memory.set(message.guild, 'player', new Player(this.client,options));
 						
 			player.on("trackStart",function(message, track){
-				//alert the user of what is now playing
-				GUIMessages.NowPlayingOverloaded(message,player);
 				if(track.skip){
 					player.skip(message);
+					//alert the user of what is now playing
+					GUIMessages.NowPlayingOverloaded(message,player,"Skipping ${track.name} for reason:${track.skip}");
 				}
-				//message.channel.send(`Now playing ${track.title} requested by @${track.requestedBy.username} `)
+				GUIMessages.NowPlayingOverloaded(message,player);
+				
+				player.setFilters(message, {
+				 normalizer: true
+				});
+				player.setVolume(message, 20);
 			})
 			// Send a message when something is added to the queue
 			.on('trackAdd', async (message, queue, track) =>{
@@ -157,7 +163,9 @@ class PlayCommand extends Command {
 
 			// Send a message when the music is stopped
 			.on('queueEnd',async function(message, queue){
-				player.play(message, 'chill nintendo beats', { firstResult: true });
+				var backgrounds=['chill nintendo beats','dj cutman']
+				var selection = _.sample(backgrounds)
+				player.play(message, selection, { firstResult: true });
 				player.backgroundPlaylist=true;
 				GUIMessages.NowPlayingOverloaded(message,player,'Playing DJ cutman till someone adds more music'); //'Music stopped. There no more music in the queue!'
 			})

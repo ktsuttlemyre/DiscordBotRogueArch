@@ -30,16 +30,16 @@ class PlayCommand extends Command {
 		if (!message.member.roles.cache.some(role => role.name === 'DJ')) {
 		    return true;
 		}
-    message.channel.send('No player playing to skip');
+    		message.channel.send('You are not a DJ');
 		return null;
 	}
 
 	async exec(message) {
 		if (!message.member.voice.channel) return message.channel.send(`${emotes.error} - You're not in a voice channel !`);
 		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${emotes.error} - You are not in the same voice channel !`);
-		var player = this.client.memory.get(message.guild, 'player', player)
+		var player = this.client.memory.get(message.guild, 'player')
 		if(!player){
-			message.channel.send('No player playing to skip')
+			message.channel.send('No player playing to pause')
 		}
 		player.pause(message);
 

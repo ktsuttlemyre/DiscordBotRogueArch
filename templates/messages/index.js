@@ -58,7 +58,7 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 // 			volumeLevel=':loud_sound:'
 // 		}
 // 	}
-	volumeLevel = common.progressString('vertical-bar,queue.volume)
+	volumeLevel = common.progressString('vertical-bar',queue.volume)
 	
 	var progressBar=(player.createProgressBar(message,{queue:false,timecodes:true})||'').replace('▬','').replace('🔘',stateButton).replace('┃ ','|').replace(' ┃','|')
 	progressBar+=volumeLevel;

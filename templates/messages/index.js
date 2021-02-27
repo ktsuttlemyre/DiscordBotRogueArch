@@ -21,7 +21,7 @@ exports.nowPlaying=function(message,player,announce){
 	return nowPlayingOverloaded(message,player,announce);
 }
 
-var nowPlayingPageinated=function(message,player,announce){
+var nowPlayingPageinated=function (message,player,announce){
 	const Pagination = require('discord-paginationembed');
 
 	const FieldsEmbed = new Pagination.FieldsEmbed()
@@ -64,11 +64,7 @@ var nowPlayingPageinated=function(message,player,announce){
 	  .setColor(0xFF00AE)
 	  .setDescription('Test Description');
 
-	await FieldsEmbed.build();
-
-	// Will not log until the instance finished awaiting user responses
-	// (or techinically emitted either `expire` or `finish` event)
-	console.log('done');
+	return FieldsEmbed.build();
 	
 }
 

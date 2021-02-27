@@ -28,13 +28,13 @@ class PlayCommand extends Command {
 	
 	userPermissions(message) {
 		if (!message.member.roles.cache.some(role => role.name === 'DJ')) {
-		    return true;
+			message.channel.send('You are not a DJ')
+			return 'DJ';
 		}
-		message.channel.send('You are not a DJ')
 		return null;
 	}
 
-	exec(message) {
+	async exec(message) {
 		if (!message.member.voice.channel) return message.channel.send(`${emotes.error} - You're not in a voice channel !`);
 		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${emotes.error} - You are not in the same voice channel !`);
 		var player = this.client.memory.get(message.guild, 'player')

@@ -293,10 +293,13 @@ class PlayCommand extends Command {
 			});
 		}*/
 		
-		var g = async () => {	
+		var g = async () => {
 			if(!message.attachments){
 				await player.play(message, search, { firstResult: true });
 			}else{
+				if(search=='playlist:lobby'){
+					player.emit(queueEnd,message,player.getQueue()||[])
+				}
 				await player.play(message, search, { isAttachment:true });
 			}
 			

@@ -41,6 +41,7 @@ class PlayCommand extends Command {
 			return message.channel.send('No player playing to pause')
 		}
 		player.pause(message);
+		GUIMessages.nowPlaying(message,player,'paused')
 
 
 	}

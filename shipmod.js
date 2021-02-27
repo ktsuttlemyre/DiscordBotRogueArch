@@ -165,7 +165,7 @@ let bot;
 //       process.exit(err ? 1 : 0);
 
 //     };
-  }
+//  }
   
   
   
@@ -182,7 +182,7 @@ let bot;
 
   const server = http.createServer(requestListener);
   server.listen(process.env.PORT||80);
-})();'
+})();
 
 
 

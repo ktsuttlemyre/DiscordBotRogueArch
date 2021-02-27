@@ -56,7 +56,9 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 			volumeLevel=':loud_sound:'
 		}
 	}
-
+	
+	
+	var progressBar=(player.createProgressBar(message,{queue:false,timecodes:true})||'').replace('▬','').replace('🔘',stateButton).replace('┃ ','|').replace(' ┃','|')
         var nextSongURL=(queue.tracks[1])?(queue.tracks[1].messageQEntry.permalink||queue.tracks[1].url):'';
 	var permalink = (track.messageQEntry)?track.messageQEntry.permalink:'';
 	announce=(announce!=null)?"```"+announce+"```":'‎';
@@ -64,7 +66,7 @@ exports.NowPlayingOverloaded=function(message,player,announce){
 	      "title": `> ${track.title}`,
 	      //"description": `Author:${track.author}\n${track.description}`,
 	      //"description": `[${track.title}](${track.url})`,
-	      "description": player.createProgressBar(message,{queue:false,timecodes:true}).replace('▬','').replace('🔘',stateButton).replace('┃ ','|').replace(' ┃','|')+` [⏫](${permalink})`,
+	      "description": progressBar +` [⏫](${permalink})`,
 	      "url": track.url,
 	      "color": 5814783,
 	      "fields": [

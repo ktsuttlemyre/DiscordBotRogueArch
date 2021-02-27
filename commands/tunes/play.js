@@ -53,10 +53,12 @@ class PlayCommand extends Command {
 				}
 				GUIMessages.NowPlayingOverloaded(message,player);
 				
-				player.setFilters(message, {
-				 normalizer: true
-				});
-				player.setVolume(message, 50);
+				setImmediate(function(){
+					player.setFilters(message, {
+					 normalizer: true
+					});
+					player.setVolume(message, 50);
+				})
 			})
 			// Send a message when something is added to the queue
 			.on('trackAdd', async (message, queue, track) =>{

@@ -1,12 +1,12 @@
 {
   "name": "discord-akairo-boilerplate",
   "version": "1.0.0",
-  "description": "Boilerplate for Discord Akairo Command Framework",
+  "description": "Shiptunes discord bot. Plays music and is probably best bot for nodejs ;-)",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
-  "author": "Snipey",
+  "author": "Kyle Suttlemyre",
   "license": "ISC",
   "dependencies": {
     "@sentry/node": "^5.9.0",

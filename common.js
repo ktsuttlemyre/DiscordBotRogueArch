@@ -31,6 +31,7 @@ var bars={
 		{"name":"LOWER ONE EIGHTH BLOCK",		"unicode":"U+2581",	"glyph":"▕▁▏", "percent":12.5},
 		{"name":"LOWER ONE QUARTER BLOCK",		"unicode":"U+2582",	"glyph":"▕▂▏", "percent":25},
 		{"name":"LOWER THREE EIGHTHS BLOCK",	"unicode":"U+2583",	"glyph":"▕▃▏", "percent":37.5},
+		{"name":"LOWER HALF BLOCK",		"unicode":"U+2584",	"glyph":"▕▄▄▏", "percent":50},
 		{"name":"LOWER FIVE EIGHTHS BLOCK",		"unicode":"U+2585",	"glyph":"▕▅▏", "percent":62.5},
 		{"name":"LOWER THREE QUARTERS BLOCk",	"unicode":"U+2586",	"glyph":"▕▆▏", "percent":75},
 		{"name":"LOWER SEVEN EIGHTHS BLOCK",	"unicode":"U+2587",	"glyph":"▕▇▏", "percent":87.5},

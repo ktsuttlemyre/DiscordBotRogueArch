@@ -39,7 +39,7 @@ class PlayCommand extends Command {
 		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${emotes.error} - You are not in the same voice channel !`);
 		var player = this.client.memory.get(message.guild, 'player', player)
 		if(!player){
-			cmessage.channel.send('No player playing to skip')
+			message.channel.send('No player playing to skip')
 		}
 		player.skip(message);
 

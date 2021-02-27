@@ -32,10 +32,10 @@ class PlayCommand extends Command {
 		var player = this.client.memory.get(message.guild, 'player')
 		if (!search){
 			if(player){ //already have a player
-				if(player.isPlaying(message)){
+				if(player.paused){
+					return player.resume(message);
+				}else if(player.isPlaying(message)){
 					return message.channel.send(`${emotes.error} - Please indicate the title of a song !`);
-				}else{
-					return player.resume(message)
 				}
 			}
 		}
@@ -49,24 +49,19 @@ class PlayCommand extends Command {
 		if(!search){
 			await playBackgroundPlaylist(message,player);
 			return
-		}
-		if(!message.attachments){
-			await player.play(message, search, { firstResult: true });
-		}else{
-			await player.play(message, search, { isAttachment:true });
-		}
-
-		//background playlist handle
-		if(player.backgroundPlaylist){
-			player.backgroundPlaylist=false;
-			await player.skip(message);
-		}
-		//player.emit('trackAdd',message,player.queue,player.queue.tracks[0])
-
-		
-
-
-		
+		}else{	
+			if(!message.attachments){
+				await player.play(message, search, { firstResult: true });
+			}else{
+				await player.play(message, search, { isAttachment:true });
+			}
+			//background playlist handle
+			if(player.backgroundPlaylist){
+				player.backgroundPlaylist=false;
+				await player.skip(message);
+			}
+			//player.emit('trackAdd',message,player.queue,player.queue.tracks[0])
+		}		
 
 	}
 }

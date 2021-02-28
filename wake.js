@@ -1,14 +1,7 @@
 const { Client, Collection } = require("discord.js");
-const { readdirSync } = require("fs");
-const { join } = require("path");
-//let { TOKEN, PREFIX, LOCALE } = require("./util/EvobotUtil");
-const PREFIX =  '_';
-const TOKEN = process.env.SHIPMOD_TOKEN;
-const LOCALE = process.env.LOACAL||'en';
-const path = require("path");
-const i18n = require("i18n");
+var TOKEN = process.env.SHIPMOD_TOKEN;
 
-//const voiceLink = require('./modules/voicetext-channel-linking.js')
+const request = require('request');
 
 const client = new Client({ 
   disableMentions: "everyone",
@@ -16,37 +9,6 @@ const client = new Client({
 });
 
 client.login(TOKEN);
-client.commands = new Collection();
-client.prefix = PREFIX;
-client.queue = new Map();
-const cooldowns = new Collection();
-const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-
-i18n.configure({
-  locales: ["en", "es", "ko", "fr", "tr", "pt_br", "zh_cn", "zh_tw"],
-  directory: path.join(__dirname, "locales"),
-  defaultLocale: "en",
-  objectNotation: true,
-  register: global,
-
-  logWarnFn: function (msg) {
-    console.log("warn", msg);
-  },
-
-  logErrorFn: function (msg) {
-    console.log("error", msg);
-    process.exit(1);
-  },
-
-  missingKeyFn: function (locale, value) {
-    return value;
-  },
-
-  mustacheConfig: {
-    tags: ["{{", "}}"],
-    disable: false
-  }
-});
 
 /**
  * Client Events
@@ -55,7 +17,7 @@ client.on("ready", () => {
   //console.log(`${client.user.username} ready!`);
   //client.user.setActivity(`${PREFIX}help and ${PREFIX}play`, { type: "LISTENING" });
   wakeHandler(client);
-  client.destroy();
+  //client.destroy();
 });
 client.on("warn", (info) => {
   console.log(info);
@@ -66,11 +28,10 @@ client.on("error", (e) => {
 });
 
 
-
-
-const request = require('request');
 let lastKeepAlive=null;
+var pinging=false;
 function keepAlive(string){
+  pinging=true;
   var website="https://"+process.env.HEROKU_APP_NAME+".herokuapp.com";
   console.log('KeepAlive - Pinging '+website+' for reason:'+string);
   request(website, function(err, res, body){
@@ -78,15 +39,13 @@ function keepAlive(string){
       console.log(err);
       process.exit(1);
     }
-    console.log('successfully pinged '+website);
+    console.log('Successfully pinged');
     lastKeepAlive=Date.now();
     process.exit(0);
     //console.log(body.url);
     //console.log(body.explanation);
   });
 };
-
-
 
 
 
@@ -103,7 +62,7 @@ function wakeHandler(client){
 //     }
 //   }
 
-  var keptAlive=Guild.members.cache.some(function(member){
+  Guild.members.cache.some(function(member){
     if(member.user.bot){
       return false;
     }
@@ -119,19 +78,38 @@ function wakeHandler(client){
       //  console.log(`${member.user.tag} is not connected.`);
     //};
 
-    //see if last message was 30 minutes old
-    var ttl=30*60*1000;
-    var lastMessage= member.lastMessage;
-    if(lastMessage){
-      var date = lastMessage.createdAt
-      if((Date.now() - date) < ttl) { //is user active in the last 30 minutes?
-         keepAlive(member.displayName+' sent a message recently');
-         return true
-      }
-    }
+
   }); //end some
+  
+  //see if theres a message in a text channel that is less than 30 minutes old
+  var ttlm=20;
+  var ttl=ttlm*60*1000;
+  let channels = Guild.channels.cache.filter(c => c.type == 'text').array();
+  var promises=[]
+  for (let channel of channels) {
+    if(!(channel.permissionsFor(Guild.me).has("VIEW_CHANNEL"))){
+      continue;
+    }
+    var p=channel.messages.fetch()
+      .then(function(messages){
+          messages.forEach(function(message){
+            if(message.author.bot){
+              return
+            }
+            if((Date.now() - message.createdAt) < ttl) { //is user active in the last 30 minutes?
+               keepAlive('Last message to guild was <'+ttlm+' minutes in channel['+channel.name+'] from user['+ message.author.username+']');
+            }
+          })
+      })
+      .catch(console.error);
+    promises.push(p);
+  }
+  Promise.all(promises).then((values) => {
+    //console.log('Checked all available channels.')
+    if(!pinging){
+      process.exit(0);
+    }
+  });
+  
+  
 };
-
-
-
-

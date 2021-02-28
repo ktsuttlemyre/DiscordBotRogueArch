@@ -209,7 +209,7 @@ function createPlayer(message,client){
 				"icon_url": track.requestedBy.avatarURL()||defaultAvatar
 			},
 			//"title":+`\n>>>${message.content}`
-			"description":'> '+message.content.split('\n').join('\n> ')+`\nAdded: [${track.title}](${track.url})\nto the queue.`,
+			"description":/*'> '+message.content.split('\n').join('\n> ')+`\n*/`Added: [${track.title}](${track.url})`,
 			"thumbnail": {
 				"url": `${track.thumbnail}`
 			}

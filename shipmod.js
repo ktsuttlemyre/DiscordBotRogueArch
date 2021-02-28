@@ -153,7 +153,7 @@ let bot;
       if (err){
         console.error(err.stack || err);
       }
-      const Guilds = client.guilds.cache.forEach(function(guild){ //iter guilds
+      client.guilds.cache.forEach(function(Guild){ //iter guilds
 		Guild.members.cache.some(function(member){ //iter members
 			if(member.user.bot){ //ignore bots
 				return false;

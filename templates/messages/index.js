@@ -111,15 +111,16 @@ var nowPlayingOverloaded=function(message,player,announce){
 // 			volumeLevel=':loud_sound:'
 // 		}
 // 	}
-	volumeLevel = common.progressString('vertical-bar',queue.volume)
-	
+	var volumeLevel = common.progressString('vertical-bar',queue.volume);
 	var progressBar=(player.createProgressBar(message,{queue:false,timecodes:true})||'').replace('▬','').replace('🔘',stateButton).replace('┃ ','|').replace(' ┃','|')
-	progressBar+=volumeLevel;
         var nextSongURL=(queue.tracks[1])?(queue.tracks[1].messageQEntry.permalink||queue.tracks[1].url):'';
 	var permalink = (track.messageQEntry)?track.messageQEntry.permalink:'';
 	announce=(announce!=null)?"```"+announce+"```":'‎';
+	var jumpToQueue=`[🡹](${permalink})`; //⮝🠉🠝🡅🡹🢁⏫
+	var nextSong=((queue.tracks[1])?`[${queue.tracks[1].title}](${queue.tracks[1].url})\n*Requested by:*`:'Add more songs!');
+	
 	var embedJSON={
-	      "title": `> ${track.title}  `+` [🡹](${permalink})`, //⮝🠉🠝🡅🡹🢁⏫,
+	      "title": `> ${track.title}`
 	      //"description": `Author:${track.author}\n${track.description}`,
 	      //"description": `[${track.title}](${track.url})`,
 	      //"description": progressBar +` [⏫](${permalink})`,
@@ -128,7 +129,7 @@ var nowPlayingOverloaded=function(message,player,announce){
 	      "fields": [
  		{
   		  "name": "‎",
-  		  "value": progressBar,
+  		  "value": `${progressBar} ${volumeLevel} ${jumpToQueue}`,
   		  "inline": false
  		},
 // 		{
@@ -185,7 +186,7 @@ var nowPlayingOverloaded=function(message,player,announce){
 		},
 		{
 		  "name": "‎",
-		  "value": '*Next Song:*\n> '+((queue.tracks[1])?`[${queue.tracks[1].title}](${queue.tracks[1].url})\n*Requested by:*`:'Add more songs!'),
+		  "value": `*Next Song:*\n> ${nextSong}`+,
 		  "inline": false
 		}
 	      ],
@@ -199,7 +200,7 @@ var nowPlayingOverloaded=function(message,player,announce){
 	
 	if(track.requestedBy){
 	   embedJSON.author = {
-	        "name": track.requestedBy.username+' is playing',
+	        "name": `${track.requestedBy.username} is playing`,
 	        "url": 'https://shiptunes.shipwa.sh/'+track.requestedBy.id,
 	        "icon_url": track.requestedBy.avatarURL()||common.defaultAvatar
 	      }

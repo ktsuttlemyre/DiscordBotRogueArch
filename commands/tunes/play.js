@@ -48,7 +48,9 @@ class PlayCommand extends Command {
 		
 
 		if(!search){
+			player.init=false
 			await playBackgroundPlaylist(message,player);
+			init(message,player)
 			return
 		}else{	
 			if(!message.attachments){
@@ -141,7 +143,7 @@ function createPlayer(message,client){
 		enableLive: false,	    
 	}
 	var player = new Player(client,options);
-	var init=false;
+	player.init=false;
 
 	player.on("trackStart",function(message, track){
 		if(track.skip){
@@ -150,24 +152,7 @@ function createPlayer(message,client){
 			GUIMessages.nowPlaying(message,player,"Skipping ${track.name} for reason:${track.skip}");
 		}
 
-		if(!init){
-			var toID=setInterval(function(){
-				var dispatcher = player.getQueue(message).voiceConnection.dispatcher
-				if(!dispatcher){
-					return
-				}
-				player.setFilters(message, {
-				 normalizer: true
-				});
-				player.setVolume(message, 50);
-				console.log('set volume and filter properly')
-				clearInterval(toID);
-				GUIMessages.nowPlaying(message,player);
-			})
-			init=true;
-		}else{
-			GUIMessages.nowPlaying(message,player);
-		}
+		init(message,player)
 		
 				/*
 		//complidated init event to add volume and filters
@@ -304,7 +289,9 @@ function createPlayer(message,client){
 
 	// Send a message when the music is stopped
 	.on('queueEnd',async function(message, queue){
+		player.init=false
 		playBackgroundPlaylist(message,player)
+		init(message,player)
 		GUIMessages.nowPlaying(message,player,'Playing background music until I get a new request'); //'Music stopped. There no more music in the queue!'
 	})
 	.on('channelEmpty',function(message, queue){
@@ -341,6 +328,26 @@ function createPlayer(message,client){
 	    }
 	})
 	return player
+}
+function init(message,player){
+		if(!player.init){
+			var toID=setInterval(function(){
+				var dispatcher = player.getQueue(message).voiceConnection.dispatcher
+				if(!dispatcher){
+					return
+				}
+				player.setFilters(message, {
+				 normalizer: true
+				});
+				player.setVolume(message, 50);
+				console.log('set volume and filter properly')
+				clearInterval(toID);
+				GUIMessages.nowPlaying(message,player);
+			})
+			player.init=true;
+		}else{
+			GUIMessages.nowPlaying(message,player);
+		}
 }
 module.exports = PlayCommand;
 

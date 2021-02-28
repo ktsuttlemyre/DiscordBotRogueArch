@@ -119,7 +119,7 @@ var nowPlayingOverloaded=function(message,player,announce){
 	var permalink = (track.messageQEntry)?track.messageQEntry.permalink:'';
 	announce=(announce!=null)?"```"+announce+"```":'‎';
 	var embedJSON={
-	      "title": `> ${track.title}`,
+	      "title": `> ${track.title}  `+` [🡹](${permalink})`, //⮝🠉🠝🡅🡹🢁⏫,
 	      //"description": `Author:${track.author}\n${track.description}`,
 	      //"description": `[${track.title}](${track.url})`,
 	      //"description": progressBar +` [⏫](${permalink})`,
@@ -128,7 +128,7 @@ var nowPlayingOverloaded=function(message,player,announce){
 	      "fields": [
  		{
   		  "name": "‎",
-  		  "value": progressBar +` [🡹](${permalink})`, //⮝🠉🠝🡅🡹🢁⏫
+  		  "value": progressBar
   		  "inline": false
  		},
 // 		{

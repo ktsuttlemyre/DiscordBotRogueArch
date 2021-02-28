@@ -1,7 +1,7 @@
 const GUIMessages = require.main.require('./templates/messages');
 const { Command } = require('discord-akairo');
 const { Player } = require("discord-player");
-const emotes={error:":error:"}
+const emotes={error:":warning:"}
 const {reactions,defaultAvatar} = require.main.require('./common');
 const common = require.main.require('./common');
 var _ = require('lodash');
@@ -32,11 +32,11 @@ class PlayCommand extends Command {
 		var player = this.client.memory.get(message.guild, 'player')
 		if (!search){
 			if(player){ //already have a player
-				var queue=player.queue
+				var queue=player.getQueue(message);
 				if(queue && (queue.paused || queue.stopped)){
 					return player.resume(message);
 				}else if(player.isPlaying(message)){
-					return message.channel.send(`${emotes.error} - Please indicate the title of a song !`);
+					return message.channel.send(`${emotes.error} - Please indicate the title of a song!`);
 				}
 			}
 		}

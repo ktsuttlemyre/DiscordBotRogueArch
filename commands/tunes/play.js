@@ -34,7 +34,12 @@ class PlayCommand extends Command {
 			if(player){ //already have a player
 				var queue=player.getQueue(message);
 				if(queue && (queue.paused || queue.stopped)){
-					return player.resume(message);
+					if(player.resume(message){
+						await GUIMessages.nowPlaying(message,player,"Continuing where we left of :-D");
+					}else{
+						await GUIMessages.nowPlaying(message,player,"Error resuming queue");
+					}
+					return;
 				}else if(player.isPlaying(message)){
 					return message.channel.send(`${emotes.error} - Please indicate the title of a song!`);
 				}

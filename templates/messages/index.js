@@ -128,7 +128,7 @@ var nowPlayingOverloaded=function(message,player,announce){
 	      "fields": [
  		{
   		  "name": "‎",
-  		  "value": progressBar +` [🢁](${permalink})`, //⮝🠉🠝🡅🡹🢁⏫
+  		  "value": progressBar +` [🡹](${permalink})`, //⮝🠉🠝🡅🡹🢁⏫
   		  "inline": false
  		},
 // 		{

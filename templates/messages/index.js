@@ -122,10 +122,15 @@ var nowPlayingOverloaded=function(message,player,announce){
 	      "title": `> ${track.title}`,
 	      //"description": `Author:${track.author}\n${track.description}`,
 	      //"description": `[${track.title}](${track.url})`,
-	      "description": progressBar +` [⏫](${permalink})`,
+	      //"description": progressBar +` [⏫](${permalink})`,
 	      "url": track.url,
 	      "color": 5814783,
 	      "fields": [
+ 		{
+  		  "name": "‎",
+  		  "value": " progressBar +` [🢁](${permalink})`", //⮝🠉🠝🡅🡹🢁⏫
+  		  "inline": true
+ 		},
 // 		{
 // 		  "name": "‎",
 // 		  "value": stateButton+player.createProgressBar(message,{queue:false,timecodes:true}),
@@ -165,7 +170,7 @@ var nowPlayingOverloaded=function(message,player,announce){
 // 		},
 // 		{
 //  		  "name": "‎",
-//  		  "value": "‎",
+//  		  "value": " progressBar +` [⏫](${permalink})`",
 //  		  "inline": true
 // 		},
 // 		{

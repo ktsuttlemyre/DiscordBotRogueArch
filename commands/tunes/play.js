@@ -184,6 +184,10 @@ function createPlayer(message,client){
 	})
 	// Send a message when something is added to the queue
 	.on('trackAdd', async (message, queue, track) =>{
+		if(!message || message.deleted){
+			//GUIMessages.nowPlaying(message,player,`${user.username} likes ${track.title}`);
+			return
+		}
 		message.react(reactions.shipwash); //THIS should be handled elsewhere
 		message.delete();
 

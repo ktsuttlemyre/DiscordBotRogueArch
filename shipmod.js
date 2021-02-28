@@ -162,7 +162,10 @@ let bot;
 			member.voice.setDeaf(false); //undefen anyone
 		}); //end iter members
         
-        var player=Guild.client.memory.get(guild, 'player');
+	var memory=Guild.client.memory
+	if(!memory){return}
+        var player=memory.get(guild, 'player');
+	if(!player){return}
         if(player.isPlaying(message)){
           common.nowPlaying(message,null,'I have crashed or gone to sleep!')
         }

@@ -316,9 +316,9 @@ function createPlayer(message,client){
 	// Error handling
 	.on('error', (error, message) => {
 	    switch(error){
-		case 'NotPlaying':
-		    console.error(error);
-		    break;
+// 		case 'NotPlaying':
+// 		    console.error(error);
+// 		    break;
 		case 'NotConnected':
 		    message.channel.send('You are not connected in any voice channel!')
 		    break;
@@ -331,8 +331,12 @@ function createPlayer(message,client){
 		case 'VideoUnavailable':
 		    message.channel.send('This YouTube video is not available!');
 		    break;
+		case 'Error: input stream: Status code: 429':
+		    process.exit(1); 
+		    message.channel.send(`Youtube ratelimit hit. Restarting...`)
 		default:
-		    message.channel.send(`Something went wrong... Error: ${error}`)
+	            console.error(error);
+		    message.channel.send(`Something went wrong... ${error}`)
 	    }
 	})
 	return player

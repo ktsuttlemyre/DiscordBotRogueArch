@@ -128,8 +128,8 @@ var nowPlayingOverloaded=function(message,player,announce){
 	      "fields": [
  		{
   		  "name": "‎",
-  		  "value": " progressBar +` [🢁](${permalink})`", //⮝🠉🠝🡅🡹🢁⏫
-  		  "inline": true
+  		  "value": progressBar +` [🢁](${permalink})`, //⮝🠉🠝🡅🡹🢁⏫
+  		  "inline": false
  		},
 // 		{
 // 		  "name": "‎",
@@ -181,7 +181,7 @@ var nowPlayingOverloaded=function(message,player,announce){
 		{
  		  "name": "‎",
  		  "value": announce,
- 		  "inline": true
+ 		  "inline": false
 		},
 		{
 		  "name": "‎",

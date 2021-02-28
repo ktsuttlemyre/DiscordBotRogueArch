@@ -120,7 +120,7 @@ var nowPlayingOverloaded=function(message,player,announce){
 	var nextSong=((queue.tracks[1])?`[${queue.tracks[1].title}](${queue.tracks[1].url})\n*Requested by:*`:'Add more songs!');
 	
 	var embedJSON={
-	      "title": `> ${track.title}`
+	      "title": `> ${track.title}`,
 	      //"description": `Author:${track.author}\n${track.description}`,
 	      //"description": `[${track.title}](${track.url})`,
 	      //"description": progressBar +` [⏫](${permalink})`,

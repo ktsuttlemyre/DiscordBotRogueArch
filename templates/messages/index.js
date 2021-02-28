@@ -71,6 +71,9 @@ var nowPlayingPageinated=function (message,player,announce){
 
 var nowPlayingOverloaded=function(message,player,announce){
     cache[message.guild.id]=cache[message.guild.id]||{};
+    if(cache[message.guild.id].lastNowPlayingMessage){
+	cache[message.guild.id].lastNowPlayingMessage.delete()
+    }
 	
     announce=announce||cache[message.guild.id].announce;
     cache[message.guild.id].announce=announce;
@@ -214,10 +217,6 @@ var nowPlayingOverloaded=function(message,player,announce){
 	      	};
 	}
 	
-	
-	if(cache[message.guild.id].lastNowPlayingMessage){
-		cache[message.guild.id].lastNowPlayingMessage.delete()
-	}
 	message.channel.send({embed:embedJSON}).then(function(sentMessage) {
 	    cache[message.guild.id].lastNowPlayingMessage=sentMessage;
 	});

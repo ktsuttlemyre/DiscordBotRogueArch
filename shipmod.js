@@ -6,6 +6,42 @@ const path = require('path');
 let bot;
 (function main(){
   bot = require(path.join(__dirname + "/index.js"));
+	
+
+  //shutdown gracefully and clean up 
+  process
+  .on('SIGTERM', shutdown('SIGTERM'))
+  .on('SIGINT', shutdown('SIGINT'))
+  .on('uncaughtException', shutdown('uncaughtException'));
+  function shutdown(signal) {
+    return (err) => {
+      console.log(`${ signal }...`);
+      if (err){
+        console.error(err.stack || err);
+      }
+      bot.guilds.cache.forEach(function(Guild){ //iter guilds
+		Guild.members.cache.some(function(member){ //iter members
+			if(member.user.bot){ //ignore bots
+				return false;
+			}
+			member.voice.setMute(false); //unmute anyone
+			member.voice.setDeaf(false); //undefen anyone
+		}); //end iter members
+        
+	var memory=bot.memory
+	if(!memory){return}
+        var player=memory.get(guild, 'player');
+	if(!player){return}
+        if(player.isPlaying(message)){
+          common.nowPlaying(message,null,'I have crashed or gone to sleep!')
+        }
+      }); //end iter guilds
+      process.exit(err ? 1 : 0);
+
+    };
+  }//end graceful shutdown	
+	
+	
 })();
 
 (function shipmod(){
@@ -140,41 +176,6 @@ let bot;
   client.on("voiceChannelLeave", async (member,oldChannel) => {
     // voiceLink.exitVoice(oldChannel,member,guildCashe)
   });
-  
-
-  //shutdown gracefully and clean up 
-  process
-  .on('SIGTERM', shutdown('SIGTERM'))
-  .on('SIGINT', shutdown('SIGINT'))
-  .on('uncaughtException', shutdown('uncaughtException'));
-  function shutdown(signal) {
-    return (err) => {
-      console.log(`${ signal }...`);
-      if (err){
-        console.error(err.stack || err);
-      }
-      client.guilds.cache.forEach(function(Guild){ //iter guilds
-		Guild.members.cache.some(function(member){ //iter members
-			if(member.user.bot){ //ignore bots
-				return false;
-			}
-			member.voice.setMute(false); //unmute anyone
-			member.voice.setDeaf(false); //undefen anyone
-		}); //end iter members
-        
-	var memory=Guild.client.memory
-	if(!memory){return}
-        var player=memory.get(guild, 'player');
-	if(!player){return}
-        if(player.isPlaying(message)){
-          common.nowPlaying(message,null,'I have crashed or gone to sleep!')
-        }
-      }); //end iter guilds
-      process.exit(err ? 1 : 0);
-
-    };
- }//end graceful shutdown
-  
   
   
   

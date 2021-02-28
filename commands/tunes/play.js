@@ -332,10 +332,12 @@ function createPlayer(message,client){
 function init(message,player){
 		if(!player.init){
 			var toID=setInterval(function(){
-				var dispatcher = player.getQueue(message).voiceConnection.dispatcher
-				if(!dispatcher){
-					return
-				}
+				var queue=player.getQueue(message);
+				if(!queue){return}
+				var voiceConnection= queue.voiceConnection;
+				if(!voiceConnection){return}
+				var dispatcher = voiceConnection.dispatcher;
+				if(!dispatcher){return}
 				player.setFilters(message, {
 				 normalizer: true
 				});

@@ -186,7 +186,7 @@ var nowPlayingOverloaded=function(message,player,announce){
 		},
 		{
 		  "name": "‎",
-		  "value": `*Next Song:*\n> ${nextSong}`+,
+		  "value": `*Next Song:*\n> ${nextSong}`,
 		  "inline": false
 		}
 	      ],

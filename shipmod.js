@@ -141,32 +141,36 @@ let bot;
     // voiceLink.exitVoice(oldChannel,member,guildCashe)
   });
   
-  
-//   process
-//   .on('SIGTERM', shutdown('SIGTERM'))
-//   .on('SIGINT', shutdown('SIGINT'))
-//   .on('uncaughtException', shutdown('uncaughtException'));
 
-
-
-//   function shutdown(signal) {
-//     return (err) => {
-//       console.log(`${ signal }...`);
-//       if (err){
-//         console.error(err.stack || err);
-//       }
-//       const Guilds = client.guilds.cache.forEach(function(guild){
+  //shutdown gracefully and clean up 
+  process
+  .on('SIGTERM', shutdown('SIGTERM'))
+  .on('SIGINT', shutdown('SIGINT'))
+  .on('uncaughtException', shutdown('uncaughtException'));
+  function shutdown(signal) {
+    return (err) => {
+      console.log(`${ signal }...`);
+      if (err){
+        console.error(err.stack || err);
+      }
+      const Guilds = client.guilds.cache.forEach(function(guild){ //iter guilds
+		Guild.members.cache.some(function(member){ //iter members
+			if(member.user.bot){ //ignore bots
+				return false;
+			}
+			member.voice.setMute(false); //unmute anyone
+			member.voice.setDeaf(false); //undefen anyone
+		}); //end iter members
         
-//         var player=''
-//         if(player.isPlaying(message)){
-//           common.nowPlaying(message,null,'I have crashed!')
-//         }
-//       });
-//       process.exit(err ? 1 : 0);
+        var player=''
+        if(player.isPlaying(message)){
+          common.nowPlaying(message,null,'I have crashed or gone to sleep!')
+        }
+      }); //end iter guilds
+      process.exit(err ? 1 : 0);
 
-//     };
-//  }
-  
+    };
+ }//end graceful shutdown
   
   
   

@@ -300,8 +300,7 @@ function createPlayer(message,client){
 	.on('queueEnd',async function(message, queue){
 		player.init=false
 		playBackgroundPlaylist(message,player)
-		init(message,player)
-		GUIMessages.nowPlaying(message,player,'Playing background music until I get a new request'); //'Music stopped. There no more music in the queue!'
+		init(message,player,'Playing background music until I get a new request') //'Music stopped. There no more music in the queue!'
 	})
 	.on('channelEmpty',function(message, queue){
 		GUIMessages.nowPlaying(message,player,'I am alone in the voice channel. :frowning:');
@@ -338,7 +337,7 @@ function createPlayer(message,client){
 	})
 	return player
 }
-function init(message,player){
+function init(message,player,announce){
 		if(!player.init){
 			var toID=setInterval(function(){
 				var queue=player.getQueue(message);
@@ -353,11 +352,11 @@ function init(message,player){
 				player.setVolume(message, 50);
 				console.log('set volume and filter properly')
 				clearInterval(toID);
-				GUIMessages.nowPlaying(message,player);
+				GUIMessages.nowPlaying(message,player,announce);
 			})
 			player.init=true;
 		}else{
-			GUIMessages.nowPlaying(message,player);
+			GUIMessages.nowPlaying(message,player,announce);
 		}
 }
 module.exports = PlayCommand;

@@ -17,8 +17,8 @@ const common = require.main.require('./common');
 
 var cache={}
 
-exports.nowPlaying=function(message,player,announce){
-	return nowPlayingOverloaded(message,player,announce);
+exports.nowPlaying= async (message,player,announce) => {
+	return await nowPlayingOverloaded(message,player,announce);
 }
 
 var nowPlayingPageinated=function (message,player,announce){
@@ -69,10 +69,11 @@ var nowPlayingPageinated=function (message,player,announce){
 }
 
 
-var nowPlayingOverloaded=function(message,player,announce){
+var nowPlayingOverloaded= async (message,player,announce) => {
     cache[message.guild.id]=cache[message.guild.id]||{};
-    if(cache[message.guild.id].lastNowPlayingMessage){
-	cache[message.guild.id].lastNowPlayingMessage.delete()
+    var lastNowPlayingMessage=cache[message.guild.id].lastNowPlayingMessage
+    if(lastNowPlayingMessage && !lastNowPlayingMessage.deleted){
+	lastNowPlayingMessage.delete();
     }
 	
     announce=announce||cache[message.guild.id].announce;
@@ -217,9 +218,7 @@ var nowPlayingOverloaded=function(message,player,announce){
 	      	};
 	}
 	
-	message.channel.send({embed:embedJSON}).then(function(sentMessage) {
-	    cache[message.guild.id].lastNowPlayingMessage=sentMessage;
-	});
+	cache[message.guild.id].lastNowPlayingMessage = await message.channel.send({embed:embedJSON});	
      }
 
 

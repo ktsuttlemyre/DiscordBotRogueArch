@@ -48,7 +48,8 @@ class PlayCommand extends Command {
 // 			await GUIMessages.nowPlaying(message,player,'Skipped: last track');
 // 		}
 // 		player.skip(message);
-    process.exit(0);
+   		// process.exit(0);
+		process.kill(process.pid, 'SIGINT');
 	}
 }
 

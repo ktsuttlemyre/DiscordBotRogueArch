@@ -41,14 +41,14 @@ process.on('unhandledRejection', err => {
       if (err){
         console.error(err.stack || err);
       }
-      client.guilds.cache.forEach(function(Guild){ //iter guilds
-		Guild.members.cache.some(function(member){ //iter members
-			if(member.user.bot){ //ignore bots
-				return false;
-			}
-			member.voice.setMute(false); //unmute anyone
-			member.voice.setDeaf(false); //undefen anyone
-		}); //end iter members
+      client.guilds.cache.forEach(function(guild){ //iter guilds
+	guild.members.cache.some(function(member){ //iter members
+		if(member.user.bot){ //ignore bots
+			return false;
+		}
+		member.voice.setMute(false); //unmute anyone
+		member.voice.setDeaf(false); //undefen anyone
+	}); //end iter members
         
 	var memory=client.memory
 	if(!memory){return}

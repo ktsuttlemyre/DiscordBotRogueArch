@@ -49,7 +49,6 @@ class PlayCommand extends Command {
 			}else{
 				await GUIMessages.nowPlaying(message,player,"Error resuming queue");
 			}
-			return;
 		}
 		
 

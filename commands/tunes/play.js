@@ -53,7 +53,6 @@ class PlayCommand extends Command {
 		
 
 		if(!search){
-			player.init=false
 			await playBackgroundPlaylist(message,player);
 			init(message,player)
 			return

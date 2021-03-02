@@ -1,4 +1,4 @@
-# Discord Akiro Boilerplate Bot
+# Shiptunes/Shipmod Discord Bot
 
 I made this bot to play music, utalize heroku sleep, and run various managment rutines.
 

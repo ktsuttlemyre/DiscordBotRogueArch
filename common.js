@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 exports.reactions={	      
 	      upvote:'✅',
 	      downvote:'❌',
@@ -48,3 +50,6 @@ exports.progressString=function progressString(type,percent){
 
 }
 
+exports.randomMusicEmoji=function(){
+	return _.sample['🎵','🎶','🎼']
+}

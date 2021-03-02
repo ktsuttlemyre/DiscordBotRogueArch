@@ -41,6 +41,19 @@ class PlayCommand extends Command {
 			return message.channel.send('No player playing to act on')
 		}
 		
+		//ensure playing
+		var queue=player.getQueue(message);
+		if(queue && (queue.paused || queue.stopped)){
+			if(player.resume(message)){
+				await GUIMessages.nowPlaying(message,player,"Continuing where we left of :-D");
+			}else{
+				await GUIMessages.nowPlaying(message,player,"Error resuming queue");
+			}
+			return;
+		}
+		
+
+		
 		var track = player.nowPlaying(message);
 		if(track){
 			await GUIMessages.nowPlaying(message,player,'Skipped: '+track.title)

@@ -30,45 +30,44 @@ class PlayCommand extends Command {
 		if (!message.member.voice.channel) return message.channel.send(`${emotes.error} - You're not in a voice channel !`);
 		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${emotes.error} - You are not in the same voice channel !`);
 		var player = this.client.memory.get(message.guild, 'player')
-		if (!search){
-			if(player){ //already have a player
-				var queue=player.getQueue(message);
-				if(queue && (queue.paused || queue.stopped)){
-					if(player.resume(message)){
-						await GUIMessages.nowPlaying(message,player,"Continuing where we left of :-D");
-					}else{
-						await GUIMessages.nowPlaying(message,player,"Error resuming queue");
-					}
-					return;
-				}else if(player.isPlaying(message)){
-					return message.channel.send(`${emotes.error} - Please indicate the title of a song!`);
+		if (!search && player){
+			var queue=player.getQueue(message);
+			if(queue && (queue.paused || queue.stopped)){
+				if(player.resume(message)){
+					await GUIMessages.nowPlaying(message,player,"Continuing where we left of :-D");
+				}else{
+					await GUIMessages.nowPlaying(message,player,"Error resuming queue");
 				}
+				return;
+			}else if(player.isPlaying(message)){
+				return message.channel.send(`${emotes.error} - Please indicate the title of a song!`);
 			}
+
 		}
 
 		if(!player){
 			player = this.client.memory.set(message.guild, 'player', createPlayer(message,this.client));
+			if(!search){
+				await playBackgroundPlaylist(message,player);
+				init(message,player)
+				return
+			}
 		}
 
 		
 
-		if(!search){
-			await playBackgroundPlaylist(message,player);
-			init(message,player)
-			return
-		}else{	
-			if(!message.attachments){
-				await player.play(message, search, { firstResult: true });
-			}else{
-				await player.play(message, search, { isAttachment:true });
-			}
-			//background playlist handle
-			if(player.backgroundPlaylist){
-				player.backgroundPlaylist=false;
-				await player.skip(message);
-			}
-			//player.emit('trackAdd',message,player.queue,player.queue.tracks[0])
-		}		
+		if(!message.attachments){
+			await player.play(message, search, { firstResult: true });
+		}else{
+			await player.play(message, search, { isAttachment:true });
+		}
+		//background playlist handle
+		if(player.backgroundPlaylist){
+			player.backgroundPlaylist=false;
+			await player.skip(message);
+		}
+		//player.emit('trackAdd',message,player.queue,player.queue.tracks[0])
+				
 
 	}
 }

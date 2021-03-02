@@ -45,7 +45,7 @@ class PlayCommand extends Command {
 		var queue=player.getQueue(message);
 		if(queue && (queue.paused || queue.stopped)){
 			if(player.resume(message)){
-				await GUIMessages.nowPlaying(message,player,"Continuing where we left of :-D");
+				await GUIMessages.nowPlaying(message,player,"Continuing where we left off "+common.randomMusicEmoji());
 			}else{
 				await GUIMessages.nowPlaying(message,player,"Error resuming queue");
 			}

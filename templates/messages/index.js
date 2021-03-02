@@ -120,7 +120,7 @@ var nowPlayingOverloaded= async (message,player,announce) => {
         var nextSongURL=(queue.tracks[1])?(queue.tracks[1].messageQEntry.permalink||queue.tracks[1].url):'';
 	var permalink = (track.messageQEntry)?track.messageQEntry.permalink:'';
 	announce=(announce!=null)?"```"+announce+"```":'‎';
-	var jumpToQueue=`[🡹](${permalink})`; //⮝🠉🠝🡅🡹🢁⏫
+	var jumpToQueue=`[🡅](${permalink})`; //⮝🠉🠝🡅🡹🢁⏫
 	var nextSong=((queue.tracks[1])?`[${queue.tracks[1].title}](${queue.tracks[1].url})\n*Requested by:*`:'Add more songs!');
 	
 	var embedJSON={

@@ -30,7 +30,7 @@ class PlayCommand extends Command {
 		if (!message.member.voice.channel) return message.channel.send(`${emotes.error} - You're not in a voice channel !`);
 		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${emotes.error} - You are not in the same voice channel !`);
 		var player = this.client.memory.get(message.guild, 'player')
-		if (!search && player){
+		if (player){
 			var queue=player.getQueue(message);
 			if(queue && (queue.paused || queue.stopped)){
 				if(player.resume(message)){
@@ -39,13 +39,10 @@ class PlayCommand extends Command {
 					await GUIMessages.nowPlaying(message,player,"Error resuming queue");
 				}
 				return;
-			}else if(player.isPlaying(message)){
+			}else if(player.isPlaying(message) && !search){
 				return message.channel.send(`${emotes.error} - Please indicate the title of a song!`);
 			}
-
-		}
-
-		if(!player){
+		}else{
 			player = this.client.memory.set(message.guild, 'player', createPlayer(message,this.client));
 			if(!search){
 				await playBackgroundPlaylist(message,player);

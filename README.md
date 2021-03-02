@@ -44,3 +44,7 @@ So far it doesn't need a database and uses emojis to process commands that were 
 - Prefix
 
 
+## wake.js
+ - use wake.js in a heroku scheduler task.
+   - Set it to run every 10min and it will log into discord, check for activity and use the HEROKU_APP_NAME variable to ping the app (ex: https://<HEROKU_APP_NAME>.herokuapp.com/)
+

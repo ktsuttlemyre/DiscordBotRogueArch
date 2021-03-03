@@ -188,7 +188,7 @@ function createPlayer(message,client){
 			//GUIMessages.nowPlaying(message,player,`${user.username} likes ${track.title}`);
 			return
 		}
-		message.react(reactions.shipwash); //THIS should be handled elsewhere
+		//message.react(reactions.shipwash); //THIS should be handled elsewhere
 		message.delete();
 
 		var embed={

@@ -103,7 +103,7 @@ function wakeHandler(client){
         })
         .catch(console.error);
       promises.push(p);
-    }
+    } //test
     Promise.all(promises).then((values) => {
       //console.log('Checked all available channels.')
       if(!pinging){

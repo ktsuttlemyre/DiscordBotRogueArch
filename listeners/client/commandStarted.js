@@ -1,7 +1,7 @@
 const { Listener } = require('discord-akairo');
 const {reactions,defaultAvatar} = require.main.require('./common');
 
-
+// https://discord-akairo.github.io/#/docs/main/master/class/CommandHandler?scrollTo=e-commandStarted
 class CommandBlockedListener extends Listener {
     constructor() {
         super('commandStarted', {

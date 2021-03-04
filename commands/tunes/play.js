@@ -191,7 +191,7 @@ function createPlayer(message,client){
 		//message.react(reactions.shipwash); //THIS should be handled elsewhere
 		message.delete();
 
-		var title = (track.title||'').replace(/\(\W*official\W*(music)?\W*video\W*\)/i,'🌟')
+		var title = GUIMessages.presentTitle(track.title)
 		var embed={
 			"author": {
 				"name": track.requestedBy.username,

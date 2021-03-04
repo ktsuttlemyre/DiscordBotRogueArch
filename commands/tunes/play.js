@@ -54,9 +54,9 @@ class PlayCommand extends Command {
 		
 
 		if(!message.attachments){
-			await player.play(message, search, true, false); //{ firstResult: true });
+			await player.play(message, search, { firstResult: true });
 		}else{
-			await player.play(message, search, false, true); //{ isAttachment:true });
+			await player.play(message, search, { isAttachment:true });
 		}
 		//background playlist handle
 		if(player.backgroundPlaylist){

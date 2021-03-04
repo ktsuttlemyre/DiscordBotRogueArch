@@ -191,6 +191,7 @@ function createPlayer(message,client){
 		//message.react(reactions.shipwash); //THIS should be handled elsewhere
 		message.delete();
 
+		var title = (track.title||'').replace(/\(\W*official\W*(music)?\W*video\W*\)/i,'🌟')
 		var embed={
 			"author": {
 				"name": track.requestedBy.username,
@@ -198,7 +199,7 @@ function createPlayer(message,client){
 				"icon_url": track.requestedBy.avatarURL()||defaultAvatar
 			},
 			//"title":+`\n>>>${message.content}`
-			"description":/*'> '+message.content.split('\n').join('\n> ')+`\n*/`Added: [${track.title}](${track.url})`,
+			"description":/*'> '+message.content.split('\n').join('\n> ')+`\n*/`Added: [${title}](${track.url})`,
 			"thumbnail": {
 				"url": `${track.thumbnail}`
 			}

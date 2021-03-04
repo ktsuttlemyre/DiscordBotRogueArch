@@ -54,9 +54,9 @@ class PlayCommand extends Command {
 		
 
 		if(!message.attachments){
-			await player.play(message, search, { firstResult: true });
+			await player.play(message, search, true, false); //{ firstResult: true });
 		}else{
-			await player.play(message, search, { isAttachment:true });
+			await player.play(message, search, false, true); //{ isAttachment:true });
 		}
 		//background playlist handle
 		if(player.backgroundPlaylist){
@@ -351,11 +351,11 @@ function init(message,player,announce){
 				player.setVolume(message, 50);
 				console.log('set volume and filter properly')
 				clearInterval(toID);
-				GUIMessages.nowPlaying(message,player,announce);
+				//GUIMessages.nowPlaying(message,player,announce);
 			})
 			player.init=true;
 		}else{
-			GUIMessages.nowPlaying(message,player,announce);
+			//GUIMessages.nowPlaying(message,player,announce);
 		}
 }
 module.exports = PlayCommand;

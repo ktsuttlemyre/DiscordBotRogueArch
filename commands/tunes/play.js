@@ -44,6 +44,9 @@ class PlayCommand extends Command {
 			}
 		}else{
 			player = this.client.memory.set(message.guild, 'player', createPlayer(message,this.client));
+			setImmediate(function(){
+				player.emit('trackAdd',message,player.queue,player.nowPlaying(message));
+			});
 			if(!search){
 				await playBackgroundPlaylist(message,player);
 				init(message,player)
@@ -63,9 +66,6 @@ class PlayCommand extends Command {
 			player.backgroundPlaylist=false;
 			await player.skip(message);
 		}
-		//player.emit('trackAdd',message,player.queue,player.nowPlaying(message));
-				
-
 	}
 }
 

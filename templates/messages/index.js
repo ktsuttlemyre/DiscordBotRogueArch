@@ -123,8 +123,9 @@ var nowPlayingOverloaded= async (message,player,announce) => {
 	var jumpToQueue=`[🡅](${permalink})`; //⮝🠉🠝🡅🡹🢁⏫
 	var nextSong=((queue.tracks[1])?`[${queue.tracks[1].title}](${queue.tracks[1].url})\n*Requested by:*`:'Add more songs!');
 	
+	var title = (track.title||'').replace(/\(\W*official\W*(music)?\W*video\W*\)/i,'🌟')
 	var embedJSON={
-	      "title": `> ${track.title}`,
+	      "title": `> ${title}`,
 	      //"description": `Author:${track.author}\n${track.description}`,
 	      //"description": `[${track.title}](${track.url})`,
 	      //"description": progressBar +` [⏫](${permalink})`,

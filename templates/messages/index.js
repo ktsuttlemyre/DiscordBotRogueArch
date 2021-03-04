@@ -17,7 +17,7 @@ const common = require.main.require('./common');
 
 var cache={}
 
-const = presentTitle = exports.presentTitle =function(string){
+const presentTitle = exports.presentTitle = function(string){
 	var after = (string||'').replace(/\(\W*official\W*(music)?\W*video\W*\)/i,'');
 	if(string.length != after.length){
 		return after+=' 🌟'

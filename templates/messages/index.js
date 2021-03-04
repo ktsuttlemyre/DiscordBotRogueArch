@@ -18,12 +18,14 @@ const common = require.main.require('./common');
 var cache={}
 
 const presentTitle = exports.presentTitle = function(string){
-	var after = (string||'').replace(/\(\W*official\W*(music)?\W*video\W*\)/i,'');
-	if(string.length != after.length){
-		return after+=' 🌟'
-	}else{
-		return string
-	}
+	// replace (official music video) || (official video)
+	var after = (string||'').replace(/[\[\(]\W*official\W*(music)?\W*video\W*[\)\]]/i,'');
+	string = (string.length != after.length)?after+' 🌟':after;
+	// replace (lyrics)
+	after = (string||'').replace(/[\[\(]\W*lyrics\W*[\)\]]/i,'');
+	string = (string.length != after.length)?after+' 💬':after;
+
+	return string
 }
 
 

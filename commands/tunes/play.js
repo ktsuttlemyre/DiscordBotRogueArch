@@ -63,7 +63,7 @@ class PlayCommand extends Command {
 			player.backgroundPlaylist=false;
 			await player.skip(message);
 		}
-		//player.emit('trackAdd',message,player.queue,player.queue.tracks[0])
+		player.emit('trackAdd',message,player.queue,player.nowPlaying(message));
 				
 
 	}

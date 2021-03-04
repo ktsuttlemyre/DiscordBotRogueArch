@@ -19,14 +19,11 @@ var cache={}
 
 const presentTitle = exports.presentTitle = function(string){
 	// replace (official music video) || (official video)
-	var after = (string||'').replace(/[\[\(]\W*official\W*(music)?\W*video\W*[\)\]]/i,'');
+	var after = (string||'').replace(/[\[\(]\W*(official)?\W*(music)?\W*video\W*(version)?\W*[\)\]]/i,'');
 	string = (string.length != after.length)?after+' 🌟':after;
 	// replace (lyrics)
-	after = (string||'').replace(/[\[\(]\W*lyrics\W*[\)\]]/i,'');
+	after = (string||'').replace(/[\[\(]\W*(with)?\W*lyrics\W*[\)\]]/i,'');
 	string = (string.length != after.length)?after+' 💬':after;
-	// replace (Video) (video version)
-	after = (string||'').replace(/[\[\(]\W*video\W*(version)?\W*[\)\]]/i,'');
-	string = (string.length != after.length)?after+'':after;
 
 	return string
 }

@@ -24,6 +24,9 @@ const presentTitle = exports.presentTitle = function(string){
 	// replace (lyrics)
 	after = (string||'').replace(/[\[\(]\W*lyrics\W*[\)\]]/i,'');
 	string = (string.length != after.length)?after+' 💬':after;
+	// replace (Video) (video version)
+	after = (string||'').replace(/[\[\(]\W*video\W*(version)?\W*[\)\]]/i,'');
+	string = (string.length != after.length)?after+'':after;
 
 	return string
 }

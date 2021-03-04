@@ -17,6 +17,16 @@ const common = require.main.require('./common');
 
 var cache={}
 
+exports.presentTitle=function(string){
+	var after = (string||'').replace(/\(\W*official\W*(music)?\W*video\W*\)/i,'');
+	if(string.length != after.length){
+		return after+=' 🌟'
+	}else{
+		return string
+	}
+}
+
+
 exports.nowPlaying= async (message,player,announce) => {
 	return await nowPlayingOverloaded(message,player,announce);
 }
@@ -123,7 +133,7 @@ var nowPlayingOverloaded= async (message,player,announce) => {
 	var jumpToQueue=`[🡅](${permalink})`; //⮝🠉🠝🡅🡹🢁⏫
 	var nextSong=((queue.tracks[1])?`[${queue.tracks[1].title}](${queue.tracks[1].url})\n*Requested by:*`:'Add more songs!');
 	
-	var title = (track.title||'').replace(/\(\W*official\W*(music)?\W*video\W*\)/i,'🌟')
+	var title = presentTitle(track.title)
 	var embedJSON={
 	      "title": `> ${title}`,
 	      //"description": `Author:${track.author}\n${track.description}`,

@@ -352,11 +352,11 @@ function init(message,player,announce){
 				player.setVolume(message, 50);
 				console.log('set volume and filter properly')
 				clearInterval(toID);
-				//GUIMessages.nowPlaying(message,player,announce);
+				GUIMessages.nowPlaying(message,player,announce);
 			})
 			player.init=true;
 		}else{
-			//GUIMessages.nowPlaying(message,player,announce);
+			GUIMessages.nowPlaying(message,player,announce);
 		}
 }
 module.exports = PlayCommand;

@@ -353,17 +353,15 @@ function init(message,player,callback){
 				clearInterval(toID);
 				if(callback && callback.call){
 					callback()
-				}else{
-					GUIMessages.nowPlaying(message,player,callback)
 				}
+				GUIMessages.nowPlaying(message,player,callback)
 			})
 			player.init=true;
 		}else{
 			if(callback && callback.call){
 				callback()
-			}else{
-				GUIMessages.nowPlaying(message,player,callback)
 			}
+			GUIMessages.nowPlaying(message,player,callback)
 		}
 }
 module.exports = PlayCommand;

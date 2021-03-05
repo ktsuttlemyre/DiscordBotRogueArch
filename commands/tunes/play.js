@@ -351,11 +351,11 @@ function init(message,player,callback){
 				player.setVolume(message, 50);
 				console.log('set volume and filter properly')
 				clearInterval(toID);
-				callback && ( (typeof callback=='function' && callback()) || GUIMessages.nowPlaying(message,player,callback) );
+				callback && ( (typeof callback=='function' && callback() && true) || GUIMessages.nowPlaying(message,player,callback) );
 			})
 			player.init=true;
 		}else{
-			callback && ( (typeof callback=='function' && callback()) || GUIMessages.nowPlaying(message,player,callback) );
+			callback && ( (typeof callback=='function' && callback() && true) || GUIMessages.nowPlaying(message,player,callback) );
 		}
 }
 module.exports = PlayCommand;

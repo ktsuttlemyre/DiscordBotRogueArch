@@ -358,10 +358,12 @@ function init(message,player,callback){
 			})
 			player.init=true;
 		}else{
-			if(callback && callback.call){
+			setTimeout(function(){
+				if(callback && callback.call){
 				callback()
-			}
-			GUIMessages.nowPlaying(message,player,callback)
+				}
+				GUIMessages.nowPlaying(message,player,callback)
+			},1)
 		}
 }
 module.exports = PlayCommand;

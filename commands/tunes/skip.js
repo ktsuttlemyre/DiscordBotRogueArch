@@ -8,7 +8,7 @@ var _ = require('lodash');
 
 //sound effects https://www.youtube.com/channel/UCok6P4rwxBMun9ghaIV4ufQ
 
-class PlayCommand extends Command {
+class CustomCommand extends Command {
 	constructor() {
 		super('skip', {
 		description: { content: 'skip'},
@@ -63,5 +63,5 @@ class PlayCommand extends Command {
 	}
 }
 
-module.exports = PlayCommand;
+module.exports = CustomCommand;
 

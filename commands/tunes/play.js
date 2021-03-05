@@ -349,7 +349,15 @@ function init(message,player,callback){
 				 normalizer: true
 				});
 				player.setVolume(message, 50);
-				console.log('set volume and filter properly')
+				console.log('set volume and filter properly');
+				
+				if(player.backgroundPlaylist){ //background list init
+					var track = player.nowPlaying(message)
+					if(track.durationMS>10*60*1000){ //if track is longer than 10 minutes then jump randomly to a location
+						player.seek(message,_.random(0,track.duration));
+					}
+				}
+
 				clearInterval(toID);
 				if(callback && callback.call){
 					callback()

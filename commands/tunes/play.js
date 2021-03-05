@@ -351,11 +351,19 @@ function init(message,player,callback){
 				player.setVolume(message, 50);
 				console.log('set volume and filter properly')
 				clearInterval(toID);
-				callback && ( (callback.call && callback() && true) || GUIMessages.nowPlaying(message,player,callback) );
+				if(callback && callback.call){
+					callback()
+				}else{
+					GUIMessages.nowPlaying(message,player,callback)
+				}
 			})
 			player.init=true;
 		}else{
-			callback && ( (callback.call && callback() && true) || GUIMessages.nowPlaying(message,player,callback) );
+			if(callback && callback.call){
+				callback()
+			}else{
+				GUIMessages.nowPlaying(message,player,callback)
+			}
 		}
 }
 module.exports = PlayCommand;

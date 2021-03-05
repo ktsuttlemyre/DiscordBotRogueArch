@@ -1,18 +1,29 @@
 const { Inhibitor } = require('discord-akairo');
 
-class BlacklistInhibitor extends Inhibitor {
+class CustomInhibitor extends Inhibitor {
     constructor() {
-        super('blacklist', {
+        super('environment', {
             reason: 'environment',
             type: 'all'
         });
     }
 
     exec(message) {
-        // Still a meanie!
-        const blacklist = ['81440962496172032'];
-        return blacklist.includes(message.author.id);
+        var devChannelID='814518995755335773';
+        
+        var env = process.env.ENVIRONMENT
+        if(env == 'production'){
+            if(message.channel.id === devChannelID){
+                return true;
+            }
+            return false;
+        }else{
+            if(message.channel.id === devChannelID){
+                return false
+            }
+            return true;
+        }
     }
 }
 
-module.exports = BlacklistInhibitor;
+module.exports = CustomInhibitor;

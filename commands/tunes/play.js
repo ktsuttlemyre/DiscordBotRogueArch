@@ -44,9 +44,6 @@ class PlayCommand extends Command {
 			}
 		}else{
 			player = this.client.memory.set(message.guild, 'player', createPlayer(message,this.client));
-			setImmediate(function(){
-				player.emit('trackAdd',message,player.queue,player.nowPlaying(message));
-			});
 			if(!search){
 				await playBackgroundPlaylist(message,player);
 				init(message,player)
@@ -152,7 +149,9 @@ function createPlayer(message,client){
 			GUIMessages.nowPlaying(message,player,"Skipping ${track.name} for reason:${track.skip}");
 		}
 
-		init(message,player)
+		init(message,player,function(){
+				player.emit('trackAdd',message,player.getQueue(message),player.nowPlaying(message));
+			})
 		
 				/*
 		//complidated init event to add volume and filters
@@ -191,7 +190,7 @@ function createPlayer(message,client){
 		//message.react(reactions.shipwash); //THIS should be handled elsewhere
 		message.delete();
 
-		var title = GUIMessages.presentTitle(track.title)
+		var title = GUIMessages.presentTitle(track.title);
 		var embed={
 			"author": {
 				"name": track.requestedBy.username,
@@ -337,7 +336,7 @@ function createPlayer(message,client){
 	})
 	return player
 }
-function init(message,player,announce){
+function init(message,player,callback){
 		if(!player.init){
 			var toID=setInterval(function(){
 				var queue=player.getQueue(message);
@@ -352,11 +351,11 @@ function init(message,player,announce){
 				player.setVolume(message, 50);
 				console.log('set volume and filter properly')
 				clearInterval(toID);
-				GUIMessages.nowPlaying(message,player,announce);
+				callback && ( (typeof callback=='function' && callback()) || GUIMessages.nowPlaying(message,player,callback)) );
 			})
 			player.init=true;
 		}else{
-			GUIMessages.nowPlaying(message,player,announce);
+			callback && ( (typeof callback=='function' && callback()) || GUIMessages.nowPlaying(message,player,callback)) );
 		}
 }
 module.exports = PlayCommand;

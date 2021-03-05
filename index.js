@@ -54,9 +54,13 @@ process.on('unhandledRejection', err => {
 	if(!memory){return}
         var player=memory.get(guild, 'player');
 	if(!player){return}
-        if(player.isPlaying(message)){
-          common.nowPlaying(message,null,'I have crashed or gone to sleep!')
-        }
+	var queues=memory.get(guild, 'queues')||[];
+	queues.forEach(function(queue){
+		var message = queue.firstMessage
+		if(player.isPlaying(message)){
+		  common.nowPlaying(message,null,'I have crashed or gone to sleep!')
+		}	
+	})
       }); //end iter guilds
       process.exit(err ? 1 : 0);
 

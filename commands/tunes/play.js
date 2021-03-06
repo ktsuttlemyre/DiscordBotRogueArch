@@ -45,6 +45,7 @@ class CustomCommand extends Command {
 		}else{
 			player = this.client.memory.set(message.guild, 'player', createPlayer(message,this.client));
 			if(!search){
+				init(message,player)
 				await playBackgroundPlaylist(message,player);
 				return
 			}
@@ -297,7 +298,6 @@ function createPlayer(message,client){
 		player.init=false
 		init(message,player,'Playing background music until I get a new request') //'Music stopped. There no more music in the queue!'
 		playBackgroundPlaylist(message,player)
-		
 	})
 	.on('channelEmpty',function(message, queue){
 		GUIMessages.nowPlaying(message,player,'I am alone in the voice channel. :frowning:');

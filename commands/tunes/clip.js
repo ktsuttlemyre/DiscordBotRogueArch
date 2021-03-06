@@ -49,6 +49,7 @@ class CustomCommand extends Command {
 		    try {
 		      var connection = await channel.join();
 		      const dispatcher = connection
+		        //.play(ytdl('https://www.youtube.com/watch?v=ZlAU_w7-Xp8', { quality: 'highestaudio', volume: 0.5}))
 			.play(`./sounds/${arg}.mp3`)
 			.on("finish", () => {
 			  //channel.leave();

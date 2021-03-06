@@ -367,14 +367,14 @@ function init(message,player,callback){
 				GUIMessages.nowPlaying(message,player,callback)
 			})
 			player.init=true;
-		}else{
-			setTimeout(function(){
-				if(callback && callback.call){
-					return callback();
-				}
-				GUIMessages.nowPlaying(message,player,callback)
-			},1);
+			return
 		}
+		setTimeout(function(){
+			if(callback && callback.call){
+				return callback();
+			}
+			GUIMessages.nowPlaying(message,player,callback)
+		},1);
 }
 module.exports = CustomCommand;
 

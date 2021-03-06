@@ -26,22 +26,22 @@ class CustomCommand extends Command {
 		});
 	}
 	
-	userPermissions(message) {
-		if (!message.member.roles.cache.some(role => role.name === 'DJ')) {
-			return 'DJ';
-		}
-		return null;
-	}
+// 	userPermissions(message) {
+// 		if (!message.member.roles.cache.some(role => role.name === 'DJ')) {
+// 			return 'DJ';
+// 		}
+// 		return null;
+// 	}
 
 	async exec(message) {
 		if (!message.member.voice.channel) return message.channel.send(`${emotes.error} - You're not in a voice channel !`);
 		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${emotes.error} - You are not in the same voice channel !`);
-		var player = this.client.memory.get(message.guild, 'player')
-		if(!player){
-			return message.channel.send('No player playing to act on')
-		}
+// 		var player = this.client.memory.get(message.guild, 'player')
+// 		if(!player){
+// 			return message.channel.send('No player playing to act on')
+// 		}
 				
-		const { channel } = message.member.voice;
+// 		const { channel } = message.member.voice;
 
 	    try {
 	      var connection = await channel.join();

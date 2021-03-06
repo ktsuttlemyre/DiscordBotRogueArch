@@ -10,9 +10,9 @@ var _ = require('lodash');
 
 class CustomCommand extends Command {
 	constructor() {
-		super('back', {
-		description: { content: 'back'},
-		aliases: ['back','previous'],
+		super('skip', {
+		description: { content: 'skip'},
+		aliases: ['skip','next'],
 		category: 'tunes',
 		clientPermissions: ['SEND_MESSAGES'],
 		args: [
@@ -40,11 +40,27 @@ class CustomCommand extends Command {
 		if(!player){
 			return message.channel.send('No player playing to act on')
 		}
+		
+		//ensure playing
+		var queue=player.getQueue(message);
+		if(queue && (queue.paused || queue.stopped)){
+			if(player.resume(message)){
+				await GUIMessages.nowPlaying(message,player,"Continuing where we left off "+common.randomMusicEmoji());
+			}else{
+				await GUIMessages.nowPlaying(message,player,"Error resuming queue");
+			}
+		}
+		
+
+		
+		var track = player.nowPlaying(message);
+		if(track){
+			await GUIMessages.nowPlaying(message,player,'Back to: '+track.title)
+		}else{
+			await GUIMessages.nowPlaying(message,player,'Back to: last track');
+		}
 		player.back(message);
-
-
 	}
 }
 
 module.exports = CustomCommand;
-

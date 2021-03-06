@@ -43,26 +43,25 @@ class CustomCommand extends Command {
 // 			return message.channel.send('No player playing to act on')
 // 		}
 				
- 		const { channel } = message.member.voice;
+ 	 	    const { channel } = message.member.voice;
+		    arg = arg.match(/(\<\@\!)?(\d+)(>)?/)[2]||arg
+		    arg = map[arg]||arg;
+		    try {
+		      var connection = await channel.join();
+		      const dispatcher = connection
+			.play(`./sounds/${arg}.mp3`)
+			.on("finish", () => {
+			  //channel.leave();
+			})
+			.on("error", err => {
+			  //channel.leave();
+			  console.error(err);
+			});
+		    } catch (error) {
+		      console.error(error);
+		    }
 
-	    console.log('arg=',arg)
-	    arg = map[arg]||arg;
-	    try {
-	      var connection = await channel.join();
-	      const dispatcher = connection
-	        .play(`./sounds/${arg}.mp3`)
-	        .on("finish", () => {
-	          //channel.leave();
-	        })
-	        .on("error", err => {
-	          //channel.leave();
-	          console.error(err);
-	        });
-	    } catch (error) {
-	      console.error(error);
-	    }
-
-	}
+		}
 }
 
 module.exports = CustomCommand;

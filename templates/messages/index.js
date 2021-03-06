@@ -136,9 +136,11 @@ var nowPlayingOverloaded= async (message,player,announce) => {
 	var jumpToQueue=`[🡅](${permalink})`; //⮝🠉🠝🡅🡹🢁⏫
 	var nextSong=((queue.tracks[1])?`[${queue.tracks[1].title}](${queue.tracks[1].url})\n*Requested by:*`:'Add more songs!');
 	
-	var title = presentTitle(track.title)
+	var title = presentTitle(track.title);
+	title = (title)?`> ${title}`:'Shiptunes';
+	
 	var embedJSON={
-	      "title": `> ${title}`,
+	      "title": title,
 	      //"description": `Author:${track.author}\n${track.description}`,
 	      //"description": `[${track.title}](${track.url})`,
 	      //"description": progressBar +` [⏫](${permalink})`,
@@ -216,7 +218,7 @@ var nowPlayingOverloaded= async (message,player,announce) => {
 		//},
 	}
 	
-	if(track.requestedBy){
+	if(!player.backgroundPlaylist && track.requestedBy){
 	   embedJSON.author = {
 	        "name": `${track.requestedBy.username} is playing`,
 	        "url": 'https://shiptunes.shipwa.sh/'+track.requestedBy.id,

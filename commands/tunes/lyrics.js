@@ -60,9 +60,9 @@ class CustomCommand extends Command {
     const title = track.title;
     try {
       lyrics = await lyricsFinder(title, "");
-      if (!lyrics) lyrics = i18n.__mf("lyrics.lyricsNotFound", { title: title });
+      if (!lyrics)  lyrics = message.channel.send("lyrics NotFound "+  title );
     } catch (error) {
-      lyrics = i18n.__mf("lyrics.lyricsNotFound", { title: title });
+      lyrics = message.channel.send("lyrics NotFound "+  title );
     }
 
     let lyricsEmbed = new MessageEmbed()

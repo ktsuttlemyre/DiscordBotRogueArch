@@ -5,6 +5,8 @@ const emotes={error:":error:"}
 const {reactions,defaultAvatar} = require.main.require('./common');
 const common = require.main.require('./common');
 var _ = require('lodash');
+var map = require('./sounds')
+
 
 //sound effects https://www.youtube.com/channel/UCok6P4rwxBMun9ghaIV4ufQ
 
@@ -43,15 +45,17 @@ class CustomCommand extends Command {
 				
  		const { channel } = message.member.voice;
 
+	    console.log('arg=',arg)
+	    arg = map[arg]||arg;
 	    try {
 	      var connection = await channel.join();
 	      const dispatcher = connection
 	        .play(`./sounds/${arg}.mp3`)
 	        .on("finish", () => {
-	          channel.leave();
+	          //channel.leave();
 	        })
 	        .on("error", err => {
-	          channel.leave();
+	          //channel.leave();
 	          console.error(err);
 	        });
 	    } catch (error) {

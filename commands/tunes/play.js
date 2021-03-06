@@ -150,8 +150,10 @@ function createPlayer(message,client){
 		}
 
 		init(message,player,function(){
+			if(!player.backgroundPlaylist){
 				player.emit('trackAdd',message,player.getQueue(message),player.nowPlaying(message));
-			})
+			}
+		})
 		
 				/*
 		//complidated init event to add volume and filters

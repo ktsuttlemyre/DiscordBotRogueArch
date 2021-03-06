@@ -5,7 +5,7 @@ const emotes={error:":error:"}
 const {reactions,defaultAvatar} = require.main.require('./common');
 const common = require.main.require('./common');
 var _ = require('lodash');
-var map = require('./sounds')
+var map = require.main.require('./sounds')
 
 
 //sound effects https://www.youtube.com/channel/UCok6P4rwxBMun9ghaIV4ufQ

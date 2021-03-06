@@ -10,9 +10,9 @@ var _ = require('lodash');
 
 class CustomCommand extends Command {
 	constructor() {
-		super('skip', {
-		description: { content: 'skip'},
-		aliases: ['skip','next'],
+		super('back', {
+		description: { content: 'back'},
+		aliases: ['back'],
 		category: 'tunes',
 		clientPermissions: ['SEND_MESSAGES'],
 		args: [

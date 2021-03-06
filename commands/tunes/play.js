@@ -360,7 +360,7 @@ function init(message,player,callback){
 
 				clearInterval(toID);
 				if(callback && callback.call){
-					callback()
+					return callback();
 				}
 				GUIMessages.nowPlaying(message,player,callback)
 			})
@@ -368,10 +368,10 @@ function init(message,player,callback){
 		}else{
 			setTimeout(function(){
 				if(callback && callback.call){
-				callback()
+					return callback();
 				}
 				GUIMessages.nowPlaying(message,player,callback)
-			},1)
+			},1);
 		}
 }
 module.exports = CustomCommand;

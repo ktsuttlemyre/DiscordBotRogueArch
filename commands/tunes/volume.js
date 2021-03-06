@@ -18,10 +18,10 @@ class CustomCommand extends Command {
 		args: [
 			{
 				id: 'volume',
-				default: 50,
+				default: '',
 				match: 'number',
 			},
-			],
+		],
 		channelRestriction: 'guild', 
 		});
 	}
@@ -33,17 +33,33 @@ class CustomCommand extends Command {
 		return null;
 	}
 
-	async exec(message, {volume}) {
+	async exec(message, {volume} ) {
 		if (!message.member.voice.channel) return message.channel.send(`${emotes.error} - You're not in a voice channel !`);
 		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${emotes.error} - You are not in the same voice channel !`);
 		var player = this.client.memory.get(message.guild, 'player')
 		if(!player){
-			return message.channel.send('No player playing to pause')
+			return message.channel.send('No player playing to act on')
+		}
+		
+		//ensure playing
+		var queue=player.getQueue(message);
+		if(queue && (queue.paused || queue.stopped)){
+			if(player.resume(message)){
+				await GUIMessages.nowPlaying(message,player,"Continuing where we left off "+common.randomMusicEmoji());
+			}else{
+				await GUIMessages.nowPlaying(message,player,"Error resuming queue");
+			}
+		}
+		
+
+		
+		var track = player.nowPlaying(message);
+		if(track){
+			await GUIMessages.nowPlaying(message,player,'Skipped: '+track.title)
+		}else{
+			await GUIMessages.nowPlaying(message,player,'Skipped: last track');
 		}
 		player.volume(message,volume);
-    GUIMessages.nowPlaying(message,player,'volume set to'+volume)
-
-
 	}
 }
 

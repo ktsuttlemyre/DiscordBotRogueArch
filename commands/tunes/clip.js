@@ -16,11 +16,11 @@ class CustomCommand extends Command {
 		category: 'tunes',
 		clientPermissions: ['SEND_MESSAGES'],
 		args: [
-			// {
-			// 	id: 'search',
-			// 	default: '',
-			// 	match: 'content',
-			// },
+			{
+				id: 'arg',
+				default: '',
+				match: 'content',
+			},
 			],
 		channelRestriction: 'guild', 
 		});
@@ -33,7 +33,7 @@ class CustomCommand extends Command {
 // 		return null;
 // 	}
 
-	async exec(message) {
+	async exec(message, {arg}) {
 		if (!message.member.voice.channel) return message.channel.send(`${emotes.error} - You're not in a voice channel !`);
 		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${emotes.error} - You are not in the same voice channel !`);
 // 		var player = this.client.memory.get(message.guild, 'player')
@@ -41,12 +41,12 @@ class CustomCommand extends Command {
 // 			return message.channel.send('No player playing to act on')
 // 		}
 				
-// 		const { channel } = message.member.voice;
+ 		const { channel } = message.member.voice;
 
 	    try {
 	      var connection = await channel.join();
 	      const dispatcher = connection
-	        .play(`./sounds/${args[0]}.mp3`)
+	        .play(`./sounds/${arg}.mp3`)
 	        .on("finish", () => {
 	          channel.leave();
 	        })

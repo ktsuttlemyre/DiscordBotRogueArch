@@ -44,8 +44,11 @@ class CustomCommand extends Command {
 // 		}
 				
  	 	    const { channel } = message.member.voice;
-		    arg = arg.match(/(\<\@\!)?(\d+)(>)?/)[2]||arg
+		    console.log('arg',arg)
+		    arg = (arg||'').match(/(\<\@\!)?(\d+)(>)?/)[2]||arg;
+		    console.log('arg after match',arg);
 		    arg = map[arg]||arg;
+	            console.log('arg after map',arg)
 		    try {
 		      var connection = await channel.join();
 		      const dispatcher = connection

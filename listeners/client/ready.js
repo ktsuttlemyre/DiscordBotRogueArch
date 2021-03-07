@@ -19,19 +19,19 @@ class ReadyListener extends Listener {
 		
 		const Guild = client.guilds.cache.forEach(function(Guild){ //.get("690661623831986266"); // Getting the guild.
 			let voiceChannels = Guild.channels.cache.filter(c => c.type == 'voice').array();
-				voiceChannels.forEach(function(channel){
-					if(channel.id === Guild.afkChannelID){
-						return false
+			voiceChannels.forEach(function(channel){
+				if(channel.id === Guild.afkChannelID){
+					return false
+				}
+				channel.members.forEach(function(member){
+					if(member.user.bot){
+						return false;
 					}
-					channel.members.forEach(function(member){
-						if(member.user.bot){
-							return false;
-						}
-						// The member is connected to a voice channel.
-						this.client.emit('voiceStateUpdate',member.voice,member.voice);
-					})
-				}); //end some
-			}
+					// The member is connected to a voice channel.
+					this.client.emit('voiceStateUpdate',member.voice,member.voice);
+				})
+			}); //end some
+			
 
 			//read all previous commands
 			let textchannels = Guild.channels.cache.filter(c => c.type == 'text').array();

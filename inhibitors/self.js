@@ -9,7 +9,10 @@ class CustomInhibitor extends Inhibitor {
     }
 
     exec(message) {
-        return message.guild.me.id == message.member.id
+        var me = message.guild.me;
+        if(me && me.id){
+            return me.id == message.member.id
+        }
     }
 }
 

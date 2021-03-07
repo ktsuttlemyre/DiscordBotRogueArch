@@ -10,10 +10,11 @@ class ReadyListener extends Listener {
 	}
 
 	async exec() {
+		var client = this.client;
 		// Log that the bot is online.
-		this.client.logger.info(`${this.client.user.tag}, ready to serve ${this.client.users.size} users in ${this.client.guilds.size} servers.`, 'ready');
+		client.logger.info(`${client.user.tag}, ready to serve ${client.users.size} users in ${client.guilds.size} servers.`, 'ready');
 		// Set the bot status
-		this.client.user.setActivity(process.env.ACTIVITY||'Type '+this.client.commandHandler.prefix+'help to get started', { type: 'PLAYING' });
+		client.user.setActivity(process.env.ACTIVITY||'Type '+client.commandHandler.prefix+'help to get started', { type: 'PLAYING' });
 		//trigger listeners
 		
 		
@@ -28,7 +29,7 @@ class ReadyListener extends Listener {
 						return false;
 					}
 					// The member is connected to a voice channel.
-					this.client.emit('voiceStateUpdate',member.voice,member.voice);
+					client.emit('voiceStateUpdate',member.voice,member.voice);
 				}) //end members
 			}); //end voicechannels
 			

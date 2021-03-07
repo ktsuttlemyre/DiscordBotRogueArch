@@ -20,7 +20,7 @@ var cache={}
 const presentTitle = exports.presentTitle = function(string){
 	string=string||''
 	// replace (official music video) || (official video)
-	var after = string.replace(/[\[\(]\W*(official)?\W*(music)?\W*video\W*(version)?\W*[\)\]]/i,'');
+	var after = string.replace(/[\[\(]\W*(official)?\W*(music)?\W*(video|audio)\W*(version)?\W*[\)\]]/i,'');
 	string = (string.length != after.length)?after+' 🌟':after;
 	// replace (lyrics)
 	after = string.replace(/[\[\(]\W*(with)?\W*lyrics\W*[\)\]]/i,'');

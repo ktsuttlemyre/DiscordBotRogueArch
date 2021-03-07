@@ -77,6 +77,9 @@ process.on('unhandledRejection', err => {
 				});
 		}
       }); //end iter guilds
+      if(signal == 'SIGTERM'){
+	      return process.exit(0);
+      }
       process.exit(err ? 1 : 0);
 
     };

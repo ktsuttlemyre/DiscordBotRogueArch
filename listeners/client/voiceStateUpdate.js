@@ -22,7 +22,7 @@ class ReadyListener extends Listener {
 		if(muteChanged){
 			let channel = newstate.channel;
 			channel.members.forEach(function(member){
-				if(member.id == thisMember.id){continue}
+				if(member.id == thisMember.id){return}
 				member.setMute(muted)
 			}); //end members
 

@@ -29,15 +29,15 @@ class ReadyListener extends Listener {
 					}
 					// The member is connected to a voice channel.
 					this.client.emit('voiceStateUpdate',member.voice,member.voice);
-				})
-			}); //end some
+				}) //end members
+			}); //end voicechannels
 			
 
 			//read all previous commands
 			let textchannels = Guild.channels.cache.filter(c => c.type == 'text').array();
 			textChannels.forEach(function(channel){
 				if(!(channel.permissionsFor(Guild.me).has("VIEW_CHANNEL"))){
-					continue;
+					return;
 				}
 				
 // 				var p=channel.messages.fetch()
@@ -52,7 +52,7 @@ class ReadyListener extends Listener {
 // 				    })
 // 				})
 // 				.catch(console.error);
-			})
+			}) //end textchannels
 
 
 

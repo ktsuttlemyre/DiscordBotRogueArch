@@ -11,7 +11,7 @@ class CustomInhibitor extends Inhibitor {
     exec(message) {
         var member = message.member;
         if(member && member.user && member.user.bot){
-            return true
+            return true;
         }
         return false;
     }

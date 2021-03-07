@@ -46,6 +46,7 @@ process.on('unhandledRejection', err => {
 	// do cleanup
 	client.guilds.cache.forEach(function(guild){ //iter guilds
 		switch(signal){
+			case 'SIGTERM': //heroku sends sigterm for restarting dynos and sleep
 			case 'SIGINT':
 				guild.members.cache.some(function(member){ //iter members
 					if(member.user.bot){ //ignore bots
@@ -61,7 +62,7 @@ process.on('unhandledRejection', err => {
 						member.voice.setDeaf(false); //undefen
 					}
 				}); //end iter members
-			case 'SIGTERM': //heroku sends sigterm for restarting dynos
+			
 			default:
 				var memory=client.memory
 				if(!memory){return}

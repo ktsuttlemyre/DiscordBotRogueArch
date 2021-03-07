@@ -35,7 +35,7 @@ class ReadyListener extends Listener {
 			
 
 			//read all previous commands
-			let textchannels = Guild.channels.cache.filter(c => c.type == 'text').array();
+			let textChannels = Guild.channels.cache.filter(c => c.type == 'text').array();
 			textChannels.forEach(function(channel){
 				if(!(channel.permissionsFor(Guild.me).has("VIEW_CHANNEL"))){
 					return;

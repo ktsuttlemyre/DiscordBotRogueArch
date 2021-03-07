@@ -361,19 +361,19 @@ function init(message,player,callback){
 				}
 
 				clearInterval(toID);
-				if(callback && callback.call){
-					return callback();
+				if(callback){
+					return callback.call)?callback();GUIMessages.nowPlaying(message,player,callback)
 				}
-				GUIMessages.nowPlaying(message,player,callback)
+				GUIMessages.nowPlaying(message,player)
 			})
 			player.init=true;
 			return
 		}
 		setTimeout(function(){
-			if(callback && callback.call){
-				return callback();
+			if(callback){
+				return callback.call)?callback();GUIMessages.nowPlaying(message,player,callback)
 			}
-			GUIMessages.nowPlaying(message,player,callback)
+			GUIMessages.nowPlaying(message,player)
 		},1);
 }
 module.exports = CustomCommand;

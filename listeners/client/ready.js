@@ -1,4 +1,5 @@
 const { Listener } = require('discord-akairo');
+const {reactions,defaultAvatar} = require.main.require('./common');
 
 class ReadyListener extends Listener {
 	constructor() {
@@ -42,18 +43,17 @@ class ReadyListener extends Listener {
 					return;
 				}
 				
-// 				var p=channel.messages.fetch()
-// 				.then(function(messages){
-// 				    messages.forEach(function(message){
-// 				      if(message.author.bot){
-// 					return
-// 				      }
-// 				      if((Date.now() - message.createdAt) < ttl) { //is user active in the last 30 minutes?
-// 					 keepAlive('Last message to guild was <'+ttlm+' minutes in channel['+channel.name+'] from user['+ message.author.username+']');
-// 				      }
-// 				    })
-// 				})
-// 				.catch(console.error);
+				var p=channel.messages.fetch()
+				.then(function(messages){
+					messages.forEach(function(message){
+						if(message.author.bot){
+							return
+						}
+						var users = await getReactedUsers(message,reactions.shipwash);
+						console.log(message.id,message.content,'reacted with shipwash',users);
+					}) //end messages
+				}) //end then
+				.catch(console.error);
 			}) //end textchannels
 
 
@@ -71,8 +71,14 @@ class ReadyListener extends Listener {
 // 				}	
  			}); //end guilds
 
-	} //end exc
+	} //end exec
 
+}
+
+var getReactedUsers = async(msg, emoji) => {
+    msg.reactions.resolve(emoji).users.fetch().then(userList => {
+	return userList.map((user) => user.id)
+    });
 }
 
 module.exports = ReadyListener;

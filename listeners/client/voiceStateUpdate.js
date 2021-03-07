@@ -21,7 +21,7 @@ class ReadyListener extends Listener {
 	    var guild = newstate.guild;
 
 	    if(muteChanged){
-		let channel = user.voiceChannel;
+		let channel = newstate.channel;
 		for (var i=0,l=channel.members.length;i<l;i++) {
 			var member = channel.members[i];
 			if(member.id == user.id){continue}

@@ -51,7 +51,7 @@ function keepAlive(string){
 
 //wake handler
 function wakeHandler(client){
-  const Guild = client.guilds.cache.forEach(function(Guild){ //.get("690661623831986266"); // Getting the guild.
+  const Guild = client.guilds.cache.some(function(Guild){ //.get("690661623831986266"); // Getting the guild.
   //   const owners = ['500468522468507648','500467960914116609']; // Getting shipwash
   //   for(var i=0,l=owners.length;i<l;i++){
   //     //check user activity status
@@ -61,32 +61,39 @@ function wakeHandler(client){
   //       return true
   //     }
   //   }
-
-    Guild.members.cache.some(function(member){
-      if(member.user.bot){
-        return false;
+    
+    
+    //iterate members
+    //Guild.members.cache.some(function(member){
+    //})
+    
+    //iterate voice channels
+    let voiceChannels = Guild.channels.cache.filter(c => c.type == 'voice').array();
+    var stayAwake = voiceChannels.some(function(channel){
+      if(channel.id === Guild.afkChannelID){
+        return false
       }
-      // Checking if the member is connected to a VoiceChannel.
-      if (member.voice.channel && member.voice.channel.id !== Guild.afkChannelID && member.voice.guild.id == Guild.id) { 
-          // The member is connected to a voice channel.
-          // https://discord.js.org/#/docs/main/stable/class/VoiceState
-          keepAlive(member.displayName+' is in '+member.voice.channel.name+' voice channel');
-          return true
-          //console.log(`${member.user.tag} is connected to ${member.voice.channel.name}!`);
-      } //else {
-          // The member is not connected to a voice channel.
-        //  console.log(`${member.user.tag} is not connected.`);
-      //};
-
-
+      return channel.members.some(function(member){
+        if(member.user.bot){
+          return false;
+        }
+        // The member is connected to a voice channel.
+        // https://discord.js.org/#/docs/main/stable/class/VoiceState
+        keepAlive(member.displayName+' is in '+member.voice.channel.name+' voice channel');
+        return true
+      })
     }); //end some
+    if(stayAwake){
+      return true
+    }
 
     //see if theres a message in a text channel that is less than 30 minutes old
     var ttlm=20;
     var ttl=ttlm*60*1000;
-    let channels = Guild.channels.cache.filter(c => c.type == 'text').array();
+    let textChannels = Guild.channels.cache.filter(c => c.type == 'text').array();
+    
     var promises=[]
-    for (let channel of channels) {
+    for (let channel of textChannels) {
       if(!(channel.permissionsFor(Guild.me).has("VIEW_CHANNEL"))){
         continue;
       }

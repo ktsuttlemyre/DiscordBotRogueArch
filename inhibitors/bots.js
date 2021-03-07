@@ -9,7 +9,11 @@ class CustomInhibitor extends Inhibitor {
     }
 
     exec(message) {
-        return message.member.bot;
+        var member = message.member;
+        if(member && member.user && member.user.bot){
+            return true
+        }
+        return false;
     }
 }
 

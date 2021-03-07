@@ -49,8 +49,10 @@ class ReadyListener extends Listener {
 						if(message.author.bot){
 							return
 						}
-						var users = await getReactedUsers(message,reactions.shipwash);
-						console.log(message.id,message.content,'reacted with shipwash',users);
+						getReactedUsers(message,reactions.shipwash,function(users){
+							console.log(message.id,message.content,'reacted with shipwash',users);
+						});
+						
 					}) //end messages
 				}) //end then
 				.catch(console.error);
@@ -75,9 +77,9 @@ class ReadyListener extends Listener {
 
 }
 
-var getReactedUsers = async(msg, emoji) => {
+function getReactedUsers(msg, emoji,callback) {
     msg.reactions.resolve(emoji).users.fetch().then(userList => {
-	return userList.map((user) => user.id)
+	callback(userList.map((user) => user.id))
     });
 }
 

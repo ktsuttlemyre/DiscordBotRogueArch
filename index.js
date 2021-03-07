@@ -51,7 +51,7 @@ process.on('unhandledRejection', err => {
 	// do cleanup
 	client.guilds.cache.forEach(function(guild){ //iter guilds
 		switch(signal){
-			case 'SIGINT:
+			case 'SIGINT':
 				guild.members.cache.some(function(member){ //iter members
 					if(member.user.bot){ //ignore bots
 						return false;

@@ -10,29 +10,26 @@ class ReadyListener extends Listener {
 	}
 
 	async exec( oldstate, newstate ) {
-    
-    
-		var user = newstate.member;
-		if(user.bot){
+		var thisMember = newstate.member;
+		if(thisMember.user.bot){
 			return
 		}
+		var guild = newstate.guild;
+		
+		//mute handler
 		var muteChanged = oldstate.selfMute!=newstate.selfMute
 		var muted= newstate.selfMute;
-
-		var roomChanged = oldstate.channelID != newstate.channelID
-
-		var guild = newstate.guild;
-
 		if(muteChanged){
 			let channel = newstate.channel;
-			for (var i=0,l=channel.members.length;i<l;i++) {
-				var member = channel.members[i];
-				if(member.id == user.id){continue}
+			channel.members.forEach(function(member){
+				if(member.id == thisMember.id){continue}
 				member.setMute(muted)
-			}
+			}); //end members
 
 		}
 
+		// voice-text-channel-link
+		var roomChanged = oldstate.channelID != newstate.channelID
 		var channelMap={
 			//general: shiptunes
 			'799879532856475648':'805549728099860480',
@@ -40,7 +37,6 @@ class ReadyListener extends Listener {
 			'690661623831986270':'800007831251189821',
 		}
 		
-
 		if(oldstate.channelID !== newstate.channelID){ //if they actually left a channel because the id changed
 			var textChannelID=channelMap[oldstate.channelID];
 			var textChannel=guild.channels.cache.get(textChannelID);
@@ -48,7 +44,7 @@ class ReadyListener extends Listener {
 				var permissions= textChannel.permissionsFor(guild.me)
 				if(permissions.has('MANAGE_CHANNELS')){
 					//leave private rooms
-					textChannel.updateOverwrite(user, {
+					textChannel.updateOverwrite(thisMember, {
 					    //SEND_MESSAGES: false,
 					    VIEW_CHANNEL: false
 					});
@@ -63,7 +59,7 @@ class ReadyListener extends Listener {
 		if(textChannel){
 			var permissions= textChannel.permissionsFor(guild.me)
 			if(permissions.has('MANAGE_CHANNELS')){
-				textChannel.updateOverwrite(user, {
+				textChannel.updateOverwrite(thisMember, {
 				    //SEND_MESSAGES: false,
 				    VIEW_CHANNEL: true
 				});

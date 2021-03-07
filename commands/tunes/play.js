@@ -366,7 +366,7 @@ function init(message,player,callback){
 
 				clearInterval(toID);
 				if(callback){
-					return (callback.call)?callback();GUIMessages.nowPlaying(message,player,callback)
+					return (callback.call)?callback():GUIMessages.nowPlaying(message,player,callback)
 				}
 				GUIMessages.nowPlaying(message,player)
 			})
@@ -375,7 +375,7 @@ function init(message,player,callback){
 		}
 		setTimeout(function(){
 			if(callback){
-				return (callback.call)?callback();GUIMessages.nowPlaying(message,player,callback)
+				return (callback.call)?callback():GUIMessages.nowPlaying(message,player,callback)
 			}
 			GUIMessages.nowPlaying(message,player)
 		},1);

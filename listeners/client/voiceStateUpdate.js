@@ -13,6 +13,9 @@ class ReadyListener extends Listener {
     
     
 	    var user = newstate.member;
+	    if(user.bot){
+		    return
+	    }
 	    var muteChanged = oldstate.selfMute!=newstate.selfMute
 	    var muted= newstate.selfMute;
 

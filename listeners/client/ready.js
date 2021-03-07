@@ -29,6 +29,7 @@ class ReadyListener extends Listener {
 						return false;
 					}
 					// The member is connected to a voice channel.
+					console.log('user in voice, triggering voicestateupdate for ',member);
 					client.emit('voiceStateUpdate',member.voice,member.voice);
 				}) //end members
 			}); //end voicechannels

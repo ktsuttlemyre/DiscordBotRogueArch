@@ -12,8 +12,8 @@ class PlayCommand extends Command {
 	constructor() {
 		super('kill', {
 		description: { content: 'kill'},
-		aliases: ['kill','reboot'],
-		category: 'tunes',
+		aliases: ['kill'],
+		category: 'general',
 		clientPermissions: ['SEND_MESSAGES'],
 		args: [
 			// {

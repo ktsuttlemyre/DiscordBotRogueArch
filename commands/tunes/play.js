@@ -149,15 +149,15 @@ function createPlayer(message,client){
 			GUIMessages.nowPlaying(message,player,"Skipping ${track.name} for reason:${track.skip}");
 		}
 
-		if(player.init){
+		
 			init(message,player,function(){
 				if(!player.backgroundPlaylist){
 					player.emit('trackAdd',message,player.getQueue(message),player.nowPlaying(message));
 				}
 			})
-		}else{
+		
 			GUIMessages.nowPlaying(message,player)
-		}
+		
 		
 				/*
 		//complidated init event to add volume and filters

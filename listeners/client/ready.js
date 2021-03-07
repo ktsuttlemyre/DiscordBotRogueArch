@@ -67,9 +67,10 @@ class ReadyListener extends Listener {
 // 				if(player.isPlaying(message)){
 // 				  common.nowPlaying(message,null,'I have crashed or gone to sleep!')
 // 				}	
-// 			});
+ 			}); //end guilds
 
-	}
+	} //end exc
+
 }
 
 module.exports = ReadyListener;

@@ -13,7 +13,7 @@ class ReadyListener extends Listener {
 	// Log that the bot is online.
 		this.client.logger.info(`${this.client.user.tag}, ready to serve ${this.client.users.size} users in ${this.client.guilds.size} servers.`, 'ready');
 		// Set the bot status
-		this.client.user.setActivity('Akiro Boilerplate v1.0.0', { type: 'PLAYING' });
+		this.client.user.setActivity(process.env.ACTIVITY||'Type '+this.client.commandHandler.prefix+'help to get started', { type: 'PLAYING' });
 	}
 }
 

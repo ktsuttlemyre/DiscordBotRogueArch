@@ -38,15 +38,10 @@ process.on('unhandledRejection', err => {
   .on('uncaughtException', shutdown('uncaughtException'));
   function shutdown(signal) {
     return (err) => {
-	console.log(`Shutting down with signal: ${ signal }\n\t error: `);
+	console.log(`Shutting down with signal: ${ signal }`);
 	if (err){
-	console.error(err.stack || err);
+		console.error('Error:',err.stack || err);
 	}
-
-	if(signal == 'SIGTERM'){ //assume restart
-	      return
-	}
-	//other signals assume sleep
 
 	// do cleanup
 	client.guilds.cache.forEach(function(guild){ //iter guilds

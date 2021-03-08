@@ -17,16 +17,16 @@ class ReadyListener extends Listener {
 		var guild = newstate.guild;
 		
 		//mute handler
-		var muteChanged = oldstate.selfMute!=newstate.selfMute
-		var muted= newstate.selfMute;
-		if(muteChanged){
-			let channel = newstate.channel;
-			channel.members.forEach(function(member){
-				if(member.id == thisMember.id){return}
-				member.setMute(muted)
-			}); //end members
+// 		var muteChanged = oldstate.selfMute!=newstate.selfMute
+// 		var muted= newstate.selfMute;
+// 		if(muteChanged){
+// 			let channel = newstate.channel;
+// 			channel.members.forEach(function(member){
+// 				if(member.id == thisMember.id){return}
+// 				member.voice.setMute(muted);
+// 			}); //end members
 
-		}
+// 		}
 
 		// voice-text-channel-link
 		var roomChanged = oldstate.channelID != newstate.channelID

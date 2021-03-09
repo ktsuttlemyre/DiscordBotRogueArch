@@ -25,7 +25,8 @@ class ReadyListener extends Listener {
 				if(channel.id === Guild.afkChannelID){
 					return false
 				}
-				channel.members.forEach(function(member){
+				Guild.members.cache.forEach(function(member){
+				//channel.members.forEach(function(member){
 					if(member.user.bot){
 						return false;
 					}

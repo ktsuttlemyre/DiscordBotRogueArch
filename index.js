@@ -66,9 +66,9 @@ process.on('unhandledRejection', err => {
 			default:
 				var memory=client.memory
 				if(!memory){return}
-				var player=memory.get(guild, 'player');
+				var player=memory.get({guild}, 'player');
 				if(!player){return}
-				var queues=memory.get(guild, 'queues')||[];
+				var queues=memory.get({guild}, 'queues')||[];
 				queues.forEach(function(queue){
 					var message = queue.firstMessage
 					if(player.isPlaying(message)){

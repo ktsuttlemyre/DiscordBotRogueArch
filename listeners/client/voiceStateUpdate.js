@@ -10,31 +10,15 @@ class ReadyListener extends Listener {
 	}
 
 	async exec( oldstate, newstate ) {
-		var thisMember = newstate.member;
+		let thisMember = newstate.member;
 		if(thisMember.user.bot){
 			return
 		}
-		var guild = newstate.guild;
+		let guild = newstate.guild;
 		
-		
-		var amongusMode = this.client.memory.channelGet(newstate, 'amongusMode');
-		//mute handler
-		if(amongusMode){
-			var muteChanged = oldstate.selfMute!=newstate.selfMute
-			var muted= newstate.selfMute;
-			if(muteChanged){
-				let channel = newstate.channel;
-				channel.members.forEach(function(member){
-					if(member.id == thisMember.id){return}
-					member.voice.setMute(muted);
-				}); //end members
-
-			}
-		}
-
 		// voice-text-channel-link
-		var roomChanged = oldstate.channelID != newstate.channelID
-		var channelMap={
+		let roomChanged = oldstate.channelID != newstate.channelID
+		let channelMap={
 			//general: shiptunes
 			'799879532856475648':'805549728099860480',
 			//social groovy
@@ -42,10 +26,10 @@ class ReadyListener extends Listener {
 		}
 		
 		if(oldstate.channelID !== newstate.channelID){ //if they actually left a channel because the id changed
-			var textChannelID=channelMap[oldstate.channelID];
-			var textChannel=guild.channels.cache.get(textChannelID);
+			let textChannelID=channelMap[oldstate.channelID];
+			let textChannel=guild.channels.cache.get(textChannelID);
 			if(textChannel){
-				var permissions= textChannel.permissionsFor(guild.me)
+				let permissions= textChannel.permissionsFor(guild.me)
 				if(permissions.has('MANAGE_CHANNELS')){
 					//leave private rooms
 					textChannel.updateOverwrite(thisMember, {
@@ -61,7 +45,7 @@ class ReadyListener extends Listener {
 		textChannelID=channelMap[newstate.channelID];
 		textChannel=guild.channels.cache.get(textChannelID);
 		if(textChannel){
-			var permissions= textChannel.permissionsFor(guild.me)
+			let permissions= textChannel.permissionsFor(guild.me)
 			if(permissions.has('MANAGE_CHANNELS')){
 				textChannel.updateOverwrite(thisMember, {
 				    //SEND_MESSAGES: false,
@@ -69,6 +53,22 @@ class ReadyListener extends Listener {
 				});
 			}else{
 				console.log('bot does not have permission to change permissions in '+textChannelID)
+			}
+		}
+		
+		
+		let amongusMode = this.client.memory.channelGet(newstate, 'amongusMode');
+		//mute handler
+		if(amongusMode){
+			let muteChanged = oldstate.selfMute!=newstate.selfMute
+			let muted= newstate.selfMute;
+			if(muteChanged){
+				let channel = newstate.channel;
+				channel.members.forEach(function(member){
+					if(member.id == thisMember.id){return}
+					member.voice.setMute(muted);
+				}); //end members
+
 			}
 		}
 	    

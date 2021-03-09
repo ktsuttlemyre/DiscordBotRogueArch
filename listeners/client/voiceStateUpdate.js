@@ -16,17 +16,21 @@ class ReadyListener extends Listener {
 		}
 		var guild = newstate.guild;
 		
+		
+		var amongusMode = this.client.memory.get(message.guild, 'amongusMode');
 		//mute handler
-// 		var muteChanged = oldstate.selfMute!=newstate.selfMute
-// 		var muted= newstate.selfMute;
-// 		if(muteChanged){
-// 			let channel = newstate.channel;
-// 			channel.members.forEach(function(member){
-// 				if(member.id == thisMember.id){return}
-// 				member.voice.setMute(muted);
-// 			}); //end members
+		if(amongusMode){
+			var muteChanged = oldstate.selfMute!=newstate.selfMute
+			var muted= newstate.selfMute;
+			if(muteChanged){
+				let channel = newstate.channel;
+				channel.members.forEach(function(member){
+					if(member.id == thisMember.id){return}
+					member.voice.setMute(muted);
+				}); //end members
 
-// 		}
+			}
+		}
 
 		// voice-text-channel-link
 		var roomChanged = oldstate.channelID != newstate.channelID

@@ -1,5 +1,6 @@
 const { Listener } = require('discord-akairo');
 const {reactions,defaultAvatar} = require.main.require('./common');
+const config = require.main.require('./config')
 
 class ReadyListener extends Listener {
 	constructor() {
@@ -32,7 +33,11 @@ class ReadyListener extends Listener {
 					}
 					// The member is connected to a voice channel.
 					//console.log('user in voice, triggering voicestateupdate for ',member);
-					client.emit('voiceStateUpdate',member.voice,member.voice);
+							
+					for (const [voice, text] of Object.entries(config.voiceTextLinkMap)) {
+						client.emit('voiceStateUpdate',{channelID:member.voice.channelID},member.voice);
+					}
+					
 				}) //end members
 			}); //end voicechannels
 			

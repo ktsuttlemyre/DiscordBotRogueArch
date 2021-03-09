@@ -148,11 +148,15 @@ let bot;
 
 (function server(){
   const requestListener = function (req, res) {
-//     res.writeHead(200);
-//     res.end('Hello, World!');
+
+    if(req.url=='/heartbeat'){
+         res.writeHead(200);
+         res.end('Hello, World!');
+         return
+    }
       var filePath = path.join('.','site',req.url)
       // Browser will autorequest 'localhost:8000/favicon.ico'
-      if ( !(filePath == "favicon.ico") ) {
+      if ( !(req.url.indexOf("favicon.ico")>-1) ) {
         file = fs.readFileSync(filePath,'utf-8')
         res.write(file)
       }

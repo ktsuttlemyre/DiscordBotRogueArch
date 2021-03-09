@@ -35,7 +35,7 @@ class ReadyListener extends Listener {
 				}) //end members
 			}); //end voicechannels
 			
-
+			return
 			//read all previous commands
 			let textChannels = Guild.channels.cache.filter(c => c.type == 'text').array();
 			textChannels.forEach(function(channel){

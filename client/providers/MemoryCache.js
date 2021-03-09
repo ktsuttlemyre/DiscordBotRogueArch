@@ -1,4 +1,4 @@
-const { Guild } = require('discord.js');
+const { Guild, Channel} = require('discord.js');
 const cache = {};
 
 class MemoryCache {
@@ -11,7 +11,7 @@ class MemoryCache {
 
 	channelGet(message, key, defaultValue) {
 		let id = this.constructor.getGuildID(message.guild);
-		const channelID = (typeof message.channel == 'string')?message.channel:message.channel.id;
+		const channelID = this.constructor.getChannelID(message.channel);
 		id=`${id}/${channelID}`;
 		let value = (cache[id])?cache[id][key]:(cache[id]={}) && undefined;
 		if(value === undefined){
@@ -64,8 +64,16 @@ class MemoryCache {
 	static getGuildID(guild) {
 		if (guild instanceof Guild) return guild.id;
 		if (guild === 'global' || guild === null) return 'global';
-		if (typeof guild === 'string' && /^\d+$/.test(guild)) return guild;
+		let id = guild.id || guild;
+		if (typeof id === 'string' && /^\d+$/.test(id)) return id;
 		throw new TypeError('Invalid guild specified. Must be a Guild instance, guild ID, "global", or null.');
+	}
+	static getChannelID(channel){
+		if (channel instanceof Channel) return channel.id;
+		//if (guild === 'global' || guild === null) return 'global';
+		let id = channel.id || channel;
+		if (typeof id === 'string' && /^\d+$/.test(id)) return id;
+		throw new TypeError('Invalid channel specified. Must be a Channel instance'); //, guild ID, "global", or null.');
 	}
 }
 

@@ -35,7 +35,7 @@ class ReadyListener extends Listener {
 					//console.log('user in voice, triggering voicestateupdate for ',member);
 							
 					for (const [voice, text] of Object.entries(config.voiceTextLinkMap)) {
-						client.emit('voiceStateUpdate',{channelID:member.voice.channelID},member.voice);
+						client.emit('voiceStateUpdate',{channelID:voice},member.voice);
 					}
 					
 				}) //end members

@@ -9,8 +9,31 @@ class MemoryCache {
 //		});
 	}
 
-	get(guild, key, defaultValue) {
-		const id = this.constructor.getGuildID(guild);
+	channelGet(message, key, defaultValue) {
+		const id = this.constructor.getGuildID(message.guild);
+		const channelID = (typeof message.channel == 'string')?message.channel:message.channel.id;
+		id=`${id}/${channelID`;
+		let value = (cache[id])?cache[id][key]:(cache[id]={}) && undefined;
+		if(value === undefined){
+			return defaultValue;
+		}
+		return value;
+	}
+	
+
+	channelSet(message, key, value) {
+		const id = this.constructor.getGuildID(message.guild);
+		const channelID = (typeof message.channel == 'string')?message.channel:message.channel.id;
+		id=`${id}/${channelID`;
+		if(!cache[id]){
+			cache[id]={};
+		}
+		return cache[id][key]=value;
+	}
+
+
+	get(message, key, defaultValue) {
+		const id = this.constructor.getGuildID(message.guild);
 		let value = (cache[id])?cache[id][key]:(cache[id]={}) && undefined;
 		if(value === undefined){
 			return defaultValue;
@@ -18,23 +41,23 @@ class MemoryCache {
 		return value;
 	}
 
-	set(guild, key, value) {
-		const id = this.constructor.getGuildID(guild);
+	set(message, key, value) {
+		const id = this.constructor.getGuildID(message.guild);
 		if(!cache[id]){
 			cache[id]={};
 		}
 		return cache[id][key]=value;
 	}
 
-	delete(guild, key) {
-		const id = this.constructor.getGuildID(guild);
+	delete(message, key) {
+		const id = this.constructor.getGuildID(message.guild);
 		cache[id][key]=undefined;
 		delete cache[id][key];
 		return undefined;
 	}
 
-	clear(guild) {
-		const id = this.constructor.getGuildID(guild);
+	clear(message) {
+		const id = this.constructor.getGuildID(message.guild);
 		return cache[id]={};
 	}
 

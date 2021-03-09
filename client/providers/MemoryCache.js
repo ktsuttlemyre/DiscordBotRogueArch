@@ -12,7 +12,7 @@ class MemoryCache {
 	channelGet(message, key, defaultValue) {
 		const id = this.constructor.getGuildID(message.guild);
 		const channelID = (typeof message.channel == 'string')?message.channel:message.channel.id;
-		id=`${id}/${channelID`;
+		id=`${id}/${channelID}`;
 		let value = (cache[id])?cache[id][key]:(cache[id]={}) && undefined;
 		if(value === undefined){
 			return defaultValue;
@@ -24,7 +24,7 @@ class MemoryCache {
 	channelSet(message, key, value) {
 		const id = this.constructor.getGuildID(message.guild);
 		const channelID = (typeof message.channel == 'string')?message.channel:message.channel.id;
-		id=`${id}/${channelID`;
+		id=`${id}/${channelID}`;
 		if(!cache[id]){
 			cache[id]={};
 		}

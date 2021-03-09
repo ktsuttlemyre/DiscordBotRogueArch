@@ -154,10 +154,13 @@ let bot;
          res.end('Hello, World!');
          return
     }
-      var filePath = path.join('.','site',req.url)
+      var filePath = path.join('.','site',req.url);
+      if(filepath.endsWith('/')){
+        filePath.path.join(filePath,'index.html');
+      }
       // Browser will autorequest 'localhost:8000/favicon.ico'
       if ( !(req.url.indexOf("favicon.ico")>-1) ) {
-        file = fs.readFileSync(filePath,'utf-8')
+        let file = fs.readFileSync(filePath,'utf-8')
         res.write(file)
       }
       res.end();

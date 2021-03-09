@@ -1,4 +1,5 @@
 const { Listener } = require('discord-akairo');
+const config = requre.main.require('./config.js')
 
 class ReadyListener extends Listener {
 	constructor() {
@@ -18,13 +19,8 @@ class ReadyListener extends Listener {
 		
 		// voice-text-channel-link
 		let roomChanged = oldstate.channelID != newstate.channelID
-		let channelMap={
-			//general: shiptunes
-			'799879532856475648':'805549728099860480',
-			//social groovy
-			'690661623831986270':'800007831251189821',
-		}
-
+		let channelMap=config.voiceTextLinkMap;
+		    
 		//enter new chatroom
 		let textChannelID=channelMap[newstate.channelID];
 		let textChannel=guild.channels.cache.get(textChannelID);

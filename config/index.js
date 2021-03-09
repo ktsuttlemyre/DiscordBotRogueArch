@@ -1,4 +1,4 @@
-exports = {
+module.exports = {
  voiceTextLinkMap:{
 			//general: shiptunes
 			'799879532856475648':'805549728099860480',

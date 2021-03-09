@@ -17,7 +17,7 @@ class ReadyListener extends Listener {
 		var guild = newstate.guild;
 		
 		
-		var amongusMode = this.client.memory.channelGet(newstate.guild, newstate.channel, 'amongusMode');
+		var amongusMode = this.client.memory.channelGet(newstate, 'amongusMode');
 		//mute handler
 		if(amongusMode){
 			var muteChanged = oldstate.selfMute!=newstate.selfMute

@@ -59,18 +59,20 @@ class ReadyListener extends Listener {
 		}
 		
 		
-		let amongusMode = this.client.memory.channelGet(newstate, 'amongusMode');
-		//mute handler
-		if(amongusMode){
-			let muteChanged = oldstate.selfMute!=newstate.selfMute
-			let muted= newstate.selfMute;
-			if(muteChanged){
-				let channel = newstate.channel;
-				channel.members.forEach(function(member){
-					if(member.id == thisMember.id){return}
-					member.voice.setMute(muted);
-				}); //end members
+		if(newstate.channel){
+			let amongusMode = this.client.memory.channelGet(newstate, 'amongusMode');
+			//mute handler
+			if(amongusMode){
+				let muteChanged = oldstate.selfMute!=newstate.selfMute
+				let muted= newstate.selfMute;
+				if(muteChanged){
+					let channel = newstate.channel;
+					channel.members.forEach(function(member){
+						if(member.id == thisMember.id){return}
+						member.voice.setMute(muted);
+					}); //end members
 
+				}
 			}
 		}
 	    

@@ -32,7 +32,7 @@ let lastKeepAlive=null;
 var pinging=false;
 function keepAlive(string){
   pinging=true;
-  var website="https://"+process.env.HEROKU_APP_NAME+".herokuapp.com";
+  let website=`https://${process.env.HEROKU_APP_NAME}.herokuapp.com/heartbeat`;
   console.log('KeepAlive - Pinging '+website+' for reason:'+string);
   request(website, function(err, res, body){
     if (err) { 

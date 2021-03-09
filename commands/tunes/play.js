@@ -29,7 +29,7 @@ class CustomCommand extends Command {
 	async exec(message, { search }) {
 		if (!message.member.voice.channel) return message.channel.send(`${emotes.error} - You're not in a voice channel !`);
 		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${emotes.error} - You are not in the same voice channel !`);
-		var player = this.client.memory.get(message.guild, 'player')
+		var player = this.client.memory.get(message, 'player')
 		if (player){
 			var queue=player.getQueue(message);
 			if(queue && (queue.paused || queue.stopped)){
@@ -43,7 +43,7 @@ class CustomCommand extends Command {
 				return message.channel.send(`${emotes.error} - Please indicate the title of a song!`);
 			}
 		}else{
-			player = this.client.memory.set(message.guild, 'player', createPlayer(message,this.client));
+			player = this.client.memory.set(message, 'player', createPlayer(message,this.client));
 			if(!search){
 				init(message,player)
 				await playBackgroundPlaylist(message,player);

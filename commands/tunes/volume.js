@@ -36,7 +36,7 @@ class CustomCommand extends Command {
 	async exec(message, {volume} ) {
 		if (!message.member.voice.channel) return message.channel.send(`${emotes.error} - You're not in a voice channel !`);
 		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${emotes.error} - You are not in the same voice channel !`);
-		var player = this.client.memory.get(message.guild, 'player')
+		var player = this.client.memory.get(message, 'player')
 		if(!player){
 			return message.channel.send('No player playing to act on')
 		}

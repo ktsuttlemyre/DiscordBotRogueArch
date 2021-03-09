@@ -26,7 +26,7 @@ class ReadyListener extends Listener {
 		let textChannel=guild.channels.cache.get(textChannelID);
 		if(textChannel){
 			let permissions= textChannel.permissionsFor(guild.me)
-			if(permissions.has('VIEW_CHANNEL') && permissions.has('MANAGE_CHANNELS')){
+			if(permissions.has(['VIEW_CHANNEL','MANAGE_CHANNELS'])){
 				textChannel.updateOverwrite(thisMember, {
 				    //SEND_MESSAGES: false,
 				    VIEW_CHANNEL: true
@@ -42,8 +42,8 @@ class ReadyListener extends Listener {
 			textChannel=guild.channels.cache.get(textChannelID);
 			if(textChannel){
 				let permissions= textChannel.permissionsFor(guild.me)
-				console.log(permissions.toArray())
-				if(permissions.has('VIEW_CHANNEL') && permissions.has('MANAGE_CHANNELS')){
+				//console.log(permissions.toArray())
+				if(permissions.has(['VIEW_CHANNEL','MANAGE_CHANNELS'])){
 					//leave private rooms
 					textChannel.updateOverwrite(thisMember, {
 					    //SEND_MESSAGES: false,

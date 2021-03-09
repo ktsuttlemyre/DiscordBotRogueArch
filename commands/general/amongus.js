@@ -37,17 +37,17 @@ class PlayCommand extends Command {
     var varName = 'amongusMode';
     
     if(!bool.length){ //query current value
-      return message.send('Current value is: ' + this.client.memory.get(message.guild, varName));
+      return message.send('Current value is: ' + this.client.memory.channelGet(message.guild, message.channel, varName));
     }
     
     var toggle = bool.match(/^(toggle|switch|flip|!+)$/);
     if(toggle){
-      var value = this.client.memory.set(message.guild, varName, !!this.client.memory.get(message.guild, varname) );
+      var value = this.client.memory.channelSet(message.guild, message.channel varName, !!this.client.memory.channelGet(message.guild, message.channel, varName) );
       return message.send('Toggled value to: ' + value);
     }
 
     var value = (bool.match(/^(no|false|0|off|null|undefined|nan)$/))?false:true;
-		this.client.memory.set(message.guild, varName, value );
+		this.client.memory.channelSet(message.guild, message.channel, varName, value );
     return message.send('Changed value to:'+ value)
 	}
 }

@@ -1,7 +1,8 @@
 /**
  * Module Imports
  */
-
+const http = require('http')
+const fs = require('fs')
 const path = require('path');
 let bot;
 (function main(){
@@ -146,10 +147,17 @@ let bot;
 })();
 
 (function server(){
-  const http = require('http');
   const requestListener = function (req, res) {
-    res.writeHead(200);
-    res.end('Hello, World!');
+//     res.writeHead(200);
+//     res.end('Hello, World!');
+      var filePath = path.join('.','site',req.url)
+      // Browser will autorequest 'localhost:8000/favicon.ico'
+      if ( !(filePath == "favicon.ico") ) {
+        file = fs.readFileSync(filePath,'utf-8')
+        res.write(file)
+      }
+      res.end();
+    
   }
 
   const server = http.createServer(requestListener);

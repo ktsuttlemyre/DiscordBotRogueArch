@@ -1,5 +1,5 @@
 const { Listener } = require('discord-akairo');
-const config = requre.main.require('./config.js')
+const config = requre.main.require('./config')
 
 class ReadyListener extends Listener {
 	constructor() {
@@ -37,7 +37,7 @@ class ReadyListener extends Listener {
 		}
 		
 		//leave old chatroom (if they left a room)
-		if(oldstate.channelID !== newstate.channelID){ //if they actually left a channel because the id changed
+		if(oldstate.channelID && oldstate.channelID !== newstate.channelID){ //if they actually left a channel because the id changed
 			textChannelID=channelMap[oldstate.channelID];
 			textChannel=guild.channels.cache.get(textChannelID);
 			if(textChannel){

@@ -24,10 +24,26 @@ class ReadyListener extends Listener {
 			//social groovy
 			'690661623831986270':'800007831251189821',
 		}
+
+		//enter new chatroom
+		let textChannelID=channelMap[newstate.channelID];
+		let textChannel=guild.channels.cache.get(textChannelID);
+		if(textChannel){
+			let permissions= textChannel.permissionsFor(guild.me)
+			if(permissions.has('MANAGE_CHANNELS')){
+				textChannel.updateOverwrite(thisMember, {
+				    //SEND_MESSAGES: false,
+				    VIEW_CHANNEL: true
+				});
+			}else{
+				console.log('bot does not have permission to change permissions in '+textChannelID)
+			}
+		}
 		
+		//leave old chatroom (if they left a room)
 		if(oldstate.channelID !== newstate.channelID){ //if they actually left a channel because the id changed
-			let textChannelID=channelMap[oldstate.channelID];
-			let textChannel=guild.channels.cache.get(textChannelID);
+			textChannelID=channelMap[oldstate.channelID];
+			textChannel=guild.channels.cache.get(textChannelID);
 			if(textChannel){
 				let permissions= textChannel.permissionsFor(guild.me)
 				if(permissions.has('MANAGE_CHANNELS')){
@@ -39,20 +55,6 @@ class ReadyListener extends Listener {
 				}else{
 					console.log('bot does not have permission to change permissions in '+textChannelID)
 				}
-			}
-		}
-
-		textChannelID=channelMap[newstate.channelID];
-		textChannel=guild.channels.cache.get(textChannelID);
-		if(textChannel){
-			let permissions= textChannel.permissionsFor(guild.me)
-			if(permissions.has('MANAGE_CHANNELS')){
-				textChannel.updateOverwrite(thisMember, {
-				    //SEND_MESSAGES: false,
-				    VIEW_CHANNEL: true
-				});
-			}else{
-				console.log('bot does not have permission to change permissions in '+textChannelID)
 			}
 		}
 		

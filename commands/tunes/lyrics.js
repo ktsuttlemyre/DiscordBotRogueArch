@@ -64,23 +64,22 @@ class CustomCommand extends Command {
 			lyrics = message.channel.send("lyrics NotFound "+  title );
 		}
 
+		
+		//if (lyrics.length <= 1024){
+			//lyrics = `${lyrics.substr(0, 1021)}...`;
+			GUIMessages.nowPlaying(message,player,{description:lyrics});
+		/*}else{
+			if (lyrics.length >= 2048){
+				lyrics = `${lyrics.substr(0, 2045)}...`;
+			}
+			let lyricsEmbed = new MessageEmbed()
+				.setTitle(title)
+				.setDescription(lyrics)
+				.setColor("#F8AA2A")
+				.setTimestamp();
 
-		if (lyrics.length >= 2048){
-			lyrics = `${lyrics.substr(0, 2045)}...`;
-		}
-
-		/*let lyricsEmbed = new MessageEmbed()
-			.setTitle(title)
-			.setDescription(lyrics)
-			.setColor("#F8AA2A")
-			.setTimestamp();
-
-		if (lyricsEmbed.description.length >= 2048)
-			lyricsEmbed.description = `${lyricsEmbed.description.substr(0, 2045)}...`;
-
-		return message.channel.send(lyricsEmbed).catch(console.error);
-		*/
-		GUIMessages.nowPlaying(message,player,lyrics);
+			return message.channel.send(lyricsEmbed).catch(console.error);
+		}*/
 	}
 }
 

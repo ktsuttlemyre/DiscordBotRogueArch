@@ -58,7 +58,10 @@ class PlayCommand extends Command {
     lots_of_messages_getter(message.channel,Infinity);
     */
     
-    async function getMessages(channel: TextChannel, limit: number = 100): Promise<Message[]> {
+    async function getMessages(channel, limit) {
+      if(!limit){
+	limit=100
+      }
       let out: Message[] = []
       if (limit <= 100) {
         let messages: Collection < string, Message > = await channel.messages.fetch({ limit: limit })

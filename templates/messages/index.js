@@ -89,8 +89,9 @@ var nowPlayingOverloaded= async (message,player,announce) => {
 	lastNowPlayingMessage.delete();
     }
 	
-    let announceObj=announce;
+    let announceObj={};
     if(typeof announce == 'object'){
+	    announceObj=announce
 	    announce=announce.text||announce.string
 	    announceObj.description = (announceObj.description.length >= 2048)?`${lyrics.substr(0, 2045)}...`:undefined;
     }

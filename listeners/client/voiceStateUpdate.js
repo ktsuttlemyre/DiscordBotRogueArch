@@ -29,7 +29,7 @@ class ReadyListener extends Listener {
 		let permissions;
 		if(textChannel){
 			permissions = textChannel.permissionsFor(guild.me)
-			if(permissions.has(permissionsNeeded,false)){
+			if(permissions.has(permissionsNeeded)){
 				textChannel.updateOverwrite(thisMember, {
 				    //SEND_MESSAGES: false,
 				    VIEW_CHANNEL: true
@@ -45,7 +45,7 @@ class ReadyListener extends Listener {
 		if(roomChanged && textChannel){ //if they actually left a channel because the id changed			
 			permissions = textChannel.permissionsFor(guild.me)
 			//console.log(permissions.toArray())
-			if(permissions.has(permissionsNeeded,false)){
+			if(permissions.has(permissionsNeeded)){
 				//leave private rooms
 				textChannel.updateOverwrite(thisMember, {
 				    //SEND_MESSAGES: false,

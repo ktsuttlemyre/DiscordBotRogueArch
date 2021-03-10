@@ -62,22 +62,22 @@ class PlayCommand extends Command {
       if(!limit){
 	limit=100
       }
-      let out: Message[] = []
+      let out= Message[] = []
       if (limit <= 100) {
-        let messages: Collection < string, Message > = await channel.messages.fetch({ limit: limit })
-        out.push(...messages.array())
+        let messages= Collection < string, Message > = await channel.messages.fetch({ limit: limit })
+        out.push.apply(out,messages.array())
       } else {
         let rounds = (limit / 100) + (limit % 100 ? 1 : 0)
-        let last_id: string = ""
+        let last_id= string = ""
         for (let x = 0; x < rounds; x++) {
-          const options: ChannelLogsQueryOptions = {
+          const options= ChannelLogsQueryOptions = {
             limit: 100
           }
           if (last_id.length > 0) {
             options.before = last_id
           }
-          const messages: Collection < string, Message > = await channel.messages.fetch(options)
-          out.push(...messages.array())
+          const messages= Collection < string, Message > = await channel.messages.fetch(options)
+          out.push.apply(out,messages.array())
           last_id = messages.array()[(messages.array().length - 1)].id
         }
       }

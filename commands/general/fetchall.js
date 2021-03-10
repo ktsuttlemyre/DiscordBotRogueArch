@@ -77,9 +77,9 @@ class PlayCommand extends Command {
             options.before = last_id
           }
           const messages = await channel.messages.fetch(options);
-	  console.log('messages.length',messages.length)
           out.push.apply(out,messages.array())
-          last_id = messages.array()[(messages.array().length - 1)].id
+          console.log('messages.length',messages.array().length)
+	  last_id = messages.array()[(messages.array().length - 1)].id
         }
       }
       return out

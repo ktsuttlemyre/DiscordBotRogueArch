@@ -11,6 +11,10 @@ class ReadyListener extends Listener {
 	}
 
 	async exec( oldstate, newstate ) {
+		var env = process.env.ENVIRONMENT
+        	if(env != 'production'){
+			return;
+		}
 		let thisMember = newstate.member;
 		if(thisMember.user.bot){
 			return
@@ -18,10 +22,12 @@ class ReadyListener extends Listener {
 		let guild = newstate.guild;
 		
 		// voice-text-channel-link
-		let roomChanged = (oldstate.channelID || newstate.channelID) && oldstate.channelID !== newstate.channelID
-		let channelMap=config.voiceTextLinkMap;
+		let roomChanged = ((oldstate.channelID || newstate.channelID) && oldstate.channelID !== newstate.channelID);
+		let channelMap = config.voiceTextLinkMap;
 		
 		let permissionsNeeded = ['VIEW_CHANNEL','MANAGE_CHANNELS'];
+		
+		console.log('voiceStateUpdate',oldstate.channelID,newstate.ChannelID,roomChanged,thisMember.displayName);
 		    
 		//enter new chatroom
 		let textChannelID = channelMap[newstate.channelID];

@@ -68,7 +68,7 @@ class PlayCommand extends Command {
         out.push.apply(out,messages.array())
       } else {
         let rounds = (limit / 100) + (limit % 100 ? 1 : 0)
-        let last_id= string = ""
+        let last_id = ""
         for (let x = 0; x < rounds; x++) {
           const options = {
             limit: 100

@@ -89,6 +89,12 @@ var nowPlayingOverloaded= async (message,player,announce) => {
 	lastNowPlayingMessage.delete();
     }
 	
+    let announceObj=announce;
+    if(typeof announce == 'object'){
+	    announce=announce.text||announce.string
+	    announceObj.description = (announceObj.description.length >= 2048)?`${lyrics.substr(0, 2045)}...`:undefined;
+    }
+	
     announce=announce||cache[message.guild.id].announce;
     cache[message.guild.id].announce=announce;
 	
@@ -144,6 +150,7 @@ var nowPlayingOverloaded= async (message,player,announce) => {
 	      //"description": `Author:${track.author}\n${track.description}`,
 	      //"description": `[${track.title}](${track.url})`,
 	      //"description": progressBar +` [⏫](${permalink})`,
+	      "description": announceObj.description,
 	      "url": track.url,
 	      "color": 5814783,
 	      "fields": [

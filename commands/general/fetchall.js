@@ -60,13 +60,13 @@ class PlayCommand extends Command {
     
     async function getMessages(channel, limit) {
       if(!limit){
-	limit=100
+	limit=Infinity
       }
       let out= []
-      if (limit <= 100) {
-        let messages = await channel.messages.fetch({ limit: limit })
-        out.push.apply(out,messages.array())
-      } else {
+//       if (limit <= 100) {
+//         let messages = await channel.messages.fetch({ limit: limit })
+//         out.push.apply(out,messages.array())
+//       } else {
         let rounds = (limit / 100) + (limit % 100 ? 1 : 0)
         let last_id = ""
         for (let x = 0; x < rounds; x++) {
@@ -77,14 +77,18 @@ class PlayCommand extends Command {
             options.before = last_id
           }
           const messages = await channel.messages.fetch(options);
-          out.push.apply(out,messages.array())
-          console.log('messages.length',messages.array().length)
-	  last_id = messages.array()[(messages.array().length - 1)].id
+          const messageArray = messages.array();
+          if(!messageArray.length){
+		  break
+	  }
+	  out.push.apply(out,messageArray)
+          //console.log('messages.length',messageArray.length)
+	  last_id = messageArray[(messageArray.length - 1)].id
         }
-      }
+      //}
       return out
     }
-    let messages = await getMessages(message.channel,Infinity);
+    let messages = await getMessages(message.channel);
     message.channel.send(`got ${messages.length} messages`);
     
     

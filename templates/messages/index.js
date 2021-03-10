@@ -93,7 +93,7 @@ var nowPlayingOverloaded= async (message,player,announce) => {
     if(typeof announce == 'object'){
 	    announceObj=announce
 	    announce=announce.text||announce.string
-	    announceObj.description = (announceObj.description.length >= 2048)?`${lyrics.substr(0, 2045)}...`:undefined;
+	    announceObj.description = (announceObj.description.length >= 2048)?`${announceObj.description.substr(0, 2045)}...`:undefined;
     }
 	
     announce=announce||cache[message.guild.id].announce;

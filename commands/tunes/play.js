@@ -30,28 +30,43 @@ class CustomCommand extends Command {
 		if (!message.member.voice.channel) return message.channel.send(`${emotes.error} - You're not in a voice channel !`);
 		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${emotes.error} - You are not in the same voice channel !`);
 		var player = this.client.memory.get(message, 'player')
-		if (player){
-			var queue=player.getQueue(message);
-			if(queue && (queue.paused || queue.stopped)){
+		if (!player){
+			player = this.client.memory.set(message, 'player', createPlayer(message,this.client));
+		}
+		
+		
+		var queue=player.getQueue(message);
+		if(queue){
+			if(queue.paused || queue.stopped){
 				if(player.resume(message)){
 					await GUIMessages.nowPlaying(message,player,"Continuing where we left off "+common.randomMusicEmoji());
+					return
 				}else{
-					await GUIMessages.nowPlaying(message,player,"Error resuming queue");
+					let track = player.nowPlaying(message);
+					if(track){
+						await player.play(message,player.nowPlaying(message));
+					}else{
+						//do background
+						init(message,player)
+						await playBackgroundPlaylist(message,player);
+					}
 				}
-				return;
-			}else if(player.isPlaying(message) && !search){
+				return //it was paused or stopped so we should have fixed it by now
+			}
+		}
+		if(player.isPlaying(message)){
+			if(!search){
 				return message.channel.send(`${emotes.error} - Please indicate the title of a song!`);
 			}
 		}else{
-			player = this.client.memory.set(message, 'player', createPlayer(message,this.client));
 			if(!search){
 				init(message,player)
 				await playBackgroundPlaylist(message,player);
 				return
 			}
 		}
-
 		
+			
 
 		if(!message.attachments){
 			await player.play(message, search, { firstResult: true });

@@ -50,38 +50,37 @@ class CustomCommand extends Command {
 
 		
 		var track = player.nowPlaying(message);
-		if(track){
-			await GUIMessages.nowPlaying(message,player,'Skipped: '+track.title)
-		}else{
-			await GUIMessages.nowPlaying(message,player,'Skipped: last track');
+		if(!track){
+			await GUIMessages.nowPlaying(message,player,"Can't find track to search for lyrics");
+			return;
 		}
 	
-	let lyrics = null;
-	const title = track.title;
-	try {
-		lyrics = await lyricsFinder(title, "");
-		if (!lyrics)  lyrics = message.channel.send("lyrics NotFound "+  title );
-	} catch (error) {
-		lyrics = message.channel.send("lyrics NotFound "+  title );
-	}
+		let lyrics = null;
+		const title = track.title;
+		try {
+			lyrics = await lyricsFinder(title, "");
+			if (!lyrics)  lyrics = message.channel.send("lyrics NotFound "+  title );
+		} catch (error) {
+			lyrics = message.channel.send("lyrics NotFound "+  title );
+		}
 
 
-	if (lyrics.length >= 2048){
-		lyrics = `${lyrics.substr(0, 2045)}...`;
-	}
+		if (lyrics.length >= 2048){
+			lyrics = `${lyrics.substr(0, 2045)}...`;
+		}
 
-	/*let lyricsEmbed = new MessageEmbed()
-		.setTitle(title)
-		.setDescription(lyrics)
-		.setColor("#F8AA2A")
-		.setTimestamp();
+		/*let lyricsEmbed = new MessageEmbed()
+			.setTitle(title)
+			.setDescription(lyrics)
+			.setColor("#F8AA2A")
+			.setTimestamp();
 
-	if (lyricsEmbed.description.length >= 2048)
-		lyricsEmbed.description = `${lyricsEmbed.description.substr(0, 2045)}...`;
+		if (lyricsEmbed.description.length >= 2048)
+			lyricsEmbed.description = `${lyricsEmbed.description.substr(0, 2045)}...`;
 
-	return message.channel.send(lyricsEmbed).catch(console.error);
-	*/
-	GUIMessages.nowPlaying(message,player,lyrics);
+		return message.channel.send(lyricsEmbed).catch(console.error);
+		*/
+		GUIMessages.nowPlaying(message,player,lyrics);
 	}
 }
 

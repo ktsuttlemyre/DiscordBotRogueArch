@@ -58,41 +58,38 @@ class PlayCommand extends Command {
     lots_of_messages_getter(message.channel,Infinity);
     */
     
-    async function getMessages(channel, limit) {
-      if(!limit){
-	limit=Infinity
-      }
-      let out= []
-//       if (limit <= 100) {
-//         let messages = await channel.messages.fetch({ limit: limit })
-//         out.push.apply(out,messages.array())
-//       } else {
-        let rounds = (limit / 100) + (limit % 100 ? 1 : 0)
-        let last_id = ""
-        for (let x = 0; x < rounds; x++) {
-          const options = {
-            limit: 100
-          }
-          if (last_id.length > 0) {
-            options.before = last_id
-          }
-          const messages = await channel.messages.fetch(options);
-          const messageArray = messages.array();
-          if(!messageArray.length){
-		  break
-	  }
-	  out.push.apply(out,messageArray)
-          //console.log('messages.length',messageArray.length)
-	  last_id = messageArray[(messageArray.length - 1)].id
-        }
-      //}
-      return out
-    }
+	async function getMessages(channel, limit) {
+		if(!limit){
+			limit=Infinity
+		}
+		let out= []
+		// if (limit <= 100) {
+		//   let messages = await channel.messages.fetch({ limit: limit })
+		//   out.push.apply(out,messages.array())
+		// } else {
+		let rounds = (limit / 100) + (limit % 100 ? 1 : 0)
+		let last_id = ""
+		for (let x = 0; x < rounds; x++) {
+			const options = {
+				limit: 100
+			}
+			if (last_id.length > 0) {
+				options.before = last_id
+			}
+			const messages = await channel.messages.fetch(options);
+			const messageArray = messages.array();
+			if(!messageArray.length){
+				break
+			}
+			out.push.apply(out,messageArray)
+			//console.log('messages.length',messageArray.length)
+			last_id = messageArray[(messageArray.length - 1)].id
+		}
+		//}
+		return out
+	}
     let messages = await getMessages(message.channel);
     message.channel.send(`got ${messages.length} messages`);
-    
-    
-    
     
     
 	}

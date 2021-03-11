@@ -53,3 +53,68 @@ exports.progressString=function progressString(type,percent){
 exports.randomMusicEmoji=function(){
 	return _.sample['🎵','🎶','🎼']
 }
+
+
+
+exports.getMessages = async function getMessages(channel, limit) {
+		if(!limit){
+			limit=Infinity
+		}
+		let out= []
+		// if (limit <= 100) {
+		//   let messages = await channel.messages.fetch({ limit: limit })
+		//   out.push.apply(out,messages.array())
+		// } else {
+		let rounds = (limit / 100) + (limit % 100 ? 1 : 0)
+		let last_id = ""
+		for (let x = 0; x < rounds; x++) {
+			const options = {
+				limit: 100
+			}
+			if (last_id.length > 0) {
+				options.before = last_id
+			}
+			const messages = await channel.messages.fetch(options);
+			const messageArray = messages.array();
+			if(!messageArray.length){
+				break
+			}
+			out.push.apply(out,messageArray)
+			//console.log('messages.length',messageArray.length)
+			last_id = messageArray[(messageArray.length - 1)].id
+		}
+		//}
+		return out
+	}
+		
+exports.fetchMessages = async function fetchMessages(channel, options, callback) {
+		if(!options.limit){
+			options.limit=Infinity
+		}
+
+		let rounds = (options.limit / 100) //+ (options.limit % 100 ? 1 : 0);
+		var opts={};
+		opts.limit = (options.limit<100)?options.limit:100;
+
+		let gIndex=0;
+		for (let x = 0; x < rounds; rounds--) {
+			if(rounds<1){
+				opts.limit = (options.limit!=Infinity)?options.limit % 100:100;
+			}
+			const messages = await channel.messages.fetch(opts,false);
+			const messagesArray = messages.array();
+
+			if(!messagesArray.length){
+				break;
+			}
+
+			messagesArray.some(function(current,index,array){
+				if(gIndex>=options.limit){
+					return true;
+				}
+				return callback(current,index,array,gIndex++);
+			});
+
+			opts.before = messagesArray[(messagesArray.length - 1)].id
+		}
+	}

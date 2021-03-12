@@ -15,7 +15,7 @@ class CustomCommand extends Command {
 		super(path.parse(__filename).name, {
 		description: { content: 'clip'},
 		aliases: ['clip','sound'],
-		category: path.basename(path.dirname(filename)),
+		category: path.basename(path.dirname(__filename)),
 		clientPermissions: ['SEND_MESSAGES'],
 		args: [
 			{

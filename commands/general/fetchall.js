@@ -70,7 +70,8 @@ class CustomCommand extends Command {
 	console.log(gArray)
 	console.log(gArray.length)
 	console.log(array.length)
-	console.log('embed messages',embeds.length)
+	console.log('embeds messages',embeds.length)
+		console.log('embed messages',embed.length)
 		
 // 	common.fetchMessages(message.channel,{},function(message,index,messages,gIndex){
 // 		var match = message.content.match(/added/:/[(.*?)/]/);

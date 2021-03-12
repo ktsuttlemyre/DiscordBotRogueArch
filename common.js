@@ -135,10 +135,13 @@ exports.fetchMessages = function fetchMessages(channel, options, callback) {
 		const array = [];
 
 		let _processTick=function(resolve){
+			console.log('processing tick');
 			if(breakOut){return resolve('resolved');}
 				
 			for(let index=gIndex+gOffset,l=array.length; (loadedAllMessages || index<l-nBuffer) && index<l; index++, gIndex++){
+				console.log('calling callback with',array[index],index,gIndex)
 				let response = callback(array[index],index, array, gIndex);
+				console.log('got response',response);
 				if(typeof response == 'number'){
 					index=response-1
 					continue;
@@ -162,6 +165,7 @@ exports.fetchMessages = function fetchMessages(channel, options, callback) {
 		let _fetchMessages=function(resolve){
 			if(breakOut){return resolve('resolved');}
 			channel.messages.fetch(opts).then(function(messages){
+				console.log('got messages',messages)
 				if(breakOut){return resolve('resolved');}
 				const messagesArray = messages.array();
 
@@ -178,6 +182,7 @@ exports.fetchMessages = function fetchMessages(channel, options, callback) {
 		
 
 		return new Promise(resolve => {
+			console.log('started promise')
 			_fetchMessages(resolve);
 		});
 	}

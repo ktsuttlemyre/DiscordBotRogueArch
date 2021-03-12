@@ -49,6 +49,7 @@ class CustomCommand extends Command {
 		
 		if(hash[message.id]){
 			message.channel.send('found duplicate')
+			return true;
 		}else{
 			hash[message.id]=1
 		}

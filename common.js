@@ -134,7 +134,7 @@ exports.fetchMessages = async function fetchMessages(channel, options, callback)
 
 		const array = [];
 
-		_processTick=function(){
+		let _processTick=function(){
 			if(breakOut){return}
 				
 			for(let index=gIndex+gOffset,l=array.length; (loadedAllMessages || index<l-nBuffer) && index<l; index++, gIndex++){
@@ -161,7 +161,7 @@ exports.fetchMessages = async function fetchMessages(channel, options, callback)
 
 		let _fetchMessages=function(){
 			if(breakOut){return}
-			channel.messages.fetch(opts,false).then(function(messages){
+			channel.messages.fetch(opts).then(function(messages){
 				if(breakOut){return}
 				const messagesArray = messages.array();
 

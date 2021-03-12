@@ -12,7 +12,7 @@ class CustomCommand extends Command {
 		super(path.parse(__filename).name, {
 		description: { content: 'plays [name/URL]'},
 		aliases: ['play','add','queue'],
-		category: path.basename(path.dirname(filename)),
+		category: path.basename(path.dirname(__filename)),
 		clientPermissions: ['SEND_MESSAGES'],
 		args: [
 			{

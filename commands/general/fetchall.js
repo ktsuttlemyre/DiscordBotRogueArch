@@ -50,19 +50,22 @@ class CustomCommand extends Command {
 	await common.fetchMessages(message.channel,function(message,index,messages,gIndex){
 		
 		if(message.embeds.length){
-			var text = JSON.stringify(message.embeds)
-			var youtube = web.getYoutubeHash(text);
-			if(youtube){
-				youtubeLinks.push(youtube)
-			}
+			let text = JSON.stringify(message.embeds).split(/\s+/)
+			text.forEach(function(word){
+				let youtube = web.getYoutubeHash(text);
+				if(youtube){
+					youtubeLinks.push(youtube)
+				}
+			})
+
 			embeds.push(message)
 		}
 		if(message.embed){
 			embed.push(message)
 		}
-		if(common.findInMessage(message,'added')){
-		   added.push(message)
-		}
+// 		if(common.findInMessage(message,'added')){
+// 		   added.push(message)
+// 		}
 		iArray.push(index)
 		gArray.push(gIndex)
 		

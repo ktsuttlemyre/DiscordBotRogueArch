@@ -53,9 +53,9 @@ class CustomCommand extends Command {
 			let text = JSON.stringify(message.embeds,null,2)
 			if(text){
 				text=text.split(/\s+/);
-				console.log("text",text)
+				//console.log("text",text)
 				text.forEach(function(word){
-					let youtube = web.getYoutubeHash(text);
+					let youtube = web.getYoutubeHash(word);
 					if(youtube){
 						youtubeLinks.push(youtube)
 					}

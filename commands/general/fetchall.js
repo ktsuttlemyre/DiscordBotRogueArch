@@ -86,7 +86,8 @@ class CustomCommand extends Command {
 	console.log('embeds messages',embeds.length)
 		console.log('embed messages',embed.length)
 		console.log('added messages',added.length)
-		console.log('links',youtubeLinks.length,youtubeLinks.join(' '))
+		console.log('total youtube links',youtubeLinks.length,'unique=',_.uniq(youtubeLinks),youtubeLinks.join(' '))
+		
 		
 // 	common.fetchMessages(message.channel,{},function(message,index,messages,gIndex){
 // 		var match = message.content.match(/added/:/[(.*?)/]/);

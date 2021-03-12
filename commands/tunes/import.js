@@ -38,13 +38,13 @@ class PlayCommand extends Command {
     common.fetchMessages(message.channel,{},function(message,index,messages,gIndex){
       var match = message.content.match(/added/:/[(.*?)/]/);
 
-      if(match){
-        spreadsheet.insert(match[1]);
-      }
+//       if(match){
+//         spreadsheet.insert(match[1]);
+//       }
 
-    })
-	    let messages = await common.getMessages(message.channel);
-	    message.channel.send(`got ${messages.length} messages`);
+//     })
+// 	    let messages = await common.getMessages(message.channel);
+// 	    message.channel.send(`got ${messages.length} messages`);
     
     
 	}

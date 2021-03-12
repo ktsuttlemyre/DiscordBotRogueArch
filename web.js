@@ -1337,7 +1337,8 @@ web.global=global = this
 
 		web.depricated=function(reason,fn){
 			if(hideTrace){
-				console.trace('This function is depricated for reason:',reason,fn)
+				return
 			}
+			console.trace('This function is depricated for reason:',reason,fn)
 		}
 module.exports=web;

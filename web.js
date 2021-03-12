@@ -24,9 +24,241 @@ let web = {}
 
 
 
+
+
+ 		/*jquery's type operations extracted for use before jquery is loaded*/
+		var class2type = {
+			/*"[object Boolean]": "Boolean",
+			"[object Number]": "Number",
+			"[object String]": "String",
+			"[object Function]": "Function",
+			"[object Array]": "Array",
+			"[object Date]": "Date",
+			"[object RegExp]": "Regexp",
+			"[object Object]": "Object",
+			"[object Undefined]":"Undefined",
+			"[object Null]":"Null"*/
+
+			//typeof keys
+			'undefined':'Undefined'
+			//typeof null= 'object' SKIP THIS handle null differently
+			,'boolean':'Boolean'
+			,'number':'Number'
+			,'string':'String'
+			,'symbol':'Symbol' //EMAScript6
+			//Host object (provided by the JS environment)	Implementation-dependent
+			,'function':'Function'//Function object (implements [[Call]] in ECMA-262 terms)	"function"
+			//Any other object	"object"
+		}
+
+		web.isInstance=web.instanceOf=function(obj,equals,deep){
+			if(deep){
+				console.warn('we do not support use of deep flag on web.isInstance anymore')
+			}
+			if(obj&&equals){
+		//DO NOT RELY ON TESTING .prototype.constructor
+				//See:https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/constructor
+				//use prototype for it is not-writable, not-enumerable and not-configurable
+				//see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/prototype
+				//var yes=(deep)?obj instanceof equals:Object.getPrototypeOf(obj) == equals.prototype 
+				var yes=obj instanceof equals;
+				return (yes)?equals:undefined
+				//TODO isChild could go here maybe???!!!! //|| isChild(Object.getPrototypeOf(obj),equals)
+			}
+			return false
+		}
+
+		/*[ This will take an object and convert it to a normalized string type]
+		 * @param  {[type]} obj [description]
+		 * @return {[type]}     [description]
+		 * @equals is a string or function constructor
+		 */
+		 //performance http://jsperf.com/checking-previously-typed-object
+		 //another performance of string vs hash lookup
+		 //http://jsperf.com/afaaasdfjhdsf
+		 var typeCacheA=[]
+		 var typeCacheB=[]
+
+		 var type=web.isType=function(obj,equals,deep){ 
+			var equalsType=typeof equals;
+			if(equalsType=='function'){
+				return web.isInstance(obj,equals,deep)
+			}
+
+			//Step1 typeof is the single fastest!
+			var x=typeof obj;
+			if(x!='object'){
+				//string manipulation is faster than hash lookup return (equals)?class2type[x]==equals:class2type[x];
+				if(equals){
+					return class2type[x]==equals; // return x.charAt(0).toUpperCase() + x.slice(1)==equals
+				}else{
+					return class2type[x] //return x.charAt(0).toUpperCase() + x.slice(1)
+				}
+			}
+			//Here and below it has to be an object
+			//console.log('web.isType: type did not give conclusive')
+			
+			//was it null?
+			if(!obj){ //do not put this any higher because it will only work after you check with 'typeof'
+				//it is also silly to put it higher when it will only rule out 1 (uncommon) outcome
+				//ps... this check is super dope fast
+				return (equals)?'Null'==equals:'Null'
+			} 
+			//console.log('web.isType: not null')
+			//http://jsperf.com/array-isarray-vs-instanceof-array/5
+			if(obj.concat === dummyArray.concat){ //or obj instanceof Array){fastest //or Array.isArray(obj) //or Object.getPrototypeOf(obj) == Array.prototype
+				//Note: I use the above as a quick check to see if it is an array.
+				//positive ID means we exit faster, negitive ID means it will have to be identified further below.
+				//if it is from another frame then it will be identified in the final lines of this function
+				if(obj instanceof Array){ //Array.isArray(obj){ //we did a dirty fast check but now confirm
+					return (equals)?'Array'==equals:'Array'
+				}
+			}
+
+			//idk if this test is reliable
+			//if(Object.getPrototypeOf(obj)===Object.prototype){
+			//	return (equals)?'Object'==equals:'Object'
+			//}
+			
+			//TODO test this!!!!!!!@@@@@
+			//if(Object.getPrototypeOf(obj)==Object.prototype){
+			//	return (equals)?'Object'==equals:'Object'
+			//}
+			//console.log('web.isType: not array')
+		/* 	var l = typeCacheA.length;
+			while(l--) {
+			  if(obj===typeCacheA[l]){
+				return typeCacheB[l]
+			  }
+			}
+			if(typeCacheA.length>=10){
+				typeCacheA.shift()&&typeCacheB.shift();
+			}*/
+
+			//below here is the slowest step!
+			var type = Object.prototype.toString.call(obj);
+			//using slice is faster than hash lookup 
+			//http://jsperf.com/afaaasdfjhdsf
+			if(equals){
+				//hash lookup slower than string manipulation return ( class2type[type] || (class2type[type]=type.slice(8,-1)) )==equals;
+				return type.slice(8,-1)==equals
+			}
+			//hash lookup slower than string manipulation return class2type[type] || (class2type[type]=type.slice(8,-1));
+			return type.slice(8,-1)
+		 }
+		 var isType=type;
+
+		web.hasInterface=function(obj,inter){
+
+		}
+
+
+		web.isBoolean=function(obj){
+			return typeof obj == 'boolean';
+		}
+		web.isString=function(obj){
+			return typeof obj == 'string';
+		}
+		web.isEvent=function(obj){//TODO use web instanceof for jquery and any other events
+			return obj instanceof window.Event||obj instanceof $.Event
+		}
+		web.toString=function(obj,override){ //http://stackoverflow.com/questions/3945202/whats-the-difference-between-stringvalue-vs-value-tostring
+			if(!obj){
+				return String(obj)
+			}
+			if(!override && obj.toString!==Object.prototype.toString){
+				return obj.toString()
+			}
+			//http://www.hiteshagrawal.com/javascript/convert-xml-document-to-string-in-javascript/
+			//handle xml
+			if(web.instanceOf(obj,window.Document) && !(web.instanceOf(obj,window.HTMLDocument)) && !(web.instanceOf(obj,window.SVGDocument))){ //https://developer.mozilla.org/en-US/docs/Web/Guide/Parsing_and_serializing_XML
+				//Parsing = https://developer.mozilla.org/en-US/docs/Web/API/DOMParser
+				var xmlDoc,parser;
+				if (window.ActiveXObject) { //http://www.hiteshagrawal.com/javascript/convert-xml-document-to-string-in-javascript/
+					//for IE
+					xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
+					xmlDoc.async="false";
+					xmlDoc.loadXML(obj);
+					return xmlDoc.xml;
+				} else if (document.implementation && document.implementation.createDocument) {
+					//for Mozila
+					parser=new DOMParser();
+					xmlDoc=parser.parseFromString(obj,"text/xml");
+					return (new XMLSerializer()).serializeToString(xmlDoc);;
+				}
+			}
+			if(web.isCollection(obj)){
+				return JSON.stringify(obj)
+			}
+
+			return obj && (obj.toString)?obj.toString():String(obj)
+		}
+		web.isStringObject=function(value){
+			return value && typeof value == 'object' && type(value) == 'String';
+		}
+		web.typeString=function(str){
+			var firstChar=str.charAt(0)
+			if(firstChar=='.'||firstChar=='/'){//relative path url put
+
+			}else if((/^.{4,7}:\/\//).test(str)){ //absolute path uri
+
+			}
+
+		}
+
+		var isStrict=(function() { return !this; })();
+		web.isStrict=function(){
+			return isStrict
+		};
+		//http://stackoverflow.com/users/36866/some
+		//http://stackoverflow.com/questions/384286/javascript-isdom-how-do-you-check-if-a-javascript-object-is-a-dom-object
+		//Returns true if it is a DOM node
+		web.isNode=(typeof web.global.Node != "undefined")
+			?function(o){
+				return o instanceof Node
+			}
+			:function(o){ 
+				return o && typeof o === "object" && typeof o.nodeType === "number" && typeof o.nodeName==="string"
+			};
+
+		//Returns true if it is a DOM element
+		web.isElement=(typeof web.global.HTMLElement != "undefined")
+			?function(o){
+				return o instanceof HTMLElement //DOM2
+			}
+			:function(o){
+				return web.isNode() && o.nodeType === 1
+			};
+
+		var isFunction= web.isFunction= function(value) {
+			return typeof value == 'function';
+		}
+		web.isCallable=function(o){
+			return o &&o.call
+		}
+		web.isApplyable=function(o){
+			return o.apply
+		}
+
+		// detect native method in object not same scope of isHostObject
+		//https://github.com/dperini/nwevents/blob/ac33e52c1ed1c1c3a1bb1612384ca5b2f7a9b3ef/src/nwmatcher.js#L41
+		web.isNativeFunction = function(fn) {
+			return typeof fn =='function' &&
+				// IE/W3C browsers will return [native code]
+				// Safari 2.0.x and older will return [function]
+				(/\{\s*\[native code[^\]]*\]\s*\}|^\[function\]$/).test(fn);
+			}
+
+		//http://stackoverflow.com/questions/596467/how-do-i-convert-a-number-to-an-integer-in-javascript
+		web.toInt=function(value){ return ~~value; }
+
+
+
+
 		web.isValue=function(o){
 			return o!=null;
 		}
+
 
 		//TODO validate
 		//http://stackoverflow.com/questions/2742813/how-to-validate-youtube-video-ids

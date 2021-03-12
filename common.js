@@ -206,37 +206,39 @@ https://stackoverflow.com/questions/53201455/how-to-get-discord-bot-to-read-embe
         fields {boolean}: whether you want to search in the fields
       }
      */
-exports.findInMessage = function findInMessage(message, target, {
-  caseSensitive = true,
-  author = true,
-  description = true,
-  footer = true,
-  title = true,
-  fields = true
-}) {
+exports.findInMessage = function findInMessage(message, target, opts) {
   if (!target || !message) return null;
-  let str = caseSensitive ? target : target.toLowerCase();
+    opts = opts ||{};
+    opts.caseSensitive = (opts.caseSensitive==null)?true:false;
+    opts.author = (opts.author==null)?true:false;
+    opts.description = (opts.description==null)?true:false;
+    opts.footer = (opts.footer==null)?true:false;
+    opts.title = (opts.title==null)?true:false;
+    opts.fields = (opts.fields==null)?true:false;
 
-  if ((caseSensitive && message.content.includes(str)) ||
-    (!caseSensitive && message.content.toLowerCase().includes(str))) return true;
+	
+  let str = opts.caseSensitive ? target : target.toLowerCase();
+
+  if ((opts.caseSensitive && message.content.includes(str)) ||
+    (!opts.caseSensitive && message.content.toLowerCase().includes(str))) return true;
 
   for (let embed of message.embeds) {
-    if ((caseSensitive && (
-        (author && embed.author.includes(str)) ||
-        (description && embed.description.includes(str)) ||
-        (footer && embed.footer.includes(str)) ||
-        (title && embed.title.includes(str)))) ||
-      (!caseSensitive && (
-        (author && embed.author.toLowerCase().includes(str)) ||
-        (description && embed.description.toLowerCase().includes(str)) ||
-        (footer && embed.footer.toLowerCase().includes(str)) ||
-        (title && embed.title.toLowerCase().includes(str))))
+    if ((opts.caseSensitive && (
+        (opts.author && embed.author.includes(str)) ||
+        (opts.description && embed.description.includes(str)) ||
+        (opts.footer && embed.footer.includes(str)) ||
+        (opts.title && embed.title.includes(str)))) ||
+      (!opts.caseSensitive && (
+        (opts.author && embed.author.toLowerCase().includes(str)) ||
+        (opts.description && embed.description.toLowerCase().includes(str)) ||
+        (opts.footer && embed.footer.toLowerCase().includes(str)) ||
+        (opts.title && embed.title.toLowerCase().includes(str))))
     ) return true;
 
-    if (fields)
+    if (opts.fields)
       for (let field of embed.fields) {
-        if ((caseSensitive && [field.name, field.value].includes(str)) ||
-          (!caseSensitive && [field.name.toLowerCase(), field.value.toLowerCase()].includes(str))) return true;
+        if ((opts.caseSensitive && [field.name, field.value].includes(str)) ||
+          (!opts.caseSensitive && [field.name.toLowerCase(), field.value.toLowerCase()].includes(str))) return true;
       }
   }
 

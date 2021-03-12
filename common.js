@@ -207,8 +207,8 @@ https://stackoverflow.com/questions/53201455/how-to-get-discord-bot-to-read-embe
       }
      */
 exports.findInMessage = function findInMessage(message, target, {
-  caseSensitive = false,
-  author = false,
+  caseSensitive = true,
+  author = true,
   description = true,
   footer = true,
   title = true,

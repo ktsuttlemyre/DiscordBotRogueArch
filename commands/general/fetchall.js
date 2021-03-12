@@ -43,7 +43,12 @@ class CustomCommand extends Command {
 	var gArray=[]
 	var array=[]
 	var hash={}
+	var embeds=[]
 	await common.fetchMessages(message.channel,function(message,index,messages,gIndex){
+		
+		if(message.embeds){
+			embeds.push(message)
+		}
 		iArray.push(index)
 		gArray.push(gIndex)
 		
@@ -61,6 +66,7 @@ class CustomCommand extends Command {
 	console.log(gArray)
 	console.log(gArray.length)
 	console.log(array.length)
+	console.log('embed messages',embeds.length)
 		
 // 	common.fetchMessages(message.channel,{},function(message,index,messages,gIndex){
 // 		var match = message.content.match(/added/:/[(.*?)/]/);

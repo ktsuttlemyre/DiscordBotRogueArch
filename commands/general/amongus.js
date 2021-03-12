@@ -13,7 +13,7 @@ class CustomCommand extends Command {
 		super(path.parse(__filename).name, {
 		description: { content: 'sets amongus muting'},
 		aliases: [''],
-		category: path.basename(path.dirname(filename)),
+		category: path.basename(path.dirname(__filename)),
 		clientPermissions: ['SEND_MESSAGES'],
 		args: [
 			 {

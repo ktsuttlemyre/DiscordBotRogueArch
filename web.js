@@ -1,6 +1,6 @@
 //a subset of web.js from 
 //https://github.com/ktsuttlemyre/WebJS/blob/master/web.js
-
+let hideTrace = true;
 let web = {}
 web.isArray=Array.isArray;
 web.global=global = this
@@ -1336,6 +1336,8 @@ web.global=global = this
 
 
 		web.depricated=function(reason,fn){
-			console.trace('This function is depricated for reason:',reason,fn)
+			if(hideTrace){
+				console.trace('This function is depricated for reason:',reason,fn)
+			}
 		}
 module.exports=web;

@@ -6,10 +6,7 @@ const {reactions,defaultAvatar} = require.main.require('./common');
 const common = require.main.require('./common');
 const _ = require('lodash');
 const path = require('path');
-path.parse(__filename).name
-path.basename(path.dirname(filename))
 
-//sound effects https://www.youtube.com/channel/UCok6P4rwxBMun9ghaIV4ufQ
 
 class CustomCommand extends Command {
 	constructor() {

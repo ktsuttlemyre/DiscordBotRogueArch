@@ -6,7 +6,7 @@ const {reactions,defaultAvatar} = require.main.require('./common');
 const common = require.main.require('./common');
 const _ = require('lodash');
 const path = require('path');
-
+const web = require.main.require('./web');
 
 class CustomCommand extends Command {
 	constructor() {
@@ -46,9 +46,15 @@ class CustomCommand extends Command {
 	var embeds=[]
 	var embed = []
 	var added=[]
+	var youtubeLinks=[]
 	await common.fetchMessages(message.channel,function(message,index,messages,gIndex){
 		
 		if(message.embeds.length){
+			var text = JSON.stringify(message.embeds)
+			var youtube = web.getYoutubeHash(text);
+			if(youtube){
+				youtubeLinks.push(youtube)
+			}
 			embeds.push(message)
 		}
 		if(message.embed){

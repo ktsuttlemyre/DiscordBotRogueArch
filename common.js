@@ -87,7 +87,7 @@ exports.getMessages = async function getMessages(channel, limit) {
 		return out
 	}
 		
-exports.fetchMessages = async function fetchMessages(channel, options, callback) {
+exports.fetchMessagesLegacy = async function fetchMessages(channel, options, callback) {
 		if(!options.limit){
 			options.limit=Infinity
 		}
@@ -118,3 +118,63 @@ exports.fetchMessages = async function fetchMessages(channel, options, callback)
 			opts.before = messagesArray[(messagesArray.length - 1)].id
 		}
 	}
+exports.fetchMessages = async function fetchMessages(channel, options, callback) {
+	    if(typeof options == 'function'){
+	    	callback=options
+	    	options={}
+	    }
+		let opts={limit:100};
+
+		let loadedAllMessages = false; //denote all messages are loaded
+		let breakOut = false;  //stop loading any more messages
+
+		let gIndex=0;
+		let gOffset=0;
+		let nBuffer=5;
+
+		const array = [];
+
+		_processTick=function(){
+			if(breakOut){return}
+				
+			for(let index=gIndex+gOffset,l=array.length; (loadedAllMessages || index<l-nBuffer) && index<l; index++, gIndex++){
+				var response = callback(message,index,array,gIndex)
+				if(typeof response == 'number'){
+					index=response-1
+					continue;
+				}
+				if(response){
+					breakOut=true;
+					return true
+				}
+			};
+
+
+			//test length and delete the beginning of the array to clean up
+			if(array.length>(nBuffer*2)+1){
+				let remove = array.length-((nBuffer*2)+1);
+				gOffset-= remove;  //array.length-(nBuffer)
+				array.splice(0,remove);	
+			}
+			
+		}
+
+		let _fetchMessages=function(){
+			if(breakOut){return}
+			channel.messages.fetch(opts,false).then(function(messages){
+				if(breakOut){return}
+				const messagesArray = messages.array();
+
+				if(!messagesArray.length){
+					loadedAllMessages=true;
+				}else{
+					array.push.apply(array,messagesArray);
+					opts.before = messagesArray[(messagesArray.length - 1)].id
+					_fetchMessages();
+				}
+				_processTick();
+			});
+		}
+		_fetchMessages();
+	}
+

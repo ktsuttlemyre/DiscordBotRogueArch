@@ -35,8 +35,30 @@ class PlayCommand extends Command {
 
 	async exec(message) {
 
-	    let messages = await common.getMessages(message.channel);
-	    message.channel.send(`got ${messages.length} messages`);
+	    //let messages = await common.getMessages(message.channel);
+	    //message.channel.send(`got ${messages.length} messages`);
+		
+		
+	var iArray=[]
+	var gArray=[]
+	var array=[]
+	await common.fetchMessages(message.channel,function(message,index,messages,gIndex){
+		iArray.push(index)
+		gArray.push(gIndex)
+		array.push(message)
+	})
+	message.channel.send(`got ${gArray.length} messages`);
+	console.log(iArray)
+	console.log(gArray)
+		
+// 	common.fetchMessages(message.channel,{},function(message,index,messages,gIndex){
+// 		var match = message.content.match(/added/:/[(.*?)/]/);
+
+// 		if(match){
+// 			spreadsheet.insert(match[1]);
+// 		}
+
+// 	})	
     
     
 	}

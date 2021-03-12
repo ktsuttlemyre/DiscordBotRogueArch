@@ -118,7 +118,7 @@ exports.fetchMessagesLegacy = async function fetchMessages(channel, options, cal
 			opts.before = messagesArray[(messagesArray.length - 1)].id
 		}
 	}
-exports.fetchMessages = async function fetchMessages(channel, options, callback) {
+exports.fetchMessages = function fetchMessages(channel, options, callback) {
 	    if(typeof options == 'function'){
 	    	callback=options
 	    	options={}
@@ -134,8 +134,8 @@ exports.fetchMessages = async function fetchMessages(channel, options, callback)
 
 		const array = [];
 
-		let _processTick=function(){
-			if(breakOut){return}
+		let _processTick=function(resolve){
+			if(breakOut){return resolve('resolved');}
 				
 			for(let index=gIndex+gOffset,l=array.length; (loadedAllMessages || index<l-nBuffer) && index<l; index++, gIndex++){
 				let response = callback(array[index],index, array, gIndex);
@@ -160,21 +160,23 @@ exports.fetchMessages = async function fetchMessages(channel, options, callback)
 		}
 
 		let _fetchMessages=function(){
-			if(breakOut){return}
-			channel.messages.fetch(opts).then(function(messages){
-				if(breakOut){return}
-				const messagesArray = messages.array();
+			return new Promise(resolve => {
+				if(breakOut){return resolve('resolved');}
+				channel.messages.fetch(opts).then(function(messages){
+					if(breakOut){return resolve('resolved');}
+					const messagesArray = messages.array();
 
-				if(!messagesArray.length){
-					loadedAllMessages=true;
-				}else{
-					array.push.apply(array,messagesArray);
-					opts.before = messagesArray[(messagesArray.length - 1)].id
-					_fetchMessages();
-				}
-				_processTick();
+					if(!messagesArray.length){
+						loadedAllMessages=true;
+					}else{
+						array.push.apply(array,messagesArray);
+						opts.before = messagesArray[(messagesArray.length - 1)].id
+						_fetchMessages();
+					}
+					_processTick(resolve);
+				});
 			});
 		}
-		_fetchMessages();
+		return _fetchMessages();
 	}
 

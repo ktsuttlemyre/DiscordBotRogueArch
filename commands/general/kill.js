@@ -4,16 +4,15 @@ const { Player } = require("discord-player");
 const emotes={error:":error:"}
 const {reactions,defaultAvatar} = require.main.require('./common');
 const common = require.main.require('./common');
-var _ = require('lodash');
-
-//sound effects https://www.youtube.com/channel/UCok6P4rwxBMun9ghaIV4ufQ
+const _ = require('lodash');
+const path = require('path');
 
 class PlayCommand extends Command {
 	constructor() {
-		super('kill', {
+		super(path.parse(__filename).name, {
 		description: { content: 'kill'},
 		aliases: ['kill'],
-		category: 'general',
+		category: path.basename(path.dirname(filename)),
 		clientPermissions: ['SEND_MESSAGES'],
 		args: [
 			// {

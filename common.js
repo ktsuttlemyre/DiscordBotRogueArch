@@ -160,7 +160,7 @@ exports.fetchMessages = function fetchMessages(channel, options, callback) {
 			//test length and delete the beginning of the array to clean up
 			if(array.length>(nBuffer*2)+1){
 				let remove = array.length-((nBuffer*2)+1);
-				gOffset-= remove;  //array.length-(nBuffer)
+				gOffset-= (remove-1);  //array.length-(nBuffer)
 				array.splice(0,remove);	
 			}
 			

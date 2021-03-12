@@ -7,7 +7,7 @@ const common = require.main.require('./common');
 const _ = require('lodash');
 const path = require('path');
 
-class PlayCommand extends Command {
+class CustomCommand extends Command {
 	constructor() {
 		super(path.parse(__filename).name, {
 		description: { content: 'kill'},
@@ -52,4 +52,4 @@ class PlayCommand extends Command {
 	}
 }
 
-module.exports = PlayCommand;
+module.exports = CustomCommand;

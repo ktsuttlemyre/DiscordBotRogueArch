@@ -138,7 +138,7 @@ exports.fetchMessages = function fetchMessages(channel, options, callback) {
 			console.log('processing tick');
 			if(breakOut){return resolve('resolved');}
 				
-			for(let index=gIndex+gOffset,l=array.length; (loadedAllMessages || index<l-nBuffer)) && index<l; index++, gIndex++){
+			for(let index=gIndex+gOffset,l=array.length; (loadedAllMessages || index<l-nBuffer) && index<l; index++, gIndex++){
 				console.log('calling callback with',index,gIndex)
 				let response = callback(array[index], index, array, gIndex);
 				//console.log('got response',response);

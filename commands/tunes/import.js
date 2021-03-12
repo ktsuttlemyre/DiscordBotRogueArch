@@ -36,7 +36,7 @@ class PlayCommand extends Command {
 	async exec(message) {
 
     common.fetchMessages(message.channel,{},function(message,index,messages,gIndex){
-      var match = message.content.match(/added/:/[(.*?)/]/);
+    //  var match = message.content.match(/added/:/[(.*?)/]/);
 
 //       if(match){
 //         spreadsheet.insert(match[1]);

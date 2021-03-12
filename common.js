@@ -224,21 +224,21 @@ exports.findInMessage = function findInMessage(message, target, opts) {
 
   for (let embed of message.embeds) {
     if ((opts.caseSensitive && (
-        (opts.author && embed.author.includes(str)) ||
-        (opts.description && embed.description.includes(str)) ||
-        (opts.footer && embed.footer.includes(str)) ||
-        (opts.title && embed.title.includes(str)))) ||
+        (opts.author && (embed.author||'').includes(str)) ||
+        (opts.description && (embed.description||'').includes(str)) ||
+        (opts.footer && (embed.footer||'').includes(str)) ||
+        (opts.title && (embed.title||'').includes(str)))) ||
       (!opts.caseSensitive && (
-        (opts.author && embed.author.toLowerCase().includes(str)) ||
-        (opts.description && embed.description.toLowerCase().includes(str)) ||
-        (opts.footer && embed.footer.toLowerCase().includes(str)) ||
-        (opts.title && embed.title.toLowerCase().includes(str))))
+        (opts.author && (embed.author||'').toLowerCase().includes(str)) ||
+        (opts.description && (embed.description||'').toLowerCase().includes(str)) ||
+        (opts.footer && (embed.footer||'').toLowerCase().includes(str)) ||
+        (opts.title && (embed.title||'').toLowerCase().includes(str))))
     ) return true;
 
     if (opts.fields)
       for (let field of embed.fields) {
-        if ((opts.caseSensitive && [field.name, field.value].includes(str)) ||
-          (!opts.caseSensitive && [field.name.toLowerCase(), field.value.toLowerCase()].includes(str))) return true;
+        if ((opts.caseSensitive && [(field.name||''), (field.value||'')].includes(str)) ||
+          (!opts.caseSensitive && [(field.name||'').toLowerCase(), (field.value||'').toLowerCase()].includes(str))) return true;
       }
   }
 

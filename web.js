@@ -1,3 +1,6 @@
+//a subset of web.js from 
+//https://github.com/ktsuttlemyre/WebJS/blob/master/web.js
+
 let web = exports.web ={}
 
 

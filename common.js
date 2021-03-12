@@ -178,7 +178,7 @@ exports.fetchMessages = function fetchMessages(channel, options, callback) {
 				}else{
 					array.push.apply(array,messagesArray);
 					opts.before = messagesArray[(messagesArray.length - 1)].id
-					_fetchMessages();
+					_fetchMessages(resolve);
 				}
 				_processTick(resolve);
 			});

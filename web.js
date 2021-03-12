@@ -261,6 +261,22 @@ web.global=global = this
 		}
 
 
+//inspiration http://stackoverflow.com/questions/23013573/swap-key-with-value-json
+		web.hashSwap=function(data,fn){//fn handles collisions
+		  // var ret = {};
+		  // for(var key in json){
+		  //   ret[json[key]] = key;
+		  // }
+		  // return ret;
+
+			return web.keys(data).reduce(function(obj,key){
+				if(obj.hasOwnProperty(data[key])){
+					fn&&fn(data,obj,key)
+				}
+				obj[ data[key] ] = key;
+				return obj;
+			},{});
+		}
 
 
 		//inspiration http://shebang.brandonmintern.com/foolproof-html-escaping-in-javascript/
@@ -309,23 +325,7 @@ web.global=global = this
 			//}
 		}
 
-	//inspiration http://stackoverflow.com/questions/23013573/swap-key-with-value-json
-		web.hashSwap=function(data,fn){//fn handles collisions
-		  // var ret = {};
-		  // for(var key in json){
-		  //   ret[json[key]] = key;
-		  // }
-		  // return ret;
-
-			return web.keys(data).reduce(function(obj,key){
-				if(obj.hasOwnProperty(data[key])){
-					fn&&fn(data,obj,key)
-				}
-				obj[ data[key] ] = key;
-				return obj;
-			},{});
-		}
-
+	
 
 		//TODO validate
 		//http://stackoverflow.com/questions/2742813/how-to-validate-youtube-video-ids

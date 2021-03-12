@@ -4,9 +4,9 @@ const { Player } = require("discord-player");
 const emotes={error:":error:"}
 const {reactions,defaultAvatar} = require.main.require('./common');
 const common = require.main.require('./common');
-var _ = require('lodash');
-var map = require.main.require('./sounds')
-var path = require('path');
+const _ = require('lodash');
+const map = require.main.require('./sounds')
+const path = require('path');
 
 //sound effects https://www.youtube.com/channel/UCok6P4rwxBMun9ghaIV4ufQ
 

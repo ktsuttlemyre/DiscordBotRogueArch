@@ -140,7 +140,7 @@ exports.fetchMessages = function fetchMessages(channel, options, callback) {
 				
 			for(let index=gIndex+gOffset,l=array.length; (loadedAllMessages || index<l-nBuffer) && index<l; index++, gIndex++){
 				console.log('calling callback with',array[index],index,gIndex)
-				let response = callback(array[index],index, array, gIndex);
+				let response = callback(index, array, gIndex);
 				console.log('got response',response);
 				if(typeof response == 'number'){
 					index=response-1

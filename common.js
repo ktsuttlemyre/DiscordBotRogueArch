@@ -148,9 +148,13 @@ exports.fetchMessages = function fetchMessages(channel, options, callback) {
 				}
 				if(response){
 					breakOut=true;
-					return true
+					return resolve('resolved');
 				}
 			};
+			
+			if(loadedAllMessages){
+				return resolve('resolved');
+			}
 
 
 			//test length and delete the beginning of the array to clean up

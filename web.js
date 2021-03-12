@@ -625,6 +625,7 @@ web.global=global = this
 		//inspiration: http://stackoverflow.com/questions/3452546/javascript-regex-how-to-get-youtube-video-id-from-url
 		web.getYoutubeHash=function(url){
 			if(!url){return ''}
+			if(url.length<11){return ''}
 			//if(!web.isString(url)){return ''}
 			if(web.contains('/user/')){console.warn('skipping a youtube user page')}
 			var match = url.match(web.RegExp.getYoutubeHash);

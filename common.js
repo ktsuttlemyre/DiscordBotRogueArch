@@ -138,7 +138,7 @@ exports.fetchMessages = async function fetchMessages(channel, options, callback)
 			if(breakOut){return}
 				
 			for(let index=gIndex+gOffset,l=array.length; (loadedAllMessages || index<l-nBuffer) && index<l; index++, gIndex++){
-				var response = callback(message,index,array,gIndex)
+				let response = callback(array[index],index, array, gIndex);
 				if(typeof response == 'number'){
 					index=response-1
 					continue;

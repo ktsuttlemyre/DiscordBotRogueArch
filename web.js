@@ -261,6 +261,72 @@ web.global=global = this
 		}
 
 
+
+
+		//inspiration http://shebang.brandonmintern.com/foolproof-html-escaping-in-javascript/
+		//inspiration for "secure" way
+		//http://stackoverflow.com/questions/24816/escaping-html-strings-with-jquery
+		//which is apparently from mustache 
+		//https://github.com/janl/mustache.js/blob/master/mustache.js#L82
+		var escapeHTMLMap = {
+			"&":"&amp;",
+			"<":"&lt;",
+			">":"&gt;",
+			'"':'&quot;',
+			"'":'&#39;',
+			"/":'&#x2F;'
+		};
+		web.escapeHTML=function(str) {
+			if(!str){
+				return ''
+			}
+			str=web.toString(str)
+			//if(document){
+			//	var div = document.createElement('div');
+			//	div.appendChild(document.createTextNode(str));
+			//	return div.innerHTML;
+			//}else{
+				return str.replace(/[&<>"'\/]/g, function (s) {
+				  return escapeHTMLMap[s];
+				});
+			//}
+		};
+
+		var unescapeHTMLMap=web.hashSwap(escapeHTMLMap)
+		web.unescapeHTML=function(str){
+			//if(document){
+			//	var div = document.createElement('div');
+			//	div.innerHTML = str;
+			// 	var child = div.childNodes[0];
+			//	return child ? child.nodeValue : '';
+			//}else{
+				if(!str){
+					return str
+				}
+				return str.replace(/&(amp|lt|gt|quot|#39|#x2F);/g, function (s) {
+					return unescapeHTMLMap[s];
+				});
+			//}
+		}
+
+	//inspiration http://stackoverflow.com/questions/23013573/swap-key-with-value-json
+		web.hashSwap=function(data,fn){//fn handles collisions
+		  // var ret = {};
+		  // for(var key in json){
+		  //   ret[json[key]] = key;
+		  // }
+		  // return ret;
+
+			return web.keys(data).reduce(function(obj,key){
+				if(obj.hasOwnProperty(data[key])){
+					fn&&fn(data,obj,key)
+				}
+				obj[ data[key] ] = key;
+				return obj;
+			},{});
+		}
+
+
 		//TODO validate
 		//http://stackoverflow.com/questions/2742813/how-to-validate-youtube-video-ids
 

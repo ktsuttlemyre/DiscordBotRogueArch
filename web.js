@@ -1255,4 +1255,81 @@ web.global=global = this
 			return (threshold)?(score/total)>threshold:(score/total)
 		}
 
+
+		//Inspiration http://tokenposts.blogspot.com.au/2012/04/javascript-objectkeys-browser.html
+		var properties = function(o,level){
+			var k=[],p,enu;
+			for (p in o){
+				if(Object.prototype.hasOwnProperty.call(o,p)){
+					if(level&&Object.prototype.propertyIsEnumreable && level!='properties'){
+						enu=Object.prototype.propertyIsEnumreable.call(o,p)
+						if(level=='keys'&&enu){
+							k.push(p)
+						}else if(level=='nonEnumerables'&&!enu){
+							k.push(p)
+						}else{
+							throw  'IDK WHY THIS HAPPENED!'
+						}
+						continue;
+					}
+					k.push(p);
+					}
+				}
+			return k;
+			}
+
+
+		if(!Object.keys){
+			Object.keys=function(obj){
+				if(!force && o !== Object(o))
+					throw new TypeError('Object.keys called on a non-object');
+				return properties(o,'keys')
+				}
+		}
+
+		if(!Object.getOwnPropertyNames){
+			Object.getOwnPropertyNames=function(obj){
+				if(!force && o !== Object(o))
+					throw new TypeError('Object.keys called on a non-object');
+				return properties(o,'properties')
+				}
+		}
+
+		//TODO
+		//HSould I handle localStorage?
+		// for (i=0; i<=localStorage.length-1; i++)  
+		//     {  
+		//         key = localStorage.key(i);  
+		//         alert(localStorage.getItem(key));
+		//     }  
+		// }
+		// Object.prototype.toString.call(localStorage)
+		// "[object Storage]"
+		// localStorage instanceof Storage
+		// true
+		//level
+		//0=like Object.keys enums only
+		//1=all properties like Object.getOwnProperties
+		//2=nonEnums difference between keys and getOwnProperties
+		web.keys=function(obj,enumLevel,iterNonObject /*sort???*/){
+			//todo add iterator function?
+			if(iterNonObject){
+				return properties(o,enumLevel)
+			}else{
+				if(!enumLevel||enumLevel=='keys'){ //web.startsWith(enumLevel,'key')
+					return Object.keys(obj)
+				}else if(enumLevel=='properties'){ //web.startsWith(enumLevel,'propert')
+					return Object.getOwnPropertyNames(obj)
+				}else if(enumLevel=='nonEnumerables'){ //web.startsWith(enumLevel,'nonEnumerable')
+					var properties = Object.getOwnPropertyNames(obj);
+					return properties.filter(function(key) {
+						return !Object.prototype.propertyIsEnumreable.call(obj,key)
+					})
+				}else{
+					throw 'Error: object.keys does not know the enumlevel'
+				}
+			}
+		}
+
+
 module.exports=web;

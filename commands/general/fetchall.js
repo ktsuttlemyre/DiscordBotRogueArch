@@ -45,6 +45,7 @@ class CustomCommand extends Command {
 	var hash={}
 	var embeds=[]
 	var embed = []
+	var added=[]
 	await common.fetchMessages(message.channel,function(message,index,messages,gIndex){
 		
 		if(message.embeds.length){
@@ -52,6 +53,9 @@ class CustomCommand extends Command {
 		}
 		if(message.embed){
 			embed.push(message)
+		}
+		if(common.findInMessage(message,'added')){
+		   added.push(message)
 		}
 		iArray.push(index)
 		gArray.push(gIndex)
@@ -72,6 +76,7 @@ class CustomCommand extends Command {
 	console.log(array.length)
 	console.log('embeds messages',embeds.length)
 		console.log('embed messages',embed.length)
+		console.log('added messages',added.length)
 		
 // 	common.fetchMessages(message.channel,{},function(message,index,messages,gIndex){
 // 		var match = message.content.match(/added/:/[(.*?)/]/);

@@ -733,10 +733,10 @@ let web = exports.web ={}
 			}
 			return url.path()
 		}
-		web.baseURL=location.protocol + "//" + location.hostname + (location.port && ":" + location.port) + "/"; //web.url(null,'BASE')
-		web.base=function(){
-			return web.url(web.baseURL)
-		}
+// 		web.baseURL=location.protocol + "//" + location.hostname + (location.port && ":" + location.port) + "/"; //web.url(null,'BASE')
+// 		web.base=function(){
+// 			return web.url(web.baseURL)
+// 		}
 
 		web.Object=web.Object||{};
 		web.Object.putAdd=function(obj,key,value){

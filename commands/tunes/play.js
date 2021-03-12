@@ -5,15 +5,14 @@ const emotes={error:":warning:"}
 const {reactions,defaultAvatar} = require.main.require('./common');
 const common = require.main.require('./common');
 var _ = require('lodash');
-
-//sound effects https://www.youtube.com/channel/UCok6P4rwxBMun9ghaIV4ufQ
+var path = require('path');
 
 class CustomCommand extends Command {
 	constructor() {
-		super('play', {
+		super(path.parse(__filename).name, {
 		description: { content: 'plays [name/URL]'},
 		aliases: ['play','add','queue'],
-		category: 'tunes',
+		category: path.basename(path.dirname(filename)),
 		clientPermissions: ['SEND_MESSAGES'],
 		args: [
 			{

@@ -7,8 +7,6 @@ const common = require.main.require('./common');
 var _ = require('lodash');
 var path = require('path');
 
-//sound effects https://www.youtube.com/channel/UCok6P4rwxBMun9ghaIV4ufQ
-
 class CustomCommand extends Command {
 	constructor() {
 		super(path.parse(__filename).name, {

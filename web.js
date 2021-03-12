@@ -261,6 +261,297 @@ web.global=global = this
 		}
 
 
+
+		/*
+		see if an object equals any of the other types
+		*/
+		web.isA=function(obj,arg0,arg1,arg2,arg3,arg4){
+			var args=(type( arg0 ) === 'Array')?arg0:[arg0,arg1,arg2,arg3,arg4];
+
+			return args.some(function(e){
+				return (typeof e == 'string')?typeof obj == e:obj instanceof e;
+			})
+		}
+
+
+		web.join=function(delimiter /*args*/){
+			var string='';
+			delimiter=Array.prototype.shift.call(arguments)
+			var last=Array.prototype.pop.call(arguments)
+			if(typeof delimiter =='string'){
+				for(var i=0,l=arguments.length;i<l;i++){
+					string+=arguments[i]+delimiter;
+				}
+				return string+last;
+			}
+
+		}
+		web.toDataString=function(str,fallback){
+			var dataString= (str==null)?fallback:str.toString();
+			return dataString
+		}
+
+
+
+
+		web.onlyOne=function(target,silentForce){
+			return (target.length==1||silentForce)?
+					target[0]:
+					console.error("Expected to get only one ouput for the array",target)
+		}
+		web.top=function(){
+			
+		}
+		var containsBank={} //TODO ensure this does not get too big!
+		web.contains=function(str,word,caseInsensitive){ //
+			if(!str){
+				return false
+			}
+			if(caseInsensitive){
+				if(web.isString(word)){
+					var bank = containsBank[word]
+					if(!bank){ //Using reg-ex because http://jsperf.com/case-sensitive-regex-vs-case-insensitive-regex/3
+						word = containsBank[word]=new RegExp(word,'i')
+					}else{
+						word=bank
+					}
+				}
+				return word.test(str) //str.search(word)>=0   //http://jsperf.com/regexp-test-vs-match-m5/4
+			}
+			if(!web.isString(str)){
+				str = web.toString(str)	
+			}
+			return (str.indexOf(word)>=0)
+		}
+		web.equalsWord=function(str,word,caseInsensitive){
+			if(str.length==word.length){ //Using reg-ex because http://jsperf.com/case-sensitive-regex-vs-case-insensitive-regex/3
+				return web.contains(str,word,caseInsensitive)
+			}
+		}
+
+		var startsWith=function(str,prefix,caseInsensitive){ //note calling this externally helps prevent recursive array searching on prefix
+			if(str&&prefix&&web.isString(str)){
+				if(caseInsensitive){
+					str=str.toLowerCase()
+					prefix=prefix.toLowerCase();
+				}
+				if(str.length==prefix.length){
+					return str==prefix
+				}
+				return str.slice(0, prefix.length) == prefix; //does chop string but shouldnt iterate though whole string
+			}
+		}
+		web.startsWith=function(str,prefix,caseInsensitive,ignoreWhitespace){
+			str=(ignoreWhitespace)?str.trim():str;
+			if(web.isArray(prefix)){
+				for(var i=0,l=prefix.length;i<l;i++){
+					if(startsWith(str,prefix[i],caseInsensitive)){
+						return true
+					}
+				}
+				return false
+			}
+			return startsWith(str,prefix,caseInsensitive)
+		};
+
+		var endsWith=function(str,suffix,caseInsensitive){ //note calling this externally helps prevent recursive array searching on prefix
+			if(str&&suffix){
+				if(caseInsensitive){
+					str=str.toLowerCase()
+					suffix=suffix.toLowerCase();
+				}
+				if(str.length==suffix.length){
+					return str==suffix
+				}
+				//return str.slice(0, prefix.length) == prefix;
+				return str.indexOf(suffix, str.length - suffix.length) !== -1; //does not chop up string. should be faster
+			}
+		}
+
+		web.endsWith=function(str,suffix,caseInsensitive,ignoreWhitespace) {
+			str=(ignoreWhitespace)?str.trim():str;
+			if(web.isArray(suffix)){
+				for(var i=0,l=suffix.length;i<l;i++){
+					if(endsWith(str,suffix[i],caseInsensitive)){
+						return true
+					}
+				}
+				return false
+			}
+			return endsWith(str,suffix,caseInsensitive)
+		};
+
+		web.caseInsensitive=function(w,w2){
+			return w.toUpperCase()==w2.toUpperCase()
+		}
+
+
+
+		//TODO cache will definately help
+		web.isArrayHash=function(obj,level){
+			if(!level){
+				web.isArray(obj) && obj.every(function(o){return web.isObject(o)})
+			}
+			return (web.isArray(obj) && web.isObject(obj[0]) && web.isObject(obj[web.toInt(obj.length/2)]) && web.isObject(obj[obj.length-1]))
+		}
+		web.isArrayMatix=function(obj,level){
+			if(!level){
+				web.isArray(obj) && obj.every(function(o){return web.isArray(o)})
+			}
+			return (web.isArray(obj) && web.isArray(obj[0]) && web.isArray(obj[web.toInt(obj.length/2)]) && web.isArray(obj[obj.length-1]))
+		}
+
+		//http://jsperf.com/checking-previously-typed-object
+		web.isObject=function(obj,level){
+			if(!level){
+				return isType(obj) =="Object" /*excludes array and null and regexp and HTMLelment etc*/ //Object.getPrototypeOf(obj) ===Object.prototype 
+			}else{
+				return obj === Object(obj);
+			}
+		}
+		web.isNumber=function(o){
+			return typeof o=='number';
+		}
+		web.isNumeric=function(o){
+			return !isNaN(o);
+		}
+		web.toNumber=function(o){
+			return parseFloat(o);
+		}
+		web.isjQuery=function(o){
+			return (o instanceof jQuery)
+		}
+		web.isCollection=web.isContainer=function(obj){
+			return web.isObject(obj) || web.isArray(obj)
+		}
+
+		web.isEmpty=function(o){
+			if(web.isType(o,'String')){
+				return (o=='')
+			}else if(web.isType(o,'Object')){
+				return (web.keys(o).length==0)
+			}else if(web.isType('Array')){
+				return (o.length==0)
+			}else{
+					throw 'idk how to see if this is empty'
+			}
+		}
+
+		//https://www.inkling.com/read/javascript-definitive-guide-david-flanagan-6th/chapter-7/array-like-objects
+		// Determine if o is an array-like object.
+		// Strings and functions have numeric length properties, but are 
+		// excluded by the typeof test. In client-side JavaScript, DOM text
+		// nodes have a numeric length property, and may need to be excluded 
+		// with an additional o.nodeType != 3 test.
+		web.isArrayLike=function(o) {
+			if (o &&								// o is not null, undefined, etc.
+				typeof o === "object" &&			// o is an object
+				isFinite(o.length) &&				// o.length is a finite number
+				o.length >= 0 &&					// o.length is non-negative
+				o.length===Math.floor(o.length) &&	// o.length is an integer
+				o.length < 4294967296){				// o.length < 2^32
+				return true;						// Then o is array-like
+			}else{
+				return false;						// Otherwise it is not
+			}
+		}
+
+		web.duckType=function(obj,compare,threshold){
+			var score=0,total=0,properties=(web.isArray(compare))?compare:web.keys(compare);
+			if(threshold==null||threshold==1){
+				for(var i=0,l=properties.length;i<l;i++){
+					if(!obj[properties[i]]){
+						return false
+					}
+				}
+				return true
+			}
+			for(var i=0,l=properties.length;i<l;i++){
+				total++
+				if(obj[properties[i]]){
+					score++
+				}
+			}
+			return (threshold)?(score/total)>threshold:(score/total)
+		}
+
+
+		//Inspiration http://tokenposts.blogspot.com.au/2012/04/javascript-objectkeys-browser.html
+		var properties = function(o,level){
+			var k=[],p,enu;
+			for (p in o){
+				if(Object.prototype.hasOwnProperty.call(o,p)){
+					if(level&&Object.prototype.propertyIsEnumreable && level!='properties'){
+						enu=Object.prototype.propertyIsEnumreable.call(o,p)
+						if(level=='keys'&&enu){
+							k.push(p)
+						}else if(level=='nonEnumerables'&&!enu){
+							k.push(p)
+						}else{
+							throw  'IDK WHY THIS HAPPENED!'
+						}
+						continue;
+					}
+					k.push(p);
+					}
+				}
+			return k;
+			}
+
+
+		if(!Object.keys){
+			Object.keys=function(obj){
+				if(!force && o !== Object(o))
+					throw new TypeError('Object.keys called on a non-object');
+				return properties(o,'keys')
+				}
+		}
+
+		if(!Object.getOwnPropertyNames){
+			Object.getOwnPropertyNames=function(obj){
+				if(!force && o !== Object(o))
+					throw new TypeError('Object.keys called on a non-object');
+				return properties(o,'properties')
+				}
+		}
+
+		//TODO
+		//HSould I handle localStorage?
+		// for (i=0; i<=localStorage.length-1; i++)  
+		//     {  
+		//         key = localStorage.key(i);  
+		//         alert(localStorage.getItem(key));
+		//     }  
+		// }
+		// Object.prototype.toString.call(localStorage)
+		// "[object Storage]"
+		// localStorage instanceof Storage
+		// true
+		//level
+		//0=like Object.keys enums only
+		//1=all properties like Object.getOwnProperties
+		//2=nonEnums difference between keys and getOwnProperties
+		web.keys=function(obj,enumLevel,iterNonObject /*sort???*/){
+			//todo add iterator function?
+			if(iterNonObject){
+				return properties(o,enumLevel)
+			}else{
+				if(!enumLevel||enumLevel=='keys'){ //web.startsWith(enumLevel,'key')
+					return Object.keys(obj)
+				}else if(enumLevel=='properties'){ //web.startsWith(enumLevel,'propert')
+					return Object.getOwnPropertyNames(obj)
+				}else if(enumLevel=='nonEnumerables'){ //web.startsWith(enumLevel,'nonEnumerable')
+					var properties = Object.getOwnPropertyNames(obj);
+					return properties.filter(function(key) {
+						return !Object.prototype.propertyIsEnumreable.call(obj,key)
+					})
+				}else{
+					throw 'Error: object.keys does not know the enumlevel'
+				}
+			}
+		}
+
+
 //inspiration http://stackoverflow.com/questions/23013573/swap-key-with-value-json
 		web.hashSwap=function(data,fn){//fn handles collisions
 		  // var ret = {};
@@ -1042,294 +1333,6 @@ web.global=global = this
 			return obj;
 		}
 
-		/*
-		see if an object equals any of the other types
-		*/
-		web.isA=function(obj,arg0,arg1,arg2,arg3,arg4){
-			var args=(type( arg0 ) === 'Array')?arg0:[arg0,arg1,arg2,arg3,arg4];
-
-			return args.some(function(e){
-				return (typeof e == 'string')?typeof obj == e:obj instanceof e;
-			})
-		}
-
-
-		web.join=function(delimiter /*args*/){
-			var string='';
-			delimiter=Array.prototype.shift.call(arguments)
-			var last=Array.prototype.pop.call(arguments)
-			if(typeof delimiter =='string'){
-				for(var i=0,l=arguments.length;i<l;i++){
-					string+=arguments[i]+delimiter;
-				}
-				return string+last;
-			}
-
-		}
-		web.toDataString=function(str,fallback){
-			var dataString= (str==null)?fallback:str.toString();
-			return dataString
-		}
-
-
-
-
-		web.onlyOne=function(target,silentForce){
-			return (target.length==1||silentForce)?
-					target[0]:
-					console.error("Expected to get only one ouput for the array",target)
-		}
-		web.top=function(){
-			
-		}
-		var containsBank={} //TODO ensure this does not get too big!
-		web.contains=function(str,word,caseInsensitive){ //
-			if(!str){
-				return false
-			}
-			if(caseInsensitive){
-				if(web.isString(word)){
-					var bank = containsBank[word]
-					if(!bank){ //Using reg-ex because http://jsperf.com/case-sensitive-regex-vs-case-insensitive-regex/3
-						word = containsBank[word]=new RegExp(word,'i')
-					}else{
-						word=bank
-					}
-				}
-				return word.test(str) //str.search(word)>=0   //http://jsperf.com/regexp-test-vs-match-m5/4
-			}
-			if(!web.isString(str)){
-				str = web.toString(str)	
-			}
-			return (str.indexOf(word)>=0)
-		}
-		web.equalsWord=function(str,word,caseInsensitive){
-			if(str.length==word.length){ //Using reg-ex because http://jsperf.com/case-sensitive-regex-vs-case-insensitive-regex/3
-				return web.contains(str,word,caseInsensitive)
-			}
-		}
-
-		var startsWith=function(str,prefix,caseInsensitive){ //note calling this externally helps prevent recursive array searching on prefix
-			if(str&&prefix&&web.isString(str)){
-				if(caseInsensitive){
-					str=str.toLowerCase()
-					prefix=prefix.toLowerCase();
-				}
-				if(str.length==prefix.length){
-					return str==prefix
-				}
-				return str.slice(0, prefix.length) == prefix; //does chop string but shouldnt iterate though whole string
-			}
-		}
-		web.startsWith=function(str,prefix,caseInsensitive,ignoreWhitespace){
-			str=(ignoreWhitespace)?str.trim():str;
-			if(web.isArray(prefix)){
-				for(var i=0,l=prefix.length;i<l;i++){
-					if(startsWith(str,prefix[i],caseInsensitive)){
-						return true
-					}
-				}
-				return false
-			}
-			return startsWith(str,prefix,caseInsensitive)
-		};
-
-		var endsWith=function(str,suffix,caseInsensitive){ //note calling this externally helps prevent recursive array searching on prefix
-			if(str&&suffix){
-				if(caseInsensitive){
-					str=str.toLowerCase()
-					suffix=suffix.toLowerCase();
-				}
-				if(str.length==suffix.length){
-					return str==suffix
-				}
-				//return str.slice(0, prefix.length) == prefix;
-				return str.indexOf(suffix, str.length - suffix.length) !== -1; //does not chop up string. should be faster
-			}
-		}
-
-		web.endsWith=function(str,suffix,caseInsensitive,ignoreWhitespace) {
-			str=(ignoreWhitespace)?str.trim():str;
-			if(web.isArray(suffix)){
-				for(var i=0,l=suffix.length;i<l;i++){
-					if(endsWith(str,suffix[i],caseInsensitive)){
-						return true
-					}
-				}
-				return false
-			}
-			return endsWith(str,suffix,caseInsensitive)
-		};
-
-		web.caseInsensitive=function(w,w2){
-			return w.toUpperCase()==w2.toUpperCase()
-		}
-
-
-
-		//TODO cache will definately help
-		web.isArrayHash=function(obj,level){
-			if(!level){
-				web.isArray(obj) && obj.every(function(o){return web.isObject(o)})
-			}
-			return (web.isArray(obj) && web.isObject(obj[0]) && web.isObject(obj[web.toInt(obj.length/2)]) && web.isObject(obj[obj.length-1]))
-		}
-		web.isArrayMatix=function(obj,level){
-			if(!level){
-				web.isArray(obj) && obj.every(function(o){return web.isArray(o)})
-			}
-			return (web.isArray(obj) && web.isArray(obj[0]) && web.isArray(obj[web.toInt(obj.length/2)]) && web.isArray(obj[obj.length-1]))
-		}
-
-		//http://jsperf.com/checking-previously-typed-object
-		web.isObject=function(obj,level){
-			if(!level){
-				return isType(obj) =="Object" /*excludes array and null and regexp and HTMLelment etc*/ //Object.getPrototypeOf(obj) ===Object.prototype 
-			}else{
-				return obj === Object(obj);
-			}
-		}
-		web.isNumber=function(o){
-			return typeof o=='number';
-		}
-		web.isNumeric=function(o){
-			return !isNaN(o);
-		}
-		web.toNumber=function(o){
-			return parseFloat(o);
-		}
-		web.isjQuery=function(o){
-			return (o instanceof jQuery)
-		}
-		web.isCollection=web.isContainer=function(obj){
-			return web.isObject(obj) || web.isArray(obj)
-		}
-
-		web.isEmpty=function(o){
-			if(web.isType(o,'String')){
-				return (o=='')
-			}else if(web.isType(o,'Object')){
-				return (web.keys(o).length==0)
-			}else if(web.isType('Array')){
-				return (o.length==0)
-			}else{
-					throw 'idk how to see if this is empty'
-			}
-		}
-
-		//https://www.inkling.com/read/javascript-definitive-guide-david-flanagan-6th/chapter-7/array-like-objects
-		// Determine if o is an array-like object.
-		// Strings and functions have numeric length properties, but are 
-		// excluded by the typeof test. In client-side JavaScript, DOM text
-		// nodes have a numeric length property, and may need to be excluded 
-		// with an additional o.nodeType != 3 test.
-		web.isArrayLike=function(o) {
-			if (o &&								// o is not null, undefined, etc.
-				typeof o === "object" &&			// o is an object
-				isFinite(o.length) &&				// o.length is a finite number
-				o.length >= 0 &&					// o.length is non-negative
-				o.length===Math.floor(o.length) &&	// o.length is an integer
-				o.length < 4294967296){				// o.length < 2^32
-				return true;						// Then o is array-like
-			}else{
-				return false;						// Otherwise it is not
-			}
-		}
-
-		web.duckType=function(obj,compare,threshold){
-			var score=0,total=0,properties=(web.isArray(compare))?compare:web.keys(compare);
-			if(threshold==null||threshold==1){
-				for(var i=0,l=properties.length;i<l;i++){
-					if(!obj[properties[i]]){
-						return false
-					}
-				}
-				return true
-			}
-			for(var i=0,l=properties.length;i<l;i++){
-				total++
-				if(obj[properties[i]]){
-					score++
-				}
-			}
-			return (threshold)?(score/total)>threshold:(score/total)
-		}
-
-
-		//Inspiration http://tokenposts.blogspot.com.au/2012/04/javascript-objectkeys-browser.html
-		var properties = function(o,level){
-			var k=[],p,enu;
-			for (p in o){
-				if(Object.prototype.hasOwnProperty.call(o,p)){
-					if(level&&Object.prototype.propertyIsEnumreable && level!='properties'){
-						enu=Object.prototype.propertyIsEnumreable.call(o,p)
-						if(level=='keys'&&enu){
-							k.push(p)
-						}else if(level=='nonEnumerables'&&!enu){
-							k.push(p)
-						}else{
-							throw  'IDK WHY THIS HAPPENED!'
-						}
-						continue;
-					}
-					k.push(p);
-					}
-				}
-			return k;
-			}
-
-
-		if(!Object.keys){
-			Object.keys=function(obj){
-				if(!force && o !== Object(o))
-					throw new TypeError('Object.keys called on a non-object');
-				return properties(o,'keys')
-				}
-		}
-
-		if(!Object.getOwnPropertyNames){
-			Object.getOwnPropertyNames=function(obj){
-				if(!force && o !== Object(o))
-					throw new TypeError('Object.keys called on a non-object');
-				return properties(o,'properties')
-				}
-		}
-
-		//TODO
-		//HSould I handle localStorage?
-		// for (i=0; i<=localStorage.length-1; i++)  
-		//     {  
-		//         key = localStorage.key(i);  
-		//         alert(localStorage.getItem(key));
-		//     }  
-		// }
-		// Object.prototype.toString.call(localStorage)
-		// "[object Storage]"
-		// localStorage instanceof Storage
-		// true
-		//level
-		//0=like Object.keys enums only
-		//1=all properties like Object.getOwnProperties
-		//2=nonEnums difference between keys and getOwnProperties
-		web.keys=function(obj,enumLevel,iterNonObject /*sort???*/){
-			//todo add iterator function?
-			if(iterNonObject){
-				return properties(o,enumLevel)
-			}else{
-				if(!enumLevel||enumLevel=='keys'){ //web.startsWith(enumLevel,'key')
-					return Object.keys(obj)
-				}else if(enumLevel=='properties'){ //web.startsWith(enumLevel,'propert')
-					return Object.getOwnPropertyNames(obj)
-				}else if(enumLevel=='nonEnumerables'){ //web.startsWith(enumLevel,'nonEnumerable')
-					var properties = Object.getOwnPropertyNames(obj);
-					return properties.filter(function(key) {
-						return !Object.prototype.propertyIsEnumreable.call(obj,key)
-					})
-				}else{
-					throw 'Error: object.keys does not know the enumlevel'
-				}
-			}
-		}
 
 
 module.exports=web;

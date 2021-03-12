@@ -13,7 +13,7 @@ class CustomCommand extends Command {
 		super(path.parse(__filename).name, {
 		description: { content: 'skip'},
 		aliases: ['skip','next'],
-		category: path.basename(path.dirname(_filename)),
+		category: path.basename(path.dirname(__filename)),
 		clientPermissions: ['SEND_MESSAGES'],
 		args: [
 			// {

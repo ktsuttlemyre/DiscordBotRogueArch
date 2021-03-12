@@ -2,7 +2,7 @@
 //https://github.com/ktsuttlemyre/WebJS/blob/master/web.js
 
 let web = {}
-
+web.isArray=Array.isArray;
 web.global=global = this
 		web.RegExp={alphabetical:/[a-zA-Z]/g
 					,majorAtoms:/[a-gi-zA-GI-Z]/g

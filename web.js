@@ -3,6 +3,7 @@
 
 let web = {}
 
+web.global=global = this
 		web.RegExp={alphabetical:/[a-zA-Z]/g
 					,majorAtoms:/[a-gi-zA-GI-Z]/g
 					,commaSeperatedTrimSplit:/\s*,\s*/

@@ -123,7 +123,7 @@ exports.fetchMessages = function fetchMessages(channel, options, callback) {
 	    	callback=options
 	    	options={}
 	    }
-		let opts={limit:100};
+		let opts={limit:50};
 
 		let loadedAllMessages = false; //denote all messages are loaded
 		let breakOut = false;  //stop loading any more messages
@@ -141,7 +141,7 @@ exports.fetchMessages = function fetchMessages(channel, options, callback) {
 			for(let index=gIndex+gOffset,l=array.length; (loadedAllMessages || index<l-nBuffer) && index<l; index++, gIndex++){
 				console.log('calling callback with',index,gIndex)
 				let response = callback(array[index], index, array, gIndex);
-				console.log('got response',response);
+				//console.log('got response',response);
 				if(typeof response == 'number'){
 					index=response-1
 					continue;
@@ -160,7 +160,7 @@ exports.fetchMessages = function fetchMessages(channel, options, callback) {
 			//test length and delete the beginning of the array to clean up
 			if(array.length>(nBuffer*2)+1){
 				let remove = array.length-((nBuffer*2)+1);
-				gOffset-= remove;  //array.length-(nBuffer)
+				gOffset-= remove+1;  //array.length-(nBuffer)
 				array.splice(0,remove);	
 			}
 			

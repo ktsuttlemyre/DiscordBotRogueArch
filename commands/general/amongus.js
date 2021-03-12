@@ -52,6 +52,6 @@ class CustomCommand extends Command {
 	}
 }
 
-module.exports = PlayCommand;
+module.exports = CustomCommand;
 
 

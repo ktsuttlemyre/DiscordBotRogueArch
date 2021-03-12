@@ -42,9 +42,16 @@ class CustomCommand extends Command {
 	var iArray=[]
 	var gArray=[]
 	var array=[]
+	var hash={}
 	await common.fetchMessages(message.channel,function(message,index,messages,gIndex){
 		iArray.push(index)
 		gArray.push(gIndex)
+		
+		if(hash[message.id]){
+			message.channel.send('found duplicate')
+		}else{
+			hash[message.id]=1
+		}
 		array.push(message)
 	})
 	message.channel.send(`got ${gArray.length} messages`);

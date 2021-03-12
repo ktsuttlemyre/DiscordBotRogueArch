@@ -44,10 +44,14 @@ class CustomCommand extends Command {
 	var array=[]
 	var hash={}
 	var embeds=[]
+	var embed = []
 	await common.fetchMessages(message.channel,function(message,index,messages,gIndex){
 		
-		if(message.embeds){
+		if(message.embeds.length){
 			embeds.push(message)
+		}
+		if(message.embed){
+			embed.push(message)
 		}
 		iArray.push(index)
 		gArray.push(gIndex)

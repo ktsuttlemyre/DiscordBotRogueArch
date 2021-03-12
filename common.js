@@ -159,24 +159,26 @@ exports.fetchMessages = function fetchMessages(channel, options, callback) {
 			
 		}
 
-		let _fetchMessages=function(){
-			return new Promise(resolve => {
+		let _fetchMessages=function(resolve){
+			if(breakOut){return resolve('resolved');}
+			channel.messages.fetch(opts).then(function(messages){
 				if(breakOut){return resolve('resolved');}
-				channel.messages.fetch(opts).then(function(messages){
-					if(breakOut){return resolve('resolved');}
-					const messagesArray = messages.array();
+				const messagesArray = messages.array();
 
-					if(!messagesArray.length){
-						loadedAllMessages=true;
-					}else{
-						array.push.apply(array,messagesArray);
-						opts.before = messagesArray[(messagesArray.length - 1)].id
-						_fetchMessages();
-					}
-					_processTick(resolve);
-				});
+				if(!messagesArray.length){
+					loadedAllMessages=true;
+				}else{
+					array.push.apply(array,messagesArray);
+					opts.before = messagesArray[(messagesArray.length - 1)].id
+					_fetchMessages();
+				}
+				_processTick(resolve);
 			});
 		}
-		return _fetchMessages();
+		
+
+		return new Promise(resolve => {
+			_fetchMessages(resolve);
+		});
 	}
 

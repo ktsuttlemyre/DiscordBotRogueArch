@@ -123,7 +123,7 @@ exports.fetchMessages = function fetchMessages(channel, options, callback) {
 	    	callback=options
 	    	options={}
 	    }
-		let opts={limit:50};
+		let opts={limit:20};
 
 		let loadedAllMessages = false; //denote all messages are loaded
 		let breakOut = false;  //stop loading any more messages

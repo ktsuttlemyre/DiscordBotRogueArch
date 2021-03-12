@@ -50,11 +50,14 @@ class CustomCommand extends Command {
 	await common.fetchMessages(message.channel,function(message,index,messages,gIndex){
 		
 		if(message.embeds.length){
-			let text = JSON.stringify(message.embeds,null,2)
+			let text = JSON.stringify({embeds:message.embeds,content:message.content},null,2)
 			if(text){
 				text=text.split(/\s+/);
 				//console.log("text",text)
 				text.forEach(function(word){
+					if(word.length<11){
+						return
+					}
 					let youtube = web.getYoutubeHash(word);
 					if(youtube){
 						youtubeLinks.push(youtube)

@@ -10,7 +10,7 @@ web.global=global = this
 					,blockQuotes:/\*.*\*/
 					,leadingWhitespace:/^\s+/
 					,trailingWhitespace:/\s+$/
-					,getYoutubeHash:/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|watch\/)([^#\&\?]*).*/
+					,getYoutubeHash:/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|watch\/)([a-zA-Z0-9_-]*).*/
 					//				/^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/
 					//Char syntax	(ignore) (assign(no &)) optional
 					,queryStringParser:/([^?=&]+)(=([^&]*))?/g

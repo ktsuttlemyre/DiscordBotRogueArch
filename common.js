@@ -118,7 +118,8 @@ exports.fetchMessagesLegacy = async function fetchMessages(channel, options, cal
 			opts.before = messagesArray[(messagesArray.length - 1)].id
 		}
 	}
-exports.fetchMessages = function fetchMessages(channel, options, callback) {
+
+exports.fetchMessages = async function fetchMessages(channel, options, callback) {
 	    if(typeof options == 'function'){
 	    	callback=options
 	    	options={}
@@ -134,13 +135,13 @@ exports.fetchMessages = function fetchMessages(channel, options, callback) {
 
 		const array = [];
 
-		let _processTick=function(resolve){
+		let _processTick=async function(resolve){
 			console.log('processing tick');
 			if(breakOut){return resolve('resolved');}
 				
 			for(let index=gIndex+gOffset,l=array.length; (loadedAllMessages || index<l-nBuffer) && index<l; index++, gIndex++){
 				console.log('calling callback with',index,gIndex)
-				let response = callback(array[index], index, array, gIndex);
+				let response = await callback(array[index], index, array, gIndex);
 				//console.log('got response',response);
 				if(typeof response == 'number'){
 					index=response-1
@@ -180,7 +181,7 @@ exports.fetchMessages = function fetchMessages(channel, options, callback) {
 					opts.before = messagesArray[(messagesArray.length - 1)].id
 					_fetchMessages(resolve);
 				}
-				_processTick(resolve);
+				await _processTick(resolve);
 			});
 		}
 		

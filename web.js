@@ -637,26 +637,27 @@ web.global=global = this
 // 				return hash.slice(2)
 // 			}else if(web.endsWith(hash,'/')){
 // 				return hash.slice(0,-1)
-			}else{ //now we will either just get the u= variable or the v= variablel //in that order yeah it isn't right but I do it
-				//http://www.youtube.com/attribution_link?a=5X4P22YNTKU&amp;u=%2Fwatch%3Fv%3DT2NUk5AFImw%26feature%3Dshare
-				var v = web.queryString(web.queryString(web.unescapeHTML(url),'u')||web.unescapeHTML(url),'v') 
-				if(v&&web.RegExp.validate.YoutubeHash.test(v)){
-					return v
-				}else{ //just trim off the url and see if the value is at the end of the url
-					v = web.deepTrimLeft(url,'/')
-					if(v&&web.RegExp.validate.YoutubeHash.test(v)){
-						return v
-					}else{
-						if(!(/[\W]/).test(v)){
-							v = v.slice(0,11)
-							console.warn("truncating youtube hash from expected youtube url "+url+' hashvalue =\''+hash+'\' length'+hash.length);
-							return v
-						}
-					}
-				}
-			}
-			console.warn("Possible incorect hash from expected youtube url "+url+' hashvalue =\''+hash+'\' length'+hash.length);
-			return hash
+// 			}else{ //now we will either just get the u= variable or the v= variablel //in that order yeah it isn't right but I do it
+// 				//http://www.youtube.com/attribution_link?a=5X4P22YNTKU&amp;u=%2Fwatch%3Fv%3DT2NUk5AFImw%26feature%3Dshare
+// 				var v = web.queryString(web.queryString(web.unescapeHTML(url),'u')||web.unescapeHTML(url),'v') 
+// 				if(v&&web.RegExp.validate.YoutubeHash.test(v)){
+// 					return v
+// 				}else{ //just trim off the url and see if the value is at the end of the url
+// 					v = web.deepTrimLeft(url,'/')
+// 					if(v&&web.RegExp.validate.YoutubeHash.test(v)){
+// 						return v
+// 					}else{
+// 						if(!(/[\W]/).test(v)){
+// 							v = v.slice(0,11)
+// 							console.warn("truncating youtube hash from expected youtube url "+url+' hashvalue =\''+hash+'\' length'+hash.length);
+// 							return v
+// 						}
+// 					}
+// 				}
+// 			}
+//			console.warn("Possible incorect hash from expected youtube url "+url+' hashvalue =\''+hash+'\' length'+hash.length);
+//			return hash
+			return '';
 		};
 		/*tests*/
 		/*(function(tests){

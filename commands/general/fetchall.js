@@ -50,7 +50,7 @@ class CustomCommand extends Command {
 	await common.fetchMessages(message.channel,function(message,index,messages,gIndex){
 		
 		if(message.embeds.length){
-			let text = JSON.stringify({embeds:message.embeds,content:message.content},null,2),replace(/(\r\n|\n|\r)/gm,"\n");
+			let text = JSON.stringify({embeds:message.embeds,content:message.content},null,2).replace(/(\r\n|\n|\r)/gm,"\n");
 			if(text){
 				text=text.split(/\s+/);
 				//console.log("text",text)

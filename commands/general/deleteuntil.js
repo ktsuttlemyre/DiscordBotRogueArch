@@ -34,13 +34,12 @@ class CustomCommand extends Command {
 	}
 
 	async exec(message,id) {
-    var messagesToDelete=[]
-    await common.fetchMessages(message.channel,function(message,index,messages,gIndex){
-
-      if(message.id!=id){
-        messagesToDelete.push(message);
-    })
-    message.channel.send(`got ${gArray.length} messages`);
+	    var messagesToDelete=[]
+	    await common.fetchMessages(message.channel, async function(message,index,messages,gIndex){
+	      if(message.id!=id){
+		messagesToDelete.push(message);
+	    })
+	    message.channel.send(`got ${gArray.length} messages`);
     
 	}
 }

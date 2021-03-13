@@ -12,7 +12,7 @@ class CustomCommand extends Command {
 	constructor() {
 		super(path.parse(__filename).name, {
 		description: { content: 'deleted all messages up till a specific id'},
-		aliases: ['fetchall'],
+		aliases: [''],
 		category: path.basename(path.dirname(__filename)),
 		clientPermissions: ['SEND_MESSAGES','MANAGE_MESSAGES'],
 		args: [

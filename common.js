@@ -181,7 +181,7 @@ exports.fetchMessages = async function fetchMessages(channel, options, callback)
 					opts.before = messagesArray[(messagesArray.length - 1)].id
 					_fetchMessages(resolve);
 				}
-				await _processTick(resolve);
+				_processTick(resolve);
 			});
 		}
 		

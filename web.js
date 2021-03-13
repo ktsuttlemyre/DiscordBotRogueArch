@@ -654,7 +654,7 @@ web.global=global = this
 // 						}
 // 					}
 // 				}
-// 			}
+			}
 //			console.warn("Possible incorect hash from expected youtube url "+url+' hashvalue =\''+hash+'\' length'+hash.length);
 //			return hash
 			return '';

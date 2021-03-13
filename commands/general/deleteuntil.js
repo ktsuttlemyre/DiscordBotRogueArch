@@ -38,6 +38,7 @@ class CustomCommand extends Command {
 	    await common.fetchMessages(message.channel, async function(message,index,messages,gIndex){
 	      if(message.id!=id){
 		messagesToDelete.push(message);
+	      }
 	    })
 	    message.channel.send(`got ${gArray.length} messages`);
     

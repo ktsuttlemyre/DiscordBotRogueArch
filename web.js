@@ -10,7 +10,8 @@ web.global=global = this
 					,blockQuotes:/\*.*\*/
 					,leadingWhitespace:/^\s+/
 					,trailingWhitespace:/\s+$/
-					,getYoutubeHash:/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|watch\/)([a-zA-Z0-9_-]*).*/
+					,getYoutubeHash:/^.*(youtu.be|youtube.com)\/(v\/|u\/\w+\/|embed\/|v=|watch\/)?([a-zA-Z0-9_-]{11,}).*/
+					//				/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|watch\/)([a-zA-Z0-9_-]*).*/
 					//				/^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/
 					//Char syntax	(ignore) (assign(no &)) optional
 					,queryStringParser:/([^?=&]+)(=([^&]*))?/g
@@ -19,7 +20,7 @@ web.global=global = this
 					,validate:{
 						zipCode:/(^\d{5}$)|(^\d{5}-\d{4}$)/
 						,JSASCIIIdentifier:/^[a-zA-Z_$][0-9a-zA-Z_$]*$/
-						,YoutubeHash:/^[a-zA-Z0-9_-]{11}$/
+						,YoutubeHash:/^[a-zA-Z0-9_-]{11,}$/
 					}
 				}
 
@@ -632,10 +633,10 @@ web.global=global = this
 			var hash=(match)?match[2].trim():'';
 			if(web.RegExp.validate.YoutubeHash.test(hash)){
 				return hash;
-			}else if(web.startsWith(hash,'v=')){
-				return hash.slice(2)
-			}else if(web.endsWith(hash,'/')){
-				return hash.slice(0,-1)
+// 			}else if(web.startsWith(hash,'v=')){
+// 				return hash.slice(2)
+// 			}else if(web.endsWith(hash,'/')){
+// 				return hash.slice(0,-1)
 			}else{ //now we will either just get the u= variable or the v= variablel //in that order yeah it isn't right but I do it
 				//http://www.youtube.com/attribution_link?a=5X4P22YNTKU&amp;u=%2Fwatch%3Fv%3DT2NUk5AFImw%26feature%3Dshare
 				var v = web.queryString(web.queryString(web.unescapeHTML(url),'u')||web.unescapeHTML(url),'v') 

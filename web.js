@@ -10,7 +10,7 @@ web.global=global = this
 					,blockQuotes:/\*.*\*/
 					,leadingWhitespace:/^\s+/
 					,trailingWhitespace:/\s+$/
-					,getYoutubeHash:/^.*(youtu.be|youtube.com)\/(v\/|u\/\w+\/|embed\/|v=|watch\/)?([a-zA-Z0-9_-]{11,}).*/
+					,getYoutubeHash:/(youtu\.be|youtube\.com|youtube-nocookie\.com|youtube\.googleapis\.com)\/(.*?(v\/|u\/\w+\/|embed\/|v=|v%3D|watch\/|attribution_link|e\/))?([a-zA-Z0-9_-]{11,})/
 					//				/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|watch\/)([a-zA-Z0-9_-]*).*/
 					//				/^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/
 					//Char syntax	(ignore) (assign(no &)) optional
@@ -630,7 +630,7 @@ web.global=global = this
 			//if(!web.isString(url)){return ''}
 			if(web.contains('/user/')){console.warn('skipping a youtube user page')}
 			var match = url.match(web.RegExp.getYoutubeHash);
-			var hash=(match)?match[2].trim():'';
+			var hash=(match)?match[4].trim():'';
 			if(web.RegExp.validate.YoutubeHash.test(hash)){
 				return hash;
 // 			}else if(web.startsWith(hash,'v=')){

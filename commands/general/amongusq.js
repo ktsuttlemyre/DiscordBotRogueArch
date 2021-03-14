@@ -12,7 +12,7 @@ class CustomCommand extends Command {
 	constructor() {
 		super(path.parse(__filename).name, {
 		description: { content: 'sets amongus muting'},
-		aliases: ['amongusqueue'],
+		aliases: ['amongusq','amongusqueue'],
 		category: path.basename(path.dirname(__filename)),
 		clientPermissions: ['SEND_MESSAGES'],
 //		args: [

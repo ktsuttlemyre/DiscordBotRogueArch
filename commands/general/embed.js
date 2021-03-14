@@ -46,7 +46,7 @@ class CustomCommand extends Command {
 	    let author = {
 	      name: user.displayName || user.tag,
 	      icon_url: user.avatarURL() || common.defaultAvatar,
-	      url: `https://discord.com/channels/@me/${user.id}`,
+	      url: ` https://discordapp.com/users/${user.id}`,
 	    }
 	    doc.author=author;
 	    message.channel.send(doc);

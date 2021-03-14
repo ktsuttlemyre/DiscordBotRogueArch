@@ -173,7 +173,8 @@ exports.fetchMessages = async function fetchMessages(channel, options, callback)
 
 		let _fetchMessages=function(resolve){
 			if(breakOut){return resolve('resolved');}
-			channel.messages.fetch(opts).then(function(messages){
+			//https://discord.js.org/#/docs/main/master/class/MessageManager?scrollTo=fetch
+			channel.messages.fetch(opts,false,true).then(function(messages){ 
 				console.log('fetched messages',messages.length)
 				if(breakOut){return resolve('resolved');}
 				const messagesArray = messages.array();

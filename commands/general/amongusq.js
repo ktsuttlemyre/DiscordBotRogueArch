@@ -12,7 +12,7 @@ class CustomCommand extends Command {
 	constructor() {
 		super(path.parse(__filename).name, {
 		description: { content: 'sets amongus muting'},
-		aliases: ['amongusq','amongusqueue'],
+		aliases: ['amongusq','amongusqueue','amongusadd'],
 		category: path.basename(path.dirname(__filename)),
 		clientPermissions: ['SEND_MESSAGES'],
 //		args: [
@@ -35,7 +35,10 @@ class CustomCommand extends Command {
 	    	q.push(name);
 	    }
 	    message.delete()
-	    message.channel.send({embed:{title:'AmongUs Queue <:amongus:800119041452146731>',description:q.join('\n')}});
+	    message.channel.send({embed:{
+		    			title:'<:amongus:800119041452146731> AmongUs Queue <:AmongButton:800807792193306684>',
+					description:q.join('\n')}
+				 });
 	    this.client.memory.set(message, varName, q);
 	}
 }

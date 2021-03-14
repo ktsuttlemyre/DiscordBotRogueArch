@@ -5,16 +5,15 @@ const emotes={error:":error:"}
 const {reactions,defaultAvatar} = require.main.require('./common');
 const common = require.main.require('./common');
 const _ = require('lodash');
-const path = require('path');
 const web = require.main.require('./web');
 const yaml = require('js-yaml');
 
 class CustomCommand extends Command {
 	constructor() {
-		super(path.parse(__filename).name, {
+		super(common.commandName(__filename), {
 		description: { content: 'creates an announcement on your behaf'},
-		aliases: ['embed'],
-		category: path.basename(path.dirname(__filename)),
+		aliases: [common.commandName(__filename)],
+		category: common.commandCategory(__filename),
 		clientPermissions: ['SEND_MESSAGES','MANAGE_MESSAGES'],
 		args: [
 			{

@@ -27,6 +27,7 @@ class CustomCommand extends Command {
 	}
 
 	async exec(message) {
+	    let amongEmojis=['<:AmongUsDeadOrange:800120891857829919>','<:AmongButton:800807792193306684>','<:among_us_report:800804847728853022>','<:amongusshhhhh:800119749056921640>']
 	    let varName = 'amongusq'
 	    let q = this.client.memory.get(message, varName) || [];
 	    let person = message.member||message.author
@@ -36,7 +37,7 @@ class CustomCommand extends Command {
 	    }
 	    message.delete()
 	    message.channel.send({embed:{
-		    			title:'<:amongus:800119041452146731> AmongUs Queue <:AmongButton:800807792193306684>',
+		    			title:'<:amongus:800119041452146731> AmongUs Queue '+_.sample(amongEmojis),
 					description:q.join('\n')}
 				 });
 	    this.client.memory.set(message, varName, q);

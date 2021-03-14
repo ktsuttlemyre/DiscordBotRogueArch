@@ -38,8 +38,12 @@ class CustomCommand extends Command {
 	    message.delete()
 	    message.channel.send({embed:{
 		    			title:'<:amongus:800119041452146731> AmongUs Queue '+_.sample(amongEmojis),
-					description:q.join('\n')}
-				 });
+					description:q.join('\n'),
+					footer: {
+						text: 'type !amongusadd to be added to the queue!',
+						//icon_url: 'https://i.imgur.com/wSTFkRM.png',
+					},
+	    			}});
 	    this.client.memory.set(message, varName, q);
 	}
 }

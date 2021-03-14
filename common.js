@@ -1,13 +1,15 @@
 const _ = require('lodash');
 
 exports.reactions={	      
-	      upvote:'✅',
-	      downvote:'❌',
-	      shipwash:'802028980739768320',
-	      "large-red-circle":"🔴",
-	      "red-circle":"🔴",
-	      "large-green-circle":"🟢",
-	      "green-circle":"🟢",
+		upvote:'✅',
+		downvote:'❌',
+		shipwash:'802028980739768320',
+		"large-red-circle":"🔴",
+		"red-circle":"🔴",
+		"large-green-circle":"🟢",
+		"green-circle":"🟢",
+		"large-yellow-circle":"🟡",
+		"yellow-circle":"🟡",
 	     }
 exports.defaultAvatar='https://discord.com/assets/322c936a8c8be1b803cd94861bdfa868.png';
 

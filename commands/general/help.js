@@ -72,7 +72,7 @@ class HelpCommand extends Command {
 			}[category.id];
 
 			if (title){
-				embed.addField(title, '`'+category.map(cmd => cmd.aliases[0]).join('` `')}+'`');
+				embed.addField(title, '`'+category.map(cmd => cmd.aliases[0]).join('` `')+'`');
 			}
 		}
 

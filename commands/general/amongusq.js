@@ -45,11 +45,15 @@ class CustomCommand extends Command {
 	    let qDisplay = []
 	    q.each(function(user){
 		//let inGame = (message.author||message.member).voice.channel.members.
-		let name = user.displayName || user.tag
-		let voiceChannel = user.voice.channel
-		let notAFK = message.guild.afkChannelID != voiceChannel.id
-		let inGuildChannel = voiceChannel.guild.id == message.guild.id
-	    	qDisplay.push("> "+common.reactions[((notAFK && inGuildChannel)?'green':'red')+'-circle']+' '+name )
+		let name = user.displayName || user.tag;
+		let voiceChannel = user.voice.channel;
+		let notAFK=null;
+		let inGuildChannel=null;
+		if(voiceChannel){
+			notAFK = message.guild.afkChannelID != voiceChannel.id
+			inGuildChannel = voiceChannel.guild.id == message.guild.id
+		}
+	    	qDisplay.push("> "+common.reactions[((voiceChannel && notAFK && inGuildChannel)?'green':(user.presence.status === 'online')?'yellow':'red')+'-circle']+` (${name})[https://discord.com/channels/@me/${user.id}]` )
 	    })
 	    
 	    lastMessage = await message.channel.send({embed:{

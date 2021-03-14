@@ -10,7 +10,7 @@ const path = require('path');
 class CustomCommand extends Command {
 	constructor() {
 		super(path.parse(__filename).name, {
-		description: { content: 'sets amongus muting'},
+		description: { content: 'Manages Amongus queue'},
 		aliases: ['amongusq','amongusqueue','amongusadd'],
 		category: path.basename(path.dirname(__filename)),
 		clientPermissions: ['SEND_MESSAGES'],
@@ -49,7 +49,7 @@ class CustomCommand extends Command {
 		let voiceChannel = user.voice.channel
 		let notAFK = message.guild.afkChannelID != voiceChannel.id
 		let inGuildChannel = voiceChannel.guild.id == message.guild.id
-	    	qDisplay.push(name + common.reactions[((notAFK && inGuildChannel)?'green':'red')+'-circle'] )
+	    	qDisplay.push("> "+common.reactions[((notAFK && inGuildChannel)?'green':'red')+'-circle']+' '+name )
 	    })
 	    
 	    lastMessage = await message.channel.send({embed:{

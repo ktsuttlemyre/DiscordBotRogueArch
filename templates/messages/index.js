@@ -229,7 +229,7 @@ var nowPlayingOverloaded= async (message,player,announce) => {
 	if(!player.backgroundPlaylist && track.requestedBy){
 	   embedJSON.author = {
 	        "name": `${track.requestedBy.username} is playing`,
-	        "url": 'https://shiptunes.shipwa.sh/'+track.requestedBy.id,
+	        "url": 'https://shiptunes.shipwa.sh/'+(track.requestedBy.tag||'').replace('#','')||track.requestedBy.id,
 	        "icon_url": track.requestedBy.avatarURL()||common.defaultAvatar
 	      }
 	}

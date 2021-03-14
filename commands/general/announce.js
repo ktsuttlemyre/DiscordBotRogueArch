@@ -15,7 +15,7 @@ class CustomCommand extends Command {
 		description: { content: 'creates an announcement on your behaf'},
 		//aliases: ['fetchall'],
 		category: path.basename(path.dirname(__filename)),
-		clientPermissions: ['SEND_MESSAGES'],
+		clientPermissions: ['SEND_MESSAGES','MANAGE_MESSAGES'],
 		args: [
 			{
 				id: 'yaml',

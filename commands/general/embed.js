@@ -40,6 +40,7 @@ class CustomCommand extends Command {
 	    try {
 	      doc = yaml.load(yaml);
 	    } catch (e) {
+	      console.error(e);
 	      message.channel.send(e.toString())
 	    }
 	    let user = message.member||message.author

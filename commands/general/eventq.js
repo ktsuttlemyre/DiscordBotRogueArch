@@ -31,11 +31,11 @@ class CustomCommand extends Command {
 	}
 
 	async exec(message, queue) {
-		queue = queue.trim()
+
 		if(!queue){
-			queue=roomMap[message.channelID];
+			queue=roomMap[message.channelID] || '';
 		}
-		queue=queue.toUpperCase();
+		queue=queue.trim().toUpperCase();
 		
 		let randomEmoji = [];
 		let title = 'Event Queue'

@@ -1,8 +1,7 @@
+const { Client, Collection } = require ('discord.js')
 const GUIMessages = require.main.require('./templates/messages');
 const { Command } = require('discord-akairo');
 const { Player } = require("discord-player");
-const emotes={error:":error:"}
-const {reactions,defaultAvatar} = require.main.require('./common');
 const common = require.main.require('./common');
 const _ = require('lodash');
 const path = require('path');
@@ -29,22 +28,33 @@ class CustomCommand extends Command {
 	async exec(message) {
 	    let amongEmojis=['<:AmongUsDeadOrange:800120891857829919>','<:AmongButton:800807792193306684>','<:among_us_report:800804847728853022>','<:amongusshhhhh:800119749056921640>']
 	    let varName = 'amongusq'
-	    let q = this.client.memory.get(message, varName) || [];
+	    let q = this.client.memory.get(message, varName) || new Collection();
 	    let lastMessage = this.client.memory.get(message, 'lastAmongusQ');
-	    let person = message.member||message.author
-	    let name = person.displayName || person.tag
-	    if(q.indexOf(name)<0){
-	    	q.push(name);
+	    let user = message.member||message.author
+	   
+	    
+	    if(!q.get(user)){
+	    	q.set(user.id, user);
 	    }
 	    if(lastMessage){
 		    lastMessage.delete()
 	    }
 	    message.delete();
 	    this.client.memory.set(message, varName, q);
+		
+	    let qDisplay = []
+	    q.each(function(user){
+		//let inGame = (message.author||message.member).voice.channel.members.
+		let name = user.displayName || user.tag
+		let voiceChannel = user.voice.channel
+		let notAFK = message.guild.afkChannelID != voiceChannel.id
+		let inGuildChannel = voiceChannel.guild.id == message.guild.id
+	    	qDisplay.push(name + common.reactions[((notAFK && inGuildChannel)?'green':'red')'-circle'] )
+	    })
 	    
 	    lastMessage = await message.channel.send({embed:{
 		    			title:'<:amongus:800119041452146731> AmongUs Queue '+_.sample(amongEmojis),
-					description:q.join('\n'),
+					description:qDisplay.join('\n'),
 					footer: {
 						text: 'type !amongusadd to be added to the queue!',
 						//icon_url: 'https://i.imgur.com/wSTFkRM.png',

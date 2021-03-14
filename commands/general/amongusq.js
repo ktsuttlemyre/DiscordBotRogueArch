@@ -31,7 +31,9 @@ class CustomCommand extends Command {
 	    let q = this.client.memory.get(message, varName) || [];
 	    let person = message.member||message.author
 	    let name = person.displayName || person.tag
-	    q.push(name)
+	    if(q.indexof(name)<0){
+	    	q.push(name);
+	    }
 	    message.delete()
 	    message.channel.send({embed:{title:'AmongUs Queue',description:q.join('\n')}});
 	    this.client.memory.set(message, varName, q);

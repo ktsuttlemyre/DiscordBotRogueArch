@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const path = require('path');
 
 exports.reactions={	      
 		upvote:'✅',
@@ -11,6 +12,15 @@ exports.reactions={
 		"large-yellow-circle":"🟡",
 		"yellow-circle":"🟡",
 	     }
+
+
+exports.commandName=function(filename){
+	return path.parse(filename).name;
+}
+exports.commandCategory=function(filename){
+	return path.basename(path.dirname(__filename));
+}
+
 exports.defaultAvatar='https://discord.com/assets/322c936a8c8be1b803cd94861bdfa868.png';
 
 exports.permalinkMessage=function(guild,channel,message){

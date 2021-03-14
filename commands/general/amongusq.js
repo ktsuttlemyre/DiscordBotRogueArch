@@ -42,7 +42,7 @@ class CustomCommand extends Command {
 	    message.delete();
 	    this.client.memory.set(message, varName, q);
 	    
-	    await lastMessage = message.channel.send({embed:{
+	    let lastMessage = await message.channel.send({embed:{
 		    			title:'<:amongus:800119041452146731> AmongUs Queue '+_.sample(amongEmojis),
 					description:q.join('\n'),
 					footer: {

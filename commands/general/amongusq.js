@@ -31,7 +31,7 @@ class CustomCommand extends Command {
 	    let q = this.client.memory.get(message, varName) || [];
 	    let person = message.member||message.author
 	    let name = person.displayName || person.tag
-	    if(q.indexof(name)<0){
+	    if(q.indexOf(name)<0){
 	    	q.push(name);
 	    }
 	    message.delete()

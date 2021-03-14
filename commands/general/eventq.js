@@ -39,7 +39,7 @@ class CustomCommand extends Command {
 		
 		let randomEmoji = [];
 		let title = 'Event Queue'
-		let varName = queue+'Queue';
+		let varName = queue+'_queue';
 		let q = this.client.memory.get(message, varName) || new Collection();
 		let lastMessage = this.client.memory.get(message, varName+'LastMessage');
 		let user = message.member||message.author

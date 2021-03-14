@@ -48,6 +48,7 @@ class CustomCommand extends Command {
 	      icon_url: user.avatarURL() || common.defaultAvatar,
 	      url: `https://discord.com/channels/@me/${user.id}`,
 	    }
+	    doc.author=author;
 	    message.channel.send(doc);
 	}
 }

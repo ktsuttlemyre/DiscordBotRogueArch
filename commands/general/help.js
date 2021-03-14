@@ -63,7 +63,7 @@ class HelpCommand extends Command {
 				[
 					'This is a list of commands.',
 					`The bots prefix is \`${prefix}\``,
-					'To view the guide which explains how to use BoilerplateBot in depth, use `${prefix}guide`.',
+					'To view the guide which explains how to use this Bot in depth, use `${prefix}guide`.',
 				]);
 
 		for (const category of this.handler.categories.values()) {
@@ -71,7 +71,9 @@ class HelpCommand extends Command {
 				general: '📝\u2000General',
 			}[category.id];
 
-			if (title) embed.addField(title, `\`${category.map(cmd => cmd.aliases[0]).join('` `')}\``);
+			if (title){
+				embed.addField(title, '`'+category.map(cmd => cmd.aliases[0]).join('` `')}+'`');
+			}
 		}
 
 		const shouldReply = message.guild && message.channel.permissionsFor(this.client.user).has('SEND_MESSAGES');
@@ -81,6 +83,7 @@ class HelpCommand extends Command {
 			if (shouldReply) return message.util.reply('I\'ve sent you a DM with the command list.');
 		}
 		catch (err) {
+			await message.channel.send({ embed });
 			if (shouldReply) return message.util.reply('I could not send you the command list in DMs.');
 		}
 

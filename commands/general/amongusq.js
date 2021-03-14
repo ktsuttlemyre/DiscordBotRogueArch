@@ -49,7 +49,7 @@ class CustomCommand extends Command {
 		let voiceChannel = user.voice.channel
 		let notAFK = message.guild.afkChannelID != voiceChannel.id
 		let inGuildChannel = voiceChannel.guild.id == message.guild.id
-	    	qDisplay.push(name + common.reactions[((notAFK && inGuildChannel)?'green':'red')'-circle'] )
+	    	qDisplay.push(name + common.reactions[((notAFK && inGuildChannel)?'green':'red')+'-circle'] )
 	    })
 	    
 	    lastMessage = await message.channel.send({embed:{

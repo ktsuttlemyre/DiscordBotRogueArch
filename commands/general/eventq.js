@@ -31,7 +31,6 @@ class CustomCommand extends Command {
 	}
 
 	async exec(message, queue) {
-
 		if(!queue){
 			queue=roomMap[message.channelID] || '';
 		}

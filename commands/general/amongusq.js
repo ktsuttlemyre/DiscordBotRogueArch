@@ -27,15 +27,14 @@ class CustomCommand extends Command {
 	}
 
 	async exec(message) {
-    let varName = 'amongusq'
-    let q = this.client.memory.get(message, varName) || [];
-    let person = message.member||message.author
-    let name = person.displayName || person.tag
-    q.push(name)
-    message.delete()
-    message.send({embed:{title:'AmongUs Queue',description:q.join('\n')}});
-    
-		this.client.memory.set(message, varName, q);
+	    let varName = 'amongusq'
+	    let q = this.client.memory.get(message, varName) || [];
+	    let person = message.member||message.author
+	    let name = person.displayName || person.tag
+	    q.push(name)
+	    message.delete()
+	    message.send({embed:{title:'AmongUs Queue',description:q.join('\n')}});
+	    this.client.memory.set(message, varName, q);
 	}
 }
 

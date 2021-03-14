@@ -35,20 +35,20 @@ class CustomCommand extends Command {
 // 	}
 
 	async exec(message,yaml) {
-    let doc=null;
-    // Get document, or throw exception on error
-    try {
-      doc = yaml.load(yaml);
-    } catch (e) {
-      message.channel.send(e.toString())
-    }
-    let user = message.member||message.author
-    let author = {
-      name: user.displayName || user.tag,
-      icon_url: user.avatarURL() || common.defaultAvatar,
-      url: `https://discord.com/channels/@me/${user.id}`,
-    },
-    message.channel.send(doc);
+	    let doc=null;
+	    // Get document, or throw exception on error
+	    try {
+	      doc = yaml.load(yaml);
+	    } catch (e) {
+	      message.channel.send(e.toString())
+	    }
+	    let user = message.member||message.author
+	    let author = {
+	      name: user.displayName || user.tag,
+	      icon_url: user.avatarURL() || common.defaultAvatar,
+	      url: `https://discord.com/channels/@me/${user.id}`,
+	    }
+	    message.channel.send(doc);
 	}
 }
 

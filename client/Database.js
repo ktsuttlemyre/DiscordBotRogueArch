@@ -4,6 +4,7 @@ const readdir = require('util').promisify(require('fs').readdir);
 const Sequelize = require('sequelize');
 const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.js')[env];
+const _ = require('lodash');
 
 let db;
 if (config.use_env_variable) {
@@ -29,7 +30,7 @@ class Database {
 			Logger.error('Unable to connect to the database:', { tag: 'Database' });
 			Logger.stacktrace(err, { tag: 'Database' });
 			Logger.info('Attempting to connect again in 5 seconds...', { tag: 'Database' });
-			setTimeout(this.authenticate, 5000);
+			setTimeout(_.bind(this.authenticate,this), 5000);
 		}
 	}
 

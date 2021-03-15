@@ -8,7 +8,7 @@ const shiptunes = new BoilerplateClient({ owner: process.env.OWNERS, token: proc
 //const shipmod = new Shipmod({ owner: process.env.OWNERS, token: process.env.SHIPMOD_TOKEN });
 const Sentry = require('@sentry/node');
 
-const bots=[shiptunes,shipmod];
+const bots=[shiptunes];
 
 function init(client){
 	// Load Logger
@@ -55,7 +55,7 @@ process.on('unhandledRejection', err => {
 	}
 
 	// do cleanup
-	shipmod.guilds.cache.forEach(function(guild){ //iter guilds
+	shiptunes.guilds.cache.forEach(function(guild){ //iter guilds
 		switch(signal){
 			case 'SIGTERM': //heroku sends sigterm for restarting dynos and sleep
 			case 'SIGINT':

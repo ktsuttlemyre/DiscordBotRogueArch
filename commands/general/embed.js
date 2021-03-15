@@ -17,7 +17,7 @@ class CustomCommand extends Command {
 		clientPermissions: ['SEND_MESSAGES','MANAGE_MESSAGES'],
 		args: [
 			{
-				id: 'yaml',
+				id: 'input',
 				default: '',
 				match: 'content',
 			},
@@ -33,11 +33,11 @@ class CustomCommand extends Command {
 // 		return null;
 // 	}
 
-	async exec(message,yaml) {
+	async exec(message,{ input }) {
 	    let doc=null;
 	    // Get document, or throw exception on error
 	    try {
-	      doc = yaml.load(yaml);
+	      doc = yaml.load(input);
 	    } catch (e) {
 	      console.error(e);
 	      message.channel.send(e.toString())

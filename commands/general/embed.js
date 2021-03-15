@@ -44,7 +44,7 @@ class CustomCommand extends Command {
 	    }
 	    console.log(doc)
 	    if(typeof doc == 'string'){
-		    let split = doc.split('\n');
+		    let split = input.split('\n');
 		    doc = {};
 		    doc.title = '> '+split.shift();
 		    doc.description = split.join('\n')

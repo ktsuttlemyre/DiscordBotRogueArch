@@ -25,8 +25,9 @@ function isSubdir (parent,dir){
 function loadFilter (botPath,folderName,dir){
 	const commands = path.join(botPath,folderName);
 	const generalCommands = path.join(botPath,'../general',folderName);
-	console.log(`botPath=${botPath} folderName=${folderName} dir=${dir}`)
-	return isSubdir(commands,dir) || isSubdir(generalCommands,dir);
+	const load = isSubdir(commands,dir) || isSubdir(generalCommands,dir);
+	console.log(`botPath=${botPath} folderName=${folderName} dir=${dir} load=${load}`)
+	return load;
 }
 
 class BoilerplateClient extends AkairoClient {

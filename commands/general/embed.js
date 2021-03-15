@@ -42,6 +42,9 @@ class CustomCommand extends Command {
 	      console.error(e);
 	      message.channel.send(e.toString())
 	    }
+	    if(typeof doc == 'string'){
+		    doc = {description:doc}
+	    }
 	    let user = message.member || message.author
 	    let author = {
 	      name: user.displayName || user.tag,

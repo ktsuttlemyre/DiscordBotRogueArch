@@ -79,6 +79,8 @@ class CustomCommand extends Command {
 			qDisplay.push("> "+common.reactions[((voiceChannel && notAFK && inGuildChannel)?'green':(user.presence.status === 'online')?'yellow':'red')+'-circle']+` [${name}]( https://discordapp.com/users/${user.id})` )
 		})
 		
+		
+		let suffix = (roomMap[message.channelID]||'').toLowerCase()==queue.toLowerCase())?'':queue.toLowerCase();
 		//Send
 		lastMessage = await message.channel.send({embed:{
 					title:title,
@@ -90,7 +92,7 @@ class CustomCommand extends Command {
 					fields: [
 							{
 								name: '\u200b',
-								value: `type \`!rsvp ${queue.toLowerCase()}\` to be added to the queue!`,
+								value: `type \`!rsvp${suffix}\` to be added to the queue!`,
 								inline: false,
 							},
 						]

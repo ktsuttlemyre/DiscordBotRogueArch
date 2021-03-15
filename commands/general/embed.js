@@ -49,7 +49,7 @@ class CustomCommand extends Command {
 	      url: ` https://discordapp.com/users/${user.id}`,
 	    }
 	    doc.author=author;
-	    message.channel.send(doc);
+	    message.channel.send({embed:doc});
 	}
 }
 

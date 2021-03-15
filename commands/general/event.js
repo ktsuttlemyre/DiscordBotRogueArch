@@ -43,12 +43,12 @@ class CustomCommand extends Command {
 		let user = message.member||message.author
 		switch(queue){
 			case 'AMONGUS':
-				title = '<:amongus:800119041452146731> AmongUs Event Queue '+_.sample(randomEmoji)
 				randomEmoji = ['<:AmongUsDeadOrange:800120891857829919>',
 					       '<:AmongButton:800807792193306684>',
 					       '<:among_us_report:800804847728853022>',
 					       '<:amongusshhhhh:800119749056921640>'
 					      ]
+				title = '<:amongus:800119041452146731> AmongUs Event Queue '+_.sample(randomEmoji)
 				break;
 			default:
 				message.channel.send('No queue associated with '+queue)
@@ -83,7 +83,7 @@ class CustomCommand extends Command {
 					title:title,
 					description:qDisplay.join('\n'),
 					footer: {
-						text: 'type `!rsvp ${queue.toLowerCase()}` to be added to the queue!',
+						text: `type \`!rsvp ${queue.toLowerCase()}\` to be added to the queue!`,
 						//icon_url: 'https://i.imgur.com/wSTFkRM.png',
 					},
 				}});

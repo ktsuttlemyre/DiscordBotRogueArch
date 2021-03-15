@@ -42,10 +42,10 @@ class CustomCommand extends Command {
 	      console.error(e);
 	      message.channel.send(e.toString())
 	    }
-	    let user = message.member||message.author
+	    let user = message.member || message.author
 	    let author = {
 	      name: user.displayName || user.tag,
-	      icon_url: user.avatarURL() || common.defaultAvatar,
+	      icon_url: message.author.avatarURL() || common.defaultAvatar,
 	      url: ` https://discordapp.com/users/${user.id}`,
 	    }
 	    doc.author=author;

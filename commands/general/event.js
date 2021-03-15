@@ -39,7 +39,8 @@ class CustomCommand extends Command {
 		let title = 'Event Queue'
 		let varName = queue+'_queue';
 		let q = this.client.memory.get(message, varName) || new Collection();
-		let lastMessage = this.client.memory.get(message, varName+'LastMessage');
+		let lastMessageID = varName+'LastMessage'
+		let lastMessage = this.client.memory.get(message, lastMessageID);
 		let user = message.member||message.author
 		switch(queue){
 			case 'AMONGUS':
@@ -96,7 +97,7 @@ class CustomCommand extends Command {
 					}
 				});
 		//save old message to delete leater
-		this.client.memory.set(message, 'lastAmongusQ', lastMessage);
+		this.client.memory.set(message, lastMessageID, lastMessage);
 	}
 }
 

@@ -82,10 +82,17 @@ class CustomCommand extends Command {
 		lastMessage = await message.channel.send({embed:{
 					title:title,
 					description:qDisplay.join('\n'),
-					footer: {
-						text: `type \`!rsvp ${queue.toLowerCase()}\` to be added to the queue!`,
-						//icon_url: 'https://i.imgur.com/wSTFkRM.png',
-					},
+					//footer: {
+					//	text: `type \`!rsvp ${queue.toLowerCase()}\` to be added to the queue!`,
+					//	//icon_url: 'https://i.imgur.com/wSTFkRM.png',
+					//},
+				fields: [
+						{
+							name: '\u200b',
+							value: `type \`!rsvp ${queue.toLowerCase()}\` to be added to the queue!`,
+							inline: false,
+						},
+					]
 				}});
 		//save old message to delete leater
 		this.client.memory.set(message, 'lastAmongusQ', lastMessage);

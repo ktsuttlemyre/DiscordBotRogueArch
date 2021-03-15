@@ -1,6 +1,6 @@
 const { Command, version: akairoVersion } = require('discord-akairo');
 const { MessageEmbed, version: djsVersion } = require('discord.js');
-const { version: botVersion } = require('../../package.json');
+const { version: botVersion } = require.main.require('./package.json');
 
 
 class StatsCommand extends Command {

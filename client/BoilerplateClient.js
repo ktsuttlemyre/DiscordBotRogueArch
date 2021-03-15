@@ -25,6 +25,7 @@ function isSubdir (parent,dir){
 function loadFilter (botPath,folderName,dir){
 	const commands = path.join(botPath,folderName);
 	const generalCommands = path.join(botPath,'../general',folderName);
+	console.log(`botPath=${botPath} folderName=${folderName} dir=${dir}`)
 	return isSubdir(commands,dir) || isSubdir(generalCommands,dir);
 }
 

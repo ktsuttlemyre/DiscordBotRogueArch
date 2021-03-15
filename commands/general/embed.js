@@ -42,7 +42,8 @@ class CustomCommand extends Command {
 	      console.error(e);
 	      message.channel.send(e.toString())
 	    }
-	    if(typeof doc == 'string'){
+	    var type = typeof doc;
+	    if(type == 'string'){
 		    let split = input.split('\n');
 		    doc = {};
 		    if(split.length==1){
@@ -51,6 +52,8 @@ class CustomCommand extends Command {
 			doc.title = split.shift();
 			doc.description = split.join('\n')
 		    }
+	    }else if(Array.isArray(doc)){
+		    return message.channel.send('Can not process arrays');
 	    }
 	    let user = message.member || message.author
 	    let author = {

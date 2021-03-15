@@ -6,6 +6,7 @@ const Database = require('../client/Database');
 // Providers
 const SettingsProvider = require('../client/providers/SettingsProvider');
 const MemoryCache = require('../client/providers/MemoryCache');
+const path = require('path');
 
 // Models
 const Setting = require('../models/settings');
@@ -15,6 +16,18 @@ const Logger = require('../util/logger');
 // Node Modules
 const path = require('path');
 require('dotenv').config();
+
+
+function isSubdir (parent,dir){
+	const relative = path.relative(parent, dir);
+	const isSubdir = relative && !relative.startsWith('..') && !path.isAbsolute(relative);
+}
+
+function loadFilter (folderName,path){
+	const commands = path.join(config.botPath,folderName);
+	const generalCommands = path.join(config.botPath,'../general',folderName);
+	return isSubdir(commands,path) || isSubdir(generalCommands,path);
+}
 
 class BoilerplateClient extends AkairoClient {
 	constructor(config) {
@@ -29,7 +42,8 @@ class BoilerplateClient extends AkairoClient {
 		this.logger = Logger;
 		// Init Command Handler
 		this.commandHandler = new CommandHandler(this, {
-			directory: config.commandDir,
+			directory: './bots',
+			loadFilter:loadFilter.bind(loadFilter,'commands'),
 			aliasReplacement: /-/g,
 			prefix: message => this.settings.get(message.guild, 'prefix', '!'),
 			allowMention: true,
@@ -53,11 +67,13 @@ class BoilerplateClient extends AkairoClient {
 		});
 		// Init Listener Handler
 		this.listenerHandler = new ListenerHandler(this, {
-			directory: path.join(__dirname, '../listeners'),
+			directory: './bots',
+			loadFilter:loadFilter.bind(loadFilter,'listeners'),
 		});
 		// Init Inhibitor Handler
 		this.inhibitorHandler = new InhibitorHandler(this, {
-			directory: path.join(__dirname, '../inhibitors'),
+			directory: './bots',
+			loadFilter:loadFilter.bind(loadFilter,'inhibitors'),
 		});
 		// Init Setting
 		this.settings = new SettingsProvider(Setting);

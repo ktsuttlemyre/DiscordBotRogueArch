@@ -1,3 +1,0 @@
-npm install -g package-json-merge
-package-json-merge .\spindle\package.json .\evobot\package.json > .\evobot\package.json
-

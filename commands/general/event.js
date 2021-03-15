@@ -29,12 +29,10 @@ class CustomCommand extends Command {
 		});
 	}
 
-	async exec(message, queue) {
-		
+	async exec(message, { queue }) {
 		if(!queue){
 			queue=roomMap[message.channelID] || '';
 		}
-		console.log(queue);
 		queue=queue.trim().toUpperCase();
 		
 		let randomEmoji = [];

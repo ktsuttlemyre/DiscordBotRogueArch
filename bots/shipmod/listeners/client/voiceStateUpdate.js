@@ -27,7 +27,7 @@ class ReadyListener extends Listener {
 		
 		let permissionsNeeded = ['VIEW_CHANNEL','MANAGE_CHANNELS'];
 		
-		console.log('voiceStateUpdate',oldstate.channelID,newstate.ChannelID,roomChanged,thisMember.displayName);
+		console.log('voiceStateUpdate',oldstate.channelID,newstate.channelID,roomChanged,thisMember.displayName);
 		    
 		//enter new chatroom
 		let textChannelID = channelMap[newstate.channelID];

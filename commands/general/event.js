@@ -4,7 +4,6 @@ const { Command } = require('discord-akairo');
 const { Player } = require("discord-player");
 const common = require.main.require('./common');
 const _ = require('lodash');
-const path = require('path');
 const roomMap={
 	'789704651414306817':'AMONGUS',
 	'799429356605800458':'MOVIE',
@@ -14,10 +13,10 @@ const roomMap={
 
 class CustomCommand extends Command {
 	constructor() {
-		super(path.parse(__filename).name, {
+		super(common.commandName(__filename), {
 		description: { content: 'Manages event queue'},
-		aliases: ['eventq','eventqueue','eventadd', 'rsvp'],
-		category: path.basename(path.dirname(__filename)),
+		aliases: [common.commandName(__filename),'eventq','eventqueue','eventadd', 'rsvp'],
+		category: common.commandCategory(__filename),
 		clientPermissions: ['SEND_MESSAGES','MANAGE_MESSAGES'],
 		args: [
 			 {

@@ -76,7 +76,7 @@ class CustomCommand extends Command {
 				notAFK = message.guild.afkChannelID != voiceChannel.id
 				inGuildChannel = voiceChannel.guild.id == message.guild.id
 			}
-			qDisplay.push("> "+common.reactions[((voiceChannel && notAFK && inGuildChannel)?'green':(user.presence.status === 'online')?'yellow':'red')+'-circle']+` [${name}]( https://discordapp.com/users/${user.id})` )
+			qDisplay.push("\t "+common.reactions[((voiceChannel && notAFK && inGuildChannel)?'green':(user.presence.status === 'online')?'yellow':'red')+'-circle']+` [${name}]( https://discordapp.com/users/${user.id})` )
 		})
 		
 		

@@ -55,7 +55,7 @@ process.on('unhandledRejection', err => {
 	}
 
 	// do cleanup
-	client.guilds.cache.forEach(function(guild){ //iter guilds
+	shipmod.guilds.cache.forEach(function(guild){ //iter guilds
 		switch(signal){
 			case 'SIGTERM': //heroku sends sigterm for restarting dynos and sleep
 			case 'SIGINT':
@@ -75,7 +75,8 @@ process.on('unhandledRejection', err => {
 				}); //end iter members
 			
 			default:
-				var memory=client.memory
+				//TODO!!!! this needs to access the memory of shiptunes
+				var memory=shiptunes.memory
 				if(!memory){return}
 				var player=memory.get({guild}, 'player');
 				if(!player){return}

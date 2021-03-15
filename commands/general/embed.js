@@ -42,10 +42,11 @@ class CustomCommand extends Command {
 	      console.error(e);
 	      message.channel.send(e.toString())
 	    }
+	    console.log(doc)
 	    if(typeof doc == 'string'){
 		    let split = doc.split('\n');
 		    doc = {};
-		    doc.title = split.shift();
+		    doc.title = '> '+split.shift();
 		    doc.description = split.join('\n')
 		    
 	    }

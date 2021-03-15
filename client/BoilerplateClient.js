@@ -22,7 +22,7 @@ function isSubdir (parent,dir){
 	const isSubdir = relative && !relative.startsWith('..') && !path.isAbsolute(relative);
 }
 
-function loadFilter (dir,botPath,folderName,){
+function loadFilter (botPath,folderName,dir){
 	const commands = path.join(botPath,folderName);
 	const generalCommands = path.join(botPath,'../general',folderName);
 	return isSubdir(commands,dir) || isSubdir(generalCommands,dir);

@@ -6,7 +6,6 @@ const Database = require('../client/Database');
 // Providers
 const SettingsProvider = require('../client/providers/SettingsProvider');
 const MemoryCache = require('../client/providers/MemoryCache');
-const path = require('path');
 
 // Models
 const Setting = require('../models/settings');

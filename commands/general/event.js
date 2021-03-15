@@ -80,7 +80,7 @@ class CustomCommand extends Command {
 		})
 		
 		
-		let suffix = (roomMap[message.channelID]||'').toLowerCase()==queue.toLowerCase())?'':queue.toLowerCase();
+		let suffix = ((roomMap[message.channelID]||'').toLowerCase()==queue.toLowerCase())? '' : queue.toLowerCase();
 		//Send
 		lastMessage = await message.channel.send({embed:{
 					title:title,

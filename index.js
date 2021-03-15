@@ -2,9 +2,8 @@ const http = require('http')
 const fs = require('fs')
 const path = require('path');
 const BoilerplateClient = require(path.join(__dirname,'/client/BoilerplateClient'));
-//const Shipmod = require(path.join(__dirname,'/client/Shipmod'));
 require('dotenv').config();
-const shiptunes = new BoilerplateClient({ owner: process.env.OWNERS, token: process.env.DISCORD_TOKEN, commandsDir: './commands/general' });
+const shiptunes = new BoilerplateClient({ owner: process.env.OWNERS, token: process.env.DISCORD_TOKEN, commandsDir: './commands/tunes' });
 const shipmod = new BoilerplateClient({ owner: process.env.OWNERS, token: process.env.SHIPMOD_TOKEN, commandsDir: './commands/general' });
 const Sentry = require('@sentry/node');
 

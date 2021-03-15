@@ -23,8 +23,8 @@ function isSubdir (parent,dir){
 	const isSubdir = relative && !relative.startsWith('..') && !path.isAbsolute(relative);
 }
 
-function loadFilter (folderName,path){
-	const commands = path.join(config.botPath,folderName);
+function loadFilter (path,botPath,folderName,){
+	const commands = path.join(botPath,folderName);
 	const generalCommands = path.join(config.botPath,'../general',folderName);
 	return isSubdir(commands,path) || isSubdir(generalCommands,path);
 }
@@ -43,7 +43,7 @@ class BoilerplateClient extends AkairoClient {
 		// Init Command Handler
 		this.commandHandler = new CommandHandler(this, {
 			directory: './bots',
-			loadFilter:loadFilter.bind(loadFilter,'commands'),
+			loadFilter:loadFilter.bind(loadFilter,config.botPath,'commands'),
 			aliasReplacement: /-/g,
 			prefix: message => this.settings.get(message.guild, 'prefix', '!'),
 			allowMention: true,
@@ -68,12 +68,12 @@ class BoilerplateClient extends AkairoClient {
 		// Init Listener Handler
 		this.listenerHandler = new ListenerHandler(this, {
 			directory: './bots',
-			loadFilter:loadFilter.bind(loadFilter,'listeners'),
+			loadFilter:loadFilter.bind(loadFilter,config.botPath,'listeners'),
 		});
 		// Init Inhibitor Handler
 		this.inhibitorHandler = new InhibitorHandler(this, {
 			directory: './bots',
-			loadFilter:loadFilter.bind(loadFilter,'inhibitors'),
+			loadFilter:loadFilter.bind(loadFilter,config.botPath,'inhibitors'),
 		});
 		// Init Setting
 		this.settings = new SettingsProvider(Setting);

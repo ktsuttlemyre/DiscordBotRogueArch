@@ -2,13 +2,13 @@ const http = require('http')
 const fs = require('fs')
 const path = require('path');
 const BoilerplateClient = require(path.join(__dirname,'/client/BoilerplateClient'));
-const Shipmod = require(path.join(__dirname,'/client/Shipmod'));
+//const Shipmod = require(path.join(__dirname,'/client/Shipmod'));
 require('dotenv').config();
-//const shiptunes = new BoilerplateClient({ owner: process.env.OWNERS, token: process.env.DISCORD_TOKEN });
-const shiptunes = new Shipmod({ owner: process.env.OWNERS, token: process.env.SHIPMOD_TOKEN });
+const shiptunes = new BoilerplateClient({ owner: process.env.OWNERS, token: process.env.DISCORD_TOKEN, commandsDir: './commands/general' });
+const shipmod = new BoilerplateClient({ owner: process.env.OWNERS, token: process.env.SHIPMOD_TOKEN, commandsDir: './commands/general' });
 const Sentry = require('@sentry/node');
 
-const bots=[shiptunes];
+const bots=[shiptunes,shipmod];
 
 function init(client){
 	// Load Logger
@@ -55,7 +55,7 @@ process.on('unhandledRejection', err => {
 	}
 
 	// do cleanup
-	shiptunes.guilds.cache.forEach(function(guild){ //iter guilds
+	shipmod.guilds.cache.forEach(function(guild){ //iter guilds
 		switch(signal){
 			case 'SIGTERM': //heroku sends sigterm for restarting dynos and sleep
 			case 'SIGINT':

@@ -42,13 +42,15 @@ class CustomCommand extends Command {
 	      console.error(e);
 	      message.channel.send(e.toString())
 	    }
-	    console.log(doc)
 	    if(typeof doc == 'string'){
 		    let split = input.split('\n');
 		    doc = {};
-		    doc.title = '> '+split.shift();
-		    doc.description = split.join('\n')
-		    
+		    if(split.length==1){
+		    	doc.title = '> '+split[0];
+		    }else{
+			doc.title = split.shift();
+			doc.description = split.join('\n')
+		    }
 	    }
 	    let user = message.member || message.author
 	    let author = {

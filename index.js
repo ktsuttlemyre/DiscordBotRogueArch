@@ -35,7 +35,7 @@ process.on('unhandledRejection', err => {
 	bots.forEach(function(client){
 		client.logger.error('An unhandled promise rejection occured');
 		client.logger.stacktrace(err);
-	}
+	})
 });
 
 

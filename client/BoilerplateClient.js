@@ -22,10 +22,10 @@ function isSubdir (parent,dir){
 	const isSubdir = relative && !relative.startsWith('..') && !path.isAbsolute(relative);
 }
 
-function loadFilter (path,botPath,folderName,){
+function loadFilter (dir,botPath,folderName,){
 	const commands = path.join(botPath,folderName);
 	const generalCommands = path.join(config.botPath,'../general',folderName);
-	return isSubdir(commands,path) || isSubdir(generalCommands,path);
+	return isSubdir(commands,dir) || isSubdir(generalCommands,dir);
 }
 
 class BoilerplateClient extends AkairoClient {

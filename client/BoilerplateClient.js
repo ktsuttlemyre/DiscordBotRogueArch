@@ -24,7 +24,7 @@ function isSubdir (parent,dir){
 
 function loadFilter (dir,botPath,folderName,){
 	const commands = path.join(botPath,folderName);
-	const generalCommands = path.join(config.botPath,'../general',folderName);
+	const generalCommands = path.join(botPath,'../general',folderName);
 	return isSubdir(commands,dir) || isSubdir(generalCommands,dir);
 }
 

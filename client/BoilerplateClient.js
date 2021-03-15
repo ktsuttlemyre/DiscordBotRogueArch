@@ -20,6 +20,7 @@ require('dotenv').config();
 function isSubdir (parent,dir){
 	const relative = path.relative(parent, dir);
 	const isSubdir = relative && !relative.startsWith('..') && !path.isAbsolute(relative);
+	return isSubdir;
 }
 
 function loadFilter (botPath,folderName,dir){

@@ -7,6 +7,8 @@ const shiptunes = new BoilerplateClient({ owner: process.env.OWNERS, token: proc
 const shipmod = new BoilerplateClient({ owner: process.env.OWNERS, token: process.env.SHIPMOD_TOKEN, botPath: './bots/shipmod' });
 const Sentry = require('@sentry/node');
 
+const i18n = require("i18n");
+
 const bots=[shiptunes,shipmod];
 
 function init(client){
@@ -37,6 +39,31 @@ process.on('unhandledRejection', err => {
 	})
 });
 
+
+i18n.configure({
+    locales: ["en", "es", "ko", "fr", "tr", "pt_br", "zh_cn", "zh_tw"],
+    directory: path.join(__dirname, "locales"),
+    defaultLocale: "en",
+    objectNotation: true,
+    register: global,
+
+    logWarnFn: function (msg) {
+      console.log("warn", msg);
+    },
+
+    logErrorFn: function (msg) {
+      console.log("error", msg);
+    },
+
+    missingKeyFn: function (locale, value) {
+      return value;
+    },
+
+    mustacheConfig: {
+      tags: ["{{", "}}"],
+      disable: false
+    }
+  });
 
 
 

@@ -1,15 +1,14 @@
-const http = require('http')
-const fs = require('fs')
+const http = require('http');
+const fs = require('fs');
 const path = require('path');
 const BoilerplateClient = require(path.join(__dirname,'/client/BoilerplateClient'));
 require('dotenv').config();
 const shiptunes = new BoilerplateClient({ owner: process.env.OWNERS, token: process.env.DISCORD_TOKEN, botPath: './bots/shiptunes' });
 const shipmod = new BoilerplateClient({ owner: process.env.OWNERS, token: process.env.SHIPMOD_TOKEN, botPath: './bots/shipmod' });
 const Sentry = require('@sentry/node');
-
 const i18n = require("i18n");
 
-const bots=[shiptunes,shipmod];
+const bots=[shiptunes, shipmod];
 
 function init(client){
 	// Load Logger
@@ -31,14 +30,6 @@ function init(client){
 	client.start();
 }
 bots.forEach(init);
-
-process.on('unhandledRejection', err => {
-	bots.forEach(function(client){
-		client.logger.error('An unhandled promise rejection occured');
-		client.logger.stacktrace(err);
-	})
-});
-
 
 i18n.configure({
     locales: ["en", "es", "ko", "fr", "tr", "pt_br", "zh_cn", "zh_tw"],
@@ -65,15 +56,19 @@ i18n.configure({
     }
   });
 
-
-
   //shutdown gracefully and clean up 
   //Heroku sends SIGTERM when you restart dynos
-  process
+process.on('unhandledRejection', err => {
+	bots.forEach(function(client){
+		client.logger.error('An unhandled promise rejection occured');
+		client.logger.stacktrace(err);
+	})
+   })
   .on('SIGTERM', shutdown('SIGTERM'))
   .on('SIGINT', shutdown('SIGINT'))
   .on('uncaughtException', shutdown('uncaughtException'));
-  function shutdown(signal) {
+
+function shutdown(signal) {
     return (err) => {
 	console.log(`Shutting down with signal: ${ signal }`);
 	if (err){
@@ -121,10 +116,9 @@ i18n.configure({
       process.exit(err ? 1 : 0);
 
     };
-  }//end graceful shutdown
+}//end graceful shutdown
 
-	
-	
+
 (function server(){
   const requestListener = function (req, res) {
 
@@ -190,8 +184,6 @@ i18n.configure({
 //                 res.end(err);
 //               });
 //           }); //fs stat
-
-    
     }
     
     

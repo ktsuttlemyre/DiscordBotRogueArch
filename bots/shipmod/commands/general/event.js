@@ -27,7 +27,7 @@ class CustomCommand extends Command {
 	async exec(message, { queue }) {
 		console.log('roomMap',roomMap)
 		if(!queue){
-			queue=roomMap[message.channelID] || '';
+			queue=roomMap[message.channel.id] || message.channel.name;
 		}
 		queue=queue.trim().toUpperCase();
 		
@@ -76,7 +76,7 @@ class CustomCommand extends Command {
 		})
 		
 		
-		let suffix = ((roomMap[message.channelID]||'').toLowerCase()==queue.toLowerCase())? '' : queue.toLowerCase();
+		let suffix = ((roomMap[message.channel.id]||'').toLowerCase()==queue.toLowerCase())? '' : queue.toLowerCase();
 		//Send
 		lastMessage = await message.channel.send({embed:{
 					title:title,

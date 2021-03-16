@@ -16,7 +16,7 @@ const Logger = require('../util/logger');
 const path = require('path');
 require('dotenv').config();
 
-
+//https://stackoverflow.com/questions/37521893/determine-if-a-path-is-subdirectory-of-another-in-node-js
 function isSubdir (parent,dir){
 	const relative = path.relative(parent, dir);
 	const isSubdir = relative && !relative.startsWith('..') && !path.isAbsolute(relative);
@@ -50,10 +50,10 @@ class BoilerplateClient extends AkairoClient {
 			prefix: message => this.settings.get(message.guild, 'prefix', '!'),
 			allowMention: true,
 			fetchMembers: true,
-			commandUtil: true,
-			commandUtilLifetime: 3e5,
-			commandUtilSweepInterval: 9e5,
-			handleEdits: true,
+			//commandUtil: false,
+			//commandUtilLifetime: 3e5,
+			//commandUtilSweepInterval: 9e5,
+			//handleEdits: true,
 			defaultCooldown: 2500,
 			argumentDefaults: {
 				prompt: {

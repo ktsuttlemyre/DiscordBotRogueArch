@@ -33,13 +33,13 @@ var pinging=false;
 function keepAlive(string){
   pinging=true;
   let website=`https://${process.env.HEROKU_APP_NAME}.herokuapp.com/heartbeat`;
-  console.log('KeepAlive - Pinging '+website+' for reason:'+string);
+  console.log(`wake.js - Pinging ${website} for reason:${string}`);
   request(website, function(err, res, body){
     if (err) { 
-      console.log(err);
+      console.error('wake.js',err);
       process.exit(1);
     }
-    console.log('Successfully pinged');
+    console.log('wake.js - Successfully pinged');
     lastKeepAlive=Date.now();
     process.exit(0);
     //console.log(body.url);

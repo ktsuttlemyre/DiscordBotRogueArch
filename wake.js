@@ -52,7 +52,7 @@ function keepAlive(string){
 //wake handler
 function wakeHandler(client){
   const Guild = client.guilds.cache.some(function(Guild){ //.get("690661623831986266"); // Getting the guild.
-  //   const owners = ['500468522468507648','500467960914116609']; // Getting shipwash
+  //   const owners = process.env.OWNERS.split(','); // Getting shipwash
   //   for(var i=0,l=owners.length;i<l;i++){
   //     //check user activity status
   //     var member=Guild.members.cache.get(owners[i]);

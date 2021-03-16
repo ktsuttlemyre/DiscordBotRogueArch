@@ -32,7 +32,7 @@ class CustomCommand extends Command {
 		queue=queue.trim().toUpperCase();
 		
 		let randomEmoji = [];
-		let title = 'Event Queue'
+		let title = `${queue} Event Queue `
 		let varName = queue+'_queue';
 		let q = this.client.memory.get(message, varName) || new Collection();
 		let lastMessageID = varName+'LastMessage'
@@ -48,6 +48,7 @@ class CustomCommand extends Command {
 				title = '<:amongus:800119041452146731> AmongUs Event Queue '+_.sample(randomEmoji)
 				break;
 			default:
+				
 				//message.channel.send('No queue associated with '+queue);
 
 		}

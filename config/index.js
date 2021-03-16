@@ -11,5 +11,5 @@ module.exports = {
 		'801473602611445790':'SOCIAL',
 		'':'SPEEDRUN',
 	},
-	devChannelID:'814518995755335773';
+	devChannelID:'814518995755335773',
 }

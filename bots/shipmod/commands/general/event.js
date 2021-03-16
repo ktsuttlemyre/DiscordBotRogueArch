@@ -4,7 +4,7 @@ const { Command } = require('discord-akairo');
 const { Player } = require("discord-player");
 const common = require.main.require('./common');
 const _ = require('lodash');
-const roomMap = require.main.require('./config').roomMap;
+const roomMap = require.main.require('./config').eventRoomMap;
 
 class CustomCommand extends Command {
 	constructor() {

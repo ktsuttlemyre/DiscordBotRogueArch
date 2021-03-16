@@ -10,5 +10,6 @@ module.exports = {
 		'799429356605800458':'MOVIE',
 		'801473602611445790':'SOCIAL',
 		'':'SPEEDRUN',
-	}
+	},
+	devChannelID:'814518995755335773';
 }

@@ -25,7 +25,7 @@ class CustomCommand extends Command {
 	}
 
 	async exec(message, { queue }) {
-		console.log('eventRoomMap',eventRoomMap)
+		console.log('roomMap',roomMap)
 		if(!queue){
 			queue=roomMap[message.channelID] || '';
 		}

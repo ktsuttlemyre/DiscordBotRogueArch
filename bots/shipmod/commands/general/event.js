@@ -25,6 +25,7 @@ class CustomCommand extends Command {
 	}
 
 	async exec(message, { queue }) {
+		console.log('eventRoomMap',eventRoomMap)
 		if(!queue){
 			queue=roomMap[message.channelID] || '';
 		}
@@ -47,7 +48,7 @@ class CustomCommand extends Command {
 				title = '<:amongus:800119041452146731> AmongUs Event Queue '+_.sample(randomEmoji)
 				break;
 			default:
-				message.channel.send('No queue associated with '+queue)
+				message.channel.send('No queue associated with '+queue);
 
 		}
 		if(!q.get(user)){

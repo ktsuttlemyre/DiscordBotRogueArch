@@ -4,12 +4,7 @@ const { Command } = require('discord-akairo');
 const { Player } = require("discord-player");
 const common = require.main.require('./common');
 const _ = require('lodash');
-const roomMap={
-	'789704651414306817':'AMONGUS',
-	'799429356605800458':'MOVIE',
-	'801473602611445790':'SOCIAL',
-	'':'SPEEDRUN',
-}
+const roomMap = require.main.require('./config').roomMap;
 
 class CustomCommand extends Command {
 	constructor() {

@@ -8,13 +8,15 @@ const i18n = require("i18n");
 
 
 const { readdirSync } = require('fs')
-const botDirectories = source =>
+const getDirectories = source =>
   readdirSync(source, { withFileTypes: true })
     .filter(dirent => dirent.isDirectory())
-    .map(dirent => dirent.name)
+    .map(dirent => dirent.name);
+const botDirectories = getDirectories('./bots');
 
 botDirectories.forEach(function(name){
-	bots[name]=new BoilerplateClient({ owner: process.env.OWNER, token: process.env[`${name}_TOKEN`], botPath: `./bots/${name}` });
+	let envVar=name.toUpperCase();
+	bots[name]=new BoilerplateClient({ owner: process.env.OWNER, token: process.env[`${envVar}_TOKEN`], botPath: `./bots/${name}` });
 })
 
 function init(client){

@@ -3,12 +3,19 @@ const fs = require('fs');
 const path = require('path');
 const BoilerplateClient = require(path.join(__dirname,'/client/BoilerplateClient'));
 require('dotenv').config();
-const shiptunes = new BoilerplateClient({ owner: process.env.OWNER, token: process.env.DISCORD_TOKEN, botPath: './bots/shiptunes' });
-const shipmod = new BoilerplateClient({ owner: process.env.OWNER, token: process.env.SHIPMOD_TOKEN, botPath: './bots/shipmod' });
 const Sentry = require('@sentry/node');
 const i18n = require("i18n");
 
-const bots=[shiptunes, shipmod];
+
+const { readdirSync } = require('fs')
+const botDirectories = source =>
+  readdirSync(source, { withFileTypes: true })
+    .filter(dirent => dirent.isDirectory())
+    .map(dirent => dirent.name)
+
+botDirectories.forEach(function(name){
+	bots[name]=new BoilerplateClient({ owner: process.env.OWNER, token: process.env[`${name}_TOKEN`], botPath: `./bots/${name}` });
+})
 
 function init(client){
 	// Load Logger
@@ -29,7 +36,10 @@ function init(client){
 		.on('warn', info => client.logger.warn(info));
 	client.start();
 }
-bots.forEach(init);
+
+Object.keys(bots).forEach(name => {
+  init(bots[name]);
+});
 
 i18n.configure({
     locales: ["en", "es", "ko", "fr", "tr", "pt_br", "zh_cn", "zh_tw"],
@@ -59,7 +69,8 @@ i18n.configure({
   //shutdown gracefully and clean up 
   //Heroku sends SIGTERM when you restart dynos
 process.on('unhandledRejection', err => {
-	bots.forEach(function(client){
+	Object.keys(bots).forEach(name => {
+		let client = bots[name];
 		client.logger.error('An unhandled promise rejection occured');
 		client.logger.stacktrace(err);
 	})
@@ -76,7 +87,7 @@ function shutdown(signal) {
 	}
 
 	// do cleanup
-	shipmod.guilds.cache.forEach(function(guild){ //iter guilds
+	bots['shipmod'].guilds.cache.forEach(function(guild){ //iter guilds
 		switch(signal){
 			case 'SIGTERM': //heroku sends sigterm for restarting dynos and sleep
 			case 'SIGINT':
@@ -97,7 +108,7 @@ function shutdown(signal) {
 			
 			default:
 				//TODO!!!! this needs to access the memory of shiptunes
-				var memory=shiptunes.memory
+				var memory=bots['shiptunes'].memory
 				if(!memory){return}
 				var player=memory.get({guild}, 'player');
 				if(!player){return}

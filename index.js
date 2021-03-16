@@ -16,7 +16,7 @@ const botDirectories = getDirectories('./bots');
 
 botDirectories.forEach(function(name){
 	let envVar=name.toUpperCase();
-	bots[name]=new BoilerplateClient({ owner: process.env.OWNER, token: process.env[`${envVar}_TOKEN`], botPath: `./bots/${name}` });
+	bots[name]=new BoilerplateClient({ owner: process.env.OWNER, token: process.env[`TOKEN_${envVar}`], botPath: `./bots/${name}` });
 })
 
 function init(client){

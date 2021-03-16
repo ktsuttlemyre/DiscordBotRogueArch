@@ -3,8 +3,8 @@ const fs = require('fs');
 const path = require('path');
 const BoilerplateClient = require(path.join(__dirname,'/client/BoilerplateClient'));
 require('dotenv').config();
-const shiptunes = new BoilerplateClient({ owner: process.env.OWNERS, token: process.env.DISCORD_TOKEN, botPath: './bots/shiptunes' });
-const shipmod = new BoilerplateClient({ owner: process.env.OWNERS, token: process.env.SHIPMOD_TOKEN, botPath: './bots/shipmod' });
+const shiptunes = new BoilerplateClient({ owner: process.env.OWNER, token: process.env.DISCORD_TOKEN, botPath: './bots/shiptunes' });
+const shipmod = new BoilerplateClient({ owner: process.env.OWNER, token: process.env.SHIPMOD_TOKEN, botPath: './bots/shipmod' });
 const Sentry = require('@sentry/node');
 const i18n = require("i18n");
 

@@ -4,8 +4,8 @@ var TOKEN = process.env.SHIPMOD_TOKEN;
 const request = require('request');
 
 const client = new Client({ 
-  disableMentions: "everyone",
-  restTimeOffset: 0
+  //disableMentions: "everyone",
+  //restTimeOffset: 0
 });
 
 client.login(TOKEN);

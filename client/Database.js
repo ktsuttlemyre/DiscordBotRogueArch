@@ -2,7 +2,7 @@ const path = require('path');
 const Logger = require('../util/logger.js');
 const readdir = require('util').promisify(require('fs').readdir);
 const Sequelize = require('sequelize');
-const config = require.main.require('./config).get();
+const config = require.main.require('./config);
 
 
 let db;

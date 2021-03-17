@@ -5,15 +5,14 @@ const emotes={error:":error:"}
 const {reactions,defaultAvatar} = require.main.require('./common');
 const common = require.main.require('./common');
 const _ = require('lodash');
-const path = require('path');
 
 
 class CustomCommand extends Command {
 	constructor() {
-		super(path.parse(__filename).name, {
+		super(common.commandName(__filename), {
 		description: { content: 'sets amongus muting'},
 		//aliases: [''],
-		category: path.basename(path.dirname(__filename)),
+		category: common.commandCategory(__filename)),
 		clientPermissions: ['SEND_MESSAGES'],
 		args: [
 			 {

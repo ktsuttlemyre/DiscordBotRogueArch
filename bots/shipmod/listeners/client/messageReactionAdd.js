@@ -1,4 +1,7 @@
-messageReactionAdd
+// howto
+//https://discordjs.guide/popular-topics/reactions.html#listening-for-reactions-on-old-messages
+// code example
+//https://github.com/discordjs/guide/blob/master/code-samples/popular-topics/reactions/12/uncached-messages.js
 
 const { Listener } = require('discord-akairo');
 const config = require.main.require('./config');

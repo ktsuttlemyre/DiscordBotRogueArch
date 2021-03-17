@@ -1,4 +1,4 @@
-# ShipBots Infrastructre projet
+# ShipBots Infrastructre project
 
 I made this project to make creating bots easy. Just create a bot file using your bot's name in `bots/` and add subfolders such as
  -  `commands/<category>`

@@ -6,16 +6,15 @@ const {reactions,defaultAvatar} = require.main.require('./common');
 const common = require.main.require('./common');
 const _ = require('lodash');
 const map = require.main.require('./sounds')
-const path = require('path');
 
 //sound effects https://www.youtube.com/channel/UCok6P4rwxBMun9ghaIV4ufQ
 
 class CustomCommand extends Command {
 	constructor() {
-		super(path.parse(__filename).name, {
+		super(common.commandName(__filename), {
 		description: { content: 'clip'},
-		aliases: ['clip','sound'],
-		category: path.basename(path.dirname(__filename)),
+		aliases: [common.commandName(__filename),'sound'],
+		category: common.commandCategory(__filename),
 		clientPermissions: ['SEND_MESSAGES'],
 		args: [
 			{

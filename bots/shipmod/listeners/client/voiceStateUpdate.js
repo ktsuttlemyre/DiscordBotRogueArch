@@ -2,7 +2,7 @@ const { Listener } = require('discord-akairo');
 const config = require.main.require('./config')
 const commandVars = require.main.require('./common').commandVars(__filename);
 
-class ReadyListener extends Listener {
+class CustomListener extends Listener {
 	constructor() {
 		super(commandVars.name, {
 			emitter: commandVars.category,
@@ -82,4 +82,4 @@ class ReadyListener extends Listener {
 	}
 }
 
-module.exports = ReadyListener;
+module.exports = CustomListener;

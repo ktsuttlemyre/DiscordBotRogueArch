@@ -1,5 +1,5 @@
 const { Client, Collection } = require("discord.js");
-var TOKEN = process.env.SHIPMOD_TOKEN;
+var TOKEN = process.env.TOKEN_SHIPMOD;
 
 const request = require('request');
 

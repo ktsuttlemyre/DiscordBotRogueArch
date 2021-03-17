@@ -9,10 +9,10 @@ const commandVars = require.main.require('./common').commandVars(__filename);
 
 class CustomListener extends Listener {
 	constructor() {
-		super(commandVars.name, {
-			emitter: commandVars.category,
-			event: commandVars.name,
-			category: commandVars.category,
+		super('messageReactionRemove', {
+			emitter: 'client',
+			event: 'messageReactionRemove',
+			category: 'client',
 		});
 	}
 

@@ -6,6 +6,7 @@ require('dotenv').config();
 const Sentry = require('@sentry/node');
 const i18n = require("i18n");
 
+const bots = {};
 
 const { readdirSync } = require('fs')
 const getDirectories = source =>

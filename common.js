@@ -13,11 +13,15 @@ exports.reactions={
 		"yellow-circle":"🟡",
 	     }
 
-
+exports.commandVars=function(filename){
+	return {name:path.parse(filename).name,category:path.basename(path.dirname(__filename))}
+}
 exports.commandName=function(filename){
+	console.trace('depricated')
 	return path.parse(filename).name;
 }
 exports.commandCategory=function(filename){
+	console.trace('depricated')
 	return path.basename(path.dirname(__filename));
 }
 

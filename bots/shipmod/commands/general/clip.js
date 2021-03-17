@@ -4,6 +4,7 @@ const { Player } = require("discord-player");
 const emotes={error:":error:"}
 const {reactions,defaultAvatar} = require.main.require('./common');
 const common = require.main.require('./common');
+const commandVars = common.commandVars(__filename);
 const _ = require('lodash');
 const map = require.main.require('./sounds')
 
@@ -11,10 +12,10 @@ const map = require.main.require('./sounds')
 
 class CustomCommand extends Command {
 	constructor() {
-		super(common.commandName(__filename), {
+		super(commandVars.name, {
 		description: { content: 'clip'},
-		aliases: [common.commandName(__filename),'sound'],
-		category: common.commandCategory(__filename),
+		aliases: [commandVars.name,'sound'],
+		category: commandVars.category,
 		clientPermissions: ['SEND_MESSAGES'],
 		args: [
 			{

@@ -14,7 +14,7 @@ exports.reactions={
 	     }
 
 exports.commandVars=function(filename){
-	return {name:path.parse(filename).name,category:path.basename(path.dirname(__filename))}
+	return {name:path.parse(filename).name,category:path.basename(path.dirname(filename))}
 }
 exports.commandName=function(filename){
 	console.trace('depricated')
@@ -22,7 +22,7 @@ exports.commandName=function(filename){
 }
 exports.commandCategory=function(filename){
 	console.trace('depricated')
-	return path.basename(path.dirname(__filename));
+	return path.basename(path.dirname(filename));
 }
 
 exports.defaultAvatar='https://discord.com/assets/322c936a8c8be1b803cd94861bdfa868.png';

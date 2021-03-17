@@ -4,16 +4,17 @@ const { Player } = require("discord-player");
 const emotes={error:":error:"}
 const {reactions,defaultAvatar} = require.main.require('./common');
 const common = require.main.require('./common');
+const commandVars = common.commandVars(__filename);
 const _ = require('lodash');
 const web = require.main.require('./web');
 const yaml = require('js-yaml');
 
 class CustomCommand extends Command {
 	constructor() {
-		super(common.commandName(__filename), {
+		super(commandVars.name, {
 		description: { content: 'creates an announcement on your behaf'},
-		aliases: [common.commandName(__filename)],
-		category: common.commandCategory(__filename),
+		aliases: [commandVars.name],
+		category: commandVars.category,
 		clientPermissions: ['SEND_MESSAGES','MANAGE_MESSAGES'],
 		args: [
 			{

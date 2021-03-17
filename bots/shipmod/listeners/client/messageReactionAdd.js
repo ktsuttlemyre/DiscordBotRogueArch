@@ -5,14 +5,14 @@
 
 const { Listener } = require('discord-akairo');
 const config = require.main.require('./config');
-const common = require.main.require('./common');
+const commandVars = require.main.require('./common').commandVars(__filename);
 
-class ReadyListener extends Listener {
+class CustomListener extends Listener {
 	constructor() {
-		super(common.commandName(__filename), {
-			emitter: 'client',
-			event: common.commandName(__filename),
-			category: common.commandCategory(__filename),
+		super(commandVars.name, {
+			emitter: commandVars.category,
+			event: commandVars.name,
+			category: commandVars.category,
 		});
 	}
 
@@ -28,4 +28,4 @@ class ReadyListener extends Listener {
 	}
 }
 
-module.exports = ReadyListener;
+module.exports = CustomListener;

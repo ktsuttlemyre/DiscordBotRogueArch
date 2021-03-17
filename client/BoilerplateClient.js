@@ -38,8 +38,9 @@ class BoilerplateClient extends AkairoClient {
 			//disabledEvents: ['TYPING_START'],
 			//commandUtilLifetime: 600000,
 		},{ //Discord.js options https://discord.js.org/#/docs/main/stable/typedef/ClientOptions
-		    //disableMentions: "everyone",
-		    //restTimeOffset: 0
+			partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
+			//disableMentions: "everyone",
+			//restTimeOffset: 0
 		});
 		// Init config
 		this.config = config;

@@ -8,6 +8,7 @@ const i18n = require("i18n");
 
 const bots = {};
 
+//https://stackoverflow.com/questions/18112204/get-all-directories-within-directory-nodejs
 const { readdirSync } = require('fs')
 const getDirectories = source =>
   readdirSync(source, { withFileTypes: true })

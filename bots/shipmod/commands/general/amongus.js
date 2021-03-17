@@ -4,15 +4,16 @@ const { Player } = require("discord-player");
 const emotes={error:":error:"}
 const {reactions,defaultAvatar} = require.main.require('./common');
 const common = require.main.require('./common');
+const commandVars = common.commandVars(__filename);
 const _ = require('lodash');
 
 
 class CustomCommand extends Command {
 	constructor() {
-		super(common.commandName(__filename), {
+		super(commandVars.name, {
 		description: { content: 'sets amongus muting'},
 		//aliases: [''],
-		category: common.commandCategory(__filename)),
+		category: commandVars.category,
 		clientPermissions: ['SEND_MESSAGES'],
 		args: [
 			 {
@@ -33,21 +34,21 @@ class CustomCommand extends Command {
 	}
 
 	async exec(message, bool) {
-    var varName = 'amongusMode';
-    
-    if(!bool.length){ //query current value
-      return message.send('Current value is: ' + this.client.memory.channelGet(message, varName));
-    }
-    
-    var toggle = bool.match(/^(toggle|switch|flip|!+)$/);
-    if(toggle){
-      var value = this.client.memory.channelSet(message, varName, !!this.client.memory.channelGet(message, varName) );
-      return message.send('Toggled value to: ' + value);
-    }
+	    var varName = 'amongusMode';
 
-    var value = (bool.match(/^(no|false|0|off|null|undefined|nan)$/))?false:true;
-		this.client.memory.channelSet(message.guild, message.channel, varName, value );
-    return message.send('Changed value to:'+ value)
+	    if(!bool.length){ //query current value
+	      return message.send('Current value is: ' + this.client.memory.channelGet(message, varName));
+	    }
+
+	    var toggle = bool.match(/^(toggle|switch|flip|!+)$/);
+	    if(toggle){
+	      var value = this.client.memory.channelSet(message, varName, !!this.client.memory.channelGet(message, varName) );
+	      return message.send('Toggled value to: ' + value);
+	    }
+
+	    var value = (bool.match(/^(no|false|0|off|null|undefined|nan)$/))?false:true;
+			this.client.memory.channelSet(message.guild, message.channel, varName, value );
+	    return message.send('Changed value to:'+ value)
 	}
 }
 

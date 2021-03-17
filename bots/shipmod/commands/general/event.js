@@ -11,7 +11,7 @@ class CustomCommand extends Command {
 	constructor() {
 		super(commandVars.name, {
 		description: { content: 'Manages event queue'},
-		aliases: [comandVars.name,'eventq','eventqueue','eventadd', 'rsvp'],
+		aliases: [commandVars.name,'eventq','eventqueue','eventadd', 'rsvp'],
 		category: commandVars.category,
 		clientPermissions: ['SEND_MESSAGES','MANAGE_MESSAGES'],
 		args: [

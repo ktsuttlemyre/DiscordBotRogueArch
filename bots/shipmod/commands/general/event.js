@@ -3,15 +3,16 @@ const GUIMessages = require.main.require('./templates/messages');
 const { Command } = require('discord-akairo');
 const { Player } = require("discord-player");
 const common = require.main.require('./common');
+const commandVars = common.commandVars(__filename);
 const _ = require('lodash');
 const roomMap = require.main.require('./config').eventRoomMap;
 
 class CustomCommand extends Command {
 	constructor() {
-		super(common.commandName(__filename), {
+		super(commandVars.name, {
 		description: { content: 'Manages event queue'},
-		aliases: [common.commandName(__filename),'eventq','eventqueue','eventadd', 'rsvp'],
-		category: common.commandCategory(__filename),
+		aliases: [comandVars.name,'eventq','eventqueue','eventadd', 'rsvp'],
+		category: commandVars.category,
 		clientPermissions: ['SEND_MESSAGES','MANAGE_MESSAGES'],
 		args: [
 			 {

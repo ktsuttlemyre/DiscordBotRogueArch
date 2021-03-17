@@ -1,12 +1,13 @@
 const { Listener } = require('discord-akairo');
 const config = require.main.require('./config')
+const commandVars = require.main.require('./common').commandVars(__filename);
 
 class ReadyListener extends Listener {
 	constructor() {
-		super('voiceStateUpdate', {
-			emitter: 'client',
-			event: 'voiceStateUpdate',
-			category: 'client',
+		super(commandVars.name, {
+			emitter: commandVars.category,
+			event: commandVars.name,
+			category: commandVars.category,
 		});
 	}
 

@@ -8,6 +8,12 @@ I made this project to make creating bots easy. Just create a bot file using you
 After creating a bot folder with bot code be sure to add an enviornment variable `TOKEN_<BOTNAME>` to the environment
 `./bots/global` are common commands that will be added to every bot you put into `./bots/`
 
+### You can make multiple bots via creating environment vars in the format of
+ TOKEN_SHIPTUNES = '9h8eh5gi8ayfawe'
+ TOKEN_SHIPTUNES_1 = '8dno8dskfjai'
+ TOKEN_SHIPTUNES_2 = '448sdjslladf'
+
+
 # Current Architecture Features
  - music
  - utalize heroku

@@ -6,6 +6,13 @@ const {reactions,defaultAvatar} = require.main.require('./common');
 const common = require.main.require('./common');
 const _ = require('lodash');
 const path = require('path');
+//TODO convert
+/*
+player.init
+player.backgroundplaylist
+queue.
+*/
+
 
 class CustomCommand extends Command {
 	constructor() {
@@ -46,7 +53,6 @@ class CustomCommand extends Command {
 						await player.play(message,player.nowPlaying(message));
 					}else{
 						//do background
-						init(message,player)
 						await playBackgroundPlaylist(message,player);
 					}
 				}
@@ -59,7 +65,6 @@ class CustomCommand extends Command {
 			}
 		}else{
 			if(!search){
-				init(message,player)
 				await playBackgroundPlaylist(message,player);
 				return
 			}
@@ -81,7 +86,8 @@ class CustomCommand extends Command {
 }
 
 
-function playBackgroundPlaylist(message,player){
+function playBackgroundPlaylist(message,player,notice){
+	init(message,player,notice);
 	var backgrounds=[//'chill nintendo beats',
 		'https://www.youtube.com/watch?v=oS-A-wqZ2RI',
 		'https://www.youtube.com/watch?v=AEuQcjHT_f4',
@@ -312,10 +318,9 @@ function createPlayer(message,client){
 	.on('noResults', (message, query) => message.channel.send(`No results found on YouTube for ${query}!`))
 
 	// Send a message when the music is stopped
-	.on('queueEnd',async function(message, queue){
+	.on('queueEnd',async function(message, queue){ //'Music stopped. There no more music in the queue!'
 		player.init=false
-		init(message,player,'Playing background music until I get a new request') //'Music stopped. There no more music in the queue!'
-		playBackgroundPlaylist(message,player)
+		playBackgroundPlaylist(message,player,'Playing background music until I get a new request')
 	})
 	.on('channelEmpty',function(message, queue){
 		GUIMessages.nowPlaying(message,player,'I am alone in the voice channel. :frowning:');

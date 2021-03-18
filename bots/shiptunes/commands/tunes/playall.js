@@ -46,8 +46,8 @@ class CustomCommand extends Command {
     if(blocked){
       return this.handler.emit('commandBlocked',message,this,blocked);
     }
-		var command this.client.commandHandler.findCommand('play')
-		await GUIMessages.nowPlaying(message,player,'paused')
+		var command = this.client.commandHandler.findCommand('play');
+		await GUIMessages.nowPlaying(message,player,'paused');
 	}
 }
 

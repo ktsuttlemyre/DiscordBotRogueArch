@@ -89,7 +89,7 @@ class BoilerplateClient extends AkairoClient {
 				.on('missingPermissions',function(message,command,type,missing){
 					let user = message.member||message.author;
 					let name = user.displayName || user.tag;
-					command.channel.send(`${type} must have ${missing} permissions in order to execute \`${command.prefix}${command.id}\`);
+					command.channel.send(`${type} must have ${missing} permissions in order to execute \`${command.prefix}${command.id}\``);
 					});
 				//.on('remove',function(command){});
 		// Init Listener Handler

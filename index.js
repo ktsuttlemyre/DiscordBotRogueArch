@@ -9,17 +9,29 @@ const i18n = require("i18n");
 const bots = {};
 
 //https://stackoverflow.com/questions/18112204/get-all-directories-within-directory-nodejs
-const { readdirSync } = require('fs')
-const getDirectories = source =>
-  readdirSync(source, { withFileTypes: true })
-    .filter(dirent => dirent.isDirectory())
-    .map(dirent => dirent.name);
-const botDirectories = getDirectories('./bots');
+// const { readdirSync } = require('fs')
+// const getDirectories = source =>
+//   readdirSync(source, { withFileTypes: true })
+//     .filter(dirent => dirent.isDirectory())
+//     .map(dirent => dirent.name);
+// const botDirectories = getDirectories('./bots');
 
-botDirectories.forEach(function(name){
-	let envVar=name.toUpperCase();
-	bots[name]=new BoilerplateClient({ owner: process.env.OWNER, token: process.env[`TOKEN_${envVar}`], botPath: `./bots/${name}` });
-})
+// botDirectories.forEach(function(name){
+// 	let envVar=name.toUpperCase();
+// 	bots[name]=new BoilerplateClient({ owner: process.env.OWNER, token: process.env[`TOKEN_${envVar}`], botPath: `./bots/${name}` });
+// })
+
+//you can make multiple bots via creating environment vars in the format of
+// TOKEN_SHIPTUNES = '9h8eh5gi8ayfawe'
+// TOKEN_SHIPTUNES_1 = '8dno8dskfjai'
+// TOKEN_SHIPTUNES_2 = '448sdjslladf'
+Object.keys(process.env).forEach(function(key){
+	let split = key.split('_');
+	let name=split[1];
+	if(name && split[0]=='TOKEN'){
+		bots[name]=new BoilerplateClient({ owner: process.env.OWNER, token: process.env[key], botPath: `./bots/${name}` });
+	}
+});
 
 function init(client){
 	// Load Logger

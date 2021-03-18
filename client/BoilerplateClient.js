@@ -84,7 +84,7 @@ class BoilerplateClient extends AkairoClient {
 					message.channel.send(`Currently talking to ${name} please wait for them to finish.`);
 				})
 				//.on('load',function(){})
-				.on('messageBlocked',function(message,reason){message.channel.send(`Message blocked due to ${reason}`);})
+				//.on('messageBlocked',function(message,reason){message.channel.send(`Message blocked due to ${reason}`);})
 				.on('messageInvalid',function(message){message.channel.send(`Message invalid`);})
 				.on('missingPermissions',function(message,command,type,missing){
 					let user = message.member||message.author;

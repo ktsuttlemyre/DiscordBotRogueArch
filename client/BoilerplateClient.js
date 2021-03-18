@@ -71,6 +71,27 @@ class BoilerplateClient extends AkairoClient {
 				},
 			},
 		});
+		this.commandHandler.on('commandBlocked',function(message,command,reason){command.channel.send(`\`${command.prefix}${command.id}\` is blocked due to ${reason}`);})
+				.on('commandCancelled',function(message,command,retryMessage){command.channel.send(`\`${command.prefix}${command.id}\` canceled`);})
+				.on('commandDisabled',function(message,command){command.channel.send(`\`${command.prefix}${command.id}\` disabled`);})
+				//.on('commandFinished',function(){})
+				//.on('commandStarted',function(){})
+				.on('cooldown',function(message,command,remaining){command.channel.send(`\`${command.prefix}${command.id}\` canceled`);})
+				.on('error',function(error,message,command){command.channel.send(`\`${command.prefix}${command.id}\` got error ${error.name}: ${error.message}`);})
+				.on('inPrompt',function(message){
+					let user = message.member||message.author;
+					let name = user.displayName || user.tag;
+					message.channel.send(`Currently talking to ${name} please wait for them to finish.`);
+				})
+				//.on('load',function(){})
+				.on('messageBlocked',function(message,reason){message.channel.send(`Message blocked due to ${reason}`);})
+				.on('messageInvalid',function(message){message.channel.send(`Message invalid`);})
+				.on('missingPermissions',function(message,command,type,missing){
+					let user = message.member||message.author;
+					let name = user.displayName || user.tag;
+					command.channel.send(`${type} must have ${missing} permissions in order to execute \`${command.prefix}${command.id}\`);
+					});
+				//.on('remove',function(command){});
 		// Init Listener Handler
 		this.listenerHandler = new ListenerHandler(this, {
 			directory: './bots',

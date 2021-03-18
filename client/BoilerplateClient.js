@@ -71,7 +71,7 @@ class BoilerplateClient extends AkairoClient {
 				},
 			},
 		});
-		this.commandHandler.on('commandBlocked',function(message,command,reason){command.channel.send(`\`${command.prefix}${command.id}\` is blocked due to ${reason}`);})
+		this.commandHandler.on('commandBlocked',function(message,command,reason){command.channel.send(`\`${command.prefix}${command.id}\` failed due to ${reason}`);})
 				.on('commandCancelled',function(message,command,retryMessage){command.channel.send(`\`${command.prefix}${command.id}\` canceled`);})
 				.on('commandDisabled',function(message,command){command.channel.send(`\`${command.prefix}${command.id}\` disabled`);})
 				//.on('commandFinished',function(){})

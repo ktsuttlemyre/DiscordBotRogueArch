@@ -4,15 +4,16 @@ const { Player } = require("discord-player");
 const emotes={error:":error:"}
 const {reactions,defaultAvatar} = require.main.require('./common');
 const common = require.main.require('./common');
+const commandVars = common.commandVars(__filename);
 const _ = require('lodash');
 const path = require('path');
 
 class CustomCommand extends Command {
 	constructor() {
-		super(path.parse(__filename).name, {
+		super(commandVars.name, {
 		description: { content: 'pause'},
-		aliases: ['pause','stop'],
-		category: path.basename(path.dirname(__filename)),
+		aliases: [commandVars.name,'stop'],
+		category: commandVars.category,
 		clientPermissions: ['SEND_MESSAGES'],
 		args: [
 			// {

@@ -4,15 +4,18 @@ const { Player } = require("discord-player");
 const emotes={error:":error:"}
 const {reactions,defaultAvatar} = require.main.require('./common');
 const common = require.main.require('./common');
+const util = require.main.require('./util');
+const commandVars = common.commandVars(__filename);
 const _ = require('lodash');
 const path = require('path');
 
+const embedCommand = require.main.require('./bots/shipmod/commands/general/embed');
 class CustomCommand extends Command {
 	constructor() {
-		super(path.parse(__filename).name, {
+		super(commandVars.name, {
 		description: { content: 'back'},
-		aliases: ['back'],
-		category: path.basename(path.dirname(__filename)),
+		aliases: [commandVars.name],
+		category: commandVars.category,
 		clientPermissions: ['SEND_MESSAGES'],
 		args: [
 			// {
@@ -43,13 +46,14 @@ class CustomCommand extends Command {
 			//do voting (optional)
 		}
 		
+		
 		//isDJ required?
  		if (!isDJ){return 'DJ';}
 		return ;
 	}
 	
 	async exec(message) {
-		var player = this.client.memory.channelGet(message, 'player')
+		var player = this.client.memory.channelGet(message, 'player');
 		if(!player){
 			return this.handler.emit('commandBlocked',message,this,'No player playing to act on');
 		}
@@ -64,13 +68,18 @@ class CustomCommand extends Command {
 			}
 		}
 		
-		var track = player.nowPlaying(message);
-		if(track){
-			await GUIMessages.nowPlaying(message,player,'Skipped: '+track.title)
-		}else{
-			await GUIMessages.nowPlaying(message,player,'Skipped: last track');
+		//Notify the user what we are doing
+		let track = queue.previousTracks[queue.previousTracks.length-1];
+		if(!track){
+			return GUIMessages.nowPlaying(message,player,'Can\'t go back any further');
 		}
-		player.back(message);
+		await GUIMessages.nowPlaying(message,player,'Back to previous track: '+track.title);
+
+		if(player.back(message)){
+			return util.messages.encapsulate(message,{description:response});
+			//this.handler.modules['embed'].exec(message,)	
+		}
+		this.handler.emit('commandBlocked',message,this,'Sending back command to player failed');
 	}
 }
 

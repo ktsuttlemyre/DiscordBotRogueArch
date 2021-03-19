@@ -42,7 +42,6 @@ class CustomCommand extends Command {
 			}
 			//do voting (optional)
 		}
-		//do voting (optional)
 		
 		//isDJ required?
  		if (!isDJ)return 'DJ';}

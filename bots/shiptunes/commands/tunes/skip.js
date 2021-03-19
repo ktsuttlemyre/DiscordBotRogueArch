@@ -46,12 +46,12 @@ class CustomCommand extends Command {
 		
 		
 		//isDJ required?
- 		if (!isDJ)return 'DJ';}
+ 		if (!isDJ){return 'DJ';}
 		return ;
 	}
 	
 	async exec(message) {
-		var player = this.client.memory.channelGet(message, 'player')
+		var player = this.client.memory.channelGet(message, 'player');
 		if(!player){
 			return this.handler.emit('commandBlocked',message,this,'No player playing to act on');
 		}
@@ -65,8 +65,6 @@ class CustomCommand extends Command {
 				await GUIMessages.nowPlaying(message,player,"Error resuming queue");
 			}
 		}
-		
-
 		
 		var track = player.nowPlaying(message);
 		if(track){

@@ -80,8 +80,7 @@ class CustomCommand extends Command {
 			}
 		}else{
 			if(!search && !message.attachments){
-				await util.player.play
-				Playlist(message,player);
+				await util.player.playBackgroundPlaylist(message, player);
 				return
 			}
 		}

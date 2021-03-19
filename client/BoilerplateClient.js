@@ -71,15 +71,15 @@ class BoilerplateClient extends AkairoClient {
 				},
 			},
 		});
-		this.commandHandler.on('commandBlocked',function(message,command,reason){command.channel.send(`\`${command.prefix}${command.id}\` failed due to ${reason}`);})
-				.on('commandCancelled',function(message,command,retryMessage){command.channel.send(`\`${command.prefix}${command.id}\` canceled`);}) //retryMessage is optional
-				.on('commandDisabled',function(message,command){command.channel.send(`\`${command.prefix}${command.id}\` disabled`);})
+		this.commandHandler.on('commandBlocked',function(message,command,reason){message.channel.send(`\`${command.prefix}${command.id}\` failed due to ${reason}`);})
+				.on('commandCancelled',function(message,command,retryMessage){message.channel.send(`\`${command.prefix}${command.id}\` canceled`);}) //retryMessage is optional
+				.on('commandDisabled',function(message,command){message.channel.send(`\`${command.prefix}${command.id}\` disabled`);})
 				//.on('commandFinished',function(){})
 				//.on('commandStarted',function(){})
-				.on('cooldown',function(message,command,remaining){command.channel.send(`\`${command.prefix}${command.id}\` canceled`);})
+				.on('cooldown',function(message,command,remaining){message.channel.send(`\`${command.prefix}${command.id}\` canceled`);})
 				.on('error',function(error,message,command){
 					if(command){		
-						command.channel.send(`\`${command.prefix}${command.id}\` got error ${error.name}: ${error.message}`);
+						message.channel.send(`\`${command.prefix}${command.id}\` got error ${error.name}: ${error.message}`);
 					}else{
 						message.channel.send(`Got error ${error.name}: ${error.message}`);
 					}
@@ -96,7 +96,7 @@ class BoilerplateClient extends AkairoClient {
 				.on('missingPermissions',function(message,command,type,missing){
 					let user = message.member||message.author;
 					let name = user.displayName || user.tag;
-					command.channel.send(`${type} must have ${missing} permissions in order to execute \`${command.prefix}${command.id}\``);
+					message.channel.send(`${type} must have ${missing} permissions in order to execute \`${command.prefix}${command.id}\``);
 					});
 				//.on('remove',function(command){});
 		// Init Listener Handler

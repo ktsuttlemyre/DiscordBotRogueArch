@@ -14,7 +14,7 @@ class CustomCommand extends Command {
 	constructor() {
 		super(commandVars.name, {
 		description: { content: 'back'},
-		aliases: [commandVars.name],
+		aliases: [commandVars.name,'prev','prevtrack','previous','previoustrack'],
 		category: commandVars.category,
 		clientPermissions: ['SEND_MESSAGES'],
 		args: [

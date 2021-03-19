@@ -55,9 +55,7 @@ class CustomCommand extends Command {
 	
 	async exec(message, { search }) {
 		var player = this.client.memory.channelGet(message, 'player') || this.client.memory.channelSet(message, 'player', util.player.create(message,this.client));
-		console.log(message.attachments);
 		let hasAttachments = message.attachments && !!message.attachments.size;
-		
 		var queue=player.getQueue(message);
 		if(queue){
 			if(queue.paused || queue.stopped){

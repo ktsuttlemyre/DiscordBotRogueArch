@@ -39,7 +39,7 @@ class CustomListener extends Listener {
 
 		//make sure message is resolved
 		let message = await util.messages.resolve(reaction.message);
-		let member = /* //todoconvert(user to member) */ || user;
+		let member = /* //todoconvert(user to member) || */user;
 		let name = member.displayName || member.username || member.tag;
 		let messageContent=_.truncate(message.content);
 

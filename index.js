@@ -103,7 +103,7 @@ function shutdown(signal) {
 	}
 
 	// do cleanup
-	bots['shipmod'].guilds.cache.forEach(function(guild){ //iter guilds
+	bots['shipmod'] && bots['shipmod'].guilds.cache.forEach(function(guild){ //iter guilds
 		switch(signal){
 			case 'SIGTERM': //heroku sends sigterm for restarting dynos and sleep
 			case 'SIGINT':

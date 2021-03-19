@@ -7,7 +7,7 @@ const { Listener } = require('discord-akairo');
 const config = require.main.require('./config');
 const commandVars = require.main.require('./common').commandVars(__filename);
 
-let optomized = false
+
 
 class CustomListener extends Listener {
 	constructor() {
@@ -23,46 +23,38 @@ class CustomListener extends Listener {
 		if(user.bot){
 			return
 		}
-		let sendToUser=reaction.message.member;
-		let notify = null;
 
-		if(optomized){
-			if(sendToUser){
-				notify = userWantsEmojiNotifications();
-				if(notify === false){
-					return
-				}
-			}
-		}
 
-		//load partial
-		if (reaction.message.partial) {
-			try {
-				await reaction.message.fetch();
-			} catch (error) {
-				console.error('Something went wrong when fetching the message: ', error);
-			}
-		}
+ 		//this is off because it is probably a bad idea to use a partial before calling .fetch()
+		//let optomized = false;
+		// if(optomized){
+		// 	if(sendToUser){
+		// 		notify = userWantsEmojiNotifications();
+		// 		if(notify === false){
+		// 			return
+		// 		}
+		// 	}
+		// }
 
-		let message = reaction.message
-		let member = convert(user to member) || user;
+
+		//make sure message is resolved
+		let message = await util.messages.resolve(reaction.message);
+		let member = /* //todoconvert(user to member) */ || user;
 		let name = member.displayName || member.username || member.tag;
+		let messageContent=_.truncate(message.content);
 
-		console.log(`${name} reacted with "${reaction.emoji.name}" to ${message.id} with content ${message.content}.`);
+		console.log(`${name} reacted with "${reaction.emoji.name}" to ${sendtoUser}'s ${message.id} with content ${messageContent}.`);
 
 		//see if user wants notificaiton
-		sendToUser=reaction.message.member;
-		if(notify==null){
-			notify = userWantsEmojiNotifications()
-		}
+		let sendToUser = message.member;
+		let notify = userWantsEmojiNotifications()
 		if(notify!==true){
-			return
+			return ;
 		}
 
 		//render
 		let embed = new Discord.MessageEmbed();
 		embed.setAuthor(name, user.displayAvatarURL() || common.defaultAvatar, `https://discordapp.com/users/${user.id}`);
-		let messageContent=_.truncate(message.content);
 		embed.setDiscription(`Reacted with ${reaction.emoji.name} to your message ${messageContent}`);
 		sendToUser.send(embed);
 	}

@@ -87,7 +87,7 @@ class CustomCommand extends Command {
 		
 			
 
-		if(message.attachments){
+		if(message.attachments && message.attachments.size){
 			await player.play(message, search, { isAttachment:true });
 		}else{
 			await player.play(message, search, { firstResult: true });

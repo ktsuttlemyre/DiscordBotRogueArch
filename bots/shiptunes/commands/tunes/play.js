@@ -55,6 +55,8 @@ class CustomCommand extends Command {
 	
 	async exec(message, { search }) {
 		var player = this.client.memory.channelGet(message, 'player') || this.client.memory.channelSet(message, 'player', util.player.create(message,this.client));
+		console.log(message.attachments);
+		let hasAttachments = message.attachments && !!message.attachments.size;
 		
 		var queue=player.getQueue(message);
 		if(queue){
@@ -75,11 +77,11 @@ class CustomCommand extends Command {
 			}
 		}
 		if(player.isPlaying(message)){
-			if(!search && !message.attachments){
+			if(!search && !hasAttachments){
 				return message.channel.send(`${emotes.error} - Please indicate the title of a song!`);
 			}
 		}else{
-			if(!search && !message.attachments){
+			if(!search && !hasAttachments){
 				await util.player.playBackgroundPlaylist(message, player);
 				return
 			}
@@ -87,7 +89,7 @@ class CustomCommand extends Command {
 		
 			
 
-		if(message.attachments && message.attachments.size){
+		if(hasAttachments){
 			await player.play(message, search, { isAttachment:true });
 		}else{
 			await player.play(message, search, { firstResult: true });

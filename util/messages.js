@@ -40,5 +40,4 @@ module.exports = function(message,input){
 	    doc.author=author;
 	    message.channel.send({embed:doc});
 	}
-}
 

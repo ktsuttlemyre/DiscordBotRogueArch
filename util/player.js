@@ -1,6 +1,7 @@
 const GUIMessages = require.main.require('./templates/messages');
 const { Player } = require("discord-player");
 const util = require.main.require("./util");
+const common = require.main.require('./common');
 
 let playBackgroundPlaylist = module.exports.playBackgroundPlaylist = async (message,player,notice) => {
 	init(message,player,notice);

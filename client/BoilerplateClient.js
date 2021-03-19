@@ -78,7 +78,7 @@ class BoilerplateClient extends AkairoClient {
 		});
 		this.commandHandler.on('commandBlocked',function(message,command,reason){
 					let prefix = prefixFormat(message,command);
-					message.channel.send(`\`${prefix}${command.id}\` failed due to ${reason}`);
+					message.channel.send(`\`${prefix}${command.id}\` failed because ${reason}`);
 				})
 				.on('commandCancelled',function(message,command,retryMessage){
 					let prefix = prefixFormat(message,command);

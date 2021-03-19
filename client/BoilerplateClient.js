@@ -110,7 +110,7 @@ class BoilerplateClient extends AkairoClient {
 				})
 				//.on('load',function(){})
 				//.on('messageBlocked',function(message,reason){message.channel.send(`Message blocked due to ${reason}`);})
-				.on('messageInvalid',function(message){message.channel.send(`Message invalid`);})
+				//.on('messageInvalid',function(message){message.channel.send(`Message invalid`);})
 				.on('missingPermissions',function(message,command,type,missing){
 					let user = message.member||message.author;
 					let name = user.displayName || user.tag;

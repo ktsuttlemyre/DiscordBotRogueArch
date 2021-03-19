@@ -27,21 +27,25 @@ class CustomCommand extends Command {
 	}
 	
 	userPermissions(message) {
+		let isDJ = message.member.roles.cache.find(role => role.name === 'DJ')
+		//DJ bypass
+		if(isDJ){return }
 		let channel = message.member.voice.channel;
+		//Check they are in a voice channel
 		if (!message.member.voice.channel) return `${emotes.error} - You're not in a voice channel !`;
+		//Check they are in the same voice channel as the bot
 		if (message.guild.me.voice.channel && channel.id !== message.guild.me.voice.channel.id) return `${emotes.error} - You are not in the same voice channel !`;
-		
+		//if the user is the only one in the channel then allow action
 		if(channel && channel.members.size==1){
 			return ;
 		}
-		//TODO implement voting
-
-		if (!message.member.roles.cache.some(role => role.name === 'DJ')) {
-			return 'DJ';
-		}
+		//do voting (optional)
+		
+		//isDJ required?
+ 		if (!isDJ)return 'DJ';}
 		return ;
 	}
-
+	
 	async exec(message) {
 		var player = this.client.memory.channelGet(message, 'player')
 		if(!player){

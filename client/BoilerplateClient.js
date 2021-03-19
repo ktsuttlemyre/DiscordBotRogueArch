@@ -82,7 +82,7 @@ class BoilerplateClient extends AkairoClient {
 				})
 				.on('commandCancelled',function(message,command,retryMessage){
 					let prefix = prefixFormat(message,command);
-					message.channel.send(`\`${prefix}${command.id}\` canceled`);
+					message.channel.send(`\`${prefix}${command.id}\` cancelled`);
 				}) //retryMessage is optional
 				.on('commandDisabled',function(message,command){
 					let prefix = prefixFormat(message,command);
@@ -92,7 +92,8 @@ class BoilerplateClient extends AkairoClient {
 				//.on('commandStarted',function(){})
 				.on('cooldown',function(message,command,remaining){
 					let prefix = prefixFormat(message,command);
-					message.channel.send(`\`${prefix}${command.id}\` canceled`);
+					message.channel.send(`\`${prefix}${command.id}\` is in cooldown`);
+					//TODO add time remaining for long running cooldowns
 				})
 				.on('error',function(error,message,command){
 					let prefix = prefixFormat(message,command);

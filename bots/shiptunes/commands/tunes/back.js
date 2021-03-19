@@ -73,7 +73,8 @@ class CustomCommand extends Command {
 		if(!track){
 			return GUIMessages.nowPlaying(message,player,'Can\'t go back any further');
 		}
-		await GUIMessages.nowPlaying(message,player,'Back to previous track: '+track.title);
+		let response='Back to previous track: '+track.title;
+		await GUIMessages.nowPlaying(message,player,response);
 
 		if(player.back(message)){
 			return util.messages.encapsulate(message,{description:response});

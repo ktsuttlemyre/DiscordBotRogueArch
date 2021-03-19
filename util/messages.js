@@ -14,14 +14,16 @@ module.exports.encapsulate = function(message,input){
 		input=message.content;
 	}
   	  let doc=input;
+	  if(doc.indexOf('---\n')==0){
 	    // Get document, or throw exception on error
-	    try {
+	    try { //TODO test yaml
 	      doc = yaml.load(input);
 	    } catch (e) {
 	      //console.error(e);
 	      //message.channel.send(e.toString())
 	      doc=input;
 	    }
+	  }
 	    var type = typeof doc;
 	    if(type == 'string'){
 		    let split = input.split('\n');

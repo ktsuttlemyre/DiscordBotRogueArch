@@ -83,6 +83,7 @@ class BoilerplateClient extends AkairoClient {
 					}else{
 						message.channel.send(`Got error ${error.name}: ${error.message}`);
 					}
+					console.error(error);
 				})
 				.on('inPrompt',function(message){
 					let user = message.member||message.author;

@@ -9,7 +9,7 @@ const _ = require('lodash');
 const web = require.main.require('./web');
 const yaml = require('js-yaml');
 
-module.exports = function(message,input){
+module.exports.encapsulate = function(message,input){
   	  let doc=null;
 	    // Get document, or throw exception on error
 	    try {

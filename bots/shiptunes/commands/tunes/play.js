@@ -5,7 +5,7 @@ const {reactions,defaultAvatar} = require.main.require('./common');
 const common = require.main.require('./common');
 const _ = require('lodash');
 const path = require('path');
-const util = require('./util');
+const util = require.main.require('./util');
 //TODO convert
 /*
 player.init

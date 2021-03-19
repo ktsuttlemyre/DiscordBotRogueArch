@@ -45,7 +45,7 @@ class CustomCommand extends Command {
 		}
 		
 		//isDJ required?
- 		if (!isDJ)return 'DJ';}
+ 		if (!isDJ){return 'DJ';}
 		return ;
 	}
 	

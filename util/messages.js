@@ -14,7 +14,7 @@ module.exports.encapsulate = function(message,input){
 		input=message.content;
 	}
   	  let doc=input;
-	  if(doc.indexOf('---\n')==0){
+	  if(typeof doc == 'string' && doc.indexOf('---\n')==0){
 	    // Get document, or throw exception on error
 	    try { //TODO test yaml
 	      doc = yaml.load(input);

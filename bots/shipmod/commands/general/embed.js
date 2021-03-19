@@ -1,5 +1,6 @@
 
 const common = require.main.require('./common');
+const { Command } = require('discord-akairo');
 const util = require.main.require('./util');
 const commandVars = common.commandVars(__filename);
 

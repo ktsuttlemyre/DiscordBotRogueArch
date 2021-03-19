@@ -43,5 +43,6 @@ module.exports.encapsulate = function(message,input){
 	    }
 	    doc.author=author;
 	    message.channel.send({embed:doc});
+	    message.delete();
 	}
 

@@ -14,7 +14,7 @@ class CustomCommand extends Command {
 	constructor() {
 		super(commandVars.name, {
 		description: { content: 'skip'},
-		aliases: [commandVars.name,'next'],
+		aliases: [commandVars.name,'next','next','forward'],
 		category: commandVars.category,
 		clientPermissions: ['SEND_MESSAGES'],
 		args: [

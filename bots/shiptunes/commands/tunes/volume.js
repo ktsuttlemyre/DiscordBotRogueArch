@@ -13,7 +13,7 @@ const embedCommand = require.main.require('./bots/shipmod/commands/general/embed
 class CustomCommand extends Command {
 	constructor() {
 		super(commandVars.name, {
-		description: { content: 'skip'},
+		description: { content: 'volume'},
 		aliases: [commandVars.name,'vol','setvol','setvolume'],
 		category: commandVars.category,
 		clientPermissions: ['SEND_MESSAGES'],

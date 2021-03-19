@@ -4,15 +4,18 @@ const { Player } = require("discord-player");
 const emotes={error:":error:"}
 const {reactions,defaultAvatar} = require.main.require('./common');
 const common = require.main.require('./common');
+const util = require.main.require('./util');
+const commandVars = common.commandVars(__filename);
 const _ = require('lodash');
 const path = require('path');
 
+const embedCommand = require.main.require('./bots/shipmod/commands/general/embed');
 class CustomCommand extends Command {
 	constructor() {
-		super(path.parse(__filename).name, {
-		description: { content: 'volume'},
-		aliases: ['volume'],
-		category: path.basename(path.dirname(__filename)),
+		super(commandVars.name, {
+		description: { content: 'skip'},
+		aliases: [commandVars.name,'next','next','forward'],
+		category: commandVars.category,
 		clientPermissions: ['SEND_MESSAGES'],
 		args: [
 			{
@@ -20,24 +23,39 @@ class CustomCommand extends Command {
 				default: '',
 				match: 'number',
 			},
-		],
+			],
 		channelRestriction: 'guild', 
 		});
 	}
 	
 	userPermissions(message) {
-		if (!message.member.roles.cache.some(role => role.name === 'DJ')) {
-			return 'DJ';
+		let isDJ = message.member.roles.cache.find(role => role.name === 'DJ')
+		//DJ bypass
+		if(isDJ){return }
+		let channel = message.member.voice.channel;
+		//Check they are in a voice channel
+		if (!message.member.voice.channel) return `${emotes.error} - You're not in a voice channel !`;
+		//Check they are in the same voice channel as the bot
+		if (message.guild.me.voice.channel && channel.id !== message.guild.me.voice.channel.id) return `${emotes.error} - You are not in the same voice channel !`;
+		//if the user is the only one in the channel then allow action
+		if(channel){
+			let members = channel.members.filter(member => !member.user.bot);
+			if(members.size==1){
+				return ;
+			}
+			//do voting (optional)
 		}
-		return null;
+		
+		
+		//isDJ required?
+ 		if (!isDJ){return 'DJ';}
+		return ;
 	}
-
-	async exec(message, {volume} ) {
-		if (!message.member.voice.channel) return message.channel.send(`${emotes.error} - You're not in a voice channel !`);
-		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${emotes.error} - You are not in the same voice channel !`);
-		var player = this.client.memory.get(message, 'player')
+	
+	async exec(message, { volume }) {
+		var player = this.client.memory.channelGet(message, 'player');
 		if(!player){
-			return message.channel.send('No player playing to act on')
+			return this.handler.emit('commandBlocked',message,this,'No player playing to act on');
 		}
 		
 		//ensure playing
@@ -49,16 +67,14 @@ class CustomCommand extends Command {
 				await GUIMessages.nowPlaying(message,player,"Error resuming queue");
 			}
 		}
-		
 
-		
-		var track = player.nowPlaying(message);
-		if(track){
-			await GUIMessages.nowPlaying(message,player,'Skipped: '+track.title)
-		}else{
-			await GUIMessages.nowPlaying(message,player,'Skipped: last track');
+		volume = _.clamp(volume,0,100);
+		GUIMessages.nowPlaying(message,player,`Setting volume to ${volume}`);
+		if(player.setVolume(message,volume)){
+			return ; //util.messages.encapsulate(message,{description:response});
+			//this.handler.modules['embed'].exec(message,)	
 		}
-		player.volume(message,volume);
+		this.handler.emit('commandBlocked',message,this,'Sending skip command to player failed');
 	}
 }
 

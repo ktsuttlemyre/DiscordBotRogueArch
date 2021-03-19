@@ -45,7 +45,7 @@ class CustomCommand extends Command {
 		if(this.requirements(message)){
 			return;
 		}
-		var player = this.client.memory.getChannel(message, 'player') || this.client.memory.setChannel(message, 'player', util.player.create(message,this.client));
+		var player = this.client.memory.channelGet(message, 'player') || this.client.memory.channelSet(message, 'player', util.player.create(message,this.client));
 		
 		var queue=player.getQueue(message);
 		if(queue){

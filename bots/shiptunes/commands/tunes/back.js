@@ -44,7 +44,7 @@ class CustomCommand extends Command {
 		}
 		
 		//isDJ required?
- 		if (!isDJ)return 'DJ';}
+ 		if (!isDJ){return 'DJ';}
 		return ;
 	}
 	
@@ -63,8 +63,6 @@ class CustomCommand extends Command {
 				await GUIMessages.nowPlaying(message,player,"Error resuming queue");
 			}
 		}
-		
-
 		
 		var track = player.nowPlaying(message);
 		if(track){

@@ -27,7 +27,7 @@ const bots = {};
 // TOKEN_SHIPTUNES_2 = '448sdjslladf'
 Object.keys(process.env).forEach(function(key){
 	let split = key.split('_');
-	let name=split[1];
+	let name=(split[1]||'').toLowerCase();
 	if(name && split[0]=='TOKEN'){
 		bots[name]=new BoilerplateClient({ owner: process.env.OWNER, token: process.env[key], botPath: `./bots/${name}` });
 	}

@@ -40,3 +40,18 @@ module.exports.encapsulate = function(message,override,dontDelete){
 		!message.deleted && message.delete();
 	}
 }
+
+
+
+module.exports.resolve=async function(message){
+	//load partial
+	if (message.partial) {
+		try {
+			return message.fetch();
+		} catch (error) {
+			console.error(`Something went wrong when fetching the message: ${message.id}`, error);
+			return message;
+		}
+	}
+	return message;
+}

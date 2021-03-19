@@ -32,7 +32,7 @@ class CustomCommand extends Command {
 		});
 	}
 
-	this.requirements=function(message,player){
+	requirements(message,player){
 		let blocked = '';
 		if (!message.member.voice.channel) blocked = `${emotes.error} - You're not in a voice channel !`;
 		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) blocked = `${emotes.error} - You are not in the same voice channel !`;

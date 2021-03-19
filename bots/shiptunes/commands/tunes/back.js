@@ -69,9 +69,9 @@ class CustomCommand extends Command {
 		
 		var track = player.nowPlaying(message);
 		if(track){
-			await GUIMessages.nowPlaying(message,player,'Back to: '+track.title)
+			await GUIMessages.nowPlaying(message,player,'Skipped: '+track.title)
 		}else{
-			await GUIMessages.nowPlaying(message,player,'Back to: last track');
+			await GUIMessages.nowPlaying(message,player,'Skipped: last track');
 		}
 		player.back(message);
 	}

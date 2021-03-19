@@ -72,12 +72,15 @@ class BoilerplateClient extends AkairoClient {
 			},
 		});
 		this.commandHandler.on('commandBlocked',function(message,command,reason){command.channel.send(`\`${command.prefix}${command.id}\` failed due to ${reason}`);})
-				.on('commandCancelled',function(message,command,retryMessage){command.channel.send(`\`${command.prefix}${command.id}\` canceled`);})
+				.on('commandCancelled',function(message,command,retryMessage){command.channel.send(`\`${command.prefix}${command.id}\` canceled`);}) //retryMessage is optional
 				.on('commandDisabled',function(message,command){command.channel.send(`\`${command.prefix}${command.id}\` disabled`);})
 				//.on('commandFinished',function(){})
 				//.on('commandStarted',function(){})
 				.on('cooldown',function(message,command,remaining){command.channel.send(`\`${command.prefix}${command.id}\` canceled`);})
-				.on('error',function(error,message,command){command.channel.send(`\`${command.prefix}${command.id}\` got error ${error.name}: ${error.message}`);})
+				.on('error',function(error,message,command){
+					let channel = (command||message).channel;
+					channel.send(`\`${command.prefix}${command.id}\` got error ${error.name}: ${error.message}`);
+				})
 				.on('inPrompt',function(message){
 					let user = message.member||message.author;
 					let name = user.displayName || user.tag;

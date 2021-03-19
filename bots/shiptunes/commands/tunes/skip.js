@@ -36,10 +36,14 @@ class CustomCommand extends Command {
 		//Check they are in the same voice channel as the bot
 		if (message.guild.me.voice.channel && channel.id !== message.guild.me.voice.channel.id) return `${emotes.error} - You are not in the same voice channel !`;
 		//if the user is the only one in the channel then allow action
-		if(channel && channel.members.size==1){
-			return ;
+		if(channel){
+			let members = channel.members.filter(member => !member.user.bot);
+			if(members.size==1){
+				return ;
+			}
+			//do voting (optional)
 		}
-		//do voting (optional)
+		
 		
 		//isDJ required?
  		if (!isDJ)return 'DJ';}

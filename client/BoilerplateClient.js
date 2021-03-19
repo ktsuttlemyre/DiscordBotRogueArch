@@ -78,8 +78,11 @@ class BoilerplateClient extends AkairoClient {
 				//.on('commandStarted',function(){})
 				.on('cooldown',function(message,command,remaining){command.channel.send(`\`${command.prefix}${command.id}\` canceled`);})
 				.on('error',function(error,message,command){
-					let channel = (command||message).channel;
-					channel.send(`\`${command.prefix}${command.id}\` got error ${error.name}: ${error.message}`);
+					if(command){		
+						command.channel.send(`\`${command.prefix}${command.id}\` got error ${error.name}: ${error.message}`);
+					}else{
+						message.channel.send(`Got error ${error.name}: ${error.message}`);
+					}
 				})
 				.on('inPrompt',function(message){
 					let user = message.member||message.author;

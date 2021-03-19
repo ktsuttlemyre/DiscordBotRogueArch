@@ -9,7 +9,7 @@ const _ = require('lodash');
 const web = require.main.require('./web');
 const yaml = require('js-yaml');
 
-module.exports.encapsulate = function(message,override){
+module.exports.encapsulate = function(message,override,dontDelete){
 	if(!override){
 		override=message.content;
 	}
@@ -36,5 +36,7 @@ module.exports.encapsulate = function(message,override){
 	}
 	doc.author=author;
 	message.channel.send({embed:doc});
-	!message.deleted && message.delete();
+	if(!dontDelete){
+		!message.deleted && message.delete();
+	}
 }

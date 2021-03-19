@@ -54,6 +54,13 @@ class CustomCommand extends Command {
 		if(!player){
 			return this.handler.emit('commandBlocked',message,this,'No player playing to act on');
 		}
+		
+		//if it is playing then do nothing
+		var queue=player.getQueue(message);
+		if(queue && (queue.paused || queue.stopped)){
+			return
+		}
+		
 		player.pause(message);
 		await GUIMessages.nowPlaying(message,player,'paused')
 	}

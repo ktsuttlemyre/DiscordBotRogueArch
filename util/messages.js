@@ -13,13 +13,13 @@ module.exports.encapsulate = function(message,input){
 	if(!input){
 		input=message.content;
 	}
-  	  let doc=null;
+  	  let doc={};
 	    // Get document, or throw exception on error
 	    try {
 	      doc = yaml.load(input);
 	    } catch (e) {
-	      console.error(e);
-	      message.channel.send(e.toString())
+	      //console.error(e);
+	      //message.channel.send(e.toString())
 	    }
 	    var type = typeof doc;
 	    if(type == 'string'){

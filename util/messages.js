@@ -11,7 +11,7 @@ const yaml = require('js-yaml');
 
 module.exports.encapsulate = function(message,input){
 	if(!input){
-		message.content;
+		input=message.content;
 	}
   	  let doc=null;
 	    // Get document, or throw exception on error

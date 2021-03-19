@@ -1,7 +1,6 @@
 const fetch = require("node-fetch");
 
 //https://www.reddit.com/dev/api#GET_new
-let 
 module.exports.subreddit = function(subreddit,sort,before,callback){
   if(typeof before == 'function'){
     callback=before;

@@ -1,8 +1,12 @@
 const { Player } = require("discord-player");
+const util = require.main.require("./util");
 
-var playBackgroundPlaylist = module.exports.playBackgroundPlaylist = function(message,player,notice){
+let playBackgroundPlaylist = module.exports.playBackgroundPlaylist = async (message,player,notice) => {
 	init(message,player,notice);
-	var backgrounds=[//'chill nintendo beats',
+	
+	let playlistName='chill nintendo beats'
+	
+	let library={'chill nintendo beats':[
 		'https://www.youtube.com/watch?v=oS-A-wqZ2RI',
 		'https://www.youtube.com/watch?v=AEuQcjHT_f4',
 		'https://www.youtube.com/watch?v=oUHvYOYMNJk',
@@ -56,7 +60,16 @@ var playBackgroundPlaylist = module.exports.playBackgroundPlaylist = function(me
 		'https://www.youtube.com/watch?v=MLLgrrPrdbQ',
 		'https://www.youtube.com/watch?v=q_rxsPa_YCk',
 		]
-	var selection = _.sample(backgrounds)
+	};
+	
+	let playlist=library[playlistName];
+	if(!playlist){
+		playlist = await util.playlists.subredditArray(playlistName,'top');
+	}
+	if(!playlist){
+		playlist = library['chill nintendo beats'];
+	}
+	let selection = _.sample(playlist);
 	player.backgroundPlaylist=true;
 	return player.play(message, selection, { firstResult: true });
 }

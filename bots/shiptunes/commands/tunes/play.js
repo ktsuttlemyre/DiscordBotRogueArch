@@ -37,8 +37,10 @@ class CustomCommand extends Command {
 		if (!message.member.voice.channel) blocked = `${emotes.error} - You're not in a voice channel !`;
 		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) blocked = `${emotes.error} - You are not in the same voice channel !`;
 		//if(!player){blocked = 'No player currently playing';}
-		this.handler.emit('commandBlocked',message,this,blocked);
-		return blocked
+		if(blocked){
+			this.handler.emit('commandBlocked',message,this,blocked);
+		}
+		return blocked;
 	}
 	
 	async exec(message, { search }) {

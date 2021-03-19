@@ -13,21 +13,21 @@ module.exports.encapsulate = function(message,input){
 	if(!input){
 		input=message.content;
 	}
-  	  let doc={};
+  	  let doc=input;
 	    // Get document, or throw exception on error
 	    try {
 	      doc = yaml.load(input);
 	    } catch (e) {
 	      //console.error(e);
 	      //message.channel.send(e.toString())
-	      doc.description=input;
+	      //
 	    }
 	    var type = typeof doc;
 	    if(type == 'string'){
 		    let split = input.split('\n');
 		    doc = {};
 		    if(split.length==1){
-		    	doc.title = '> '+split[0];
+		    	doc.title = '\t '+split[0];
 		    }else{
 			doc.title = split.shift();
 			doc.description = split.join('\n')

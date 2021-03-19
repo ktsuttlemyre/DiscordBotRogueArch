@@ -76,7 +76,8 @@ class CustomCommand extends Command {
 		}
 		if(player.isPlaying(message)){
 			if(!search && !hasAttachments){
-				return message.channel.send(`${emotes.error} - Please indicate the title of a song!`);
+				!message.deleted && message.delete();
+				return GUIMessages.nowPlaying(message,player,`${emotes.error} - Please indicate the title of a song!`);
 			}
 		}else{
 			if(!search && !hasAttachments){

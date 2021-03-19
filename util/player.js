@@ -1,3 +1,4 @@
+const GUIMessages = require.main.require('./templates/messages');
 const { Player } = require("discord-player");
 const util = require.main.require("./util");
 

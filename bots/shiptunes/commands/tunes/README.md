@@ -11,5 +11,6 @@ need to work on
  - playsubreddit
  - volume
 
-need to create:
+need to implement:
  - attention (use amongusmute toggle command from shipmod)
+ - voting for skip, back, pause?

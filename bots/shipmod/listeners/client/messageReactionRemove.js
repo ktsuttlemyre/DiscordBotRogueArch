@@ -17,6 +17,9 @@ class CustomListener extends Listener {
 	}
 
   async exec( reaction, user ) {
+	if(user.bot){
+		return
+	}
     if (reaction.message.partial) {
       try {
         await reaction.message.fetch();

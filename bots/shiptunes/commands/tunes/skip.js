@@ -7,7 +7,7 @@ const common = require.main.require('./common');
 const _ = require('lodash');
 const path = require('path');
 
-
+const embedCommand = require.main.require('./bots/shipmod/commands/general/embed');
 class CustomCommand extends Command {
 	constructor() {
 		super(path.parse(__filename).name, {
@@ -66,13 +66,18 @@ class CustomCommand extends Command {
 			}
 		}
 		
-		var track = player.nowPlaying(message);
+		let track = player.nowPlaying(message);
+		let response = 'Skipped: last track';
 		if(track){
-			await GUIMessages.nowPlaying(message,player,'Skipped: '+track.title)
-		}else{
-			await GUIMessages.nowPlaying(message,player,'Skipped: last track');
+			response = 'Skipped: '+track.title
 		}
-		player.skip(message);
+		await GUIMessages.nowPlaying(message,player,response);
+		
+		if(player.skip(message)){
+			return embedCommand.exec(message,{input:response});
+			//this.handler.modules['embed'].exec(message,)	
+		}
+		this.handler.emit('commandBlocked',message,this,'Sending skip command to player failed');
 	}
 }
 

@@ -10,6 +10,9 @@ const web = require.main.require('./web');
 const yaml = require('js-yaml');
 
 module.exports.encapsulate = function(message,input){
+	if(!input){
+		message.content;
+	}
   	  let doc=null;
 	    // Get document, or throw exception on error
 	    try {

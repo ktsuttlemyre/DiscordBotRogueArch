@@ -20,6 +20,7 @@ module.exports.encapsulate = function(message,input){
 	    } catch (e) {
 	      //console.error(e);
 	      //message.channel.send(e.toString())
+	      doc.description=input;
 	    }
 	    var type = typeof doc;
 	    if(type == 'string'){

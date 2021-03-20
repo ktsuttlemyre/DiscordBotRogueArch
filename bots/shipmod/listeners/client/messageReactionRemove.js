@@ -51,7 +51,7 @@ class CustomListener extends Listener {
 		let embed = new MessageEmbed();
 		embed.setAuthor(`${name} removed reaction ${reaction.emoji.name}`, user.displayAvatarURL() || common.defaultAvatar, `https://discordapp.com/users/${user.id}`);
 		let permalink = util.messages.permalink(message);
-		embed.addDescription(`channel: [${message.channel.name}](${permalink})\nmessage: [${messageContent}](${permalink})`)
+		embed.setDescription(`channel: [${message.channel.name}](${permalink})\nmessage: [${messageContent}](${permalink})`)
 			.setFooter(`ID: ${message.id}`)
 			.setTimestamp()
 		

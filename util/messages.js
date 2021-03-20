@@ -41,7 +41,9 @@ module.exports.encapsulate = function(message,override,dontDelete){
 	}
 }
 
-
+module.exports.permalink=function(message){
+	return `https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id}`;
+}
 
 module.exports.resolve=async function(message){
 	//load partial

@@ -50,16 +50,15 @@ class CustomListener extends Listener {
 
 		//see if user wants notificaiton
 		let notify = (sendToUser.roles.cache.find(r => r.name === "ReceiveReactAlert"));
-		if(notify!==true){
+		if(!notify){
 			return ;
 		}
 	
-		console.log('send DM!')
 		//render
-		//let embed = new Discord.MessageEmbed();
-		//embed.setAuthor(name, user.displayAvatarURL() || common.defaultAvatar, `https://discordapp.com/users/${user.id}`);
-		//embed.setDescription(`Reacted with ${reaction.emoji.name} to your message ${messageContent}`);
-		//sendToUser.send(embed);
+		let embed = new Discord.MessageEmbed();
+		embed.setAuthor(name, user.displayAvatarURL() || common.defaultAvatar, `https://discordapp.com/users/${user.id}`);
+		embed.setDescription(`Reacted with ${reaction.emoji.name} to your message ${messageContent}`);
+		sendToUser.send(embed);
 	}
 }
 module.exports = CustomListener;

@@ -87,9 +87,10 @@ class CustomCommand extends Command {
 					//},
 					fields: [
 							{
-								name: '\u200b',
-								value: `type \`!rsvp${suffix}\` to be added to the queue!`,
-								inline: false,
+								//name: '\u200b',
+								name: 'Event starts @ 9pm EST',
+								value: `Type \`!rsvp${suffix}\` to be added to the queue!`,
+								inline: true,
 							},
 						]
 					}

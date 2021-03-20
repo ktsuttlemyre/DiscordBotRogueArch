@@ -6,7 +6,7 @@
 const { Listener } = require('discord-akairo');
 const config = require.main.require('./config');
 const commandVars = require.main.require('./common').commandVars(__filename);
-
+const util = require.main.require('./util');
 
 
 class CustomListener extends Listener {
@@ -39,7 +39,7 @@ class CustomListener extends Listener {
 
 		//make sure message is resolved
 		let message = await util.messages.resolve(reaction.message);
-		let member = /* //todoconvert(user to member) || */user;
+		let member = convert(user to member) || user;
 		let name = member.displayName || member.username || member.tag;
 		let messageContent=_.truncate(message.content);
 

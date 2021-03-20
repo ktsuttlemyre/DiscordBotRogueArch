@@ -17,7 +17,7 @@ module.exports.encapsulate = function(message,override,dontDelete){
 	let doc = override || {}
 	var type = typeof doc;
 	if(type == 'string'){
-		let split = input.split('\n');
+		let split = doc.split('\n');
 		doc = {};
 		if(split.length==1){
 			doc.title = '\t '+split[0];

@@ -40,7 +40,8 @@ class CustomListener extends Listener {
 
 		//make sure message is resolved
 		let message = await util.messages.resolve(reaction.message);
-		let member = /* //TODO convert(user to member) || */user;
+		
+		let member = message.guild.member(user) || user;
 		let name = member.displayName || member.username || member.tag;
 		let messageContent=_.truncate(message.content);
 

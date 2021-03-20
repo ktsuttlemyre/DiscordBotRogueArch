@@ -21,6 +21,9 @@ class CustomListener extends Listener {
 
 
 	async exec( reaction, user ) {
+		if(true){
+			return
+		}
 		if(user.bot){
 			return
 		}
@@ -55,8 +58,8 @@ class CustomListener extends Listener {
 		let embed = new MessageEmbed();
 		embed.setAuthor(`${name} reacted ${reaction.emoji.name}`, user.displayAvatarURL() || common.defaultAvatar, `https://discordapp.com/users/${user.id}`);
 		let permalink = util.messages.permalink(message);
-		embed.addField(`channel: [${message.channel.name}](${permalink})`,`message: [${messageContent}](${permalink})`,false)
-			.setFooter(`ID: $(message.id)`)
+		embed.addDescription(`channel: [${message.channel.name}](${permalink})\nmessage: [${messageContent}](${permalink})`)
+			.setFooter(`ID: ${message.id}`)
 			.setTimestamp()
 		
 		//sendToUser.send(embed);

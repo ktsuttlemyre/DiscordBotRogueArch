@@ -43,19 +43,18 @@ class CustomListener extends Listener {
 		
 		let member = message.guild.member(user) || user;
 		let name = member.displayName || member.username || member.tag;
-		let messageContent=_.truncate(message.content);
+		let mEmbed = message.embed || message.embeds[0];
+		let messageContent = message.content || mEmbed.title || mEmbed.description || '<preview unavailable>';
+		messageContent = _.truncate(message.content);
 		let sendToUser = /*message.guild.member(message.member.user) ||*/ message.member;
 		
 		console.log(`${name} reacted with "${reaction.emoji.name}" to ${sendToUser.displayName}'s ${message.id} with content ${messageContent}.`);
-
-		
-		
 			
 		//render
 		let embed = new MessageEmbed();
-		embed.setAuthor(`name reacted ${reaction.emoji.name}`, user.displayAvatarURL() || common.defaultAvatar, `https://discordapp.com/users/${user.id}`);
+		embed.setAuthor(`${name} reacted ${reaction.emoji.name}`, user.displayAvatarURL() || common.defaultAvatar, `https://discordapp.com/users/${user.id}`);
 		let permalink = util.messages.permalink(message);
-		embed.setDescription(`to [message: ${messageContent}](permalink)`);
+		embed.setDescription(`to [message: ${messageContent}](${permalink})`);
 		//sendToUser.send(embed);
 			
 		let logChannel=message.guild.channels.cache.get('800748408741953576');

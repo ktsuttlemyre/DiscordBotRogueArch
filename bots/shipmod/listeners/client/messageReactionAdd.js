@@ -58,7 +58,7 @@ class CustomListener extends Listener {
 		embed.setDescription(`to [message: ${messageContent}](${permalink})`);
 		//sendToUser.send(embed);
 			
-		let logChannel=message.guild.resolve('800748408741953576');
+		let logChannel=message.guild.channels.resolve('800748408741953576'); //cache.get('800748408741953576');
 		if(logChannel){
 			logChannel.send(embed);
 		}

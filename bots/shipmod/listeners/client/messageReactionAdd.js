@@ -2,7 +2,7 @@
 //https://discordjs.guide/popular-topics/reactions.html#listening-for-reactions-on-old-messages
 // code example
 //https://github.com/discordjs/guide/blob/master/code-samples/popular-topics/reactions/12/uncached-messages.js
-
+const { MessageEmbed } = require('discord.js');
 const { Listener } = require('discord-akairo');
 const config = require.main.require('./config');
 const commandVars = require.main.require('./common').commandVars(__filename);
@@ -52,7 +52,7 @@ class CustomListener extends Listener {
 		
 			
 		//render
-		let embed = new Discord.MessageEmbed();
+		let embed = new MessageEmbed();
 		embed.setAuthor(name, user.displayAvatarURL() || common.defaultAvatar, `https://discordapp.com/users/${user.id}`);
 		embed.setDescription(`Reacted with ${reaction.emoji.name} to your message ${messageContent}`);
 		//sendToUser.send(embed);

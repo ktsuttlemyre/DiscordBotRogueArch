@@ -44,12 +44,12 @@ class CustomListener extends Listener {
 		let member = message.guild.member(user) || user;
 		let name = member.displayName || member.username || member.tag;
 		let messageContent=_.truncate(message.content);
-		let sendToUser = message.guild.member(message.member.user) || message.member;
+		let sendToUser = /*message.guild.member(message.member.user) ||*/ message.member;
 		
 		console.log(`${name} reacted with "${reaction.emoji.name}" to ${sendToUser.displayName}'s ${message.id} with content ${messageContent}.`);
 
 		//see if user wants notificaiton
-		let notify = (sendToUser.roles.find(r => r.name === "RecieveReactAlerts"));
+		let notify = (sendToUser.roles.cache.find(r => r.name === "RecieveReactAlerts"));
 		if(notify!==true){
 			return ;
 		}

@@ -76,7 +76,7 @@ class CustomCommand extends Command {
 		})
 		
 		
-		let suffix = ''; //((roomMap[message.channel.id]||'').toLowerCase()==queue.toLowerCase())? '' : queue.toLowerCase();
+		let suffix = ''; //((roomMap[message.channel.id]||'').toLowerCase()==queue.toLowerCase())? '' : ' '+queue.toLowerCase();
 		//Send
 		lastMessage = await message.channel.send({embed:{
 					title:title,
@@ -88,7 +88,7 @@ class CustomCommand extends Command {
 					fields: [
 							{
 								name: '\u200b',
-								value: `type \`!rsvp ${suffix}\` to be added to the queue!`,
+								value: `type \`!rsvp${suffix}\` to be added to the queue!`,
 								inline: false,
 							},
 						]

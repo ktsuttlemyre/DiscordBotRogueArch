@@ -47,7 +47,7 @@ class CustomListener extends Listener {
 		let messageContent = message.content || mEmbed.title || mEmbed.description || '<preview unavailable>';
 		messageContent = _.truncate(message.content);
 		messageContent = messageContent || '<preview unavailable>';
-		let sendToUser = /*message.guild.member(message.member.user)*/ || message.member;
+		let sendToUser = /*message.guild.member(message.member.user) ||*/ message.member;
 		
 		console.log(`${name} reacted with "${reaction.emoji.name}" to ${sendToUser.displayName}'s ${message.id} with content ${messageContent}.`);
 			

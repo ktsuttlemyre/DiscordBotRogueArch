@@ -18,7 +18,19 @@ queue.
 class CustomCommand extends Command {
 	constructor() {
 		super(commandVars.name, {
-		description: { content: 'plays [name/URL]'},
+		description: { content: 'plays [name/URL]'+
+			      'This command will search Youtube for songs using your keywords!\n'+
+				'In addition this command also accepts links that point to:\n'+
+				' - Spotify song\n'+
+				' - Spotify playlist\n'+
+				' - Youtube playlist\n'+
+				' - Youtube video\n'+
+				' - Soundcloud song\n'+
+				' - Vimeo\n'+
+				' - Facebook\n'+
+				' - Reverbnation\n'+
+				'You can also upload your own files as attachments to the message and will be played as requests\n'
+			     },
 		aliases: [commandVars.name,'add','queue'],
 		category: commandVars.category,
 		clientPermissions: ['SEND_MESSAGES'],

@@ -14,23 +14,20 @@ class CustomCommand extends Command {
 		aliases: [commandVars.name,'eventq','eventqueue','eventadd', 'rsvp'],
 		category: commandVars.category,
 		clientPermissions: ['SEND_MESSAGES','MANAGE_MESSAGES'],
-		args: [
-			 {
-			 	id: 'queue',
-			 	default: '',
-			 	match: 'content',
-			 },
-			],
+// 		args: [
+// 			 {
+// 			 	id: 'queue',
+// 			 	default: '',
+// 			 	match: 'content',
+// 			 },
+// 			],
 		channelRestriction: 'guild', 
 		});
 	}
 
-	async exec(message, { queue }) {
-		console.log('roomMap',roomMap)
-		if(!queue){
-			queue=roomMap[message.channel.id] || message.channel.name;
-		}
-		queue=queue.trim().toUpperCase();
+	async exec(message) {
+		let queue = roomMap[message.channel.id] || message.channel.name;
+		queue = queue.trim().toUpperCase();
 		
 		let randomEmoji = [];
 		let title = `${queue} Event Queue `
@@ -56,9 +53,8 @@ class CustomCommand extends Command {
 		if(!q.get(user)){
 			q.set(user.id, user);
 		}
-		if(lastMessage){
-			lastMessage.delete()
-		}
+		
+		lastMessage && lastMessage.delete()
 		message.delete();
 		this.client.memory.set(message, varName, q);
 		
@@ -74,7 +70,7 @@ class CustomCommand extends Command {
 				notAFK = message.guild.afkChannelID != voiceChannel.id
 				inGuildChannel = voiceChannel.guild.id == message.guild.id
 			}
-			qDisplay.push("\t "+common.reactions[((voiceChannel && notAFK && inGuildChannel)?'green':(user.presence.status === 'online')?'yellow':'red')+'-circle']+` [${name}]( https://discordapp.com/users/${user.id})` )
+			qDisplay.push("\t "+common.reactions[((voiceChannel && notAFK && inGuildChannel)?'green':(user.presence.status === 'online')?'yellow':'red')+'-circle']+` ${name}`)//[${name}]( https://discordapp.com/users/${user.id})` )
 		})
 		
 		

@@ -8,6 +8,27 @@ const _ = require('lodash');
 const path = require('path');
 const util = require.main.require('./util');
 
+
+module.exports.commandPermissions=function(message,requireDJ){
+	let isDJ = message.member.roles.cache.find(role => role.name === 'DJ')
+	//DJ bypass
+	if(isDJ){return }
+	let channel = message.member.voice.channel;
+	//Check they are in a voice channel
+	if (!message.member.voice.channel) return `${emotes.error} - You're not in a voice channel !`;
+	//Check they are in the same voice channel as the bot
+	if (message.guild.me.voice.channel && channel.id !== message.guild.me.voice.channel.id) return `${emotes.error} - You are not in the same voice channel !`;
+	//if the user is the only one in the channel then allow action
+	if(channel && channel.members.size==1){
+		return ;
+	}
+	//do voting (optional)
+
+	//isDJ required?
+	if (requireDJ && !isDJ){return 'DJ';}
+	return ;
+}
+
 let playBackgroundPlaylist = module.exports.playBackgroundPlaylist = async (message,player,notice) => {
 	init(message,player,notice);
 	

@@ -48,22 +48,23 @@ class CustomListener extends Listener {
 		
 		console.log(`${name} reacted with "${reaction.emoji.name}" to ${sendToUser.displayName}'s ${message.id} with content ${messageContent}.`);
 
-		//see if user wants notificaiton
-		let notify = (sendToUser.roles.cache.find(r => r.name === "ReceiveReactAlert"));
-		if(!notify){
-			return ;
-		}
-	
+		
+		
+			
 		//render
 		let embed = new Discord.MessageEmbed();
 		embed.setAuthor(name, user.displayAvatarURL() || common.defaultAvatar, `https://discordapp.com/users/${user.id}`);
 		embed.setDescription(`Reacted with ${reaction.emoji.name} to your message ${messageContent}`);
 		//sendToUser.send(embed);
-		
+			
 		let logChannel=message.guild.channels.cache.get('800748408741953576');
 		if(logChannel){
 			logChannel.send(embed);
 		}
+		
+		//see if user wants notificaiton
+		let notify = (sendToUser.roles.cache.find(r => r.name === "ReceiveReactAlert"));
+		notify && sendToUser.send(embed);
 	}
 }
 module.exports = CustomListener;

@@ -6,6 +6,7 @@ const common = require.main.require('./common');
 const commandVars = common.commandVars(__filename);
 const _ = require('lodash');
 const roomMap = require.main.require('./config').eventRoomMap;
+const escapeMD = require('markdown-escape')
 
 class CustomCommand extends Command {
 	constructor() {
@@ -70,7 +71,8 @@ class CustomCommand extends Command {
 				notAFK = message.guild.afkChannelID != voiceChannel.id
 				inGuildChannel = voiceChannel.guild.id == message.guild.id
 			}
-			qDisplay.push("\t "+common.reactions[((voiceChannel && notAFK && inGuildChannel)?'green':(user.presence.status === 'online')?'yellow':'red')+'-circle']+` ${name}`)//[${name}]( https://discordapp.com/users/${user.id})` )
+			name = escapeMD(name);
+			qDisplay.push("\t "+common.reactions[((voiceChannel && notAFK && inGuildChannel)?'green':(user.presence.status === 'online')?'yellow':'red')+'-circle']+` [${name}]( https://discordapp.com/users/${user.id})` )
 		})
 		
 		

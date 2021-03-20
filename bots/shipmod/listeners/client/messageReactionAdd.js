@@ -46,7 +46,8 @@ class CustomListener extends Listener {
 		let mEmbed = message.embed || message.embeds[0];
 		let messageContent = message.content || mEmbed.title || mEmbed.description || '<preview unavailable>';
 		messageContent = _.truncate(message.content);
-		let sendToUser = /*message.guild.member(message.member.user) ||*/ message.member;
+		messageContent = messageContent || '<preview unavailable>';
+		let sendToUser = message.guild.member(message.member.user) || message.member;
 		
 		console.log(`${name} reacted with "${reaction.emoji.name}" to ${sendToUser.displayName}'s ${message.id} with content ${messageContent}.`);
 			
@@ -57,7 +58,7 @@ class CustomListener extends Listener {
 		embed.setDescription(`to [message: ${messageContent}](${permalink})`);
 		//sendToUser.send(embed);
 			
-		let logChannel=message.guild.channels.cache.get('800748408741953576');
+		let logChannel=message.guild.resolve('800748408741953576');
 		if(logChannel){
 			logChannel.send(embed);
 		}

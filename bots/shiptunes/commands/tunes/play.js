@@ -46,7 +46,7 @@ class CustomCommand extends Command {
 	}
 
 	userPermissions(message) {
-		util.player.commandPermissions(message);
+		return util.player.commandPermissions(message);
 	}
 	
 	async exec(message, { search }) {

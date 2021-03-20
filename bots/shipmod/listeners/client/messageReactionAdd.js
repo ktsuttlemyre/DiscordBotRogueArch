@@ -46,7 +46,7 @@ class CustomListener extends Listener {
 		let messageContent=_.truncate(message.content);
 		let sendToUser = message.member;
 		
-		console.log(`${name} reacted with "${reaction.emoji.name}" to ${sendtoUser}'s ${message.id} with content ${messageContent}.`);
+		console.log(`${name} reacted with "${reaction.emoji.name}" to ${sendToUser.displayName}'s ${message.id} with content ${messageContent}.`);
 
 		//see if user wants notificaiton
 		let notify = (sendToUser.roles.find(r => r.name === "RecieveReactAlerts"));

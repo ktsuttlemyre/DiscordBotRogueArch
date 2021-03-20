@@ -160,6 +160,7 @@ function shutdown(signal) {
 2021-03-19T08:19:00.965776+00:00 heroku[web.1]: State changed from up to crashed
 
 */
+	      console.log('log object=',err)
 	      return process.exit(0);
       }
       process.exit(err ? 1 : 0);

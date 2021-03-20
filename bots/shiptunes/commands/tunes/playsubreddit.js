@@ -12,7 +12,7 @@ class CustomCommand extends Command {
 	constructor() {
 		super(commandVars.name, {
 		description: { content: 'plays all of a subreddit [subreddit]. You can combine subreddits via `+` or ` `'},
-		aliases: [commandVars.name,"playallsubreddit","playallsubredditresults","playsubreddit"],
+		aliases: [commandVars.name,"playallsubreddit","playallsubredditresults"],
 		category: commandVars.category,
 		clientPermissions: ['SEND_MESSAGES'],
 		args: [

@@ -21,9 +21,6 @@ class CustomListener extends Listener {
 
 
 	async exec( reaction, user ) {
-		if(true){
-			return
-		}
 		if(user.bot){
 			return
 		}

@@ -12,7 +12,7 @@ class CustomCommand extends Command {
 	constructor() {
 		super(commandVars.name, {
 		description: { content: 'plays all of a subreddit [subreddit]. You can combine subreddits via `+` or ` `'},
-		aliases: [commandVars.name],
+		aliases: [commandVars.name,"playallsubreddit","playallsubredditresults","playsubreddit"],
 		category: commandVars.category,
 		clientPermissions: ['SEND_MESSAGES'],
 		args: [
@@ -27,29 +27,28 @@ class CustomCommand extends Command {
 	}
 	
 	userPermissions(message) {
-		if (!message.member.roles.cache.some(role => role.name === 'DJ')) {
-			return 'DJ';
+		let isDJ = message.member.roles.cache.find(role => role.name === 'DJ')
+		//DJ bypass
+		if(isDJ){return }
+		let channel = message.member.voice.channel;
+		//Check they are in a voice channel
+		if (!message.member.voice.channel) return `${emotes.error} - You're not in a voice channel !`;
+		//Check they are in the same voice channel as the bot
+		if (message.guild.me.voice.channel && channel.id !== message.guild.me.voice.channel.id) return `${emotes.error} - You are not in the same voice channel !`;
+		//if the user is the only one in the channel then allow action
+		if(channel && channel.members.size==1){
+			return ;
 		}
-		return null;
-	}
-	
-	requirements(message,player){
-		let blocked = '';
-		if (!message.member.voice.channel) blocked = `${emotes.error} - You're not in a voice channel !`;
-		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) blocked = `${emotes.error} - You are not in the same voice channel !`;
-		//if(!player){blocked = 'No player currently playing';}
-		if(blocked){
-			this.handler.emit('commandBlocked',message,this,blocked);
-		}
-		return blocked;
+		//do voting (optional)
+		
+		//isDJ required?
+ 		if (!isDJ){return 'DJ';}
+		return ;
 	}
 	
 	async exec(message, { search }) {
-		if(this.requirements(message)){
-			return;
-		}
 		var player = this.client.memory.channelGet(message, 'player') || this.client.memory.channelSet(message, 'player', util.player.create(message,this.client));
-		
+		let hasAttachments = message.attachments && !!message.attachments.size;
 		var queue=player.getQueue(message);
 		if(queue){
 			if(queue.paused || queue.stopped){
@@ -69,20 +68,20 @@ class CustomCommand extends Command {
 			}
 		}
 		if(player.isPlaying(message)){
-			if(!search && !message.attachments){
-				return message.channel.send(`${emotes.error} - Please indicate the title of a song!`);
+			if(!search && !hasAttachments){
+				!message.deleted && message.delete();
+				return GUIMessages.nowPlaying(message,player,`${emotes.error} - Please indicate the title of a song!`);
 			}
 		}else{
-			if(!search && !message.attachments){
-				await util.player.play
-				Playlist(message,player);
+			if(!search && !hasAttachments){
+				await util.player.playBackgroundPlaylist(message, player);
 				return
 			}
 		}
 		
 			
 
-		if(message.attachments){
+		if(hasAttachments){
 			await player.play(message, search, { isAttachment:true });
 		}else{
 			await player.play(message, search, { firstResult: true });

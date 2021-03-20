@@ -328,7 +328,7 @@ var init = module.exports.init = function(message,player,callback){
 				player.setFilters(message, {
 				 normalizer: true
 				});
-				player.setVolume(message, 57);
+				player.setVolume(message, 56);
 				console.log('set volume and filter properly');
 				
 				if(player.backgroundPlaylist){ //background list init

@@ -49,7 +49,13 @@ let permalinkRegex = /(discord.com)\/(channels)\/(\d+)\/(\d+)\/(\d+)/;
 module.exports.parsePermalink=function(link){
 	let match = (link||'').match(permalinkRegex);
 	if(match[0] && match[1] && match[2] && match[3] && match[4] && match[5]){
-		return {guild:match[3],channel:match[4],message[5],0:match[3],1:match[4],2:match[5]}
+		return {guild:match[3],
+			channel:match[4],
+			message:match[5],
+			0:match[3],
+			1:match[4],
+			2:match[5]
+		}
 	}
 }
 

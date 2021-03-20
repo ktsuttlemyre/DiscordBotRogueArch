@@ -81,11 +81,8 @@ class CustomCommand extends Command {
 		
 			
 
-		if(hasAttachments){
-			await player.play(message, search, { isAttachment:true });
-		}else{
-			await player.play(message, search, { firstResult: false });
-		}
+		await player.play(message, search, true, hasAttachments);
+	
 		//The player was originallly in background mode
 		//so advance past the backgroud music and start playing the users' requests
 		if(player.backgroundPlaylist){

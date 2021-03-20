@@ -55,7 +55,10 @@ class CustomListener extends Listener {
 		let embed = new MessageEmbed();
 		embed.setAuthor(`${name} reacted ${reaction.emoji.name}`, user.displayAvatarURL() || common.defaultAvatar, `https://discordapp.com/users/${user.id}`);
 		let permalink = util.messages.permalink(message);
-		embed.setDescription(`message: [${messageContent}](${permalink})`);
+		embed.addField(`channel: [${message.channel.name}](${permalink})`,`message: [${messageContent}](${permalink})`,false)
+			.setFooter(`ID: $(message.id)`)
+			.setTimestamp()
+		
 		//sendToUser.send(embed);
 			
 		let logChannel=message.guild.channels.resolve('800748408741953576'); //cache.get('800748408741953576');

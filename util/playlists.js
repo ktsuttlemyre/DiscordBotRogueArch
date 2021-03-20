@@ -1,35 +1,46 @@
 const fetch = require("node-fetch");
 
+
+
+function(json){
+			let youtubeLinks=[]  
+			let text = JSON.stringify(json,null,2).replace(/(\r\n|\n|\r)/gm,"\n");
+			if(text){
+			text=text.split(/\s+/);
+				//console.log("text",text)
+				text.forEach(function(word){
+					if(word.length<11){
+						return
+					}
+					let youtube = web.getYoutubeHash(word);
+					if(youtube){
+						youtubeLinks.push(youtube);
+					}
+				}); //forEach
+			}
+		return youtubeLinks;
+	}
+
+
+
+
 //https://www.reddit.com/dev/api#GET_new
-module.exports.subredditArray = function(subreddit,sort,before,callback){
-  if(typeof before == 'function'){
-    callback=before;
-    before='';
-  } 
-  sort=(sort||'new').toLowerCase();
-  if(Array.isArray(subreddit)){
-    subreddit=subreddit.join('+');
-  }
-  return fetch(`https://api.reddit.com/r/${subreddit}/${sort}.json?limit=100`) //?sort=top&t=day&limit=1`)
-    .then(response => response.json())
-    .then(response => function(json){
-      let youtubeLinks=[]  
-      let text = JSON.stringify(json,null,2).replace(/(\r\n|\n|\r)/gm,"\n");
-      if(text){
-        text=text.split(/\s+/);
-        //console.log("text",text)
-        text.forEach(function(word){
-          if(word.length<11){
-            return
-          }
-          let youtube = web.getYoutubeHash(word);
-          if(youtube){
-            youtubeLinks.push(youtube);
-          }
-        }); //forEach
-      }
-      return youtubeLinks;
-    });
+var subredditBatch = module.exports.subredditBatch = function(subreddit,sort,before,callback){
+	if(typeof before == 'function'){
+		callback=before;
+		before='';
+	} 
+	sort=(sort||'new').toLowerCase();
+	if(Array.isArray(subreddit)){
+		subreddit=subreddit.join('+');
+	}
+	let url = `https://api.reddit.com/r/${subreddit}/${sort}.json?limit=100`;
+	if(before){
+		url+'&before='+before;
+	}
+	return fetch(url) //?sort=top&t=day&limit=1`)
+		.then(response => response.json())
+		.then(response => callback);
 }
 
 
@@ -85,7 +96,7 @@ module.exports.fetchSubreddit = async function fetchMessages(subreddit, options,
 		let _fetchMessages=function(resolve){
 			if(breakOut){return resolve('resolved');}
 			//https://discord.js.org/#/docs/main/master/class/MessageManager?scrollTo=fetch
-			channel.messages.fetch(opts,false,true).then(function(messages){ 
+			subredditBatch(subreddit,sort,before,function(messages){ 
 				console.log('fetched messages',messages.length)
 				if(breakOut){return resolve('resolved');}
 				const messagesArray = messages.array();
@@ -103,7 +114,6 @@ module.exports.fetchSubreddit = async function fetchMessages(subreddit, options,
 		
 
 		return new Promise(resolve => {
-			console.log('started promise')
 			_fetchMessages(resolve);
 		});
 	}

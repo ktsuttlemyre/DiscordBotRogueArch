@@ -44,12 +44,12 @@ class CustomListener extends Listener {
 		let member = message.guild.member(user) || user;
 		let name = member.displayName || member.username || member.tag;
 		let messageContent=_.truncate(message.content);
-
+		let sendToUser = message.member;
+		
 		console.log(`${name} reacted with "${reaction.emoji.name}" to ${sendtoUser}'s ${message.id} with content ${messageContent}.`);
 
 		//see if user wants notificaiton
-		let sendToUser = message.member;
-		let notify = userWantsEmojiNotifications()
+		let notify = (sendToUser.roles.find(r => r.name === "RecieveReactAlerts");
 		if(notify!==true){
 			return ;
 		}
@@ -57,7 +57,7 @@ class CustomListener extends Listener {
 		//render
 		let embed = new Discord.MessageEmbed();
 		embed.setAuthor(name, user.displayAvatarURL() || common.defaultAvatar, `https://discordapp.com/users/${user.id}`);
-		embed.setDiscription(`Reacted with ${reaction.emoji.name} to your message ${messageContent}`);
+		embed.setDescription(`Reacted with ${reaction.emoji.name} to your message ${messageContent}`);
 		sendToUser.send(embed);
 	}
 }

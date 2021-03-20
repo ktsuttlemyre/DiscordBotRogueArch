@@ -7,6 +7,7 @@ const { Listener } = require('discord-akairo');
 const config = require.main.require('./config');
 const commandVars = require.main.require('./common').commandVars(__filename);
 const util = require.main.require('./util');
+const _ = require('lodash');
 
 
 class CustomListener extends Listener {

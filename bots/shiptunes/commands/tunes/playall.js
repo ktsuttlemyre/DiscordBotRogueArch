@@ -12,7 +12,7 @@ class CustomCommand extends Command {
 	constructor() {
 		super(commandVars.name, {
 		description: { content: 'plays all of youtube results [name/URL]'},
-		aliases: [commandVars.name],
+		aliases: [commandVars.name,'playresults','playallresults','playallyoutuberesults','playallyoutube','playyoutuberesults'],
 		category: commandVars.category,
 		clientPermissions: ['SEND_MESSAGES'],
 		args: [

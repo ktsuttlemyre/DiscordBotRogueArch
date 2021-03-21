@@ -119,10 +119,10 @@ module.exports.subredditPool = async function fetchMessages(subreddit, options, 
 
 
 
-var playlistPool = await fetchSubreddit('lofi');
+// var playlistPool = await fetchSubreddit('lofi');
 
 
-player.queue.on('end',function(){
-	var url = fetcher()
-	player.play(url)
-}
+// player.queue.on('end',function(){
+// 	var url = fetcher()
+// 	player.play(url)
+// }

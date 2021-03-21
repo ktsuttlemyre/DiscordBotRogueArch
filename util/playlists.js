@@ -3,33 +3,29 @@ const fetch = require("node-fetch");
 
 
 function(json){
-			let youtubeLinks=[]  
-			let text = JSON.stringify(json,null,2).replace(/(\r\n|\n|\r)/gm,"\n");
-			if(text){
-			text=text.split(/\s+/);
-				//console.log("text",text)
-				text.forEach(function(word){
-					if(word.length<11){
-						return
-					}
-					let youtube = web.getYoutubeHash(word);
-					if(youtube){
-						youtubeLinks.push(youtube);
-					}
-				}); //forEach
+	let youtubeLinks=[]  
+	let text = JSON.stringify(json,null,2).replace(/(\r\n|\n|\r)/gm,"\n");
+	if(text){
+	text=text.split(/\s+/);
+		//console.log("text",text)
+		text.forEach(function(word){
+			if(word.length<11){
+				return
 			}
-		return youtubeLinks;
+			let youtube = web.getYoutubeHash(word);
+			if(youtube){
+				youtubeLinks.push(youtube);
+			}
+		}); //forEach
 	}
+	return youtubeLinks;
+}
 
 
 
 
 //https://www.reddit.com/dev/api#GET_new
-var subredditBatch = module.exports.subredditBatch = function(subreddit,sort,before,callback){
-	if(typeof before == 'function'){
-		callback=before;
-		before='';
-	} 
+var subredditBatch = module.exports.subredditBatch = function(subreddit,sort){
 	sort=(sort||'new').toLowerCase();
 	if(Array.isArray(subreddit)){
 		subreddit=subreddit.join('+');
@@ -38,14 +34,16 @@ var subredditBatch = module.exports.subredditBatch = function(subreddit,sort,bef
 	if(before){
 		url+'&before='+before;
 	}
-	return fetch(url) //?sort=top&t=day&limit=1`)
-		.then(response => response.json())
-		.then(response => callback);
+	return new Promise(resolve => {
+		fetch(url) //?sort=top&t=day&limit=1`)
+			.then(response => response.json())
+			.then(response => resolve(response));
+	});
 }
 
 
 
-module.exports.fetchSubreddit = async function fetchMessages(subreddit, options, callback) {
+module.exports.subredditPool = async function fetchMessages(subreddit, options, callback) {
 	    if(typeof options == 'function'){
 	    	callback=options
 	    	options={}
@@ -93,11 +91,10 @@ module.exports.fetchSubreddit = async function fetchMessages(subreddit, options,
 			
 		}
 
-		let _fetchMessages=function(resolve){
+		let _fetchMessages=async function(resolve){
 			if(breakOut){return resolve('resolved');}
 			//https://discord.js.org/#/docs/main/master/class/MessageManager?scrollTo=fetch
-			subredditBatch(subreddit,sort,before,function(messages){ 
-				console.log('fetched messages',messages.length)
+			await subredditBatch(subreddit,sort,before,function(messages){ 
 				if(breakOut){return resolve('resolved');}
 				const messagesArray = messages.array();
 
@@ -119,3 +116,13 @@ module.exports.fetchSubreddit = async function fetchMessages(subreddit, options,
 	}
 
 
+
+
+
+var playlistPool = await fetchSubreddit('lofi');
+
+
+player.queue.on('end',function(){
+	var url = fetcher()
+	player.play(url)
+}

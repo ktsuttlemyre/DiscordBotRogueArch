@@ -190,7 +190,7 @@ var create = module.exports.create= function(message,client){
 
 		//add custom properties 
 		//to track
-		await this.client.memory.channelSet(message, web.getYoutubeHash(track.url)+'_'+track.requestedBy.id+'_'+message',reply.id);
+		await this.client.memory.channelSet(message, web.getYoutubeHash(track.url)+'_'+track.requestedBy.id+'_'+message, reply.id);
 
 		//add custom properties permalinks to entries			
 		//message.permalink=common.permalinkMessage(message.guild,message.channel,reply);

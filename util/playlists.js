@@ -2,7 +2,7 @@ const fetch = require("node-fetch");
 
 
 
-function(json){
+var g = function(json){
 	let youtubeLinks=[]  
 	let text = JSON.stringify(json,null,2).replace(/(\r\n|\n|\r)/gm,"\n");
 	if(text){

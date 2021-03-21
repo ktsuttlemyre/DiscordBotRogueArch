@@ -14,7 +14,7 @@ class CustomCommand extends Command {
 	constructor() {
 		super(commandVars.name, {
 		description: { content: 'set background'},
-		aliases: [commandVars.name,'next','forward'],
+		aliases: [commandVars.name],
 		category: commandVars.category,
 		clientPermissions: ['SEND_MESSAGES'],
 		args: [

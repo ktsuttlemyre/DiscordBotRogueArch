@@ -19,13 +19,6 @@ const common = require.main.require('./common');
 var cache={}
 
 
-const retriveTrackMessage = function(message,track){
-	var id = message.client.memory.channelGet(message, web.getYoutubeHash(track.url)+'_'+track.requestedBy.id+'_'+message'); // || this.client.memory.channelSet(message, 'player', util.player.create(message,this.client));
-	return message.channel.messages.fetch(id);
-}
-
-
-
 const presentTitle = exports.presentTitle = function(string){
 	string=string||''
 	// replace (official music video) || (official video)
@@ -151,7 +144,7 @@ var nowPlayingOverloaded= async (message,player,announce) => {
 	let volumeLevel = common.progressString('vertical-bar',queue.volume);
 	let progressBar=(player.createProgressBar(message,{queue:false,timecodes:true})||'').replace('▬','').replace('🔘',stateButton).replace('┃ ','|').replace(' ┃','|');
 	
-	let trackDiscordMessage = await retriveTrackMessage(message,track);
+	let trackDiscordMessage = await util.messages.retrieveTrackMessage(message,track);
 	let permalink = (trackDiscordMessage)?trackDiscordMessage.permalink:'';
 	announce=(announce!=null)?"```"+announce+"```":'‎';
 	let jumpToQueue=`[🡅](${permalink})`; //⮝🠉🠝🡅🡹🢁⏫

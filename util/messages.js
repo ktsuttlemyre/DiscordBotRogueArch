@@ -12,7 +12,7 @@ const yaml = require('js-yaml');
 
 
 module.exports.retrieveTrackMessage = function(message,track){
-	var id = message.client.memory.channelGet(message, web.getYoutubeHash(track.url)+'_'+track.requestedBy.id+'_'+message'); // || this.client.memory.channelSet(message, 'player', util.player.create(message,this.client));
+	var id = message.client.memory.channelGet(message, web.getYoutubeHash(track.url)+'_'+track.requestedBy.id+'_'+message); // || this.client.memory.channelSet(message, 'player', util.player.create(message,this.client));
 	return message.channel.messages.fetch(id);
 }
 

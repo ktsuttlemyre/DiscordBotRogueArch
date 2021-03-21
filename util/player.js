@@ -7,6 +7,7 @@ const common = require.main.require('./common');
 const _ = require('lodash');
 const path = require('path');
 const util = require.main.require('./util');
+const web = require.main.require('./web');
 
 
 module.exports.commandPermissions=function(message,requireDJ){
@@ -189,8 +190,7 @@ var create = module.exports.create= function(message,client){
 
 		//add custom properties 
 		//to track
-		track.messageCommand=message
-		track.messageQEntry=reply
+		await this.client.memory.channelSet(message, web.getYoutubeHash(track.url)+'_'+track.requestedBy.id+'_'+message',reply.id);
 
 		//add custom properties permalinks to entries			
 		//message.permalink=common.permalinkMessage(message.guild,message.channel,reply);
@@ -205,7 +205,12 @@ var create = module.exports.create= function(message,client){
 
 		collector.on('collect', (reaction, user) => {
 			if(reaction.emoji.name === reactions.downvote){ //if downvote
-				if(user.id === track.messageCommand.author.id){ //if original poster
+				let originalPoster=(reply.embed || reply.embeds[0]).author
+				if(!originalPoster){
+					return //reaction.channel.send('not able to act upon this request')
+				}
+				let ogPosterID = (originalPoster.url || '').split('/').pop();			
+				if(user.id === ogPosterID){ //if original poster
 					//delete message
 					reply.delete();
 

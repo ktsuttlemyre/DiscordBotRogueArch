@@ -17,6 +17,14 @@ const common = require.main.require('./common');
 
 var cache={}
 
+
+const retriveTrackMessage = function(message,track){
+	var id = this.client.memory.channelGet(message, web.getYoutubeHash(track.url)+'_'+track.requestedBy.id+'_'+message'); // || this.client.memory.channelSet(message, 'player', util.player.create(message,this.client));
+	return message.channel.messages.fetch(id);
+}
+
+
+
 const presentTitle = exports.presentTitle = function(string){
 	string=string||''
 	// replace (official music video) || (official video)
@@ -84,7 +92,7 @@ var nowPlayingPageinated=function (message,player,announce){
 
 var nowPlayingOverloaded= async (message,player,announce) => {
     cache[message.guild.id]=cache[message.guild.id]||{};
-    var lastNowPlayingMessage=cache[message.guild.id].lastNowPlayingMessage
+    let lastNowPlayingMessage=cache[message.guild.id].lastNowPlayingMessage
     if(lastNowPlayingMessage && !lastNowPlayingMessage.deleted){
 	lastNowPlayingMessage.delete();
     }
@@ -99,9 +107,9 @@ var nowPlayingOverloaded= async (message,player,announce) => {
     announce=announce||cache[message.guild.id].announce;
     cache[message.guild.id].announce=announce;
 	
-    var track=player.nowPlaying(message);
-    var match = (player.createProgressBar(message,{queue:true,timecodes:true})||'').match(/(\d|:)+/g);
-	var duration=moment.duration('00:00:00');
+    let track=player.nowPlaying(message);
+    let match = (player.createProgressBar(message,{queue:true,timecodes:true})||'').match(/(\d|:)+/g);
+	let duration=moment.duration('00:00:00');
 	if(match && match.length==2){
 		duration = moment.duration(match[1]).subtract(moment.duration(match[0]));
 	}
@@ -119,8 +127,8 @@ var nowPlayingOverloaded= async (message,player,announce) => {
 		}
 	}
 	
-	var stateButton=((queue.stopped)?':stop_button:':((queue.paused)?':pause_button:':':arrow_forward:'));
-	var stateString=((!queue.repeatMode)?':blue_square:':':repeat:')+' Repeat '+
+	let stateButton=((queue.stopped)?':stop_button:':((queue.paused)?':pause_button:':':arrow_forward:'));
+	let stateString=((!queue.repeatMode)?':blue_square:':':repeat:')+' Repeat '+
 			((!queue.loopMode)?':blue_square:':':infinity:')+' Loop '+
 			((!queue.loopMode)?':blue_square:':':twisted_rightwards_arrows:')+' Shuffle ';
 	
@@ -135,18 +143,25 @@ var nowPlayingOverloaded= async (message,player,announce) => {
 // 			volumeLevel=':loud_sound:'
 // 		}
 // 	}
-	var volumeLevel = common.progressString('vertical-bar',queue.volume);
-	var progressBar=(player.createProgressBar(message,{queue:false,timecodes:true})||'').replace('▬','').replace('🔘',stateButton).replace('┃ ','|').replace(' ┃','|')
-        var nextSongURL=(queue.tracks[1])?(queue.tracks[1].messageQEntry.permalink||queue.tracks[1].url):'';
-	var permalink = (track.messageQEntry)?track.messageQEntry.permalink:'';
-	announce=(announce!=null)?"```"+announce+"```":'‎';
-	var jumpToQueue=`[🡅](${permalink})`; //⮝🠉🠝🡅🡹🢁⏫
-	var nextSong=((queue.tracks[1])?`[${queue.tracks[1].title}](${queue.tracks[1].url})\n*Requested by:*`:'Add more songs!');
 	
-	var title = presentTitle(track.title);
+	
+
+	
+	let volumeLevel = common.progressString('vertical-bar',queue.volume);
+	let progressBar=(player.createProgressBar(message,{queue:false,timecodes:true})||'').replace('▬','').replace('🔘',stateButton).replace('┃ ','|').replace(' ┃','|');
+	
+	let trackDiscordMessage = await retriveTrackMessage(message,track);
+	let permalink = (trackDiscordMessage)?trackDiscordMessage.permalink:'';
+	announce=(announce!=null)?"```"+announce+"```":'‎';
+	let jumpToQueue=`[🡅](${permalink})`; //⮝🠉🠝🡅🡹🢁⏫
+
+	let nextTrack = queue.tracks[1];
+	let nextSong=((nextTrack)?`[${nextTrack.title}](${nextTrack.url})\n*Requested by:*`:'Add more songs!');
+	
+	let title = presentTitle(track.title);
 	title = (title)?`> ${title}`:'Shiptunes';
 	
-	var embedJSON={
+	let embedJSON={
 	      "title": title,
 	      //"description": `Author:${track.author}\n${track.description}`,
 	      //"description": `[${track.title}](${track.url})`,
@@ -234,11 +249,13 @@ var nowPlayingOverloaded= async (message,player,announce) => {
 	      }
 	}
 	
-	if(queue.tracks[1]){
-		track=queue.tracks[1];
+	if(nextTrack){
+		//let nextTrackDiscordMessage = await retrieveTrackMessage(message,nextTrack);
+		//let nextSongURL=(nextTrack)?(nextTrackDiscordMessage.permalink||nextTrack.url):'';
+
 		embedJSON.footer= {
-			"text": track.requestedBy.username,
-			"icon_url":  track.requestedBy.avatarURL()||common.defaultAvatar //"https://shipwa.sh/img/logo/shipwash_avatar.png"
+			"text": nextTrack.requestedBy.username,
+			"icon_url":  nextTrack.requestedBy.avatarURL()||common.defaultAvatar //"https://shipwa.sh/img/logo/shipwash_avatar.png"
 	      	};
 	}
 	

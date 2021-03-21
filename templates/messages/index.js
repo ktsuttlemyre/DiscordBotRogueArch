@@ -236,11 +236,19 @@ var nowPlayingOverloaded= async (message,player,announce) => {
 	}
 	
 	if(!player.backgroundPlaylist && track.requestedBy){
-	   embedJSON.author = {
-	        "name": `${track.requestedBy.username} is playing`,
-	        "url": encodeURI('https://shiptunes.shipwa.sh/'+(track.requestedBy.tag||'').replace('#','')||track.requestedBy.id),
-	        "icon_url": track.requestedBy.avatarURL()||common.defaultAvatar
-	      }
+		//let urlTag=(track.requestedBy.tag||'').replace('#','')||
+		let name = track.requestedBy.displayName || track.requestedBy.tag;
+		let URI = encodeURI(`https://shiptunes.shipwa.sh/${track.requestedBy.id}`)
+		
+		//TODO if you add this you must change the logic in deleting own entrys from queue
+		//if(name){
+		//	URI = encodeURI(`https://shiptunes.shipwa.sh/${track.requestedBy.id}#name`);
+		//}
+		embedJSON.author = {
+			"name": `${track.requestedBy.username} is playing`,
+			"url": URI,
+			"icon_url": track.requestedBy.avatarURL()||common.defaultAvatar
+		}
 	}
 	
 	if(nextTrack){

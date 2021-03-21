@@ -1,5 +1,6 @@
 const moment = require("moment");
 const { MessageEmbed } = require('discord.js');
+const web = require.main.require('./web');
  /* 
 		const embed = new MessageEmbed()
 			.setColor(0xFFAC33)

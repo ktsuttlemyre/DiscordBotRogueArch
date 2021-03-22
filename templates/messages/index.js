@@ -228,8 +228,8 @@ var nowPlayingOverloaded= async (message,player,announce) => {
 		}
 	      ],
 	      "image":{
-                  url:track.requestedBy.displayAvatarURL({size:32})||common.defaultAvatar,
-	      }
+                  url:track.requestedBy.displayAvatarURL({size:32})||common.defaultAvatar
+	      },
 	      "thumbnail": {
 		"url": track.thumbnail||common.defaultAvatar
 	      }

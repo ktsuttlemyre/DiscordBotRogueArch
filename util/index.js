@@ -32,7 +32,7 @@ let web={}
 
 		//http://stackoverflow.com/questions/3717115/regular-expression-for-youtube-links
 		//inspiration: http://stackoverflow.com/questions/3452546/javascript-regex-how-to-get-youtube-video-id-from-url
-module.exports=.getYoutubeHash=function(url){
+module.exports.getYoutubeHash=function(url){
 			if(!url){return ''}
 			if(url.length<11){return ''}
 			//if(!web.isString(url)){return ''}

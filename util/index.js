@@ -36,7 +36,7 @@ module.exports.getYoutubeHash=function(url){
 			if(!url){return ''}
 			if(url.length<11){return ''}
 			//if(!web.isString(url)){return ''}
-			if(url.contains('/user/')){console.warn('skipping a youtube user page')}
+			if(url.includes('/user/')){console.warn('skipping a youtube user page')}
 			var match = url.match(web.RegExp.getYoutubeHash);
 			var hash=(match)?match[4].trim():'';
 			if(web.RegExp.validate.YoutubeHash.test(hash)){

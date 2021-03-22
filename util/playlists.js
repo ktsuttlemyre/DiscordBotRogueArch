@@ -1,5 +1,5 @@
 const fetch = require("node-fetch");
-
+const util = require.main.require("./util");
 
 
 var g = function(json){
@@ -12,7 +12,7 @@ var g = function(json){
 			if(word.length<11){
 				return
 			}
-			let youtube = web.getYoutubeHash(word);
+			let youtube = util.getYoutubeHash(word);
 			if(youtube){
 				youtubeLinks.push(youtube);
 			}

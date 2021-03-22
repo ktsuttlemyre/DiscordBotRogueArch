@@ -228,7 +228,7 @@ var nowPlayingOverloaded= async (message,player,announce) => {
 		  "inline": false
 		}
 	      ],
-		"image":track.requestedBy.avatarURL({size:32})||common.defaultAvatar,
+	      "image":track.requestedBy.displayAvatarURL({size:32})||common.defaultAvatar,
 	      "thumbnail": {
 		"url": track.thumbnail||common.defaultAvatar
 	      }

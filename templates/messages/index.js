@@ -228,7 +228,7 @@ var nowPlayingOverloaded= async (message,player,announce) => {
 		  "inline": false
 		}
 	      ],
-	      "image":track.requestedBy.displayAvatarURL({size:32})||common.defaultAvatar,
+	      "image":"https://images-ext-2.discordapp.net/external/4UrBd5-403PM7cKGjhjxXxdGEiEY1g6LmQ4TCPTteZ4/%3Fsqp%3D-oaymwEXCNAFEJQDSFryq4qpAwkIARUAAIhCGAE%3D%26rs%3DAOn4CLDjqHV-fVNWxeOKAZoeEA8xKsco1Q/https/i.ytimg.com/vi/X0lG7gptXHI/hq720.jpg",//track.requestedBy.displayAvatarURL({size:32})||common.defaultAvatar,
 	      "thumbnail": {
 		"url": track.thumbnail||common.defaultAvatar
 	      }

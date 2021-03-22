@@ -6,7 +6,7 @@ const {reactions,defaultAvatar} = require.main.require('./common');
 const common = require.main.require('./common');
 const _ = require('lodash');
 const path = require('path');
-const web = require.main.require('./web');
+const util= require.main.require('./util');
 
 class CustomCommand extends Command {
 	constructor() {
@@ -58,7 +58,7 @@ class CustomCommand extends Command {
 					if(word.length<11){
 						return
 					}
-					let youtube = web.getYoutubeHash(word);
+					let youtube = util.getYoutubeHash(word);
 					if(youtube){
 						youtubeLinks.push(youtube)
 					}

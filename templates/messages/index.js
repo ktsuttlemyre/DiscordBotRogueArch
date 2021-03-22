@@ -227,9 +227,9 @@ var nowPlayingOverloaded= async (message,player,announce) => {
 		  "inline": false
 		}
 	      ],
-	      "image":{
-                  url:track.requestedBy.displayAvatarURL({size:32})||common.defaultAvatar
-	      },
+	      //"image":{
+              //    url:track.requestedBy.displayAvatarURL({size:32})||common.defaultAvatar
+	      //},
 	      "thumbnail": {
 		"url": track.thumbnail||common.defaultAvatar
 	      }
@@ -259,7 +259,7 @@ var nowPlayingOverloaded= async (message,player,announce) => {
 		//let nextSongURL=(nextTrack)?(nextTrackDiscordMessage.permalink||nextTrack.url):'';
 
 		embedJSON.footer= {
-			"text": `${nextTrack.requestedBy.username} requested ${nextSong}`,
+			"text": `${nextTrack.requestedBy.username}`,
 			"icon_url":  nextTrack.requestedBy.avatarURL()||common.defaultAvatar //"https://shipwa.sh/img/logo/shipwash_avatar.png"
 	      	};
 	}

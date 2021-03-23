@@ -16,7 +16,29 @@ module.exports.retrieveTrackMessage = function(message,track){
 	return message.channel.messages.fetch(id);
 }
 
-
+module.exports.embedParser = function(message){
+	let embed= message.embed || message.embeds[0];
+	var author = embed.author
+	if(author){
+		//shiptunes embed url
+		//encodeURI(`https://shiptunes.shipwa.sh/${track.requestedBy.id}#?name=${name}`);
+		//normal encapsulate url
+		//https://discordapp.com/users/${user.id}
+		let id = author.url.match(/urldiscordapp.com\/users\/(\d+)$/)[1]; //discordapp.com url
+		let type = 'encapsulate';
+		if(!id){ // see if it is shiptunes.shipwa.sh url
+			id = author.url.match(/\/shiptunes\.shipwa\.sh\/(\d+)#.name=/)[1];
+			type = 'shiptunes';
+			if(!id){ //idk what type this is
+				type = 'undefined'
+			}
+		}
+		//https://stackoverflow.com/questions/60676210/how-to-find-user-by-his-id-in-discord-js
+		//https://stackoverflow.com/questions/63107193/discord-js-how-do-i-convert-user-id-to-member
+		let member = message.guild(await message.client.users.fetch(id));
+		return {member:member}
+	}
+}
 
 module.exports.encapsulate = function(message,override,dontDelete){
 	if(!override){
@@ -41,7 +63,7 @@ module.exports.encapsulate = function(message,override,dontDelete){
 	let author = {
 		name: user.displayName || user.tag,
 		icon_url: message.author.avatarURL() || common.defaultAvatar,
-		url: ` https://discordapp.com/users/${user.id}`,
+		url: `https://discordapp.com/users/${user.id}`,
 	}
 	doc.author=author;
 	message.channel.send({embed:doc});

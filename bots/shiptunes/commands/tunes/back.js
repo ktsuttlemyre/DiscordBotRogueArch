@@ -12,8 +12,8 @@ const path = require('path');
 const embedCommand = require.main.require('./bots/shipmod/commands/general/embed');
 class CustomCommand extends Command {
 	constructor() {
-		super(commandVars.name, {
-		description: { content: 'back'},
+		super(commandVars.id, {
+		description: { content: 'Go to previous song'},
 		aliases: [commandVars.name,'prev','previous'],
 		category: commandVars.category,
 		clientPermissions: ['SEND_MESSAGES'],

@@ -48,7 +48,7 @@ class CustomCommand extends Command {
 	userPermissions(message) {
 		//simple playlist filter
 		//youtube uses list= as a url param and spotify uses /playlist/ endpoint
-		if(message.content.includes('list=') || message.content.includes('/playlist/'){
+		if(message.content.includes('list=') || message.content.includes('/playlist/')){
 		   return 'DJ';
 		}
 		return util.player.commandPermissions(message);

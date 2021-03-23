@@ -1,8 +1,9 @@
 const { Listener } = require('discord-akairo');
+const commandVars = requre.main.require.commandVars(__filename);
 
 class CommandBlockedListener extends Listener {
     constructor() {
-        super('commandBlocked', {
+        super('global/'+commandVars.id, {
             emitter: 'commandHandler',
             event: 'commandBlocked'
         });

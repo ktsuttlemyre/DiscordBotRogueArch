@@ -22,8 +22,8 @@ class CustomCommand extends Command {
 			      'This command will search Youtube for songs using your keywords!\n'+
 				'In addition this command also accepts links that point to:\n'+
 				' - Spotify song\n'+
-				' - Spotify playlist\n'+
-				' - Youtube playlist\n'+
+				' - Spotify playlist (Must have DJ role)\n '+
+				' - Youtube playlist (Must have DJ role)\n'+
 				' - Youtube video\n'+
 				' - Soundcloud song\n'+
 				' - Vimeo\n'+

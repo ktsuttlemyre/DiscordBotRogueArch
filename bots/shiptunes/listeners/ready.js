@@ -1,13 +1,14 @@
 const { Listener } = require('discord-akairo');
 const {reactions,defaultAvatar} = require.main.require('./common');
 const config = require.main.require('./config')
+const commandVars = require.main.require('./common').commandVars(__fileName);
 
 class ReadyListener extends Listener {
 	constructor() {
-		super('ready', {
+		super(commandVars.id, {
 			emitter: 'client',
-			event: 'ready',
-			category: 'client',
+			event: commandVars.name,
+			category: commandVars.category,
 		});
 	}
 

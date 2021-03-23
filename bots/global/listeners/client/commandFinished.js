@@ -1,6 +1,6 @@
 const { Listener } = require('discord-akairo');
 const {reactions,defaultAvatar} = require.main.require('./common');
-const commandVars = requre.main.require.commandVars(__filename);
+const commandVars = require.main.require.commandVars(__filename);
 
 // https://discord-akairo.github.io/#/docs/main/master/class/CommandHandler?scrollTo=e-commandFinished
 class CommandBlockedListener extends Listener {

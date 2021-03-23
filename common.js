@@ -14,16 +14,19 @@ exports.reactions={
 	     }
 
 exports.commandVars=function(filename){
-	return {name:path.parse(filename).name,category:path.basename(path.dirname(filename))}
+	filename=path.normalize(filename);
+	let name = path.parse(filename).name;
+	let category = path.basename(path.dirname(filename));
+	//let parsed = path.parse(filename)).dir.split(path.sep);
+	//let botname = parsed[parsed.length-3];
+	//let type = parsed[parsed.length-2]
+	return {
+		name:name,
+		category:category,
+		id: `${category}/${name}`
+	       }
 }
-exports.commandName=function(filename){
-	console.trace('depricated')
-	return path.parse(filename).name;
-}
-exports.commandCategory=function(filename){
-	console.trace('depricated')
-	return path.basename(path.dirname(filename));
-}
+
 
 exports.defaultAvatar='https://discord.com/assets/322c936a8c8be1b803cd94861bdfa868.png';
 

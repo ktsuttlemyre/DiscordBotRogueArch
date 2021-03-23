@@ -12,7 +12,7 @@ const _ = require('lodash');
 
 class CustomListener extends Listener {
 	constructor() {
-		super(commandVars.name, {
+		super(commandVars.id, {
 			emitter: commandVars.category,
 			event: commandVars.name,
 			category: commandVars.category,
@@ -20,21 +20,18 @@ class CustomListener extends Listener {
 	}
 
 
-	async exec( reaction, user ) {
-		if(user.bot){
-			return
-		}
-
-		//make sure message is resolved
-		let message = await util.messages.resolve(reaction.message);
+	async exec( message, reaction, member ) {
+		//note don't do bot check here because we already did it on the global messaeReacitonAdd.
 		
-		let member = message.guild.member(user) || user;
+
 		let name = member.displayName || member.username || member.tag;
+		
+		let sendToUser = /*message.guild.member(message.member.user) ||*/ message.member;
+		
 		let mEmbed = message.embed || message.embeds[0];
 		let messagePreview = message.content || mEmbed.title || mEmbed.description || '<preview unavailable>';
 		messagePreview = _.truncate(message.content);
 		messagePreview = messagePreview || '<preview unavailable>';
-		let sendToUser = /*message.guild.member(message.member.user) ||*/ message.member;
 		
 		console.log(`${name} reacted with "${reaction.emoji.name}" to ${sendToUser.displayName}'s ${message.id} with content ${messagePreview}.`);
 			

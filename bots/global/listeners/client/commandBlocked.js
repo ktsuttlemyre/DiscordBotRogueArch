@@ -1,5 +1,5 @@
 const { Listener } = require('discord-akairo');
-const commandVars = require.main.require.commandVars(__filename);
+const commandVars = require.main.require('./common').commandVars(__filename);
 
 class CommandBlockedListener extends Listener {
     constructor() {

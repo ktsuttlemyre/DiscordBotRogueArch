@@ -9,7 +9,8 @@ let config = {
 	},
 	"production": {
 		"dialect": "sqlite",
-		"storage": "./database.sqlite3"
+		"storage": "./database.sqlite3",
+		"actionLogChannel": "800748408741953576",
 	},
 	
 }

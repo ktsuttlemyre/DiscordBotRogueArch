@@ -26,48 +26,32 @@ class CustomListener extends Listener {
 			return
 		}
 
-
- 		//this is off because it is probably a bad idea to use a partial before calling .fetch()
-		//let optomized = false;
-		// if(optomized){
-		// 	if(sendToUser){
-		// 		notify = userWantsEmojiNotifications();
-		// 		if(notify === false){
-		// 			return
-		// 		}
-		// 	}
-		// }
-
-
 		//make sure message is resolved
 		let message = await util.messages.resolve(reaction.message);
 		
 		let member = message.guild.member(user) || user;
 		let name = member.displayName || member.username || member.tag;
 		let mEmbed = message.embed || message.embeds[0];
-		let messageContent = message.content || mEmbed.title || mEmbed.description || '<preview unavailable>';
-		messageContent = _.truncate(message.content);
-		messageContent = messageContent || '<preview unavailable>';
+		let messagePreview = message.content || mEmbed.title || mEmbed.description || '<preview unavailable>';
+		messagePreview = _.truncate(message.content);
+		messagePreview = messagePreview || '<preview unavailable>';
 		let sendToUser = /*message.guild.member(message.member.user) ||*/ message.member;
 		
-		console.log(`${name} reacted with "${reaction.emoji.name}" to ${sendToUser.displayName}'s ${message.id} with content ${messageContent}.`);
+		console.log(`${name} reacted with "${reaction.emoji.name}" to ${sendToUser.displayName}'s ${message.id} with content ${messagePreview}.`);
 			
 		//render
 		let embed = new MessageEmbed();
 		embed.setAuthor(`${name} reacted ${reaction.emoji.name}`, user.displayAvatarURL() || common.defaultAvatar, `https://discordapp.com/users/${user.id}`);
 		let permalink = util.messages.permalink(message);
-		embed.setDescription(`channel: [${message.channel.name}](${permalink})\nmessage: [${messageContent}](${permalink})`)
+		embed.setDescription(`channel: [${message.channel.name}](${permalink})\nmessage: [${messagePreview}](${permalink})`)
 			.setFooter(`ID: ${message.id}`)
 			.setTimestamp()
-		
-		//sendToUser.send(embed);
 			
-		let logChannel=message.guild.channels.resolve('800748408741953576'); //cache.get('800748408741953576');
-		if(logChannel){
-			logChannel.send(embed);
-		}
+		let logChannel=message.guild.channels.resolve(config.actionLogChannel);
+		logChannel && logChannel.send(embed);
 		
 		//see if user wants notificaiton
+		console.log(sendToUser.roles)
 		let notify = sendToUser.roles.cache.find(r => r.name === "ReceiveReactAlert");
 		notify && sendToUser.user.send(embed);
 	}

@@ -50,7 +50,7 @@ class CustomListener extends Listener {
 		logChannel && logChannel.send(embed);
 		
 		//see if user wants notificaiton
-		console.log(sendToUser.roles)
+		console.log(sendToUser.roles.cache)
 		let notify = sendToUser.roles.cache.find(r => r.name === "ReceiveReactAlert");
 		notify && sendToUser.user.send(embed);
 	}

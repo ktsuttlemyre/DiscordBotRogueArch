@@ -4,9 +4,11 @@ const { Player } = require("discord-player");
 const emotes={error:":error:"}
 const {reactions,defaultAvatar} = require.main.require('./common');
 const common = require.main.require('./common');
+const util = require.main.require('./util');
 const commandVars = common.commandVars(__filename);
 const _ = require('lodash');
 const path = require('path');
+
 
 class CustomCommand extends Command {
 	constructor() {

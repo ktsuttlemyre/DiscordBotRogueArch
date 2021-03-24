@@ -7,7 +7,6 @@ const commandVars = common.commandVars(__filename);
 const _ = require('lodash');
 const path = require('path');
 const util = require.main.require('./util');
-const path = require('path');
 const config = require.main.require('./config');
 
 //TODO convert

@@ -33,13 +33,13 @@ class CustomListener extends Listener {
 		
 		let sendToUser = /*message.guild.member(message.member.user) ||*/ message.member;
 		
-		if(sendToUser.bot || sendToUser.user.bot){
-			//Do bot application functions here
-			if(sendToUser.id == this.client.user.id){ //shipmod
-				console.log('emmiting')
-				this.client.emit('rogueReactionAdd',message,reaction,member) //handle the reaction
-			}
-		}
+		this.client.emit('rogueReactionAdd',message,reaction,member) //handle the reaction
+// 		if(sendToUser.bot || sendToUser.user.bot){
+// 			//Do bot application functions here
+// 			if(sendToUser.id == this.client.user.id){ //shipmod
+// 				console.log('emmiting')
+// 			}
+// 		}
 	}
 }
 module.exports = CustomListener;

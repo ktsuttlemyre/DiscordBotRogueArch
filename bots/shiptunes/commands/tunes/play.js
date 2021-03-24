@@ -46,9 +46,9 @@ class CustomCommand extends Command {
 	}
 
 	userPermissions(message) {
-		let value = util.player.commandPermissions(message);
-		if(value === null){
-			return value
+		//if this command returns null then null is returned which means allow this action.
+		if(util.player.commandPermissions(message) === null){
+			return null
 		}
 		
 		//simple playlist filter
@@ -56,7 +56,7 @@ class CustomCommand extends Command {
 		if(message.content.includes('list=') || message.content.includes('/playlist/')){
 		   let isDJ = message.member.roles.cache.find(role => role.name === 'DJ')
 		   if(!isDJ){
-		   	return 'DJ';
+		   	return 'DJ'; //tell the user they need the DJ role permission
 		   }
 		}
 	}

@@ -7,6 +7,9 @@ const commandVars = common.commandVars(__filename);
 const _ = require('lodash');
 const path = require('path');
 const util = require.main.require('./util');
+const path = require('path');
+const config = require.main.require('./config');
+
 //TODO convert
 /*
 player.init
@@ -56,7 +59,7 @@ class CustomCommand extends Command {
 		if(message.content.includes('list=') || message.content.includes('/playlist/')){
 		   let isDJ = message.member.roles.cache.find(role => role.name === 'DJ')
 		   if(!isDJ){
-		   	return 'DJ'; //tell the user they need the DJ role permission
+		   	return config.DJ_Role; //tell the user they need the DJ role permission
 		   }
 		}
 	}

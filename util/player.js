@@ -12,7 +12,7 @@ const util = require.main.require('./util');
 module.exports.commandPermissions=function(message,requireDJ){
 	let isDJ = message.member.roles.cache.find(role => role.name === 'DJ')
 	//DJ bypass
-	if(isDJ){return }
+	if(isDJ){return null}
 	let channel = message.member.voice.channel;
 	//Check they are in a voice channel
 	if (!message.member.voice.channel) return `${emotes.error} - You're not in a voice channel !`;
@@ -20,13 +20,13 @@ module.exports.commandPermissions=function(message,requireDJ){
 	if (message.guild.me.voice.channel && channel.id !== message.guild.me.voice.channel.id) return `${emotes.error} - You are not in the same voice channel !`;
 	//if the user is the only one in the channel then allow action
 	if(channel && channel.members.size==1){
-		return ;
+		return null;
 	}
 	//do voting (optional)
 
 	//isDJ required?
 	if (requireDJ && !isDJ){return 'DJ';}
-	return ;
+	return undefined;
 }
 
 let playBackgroundPlaylist = module.exports.playBackgroundPlaylist = async (message,player,notice) => {

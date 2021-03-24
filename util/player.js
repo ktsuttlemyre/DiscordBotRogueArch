@@ -7,10 +7,13 @@ const common = require.main.require('./common');
 const _ = require('lodash');
 const path = require('path');
 const util = require.main.require('./util');
+const config = require.main.require('./config');
 
-
+//if this returns null then it is a hard allow action
+//if this returns a string it will be prestented to the user as the missing permission/qualification
+//if undefined it will default to allow but can be used by other dynamic permission functions to determine if this rutine explicit gave permission or not
 module.exports.commandPermissions=function(message,requireDJ){
-	let isDJ = message.member.roles.cache.find(role => role.name === 'DJ')
+	let isDJ = message.member.roles.cache.find(role => role.name === config.DJ_Role)
 	//DJ bypass
 	if(isDJ){return null}
 	let channel = message.member.voice.channel;
@@ -25,7 +28,7 @@ module.exports.commandPermissions=function(message,requireDJ){
 	//do voting (optional)
 
 	//isDJ required?
-	if (requireDJ && !isDJ){return 'DJ';}
+	if (requireDJ && !isDJ){return config.DJ_Role;}
 	return undefined;
 }
 

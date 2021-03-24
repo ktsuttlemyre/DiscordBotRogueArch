@@ -46,6 +46,11 @@ class CustomCommand extends Command {
 	}
 
 	userPermissions(message) {
+		let value = util.player.commandPermissions(message);
+		if(value === null){
+			return value
+		}
+		
 		//simple playlist filter
 		//youtube uses list= as a url param and spotify uses /playlist/ endpoint
 		if(message.content.includes('list=') || message.content.includes('/playlist/')){
@@ -54,7 +59,6 @@ class CustomCommand extends Command {
 		   	return 'DJ';
 		   }
 		}
-		return util.player.commandPermissions(message);
 	}
 	
 	async exec(message, { search }) {

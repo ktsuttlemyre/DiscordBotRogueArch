@@ -35,7 +35,8 @@ module.exports.embedParser = function(message){
 		}
 		//https://stackoverflow.com/questions/60676210/how-to-find-user-by-his-id-in-discord-js
 		//https://stackoverflow.com/questions/63107193/discord-js-how-do-i-convert-user-id-to-member
-		let member = message.guild(await message.client.users.fetch(id));
+		let user = await message.client.users.fetch(id);
+		let member = message.guild(user);
 		return {member:member}
 	}
 }

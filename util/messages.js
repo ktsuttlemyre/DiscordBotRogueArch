@@ -16,7 +16,7 @@ module.exports.retrieveTrackMessage = function(message,track){
 	return message.channel.messages.fetch(id);
 }
 
-module.exports.embedParser = function(message){
+module.exports.embedParser = async function(message){
 	let embed= message.embed || message.embeds[0];
 	var author = embed.author
 	if(author){

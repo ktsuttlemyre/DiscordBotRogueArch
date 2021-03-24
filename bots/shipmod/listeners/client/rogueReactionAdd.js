@@ -21,9 +21,16 @@ class CustomListener extends Listener {
 
 
 	async exec( message, reaction, member ) {
-		//note don't do bot check here because we already did it on the global messaeReacitonAdd.
+// 		//note don't do bot check here because we already did it on the global messaeReacitonAdd.
+// 		if(sendToUser.bot || sendToUser.user.bot){
+// 			//Do bot application functions here
+// 			if(sendToUser.id == this.client.user.id){ //shipmod
+// 				console.log('emmiting')
+				
+// 			}
+// 		}
 		
-
+		
 		let name = member.displayName || member.username || member.tag;
 		
 		let sendToUser = /*message.guild.member(message.member.user) ||*/ message.member;

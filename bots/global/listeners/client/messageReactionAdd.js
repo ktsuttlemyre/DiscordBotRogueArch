@@ -35,7 +35,7 @@ class CustomListener extends Listener {
 		
 		if(sendToUser.bot || sendToUser.user.bot){
 			//Do bot application functions here
-			if(sendToUser.id == this.client.me.id){ //shipmod
+			if(sendToUser.id == this.client.user.id){ //shipmod
 				console.log('emmiting')
 				this.client.emit('rogueReactionAdd',message,reaction,member) //handle the reaction
 			}

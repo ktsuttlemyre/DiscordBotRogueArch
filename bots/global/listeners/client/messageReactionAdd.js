@@ -24,7 +24,7 @@ class CustomListener extends Listener {
 		if(user.bot){
 			return
 		}
-
+		console.log('reaction',reaction.partial,reaction)
 		//make sure message is resolved
 		let message = await util.messages.resolve(reaction.message);
 		

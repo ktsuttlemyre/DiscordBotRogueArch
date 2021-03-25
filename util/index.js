@@ -1,7 +1,7 @@
 module.exports.player=require('./player');
 module.exports.playlists=require('./playlists');
 module.exports.messages=require('./messages') 
-module.exports.commandVars=require('/common').commandVars 
+module.exports.commandVars=require('/common').commandVars  //TODO move commandVars here and delete common
 
 let web={}
 		web.RegExp={alphabetical:/[a-zA-Z]/g

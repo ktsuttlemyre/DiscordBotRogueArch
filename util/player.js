@@ -173,7 +173,7 @@ var create = module.exports.create= function(message,client){
 			return
 		}
 		
-		let resolve = this.client.memory.channelGet(message,`${message.id}_resolve`);
+		let resolve = message.client.memory.channelGet(message,`${message.id}_resolve`);
 		if(!resolve){
 			return
 		}

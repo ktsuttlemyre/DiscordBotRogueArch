@@ -44,9 +44,9 @@ class BoilerplateClient extends AkairoClient {
 			//commandUtilLifetime: 600000,
 		},{ //Discord.js options https://discord.js.org/#/docs/main/stable/typedef/ClientOptions
 			partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
-			messageCacheMaxSize:200, //Maximum number of messages to cache per channel (-1 or Infinity for unlimited - don't do this without message sweeping, otherwise memory usage will climb indefinitely)
-			messageCacheLifetime:60*60, //How long a message should stay in the cache until it is considered sweepable (in seconds, 0 for forever)
-			messageSweepInterval:10*60, //How frequently to remove messages from the cache that are older than the message cache lifetime (in seconds, 0 for never)
+			messageCacheMaxSize:20, //Maximum number of messages to cache per channel (-1 or Infinity for unlimited - don't do this without message sweeping, otherwise memory usage will climb indefinitely)
+			messageCacheLifetime:60, //How long a message should stay in the cache until it is considered sweepable (in seconds, 0 for forever)
+			messageSweepInterval:60, //How frequently to remove messages from the cache that are older than the message cache lifetime (in seconds, 0 for never)
 			//disableMentions: "everyone",
 			//restTimeOffset: 0
 		});

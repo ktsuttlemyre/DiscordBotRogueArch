@@ -17,14 +17,6 @@ class CommandBlockedListener extends Listener {
         this.client.memory.channelSet(message,`${message.id}_promise`,new Promise(resolve => {
             this.client.memory.channelSet(message,`${message.id}_resolve`,resolve);
         }));
-        
-        if(returnValue && returnValue.call){
-             returnValue = await returnValue();
-        }
-        
-        if(queueValue){
-            queueValue = await queueValue();
-        }
     }
 }
 

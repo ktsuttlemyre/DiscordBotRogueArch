@@ -10,7 +10,7 @@ const escapeMD = require('markdown-escape')
 
 class CustomCommand extends Command {
 	constructor() {
-		super(commandVars.name, {
+		super(commandVars.id, {
 		description: { content: 'Manages event queue'},
 		aliases: [commandVars.name,'eventq','eventqueue','eventadd', 'rsvp'],
 		category: commandVars.category,

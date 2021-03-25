@@ -1,6 +1,6 @@
 const { Listener } = require('discord-akairo');
-const {reactions,defaultAvatar} = require.main.require('./common');
-const commandVars = require.main.require('./common').commandVars(__filename);
+const util = require.main.require('./util');
+const commandVars = util.commandVars(__filename);
 
 // https://discord-akairo.github.io/#/docs/main/master/class/CommandHandler?scrollTo=e-commandFinished
 class CommandBlockedListener extends Listener {
@@ -11,9 +11,13 @@ class CommandBlockedListener extends Listener {
         });
     }
 
-    exec(message, command, reason) {
-        //message.react(reactions.shipwash); //THIS should be handled elsewhere
-        //console.log(`${message.author.username} was blocked from using ${command.id} because of ${reason}!`);
+    async exec(message, command, args, returnValue) {
+        if(returnValue.call){
+            returnValue = await returnValue();
+        }
+        if(message && !message.deleted){
+           await util.messages.encapsulate(message,returnValue);
+        }
     }
 }
 

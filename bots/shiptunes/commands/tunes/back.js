@@ -57,7 +57,8 @@ class CustomCommand extends Command {
 		await GUIMessages.nowPlaying(message,player,response);
 
 		if(player.back(message)){
-			return util.messages.encapsulate(message,{description:response});
+			util.messages.encapsulate(message,{description:response});
+			return 
 			//this.handler.modules['embed'].exec(message,)	
 		}
 		this.handler.emit('commandBlocked',message,this,'Sending back command to player failed');

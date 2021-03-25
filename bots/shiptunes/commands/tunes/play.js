@@ -56,7 +56,7 @@ class CustomCommand extends Command {
 		//simple playlist filter
 		//youtube uses list= as a url param and spotify uses /playlist/ endpoint
 		if(message.content.includes('list=') || message.content.includes('/playlist/')){
-		   let isDJ = message.member.roles.cache.find(role => role.name === 'DJ')
+		   let isDJ = message.member.roles.cache.find(role => role.name === config.DJ_Role)
 		   if(!isDJ){
 		   	return config.DJ_Role; //tell the user they need the DJ role permission
 		   }

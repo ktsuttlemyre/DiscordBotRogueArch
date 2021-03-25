@@ -12,11 +12,17 @@ class CommandBlockedListener extends Listener {
     }
 
     async exec(message, command, args, returnValue) {
+        let queueValue = this.client.memory.channelGet(message,message.id);
         if(returnValue && returnValue.call){
-            returnValue = await returnValue();
+             returnValue = await returnValue();
         }
+        
+        if(queueValue){
+            queueValue = await queueValue();
+        }
+        
         if(message && !message.deleted){
-           await util.messages.encapsulate(message,returnValue);
+           await util.messages.encapsulate(message,returnValue||queueValue);
         }
     }
 }

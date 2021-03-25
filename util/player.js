@@ -167,12 +167,15 @@ var create = module.exports.create= function(message,client){
 	})
 	// Send a message when something is added to the queue
 	.on('trackAdd', async (message, queue, track) =>{
+		
 		if(!message || message.deleted){
 			//GUIMessages.nowPlaying(message,player,`${user.username} likes ${track.title}`);
 			return
 		}
-		if(message && !message.deleted){
-			await message.delete();
+		
+		let resolve = this.client.memory.channelGet(message,`${message.id}_resolve`);
+		if(!resolve){
+			return
 		}
 
 		var title = GUIMessages.presentTitle(track.title);
@@ -188,6 +191,9 @@ var create = module.exports.create= function(message,client){
 				"url": `${track.thumbnail}`
 			}
 		}
+		
+		resolve({embed:embed});
+		return
 
 		var reply = await message.channel.send({embed:embed}) //content:message.content
 

@@ -171,8 +171,9 @@ var create = module.exports.create= function(message,client){
 			//GUIMessages.nowPlaying(message,player,`${user.username} likes ${track.title}`);
 			return
 		}
-		//message.react(reactions.shipwash); //THIS should be handled elsewhere
-		message.delete();
+		if(message && !message.deleted){
+			await message.delete();
+		}
 
 		var title = GUIMessages.presentTitle(track.title);
 		var embed={
@@ -205,7 +206,7 @@ var create = module.exports.create= function(message,client){
 			return [reactions.upvote, reactions.downvote].includes(reaction.emoji.name) 
 		}); //{ time: 15000 }
 
-		collector.on('collect', (reaction, user) => {
+		collector.on('collect', async(reaction, user) => {
 			if(reaction.emoji.name === reactions.downvote){ //if downvote
 				let originalPoster=(reply.embed || reply.embeds[0]).author
 				if(!originalPoster){
@@ -214,7 +215,7 @@ var create = module.exports.create= function(message,client){
 				let ogPosterID = (originalPoster.url || '').split('#').shift().split('/').pop();			
 				if(user.id === ogPosterID){ //if original poster
 					//delete message
-					reply.delete();
+					await reply.delete();
 
 					//set it to be skipped
 					track.skip=true;

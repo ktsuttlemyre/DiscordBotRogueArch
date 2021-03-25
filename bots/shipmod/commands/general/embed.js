@@ -7,7 +7,7 @@ const yaml = require('js-yaml');
 
 class CustomCommand extends Command {
 	constructor() {
-		super(commandVars.name, {
+		super(commandVars.id, {
 		description: { content: 'creates an announcement on your behaf'},
 		aliases: [commandVars.name],
 		category: commandVars.category,
@@ -44,7 +44,7 @@ class CustomCommand extends Command {
 				}
 			}
 		}
-		util.messages.encapsulate(message,doc);
+		await util.messages.encapsulate(message,doc);
 	}
 }
 

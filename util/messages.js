@@ -41,7 +41,7 @@ module.exports.embedParser = async function(message){
 	}
 }
 
-module.exports.encapsulate = function(message,override,dontDelete){
+module.exports.encapsulate = async function(message,override,dontDelete){
 	if(!override){
 		override=message.content;
 	}
@@ -68,8 +68,8 @@ module.exports.encapsulate = function(message,override,dontDelete){
 	}
 	doc.author=author;
 	message.channel.send({embed:doc});
-	if(!dontDelete){
-		!message.deleted && message.delete();
+	if(!dontDelete && !message.deleted){
+		await message.delete();
 	}
 }
 

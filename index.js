@@ -6,6 +6,10 @@ require('dotenv').config();
 const Sentry = require('@sentry/node');
 const i18n = require("i18n");
 
+
+// overall application Logger
+const Logger = require.main.require('./util/logger');
+
 const bots = {};
 
 //https://stackoverflow.com/questions/18112204/get-all-directories-within-directory-nodejs
@@ -84,12 +88,9 @@ i18n.configure({
 
   //shutdown gracefully and clean up 
   //Heroku sends SIGTERM when you restart dynos
-process.on('unhandledRejection', err => {
-	Object.keys(bots).forEach(name => {
-		let client = bots[name];
-		client.logger.error('An unhandled promise rejection occured');
-		client.logger.stacktrace(err);
-	})
+process.on('unhandledRejection', (err,p) => {
+	Logger.error('An unhandled promise rejection occured at: Promise', p);
+	Logger.stacktrace(err);
    })
   .on('SIGTERM', shutdown('SIGTERM'))
   .on('SIGINT', shutdown('SIGINT'))

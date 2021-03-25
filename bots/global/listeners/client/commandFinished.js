@@ -12,7 +12,7 @@ class CommandBlockedListener extends Listener {
     }
 
     async exec(message, command, args, returnValue) {
-        let queueValue = this.client.memory.channelGet(message,`${message.id}_resolve`);
+        let queueValue = this.client.memory.channelGet(message,`${message.id}_promise`);
         
         if(returnValue && returnValue.call){
              returnValue = await returnValue();

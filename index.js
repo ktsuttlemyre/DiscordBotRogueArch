@@ -89,7 +89,8 @@ i18n.configure({
   //shutdown gracefully and clean up 
   //Heroku sends SIGTERM when you restart dynos
 process.on('unhandledRejection', (err,p) => {
-	Logger.error('An unhandled promise rejection occured at: Promise', p);
+	Logger.error('An unhandled promise rejection occured at: Promise');
+	console.log(p);
 	Logger.stacktrace(err);
    })
   .on('SIGTERM', shutdown('SIGTERM'))

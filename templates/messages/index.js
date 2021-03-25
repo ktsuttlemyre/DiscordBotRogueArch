@@ -87,7 +87,9 @@ var nowPlayingPageinated=function (message,player,announce){
 var nowPlayingOverloaded= async (message,player,announce) => {
     cache[message.guild.id]=cache[message.guild.id]||{};
     let lastNowPlayingMessage=cache[message.guild.id].lastNowPlayingMessage;
-    (lastNowPlayingMessage && !lastNowPlayingMessage.deleted) && lastNowPlayingMessage.delete();
+    if(lastNowPlayingMessage && !lastNowPlayingMessage.deleted){
+	    await lastNowPlayingMessage.delete();
+    }
     
 	
     let announceObj={};

@@ -56,7 +56,7 @@ class CustomCommand extends Command {
 		await GUIMessages.nowPlaying(message,player,response);
 		
 		if(player.skip(message)){
-			util.messages.encapsulate(message,{description:response});
+			await util.messages.encapsulate(message,{description:response});
 			return 
 			//this.handler.modules['embed'].exec(message,)	
 		}

@@ -25,6 +25,7 @@ class CustomListener extends Listener {
 			return
 		}
 		console.log('reaction',reaction.partial,reaction)
+		console.log('reaction.message',reaction.message.partial,reaction.message)
 		//make sure message is resolved
 		let message = await util.messages.resolve(reaction.message);
 		

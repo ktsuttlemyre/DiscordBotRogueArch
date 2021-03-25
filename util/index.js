@@ -155,3 +155,24 @@ module.exports.getYoutubeHash=function(url){
 		'http://www.youtube.com/watch?v=t-ZRX8984sc'																:'t-ZRX8984sc',
 		'http://youtu.be/t-ZRX8984sc'																				:'t-ZRX8984sc'
 		}) */
+
+
+const zodiacSigns = [
+	{name:'Aries' form:'Ram', emoji:'♈', element:'fire'},
+	{name:'Taurus' form:'Bull', emoji:'♉', element:'earth'},
+	{name:'Gemini' form:'Twins', emoji:'♊', element:'air'},
+	{name:'Cancer' form:'Crab', emoji:'♋', element:'water'},
+	{name:'Leo' form:'Lion', emoji:'♌', element:'fire'},
+	{name:'Virgo' form:'Virgin', emoji:'♍', element:'earth'},
+	{name:'Libra' form:'Scales', emoji:'♎', element:'air'},
+	{name:'Scorpio' form:'Scorpion', emoji:'♏', element:'water'},
+	{name:'Sagittarius' form:'Archer', emoji:'♐', element:'fire'},
+	{name:'Capricorn' form:'Goat', emoji:'♑', element:'earth'},
+	{name:'Aquarius' form:'Water Bearer', emoji:'♒', element:'air'},
+	{name:'Pisces' form:'Fish', emoji:'♓', element:'water'},
+	]
+//https://medium.com/@Saf_Bes/get-the-zodiac-sign-for-a-date-in-javascript-797305d75869
+module.exports.zodiac=function(birthday){
+    let sign = Number(new Intl.DateTimeFormat('fr-TN-u-ca-persian', {month: 'numeric'}).format(Date.now())) - 1;
+    return zodiacSigns[sign];
+}

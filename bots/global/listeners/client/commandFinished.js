@@ -12,7 +12,7 @@ class CommandBlockedListener extends Listener {
     }
 
     async exec(message, command, args, returnValue) {
-        if(returnValue.call){
+        if(returnValue && returnValue.call){
             returnValue = await returnValue();
         }
         if(message && !message.deleted){

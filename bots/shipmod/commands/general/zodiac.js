@@ -29,10 +29,9 @@ class CustomCommand extends Command {
 	}
 
 	async exec(message) {
-    
-    let sign = util.zodiac();
-    let birthday = 'today';
-	  await message.channel.send({embed:{
+	    let sign = util.zodiac();
+	    let birthday = 'today';
+	    return {embed:{
 					title:'Zodiac sign for: '+birthday,
 					description:`${sign.emoji} ${sign.name} - The ${sign.form} element of ${sign.element}`,
 					//footer: {

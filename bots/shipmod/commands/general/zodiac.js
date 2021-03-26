@@ -31,23 +31,22 @@ class CustomCommand extends Command {
 	async exec(message) {
 	    let sign = util.zodiac();
 	    let birthday = 'today';
-	    return {embed:{
-					title:'Zodiac sign for: '+birthday,
-					description:`${sign.emoji} ${sign.name} - The ${sign.form} element of ${sign.element}`,
-					//footer: {
-					//	text: `type \`!rsvp ${queue.toLowerCase()}\` to be added to the queue!`,
-					//	//icon_url: 'https://i.imgur.com/wSTFkRM.png',
-					//},
-// 					fields: [
-// 							{
-// 								//name: '\u200b',
-// 								name: 'Event starts @ 9pm EST',
-// 								value: `Type \`!rsvp${suffix}\` to be added to the queue!`,
-// 								inline: true,
-// 							},
-// 						]
-					}
-				};
+	    return {
+			title:'Zodiac sign for: '+birthday,
+			description:`${sign.emoji} ${sign.name} - The ${sign.form} element of ${sign.element}`,
+			//footer: {
+			//	text: `type \`!rsvp ${queue.toLowerCase()}\` to be added to the queue!`,
+			//	//icon_url: 'https://i.imgur.com/wSTFkRM.png',
+			//},
+// 			fields: [
+// 					{
+// 					//name: '\u200b',
+// 					name: 'Event starts @ 9pm EST',
+// 					value: `Type \`!rsvp${suffix}\` to be added to the queue!`,
+// 					inline: true,
+// 					},
+// 				]
+		};
 	}
 }
 

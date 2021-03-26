@@ -47,7 +47,7 @@ class CustomCommand extends Command {
 // 							},
 // 						]
 					}
-				});
+				};
 	}
 }
 

@@ -27,6 +27,9 @@ class CommandBlockedListener extends Listener {
             returnValue = await promise;
         }
         
+        this.client.memory.channelSet(message,`${message.id}_promise`, null);
+        this.client.memory.channelSet(message,`${message.id}_resolve`, null);
+        
         if(message && !message.deleted){
            await util.messages.encapsulate(message,returnValue);
         }

@@ -81,27 +81,32 @@ class BoilerplateClient extends AkairoClient {
 		});
 		this.commandHandler.on('commandBlocked',function(message,command,reason){
 					let prefix = prefixFormat(message,command);
-					message.channel.send(`\`${prefix}${command.id}\` failed because ${reason}`);
+					let commandName = command.id.split('/').pop();
+					message.channel.send(`\`${prefix}${commandName}\` failed because ${reason}`);
 				})
 				.on('commandCancelled',function(message,command,retryMessage){
 					let prefix = prefixFormat(message,command);
-					message.channel.send(`\`${prefix}${command.id}\` cancelled`);
+					let commandName = command.id.split('/').pop();
+					message.channel.send(`\`${prefix}${commandName}\` cancelled`);
 				}) //retryMessage is optional
 				.on('commandDisabled',function(message,command){
 					let prefix = prefixFormat(message,command);
-					message.channel.send(`\`${prefix}${command.id}\` disabled`);
+					let commandName = command.id.split('/').pop();
+					message.channel.send(`\`${prefix}${commandName}\` disabled`);
 				})
 				//.on('commandFinished',function(){})
 				//.on('commandStarted',function(){})
 				.on('cooldown',function(message,command,remaining){
 					let prefix = prefixFormat(message,command);
-					message.channel.send(`\`${prefix}${command.id}\` is in cooldown`);
+					let commandName = command.id.split('/').pop();
+					message.channel.send(`\`${prefix}${commandName}\` is in cooldown`);
 					//TODO add time remaining for long running cooldowns
 				})
 				.on('error',function(error,message,command){
 					let prefix = prefixFormat(message,command);
+					let commandName = command.id.split('/').pop();
 					if(command){		
-						message.channel.send(`\`${prefix}${command.id}\` got error ${error.name}: ${error.message}`);
+						message.channel.send(`\`${prefix}${commandName}\` got error ${error.name}: ${error.message}`);
 					}else{
 						message.channel.send(`Got error ${error.name}: ${error.message}`);
 					}
@@ -121,10 +126,11 @@ class BoilerplateClient extends AkairoClient {
 					let prefix = prefixFormat(message,command);
 					let search = (missing||'').toLowerCase();
 					let isRole = message.guild.roles.cache.find(role => missing == role.name.toLowerCase());
+					let commandName = command.id.split('/').pop();
 					if(isRole){
-						return message.channel.send(`${type} must have permission ${missing} role in order to execute \`${prefix}${command.id}\``);
+						return message.channel.send(`${type} must have permission ${missing} role in order to execute \`${prefix}${commandName}\``);
 					}
-					message.channel.send(`${type} must have permission ${missing} in order to execute \`${prefix}${command.id}\``);		
+					message.channel.send(`${type} must have permission ${missing} in order to execute \`${prefix}${commandName}\``);		
 				});
 				//.on('remove',function(command){});
 		// Init Listener Handler

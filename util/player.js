@@ -192,7 +192,7 @@ var create = module.exports.create= function(message,client){
 			}
 		}
 		
-		resolve({embed:embed});
+		resolve(embed);
 		return
 
 		var reply = await message.channel.send({embed:embed}) //content:message.content

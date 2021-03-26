@@ -30,7 +30,7 @@ class CustomCommand extends Command {
 
 	async exec(message) {
     
-    let sign = util.getSign();
+    let sign = util.zodiac();
     birthday = 'today';
 	  await message.channel.send({embed:{
 					title:'Zodiac sign for: '+birthday,

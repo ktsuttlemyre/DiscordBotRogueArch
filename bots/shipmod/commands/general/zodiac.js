@@ -5,6 +5,7 @@ const { Command } = require('discord-akairo');
 const { Player } = require("discord-player");
 const common = require.main.require('./common');
 const commandVars = common.commandVars(__filename);
+const util = require.main.require('./util');
 const _ = require('lodash');
 const roomMap = require.main.require('./config').eventRoomMap;
 const escapeMD = require('markdown-escape')

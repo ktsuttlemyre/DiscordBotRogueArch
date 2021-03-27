@@ -2,7 +2,7 @@ module.exports.player=require('./player');
 module.exports.playlists=require('./playlists');
 module.exports.messages=require('./messages') 
 module.exports.commandVars=require.main.require('./common').commandVars  //TODO move commandVars here and delete common
-const require.main.require('./config');
+const config = require.main.require('./config');
 module.exports.config=config;
 
 

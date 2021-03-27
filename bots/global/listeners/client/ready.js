@@ -70,9 +70,9 @@ class ReadyListener extends Listener {
 						return
 					}
 					let users = await getReactedUsers(message,reactions.shipwash);
-					if(users.get(message.client.user.id){
+					if(users.get(message.client.user.id)){
 					   console.log('processing this message v')
-					 }
+					}
 					console.log(message.id,message.content,'reacted with shipwash',users);
 
 				}) //end messages

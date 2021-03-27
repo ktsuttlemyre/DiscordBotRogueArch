@@ -29,7 +29,7 @@ class ReadyListener extends Listener {
 		 * emit voice channel changes for voice-to-text channel linking
 		 * check if there are any commands that were not executed
 		 */
-		const Guild = client.guilds.cache.forEach(function(Guild){ //.get("690661623831986266"); // Getting the guild.
+		const Guild = client.guilds.cache.forEach(async function(Guild){ //.get("690661623831986266"); // Getting the guild.
 			let voiceChannels = Guild.channels.cache.filter(c => c.type == 'voice').array();
 			voiceChannels.forEach(function(channel){
 				if(channel.id === Guild.afkChannelID){
@@ -54,7 +54,7 @@ class ReadyListener extends Listener {
 			let textChannels = Guild.channels.cache.filter(c => c.type == 'text').array();
 			console.log('checking old commands');
 			let commandMessagesQueue=[];
-			textChannels.forEach(async function(channel){
+			await textChannels.forEach(async function(channel){
 				if(!(channel.permissionsFor(Guild.me).has("VIEW_CHANNEL"))){
 					return;
 				}
@@ -72,7 +72,7 @@ class ReadyListener extends Listener {
 					}
 					let users = await getReactedUsers(message,reactions.shipwash);
 					if(!users.get(client.user.id)){
-					   console.log('processing this message v')
+					   	console.log('processing this message v')
 						commandMessagesQueue.push(message);
 					}
 					console.log(message.id,message.content,'reacted with shipwash',users);

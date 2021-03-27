@@ -14,6 +14,9 @@ class ReadyListener extends Listener {
 	}
 
 	async exec() {
+		if(util.environmentDisallowed()({
+			return
+		}
 		var client = this.client;
 		// Log that the bot is online.
 		client.logger.info(`${client.user.tag}, ready to serve ${client.users.size} users in ${client.guilds.size} servers.`, 'ready');
@@ -47,8 +50,6 @@ class ReadyListener extends Listener {
 					
 				}) //end members
 			}); //end voicechannels
-			
-			return
 			
 			//read all previous commands
 			let textChannels = Guild.channels.cache.filter(c => c.type == 'text').array();

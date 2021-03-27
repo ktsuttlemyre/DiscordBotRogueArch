@@ -14,7 +14,6 @@ class ReadyListener extends Listener {
 	}
 
 	async exec() {
-		if(util.environmentDisallowed()){return}
 		var client = this.client;
 		// Log that the bot is online.
 		client.logger.info(`${client.user.tag}, ready to serve ${client.users.size} users in ${client.guilds.size} servers.`, 'ready');
@@ -56,6 +55,8 @@ class ReadyListener extends Listener {
 				if(!(channel.permissionsFor(Guild.me).has("VIEW_CHANNEL"))){
 					return;
 				}
+				if(util.devChannelGate({channel})){return}
+				console.log('testing',channel.name)
 				
 				/*let promise = */channel.messages.fetch()
 				.then(function(messages){

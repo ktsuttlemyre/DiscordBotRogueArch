@@ -33,12 +33,12 @@ class ReadyListener extends Listener {
 			let voiceChannels = Guild.channels.cache.filter(c => c.type == 'voice').array();
 			voiceChannels.forEach(function(channel){
 				if(channel.id === Guild.afkChannelID){
-					continue
+					return false;
 				}
 				Guild.members.cache.forEach(function(member){
 				//channel.members.forEach(function(member){
 					if(member.user.bot){
-						continue
+						return false;
 					}
 					// The member is connected to a voice channel.
 					//console.log('user in voice, triggering voicestateupdate for ',member);

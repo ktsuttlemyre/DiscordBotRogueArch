@@ -1,7 +1,7 @@
 const { Listener } = require('discord-akairo');
 const {reactions,defaultAvatar} = require.main.require('./common');
-const config = util.config;
 const util = require.main.require('./util');
+const config = util.config;
 const commandVars = util.commandVars(__filename);
 
 class ReadyListener extends Listener {

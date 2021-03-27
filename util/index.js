@@ -4,16 +4,17 @@ module.exports.messages=require('./messages')
 module.exports.commandVars=require.main.require('./common').commandVars  //TODO move commandVars here and delete common
 module.exports.config=require.main.require('./config');
 
+
 module.exports.devChannelGate=function(message,env){
         env = env || process.env.ENVIRONMENT;
 	
         if(env == 'production'){
-            if(message.channel.id === devChannelID){
+            if(message.channel.id === config.devChannelID){
                 return true;
             }
             return false;
         }else{
-            if(message.channel.id === devChannelID){
+            if(message.channel.id === config.devChannelID){
                 return false
             }
             return true;

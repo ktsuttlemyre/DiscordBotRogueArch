@@ -16,7 +16,7 @@ class ReadyListener extends Listener {
 	}
 
 	async exec() {
-		var client = this.client;
+		let client = this.client;
 		// Log that the bot is online.
 		client.logger.info(`${client.user.tag}, ready to serve ${client.users.size} users in ${client.guilds.size} servers.`, 'ready');
 		// Set the bot status
@@ -50,6 +50,7 @@ class ReadyListener extends Listener {
 				}) //end members
 			}); //end voicechannels
 			
+
 			//read all previous commands
 			let textChannels = Guild.channels.cache.filter(c => c.type == 'text').array();
 			console.log('checking old commands');
@@ -62,7 +63,7 @@ class ReadyListener extends Listener {
 				console.log('testing',channel.name);
 				
 				let messages = await channel.messages.fetch();
-				messages.some(async function(message){
+				await messages.some(async function(message){
 					//stop once you find a message that this bot has sent
 					if(client.user.id == message.author.id){
 						return true; //end some loop

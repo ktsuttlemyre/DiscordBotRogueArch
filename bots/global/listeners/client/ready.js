@@ -80,11 +80,13 @@ class ReadyListener extends Listener {
 				}) //end messages
 			}) //end textchannels
 			
+			console.log('sorting command messages queue')
 			//sort
 			commandMessagesQueue.sort(function(a,b){
 				return a.createdTimestamp-b.createdTimestamp;
 			})//execute
 			.forEach(function(message){
+				console.log('executing message with command',message.content)
 				client.commandHandler.handle(message);
 			})
 

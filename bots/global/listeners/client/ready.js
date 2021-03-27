@@ -53,7 +53,7 @@ class ReadyListener extends Listener {
 
 			//read all previous commands
 			let textChannels = Guild.channels.cache.filter(c => c.type == 'text').array();
-			console.log('checking old commands',textChannels);
+			console.log('checking old commands');
 			let commandMessagesQueue=[];
 			for(const channel of textChannels) {
 				if(!(channel.permissionsFor(Guild.me).has("VIEW_CHANNEL"))){

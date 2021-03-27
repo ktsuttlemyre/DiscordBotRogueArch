@@ -14,7 +14,7 @@ class ReadyListener extends Listener {
 	}
 
 	async exec() {
-		if(util.environmentDisallowed()({
+		if(util.environmentDisallowed(){
 			return
 		}
 		var client = this.client;

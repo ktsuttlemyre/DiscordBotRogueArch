@@ -1,5 +1,6 @@
 const { Inhibitor } = require('discord-akairo');
 const { devChannelID } = require.main.require('./config');
+const util = require.main.require('./util');
 
 class CustomInhibitor extends Inhibitor {
     constructor() {
@@ -10,18 +11,7 @@ class CustomInhibitor extends Inhibitor {
     }
 
     exec(message) {
-        var env = process.env.ENVIRONMENT
-        if(env == 'production'){
-            if(message.channel.id === devChannelID){
-                return true;
-            }
-            return false;
-        }else{
-            if(message.channel.id === devChannelID){
-                return false
-            }
-            return true;
-        }
+        return util.enironmentAllowed();
     }
 }
 

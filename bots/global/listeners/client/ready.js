@@ -33,12 +33,12 @@ class ReadyListener extends Listener {
 			let voiceChannels = Guild.channels.cache.filter(c => c.type == 'voice').array();
 			voiceChannels.forEach(function(channel){
 				if(channel.id === Guild.afkChannelID){
-					return false
+					continue
 				}
 				Guild.members.cache.forEach(function(member){
 				//channel.members.forEach(function(member){
 					if(member.user.bot){
-						return false;
+						continue
 					}
 					// The member is connected to a voice channel.
 					//console.log('user in voice, triggering voicestateupdate for ',member);
@@ -57,16 +57,16 @@ class ReadyListener extends Listener {
 			let commandMessagesQueue=[];
 			for(const channel of textChannels) {
 				if(!(channel.permissionsFor(Guild.me).has("VIEW_CHANNEL"))){
-					return;
+					continue
 				}
-				if(util.devChannelGate({channel})){return}
+				if(util.devChannelGate({channel})){continue}
 				console.log('testing',channel.name);
 				
 				let messages = await channel.messages.fetch();
 				for(const message of messages){
 					//stop once you find a message that this bot has sent
 					if(client.user.id == message.author.id){
-						return true; //end some loop
+						break; //end loop
 					}
 					if(message.author.bot){
 						break;

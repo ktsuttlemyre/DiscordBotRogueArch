@@ -92,10 +92,13 @@ class ReadyListener extends Listener {
 
 }
 
-function getReactedUsers(msg, emoji,callback) {
-    msg.reactions.resolve(emoji).users.fetch().then(userList => {
-	callback(userList.map((user) => user.id))
-    });
+async function getReactedUsers(msg, emoji,callback) {
+	let reactions = msg.reactions.resolve(emoji)
+	if(!reactions){
+		return
+	}
+	let userList = await reactions.users.fetch();
+	callback(userList.map((user) => user.id));
 }
 
 module.exports = ReadyListener;

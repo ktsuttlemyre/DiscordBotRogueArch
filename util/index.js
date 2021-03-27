@@ -4,6 +4,22 @@ module.exports.messages=require('./messages')
 module.exports.commandVars=require.main.require('./common').commandVars  //TODO move commandVars here and delete common
 module.exports.config=require.main.require('./config');
 
+module.exports.environmentAllowed=function(env){
+        env = env || process.env.ENVIRONMENT;
+	
+        if(env == 'production'){
+            if(message.channel.id === devChannelID){
+                return true;
+            }
+            return false;
+        }else{
+            if(message.channel.id === devChannelID){
+                return false
+            }
+            return true;
+        }
+}
+
 let web={}
 		web.RegExp={alphabetical:/[a-zA-Z]/g
 					,majorAtoms:/[a-gi-zA-GI-Z]/g

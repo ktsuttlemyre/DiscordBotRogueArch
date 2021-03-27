@@ -69,6 +69,7 @@ class ReadyListener extends Listener {
 				let messages = await channel.messages.fetch();
 				for(const message of messages){
 					//stop once you find a message that this bot has sent
+					console.log('assume',!!client.user,!!message.author)
 					if(client.user.id == message.author.id){
 						break; //end loop
 					}

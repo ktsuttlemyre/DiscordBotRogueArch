@@ -60,7 +60,7 @@ class BoilerplateClient extends AkairoClient {
 		// Init Command Handler
 		this.commandHandler = new CommandHandler(this, {
 			directory: './bots',
-			loadFilter:loadFilter.bind(loadFilter,config.botPath,'commands'),
+			loadFilter:loadFilter.bind(loadFilter,opts.botPath,'commands'),
 			aliasReplacement: /-/g,
 			prefix: message => this.settings.get(message.guild, 'prefix', '!'),
 			allowMention: true,

@@ -30,6 +30,7 @@ class ReadyListener extends Listener {
 		 * check if there are any commands that were not executed
 		 */
 		for (const Guild in client.guilds.cache){ //.get("690661623831986266"); // Getting the guild.
+			console.log('checking guild',guild.name)
 			let voiceChannels = Guild.channels.cache.filter(c => c.type == 'voice').array();
 			voiceChannels.forEach(function(channel){
 				if(channel.id === Guild.afkChannelID){

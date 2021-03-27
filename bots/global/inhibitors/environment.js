@@ -11,7 +11,7 @@ class CustomInhibitor extends Inhibitor {
     }
 
     exec(message) {
-        return util.enironmentAllowed();
+        return util.environmentDisallowed();
     }
 }
 

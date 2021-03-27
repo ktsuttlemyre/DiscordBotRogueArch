@@ -1,5 +1,4 @@
 const { Inhibitor } = require('discord-akairo');
-const { devChannelID } = require.main.require('./config');
 const util = require.main.require('./util');
 
 class CustomInhibitor extends Inhibitor {
@@ -11,7 +10,7 @@ class CustomInhibitor extends Inhibitor {
     }
 
     exec(message) {
-        return util.environmentDisallowed();
+        return util.devChannelGate(message);
     }
 }
 

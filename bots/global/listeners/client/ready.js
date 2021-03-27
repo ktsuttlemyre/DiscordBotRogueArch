@@ -52,7 +52,8 @@ class ReadyListener extends Listener {
 			
 			//read all previous commands
 			let textChannels = Guild.channels.cache.filter(c => c.type == 'text').array();
-			console.log('checking old commands')
+			console.log('checking old commands');
+			let commandMessagesQueue=[];
 			textChannels.forEach(async function(channel){
 				if(!(channel.permissionsFor(Guild.me).has("VIEW_CHANNEL"))){
 					return;
@@ -63,20 +64,29 @@ class ReadyListener extends Listener {
 				let messages = await channel.messages.fetch();
 				messages.some(async function(message){
 					//stop once you find a message that this bot has sent
-					if(message.client.user.id == message.author.id){
+					if(client.user.id == message.author.id){
 						return true; //end some loop
 					}
 					if(message.author.bot){
 						return
 					}
 					let users = await getReactedUsers(message,reactions.shipwash);
-					if(users.get(message.client.user.id)){
+					if(!users.get(client.user.id)){
 					   console.log('processing this message v')
+						commandMessagesQueue.push(message);
 					}
 					console.log(message.id,message.content,'reacted with shipwash',users);
 
 				}) //end messages
 			}) //end textchannels
+			
+			//sort
+			commandMessagesQueue.sort(function(a,b){
+				return a.createdTimestamp-b.createdTimestamp;
+			})//execute
+			.forEach(function(message){
+				client.handle(message);
+			})
 
 
 

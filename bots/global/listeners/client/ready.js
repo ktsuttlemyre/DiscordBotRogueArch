@@ -85,7 +85,7 @@ class ReadyListener extends Listener {
 				return a.createdTimestamp-b.createdTimestamp;
 			})//execute
 			.forEach(function(message){
-				client.handle(message);
+				client.commandHandler.handle(message);
 			})
 
 

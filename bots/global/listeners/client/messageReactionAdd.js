@@ -21,9 +21,9 @@ class CustomListener extends Listener {
 
 
 	async exec( reaction, user ) {
-		if(user.bot){
-			return
-		}
+		if(util.environmentDisallowed()){return}
+		if(user.bot){return}
+		
 		console.log('reaction',reaction.partial,reaction)
 		console.log('reaction.message',reaction.message.partial,reaction.message)
 		//make sure message is resolved

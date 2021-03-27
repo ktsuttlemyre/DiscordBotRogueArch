@@ -60,13 +60,17 @@ class ReadyListener extends Listener {
 				
 				/*let promise = */channel.messages.fetch()
 				.then(function(messages){
-					messages.forEach(function(message){
+					messages.some(async function(message){
+						//stop once you find a message that this bot has sent
+						if(message.client.user.id == message.author.id){
+							return true; //end some loop
+						}
 						if(message.author.bot){
 							return
 						}
-						getReactedUsers(message,reactions.shipwash,function(users){
-							console.log(message.id,message.content,'reacted with shipwash',users);
-						});
+						let users = await getReactedUsers(message,reactions.shipwash);
+						
+						console.log(message.id,message.content,'reacted with shipwash',users);
 						
 					}) //end messages
 				}) //end then
@@ -95,10 +99,10 @@ class ReadyListener extends Listener {
 async function getReactedUsers(msg, emoji,callback) {
 	let reactions = msg.reactions.resolve(emoji)
 	if(!reactions){
-		return
+		return []
 	}
 	let userList = await reactions.users.fetch();
-	callback(userList.map((user) => user.id));
+	return (userList.map((user) => user.id));
 }
 
 module.exports = ReadyListener;

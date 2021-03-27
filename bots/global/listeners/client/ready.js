@@ -53,12 +53,13 @@ class ReadyListener extends Listener {
 			
 			//read all previous commands
 			let textChannels = Guild.channels.cache.filter(c => c.type == 'text').array();
+			console.log('checking old commands')
 			textChannels.forEach(function(channel){
 				if(!(channel.permissionsFor(Guild.me).has("VIEW_CHANNEL"))){
 					return;
 				}
 				
-				var p=channel.messages.fetch()
+				/*let promise = */channel.messages.fetch()
 				.then(function(messages){
 					messages.forEach(function(message){
 						if(message.author.bot){

@@ -16,6 +16,9 @@ const Logger = require('../util/logger');
 const path = require('path');
 require('dotenv').config();
 
+const util = require.main.require('./util');
+const config = util.config;
+
 //https://stackoverflow.com/questions/37521893/determine-if-a-path-is-subdirectory-of-another-in-node-js
 function isSubdir (parent,dir){
 	const relative = path.relative(parent, dir);
@@ -27,7 +30,7 @@ function loadFilter (botPath,folderName,dir){
 	const commands = path.join(botPath,folderName);
 	const globalCommands = path.join(botPath,'../global',folderName);
 	const load = isSubdir(commands,dir) || isSubdir(globalCommands,dir);
-	console.log(`botPath=${botPath} folderName=${folderName} dir=${dir} load=${load}`)
+	config.debug && console.info(`botPath=${botPath} folderName=${folderName} dir=${dir} load=${load}`)
 	return load;
 }
 
@@ -37,9 +40,9 @@ function prefixFormat(message,command){
 }
 
 class BoilerplateClient extends AkairoClient {
-	constructor(config) {
+	constructor(opts) {
 		super({
-			ownerID: config.owner,
+			ownerID: opts.owner,
 			//disabledEvents: ['TYPING_START'],
 			//commandUtilLifetime: 600000,
 		},{ //Discord.js options https://discord.js.org/#/docs/main/stable/typedef/ClientOptions
@@ -51,7 +54,7 @@ class BoilerplateClient extends AkairoClient {
 			//restTimeOffset: 0
 		});
 		// Init config
-		this.config = config;
+		this.config = opts;
 		// Init Logger
 		this.logger = Logger;
 		// Init Command Handler
@@ -136,12 +139,12 @@ class BoilerplateClient extends AkairoClient {
 		// Init Listener Handler
 		this.listenerHandler = new ListenerHandler(this, {
 			directory: './bots',
-			loadFilter:loadFilter.bind(loadFilter,config.botPath,'listeners'),
+			loadFilter:loadFilter.bind(loadFilter,opts.botPath,'listeners'),
 		});
 		// Init Inhibitor Handler
 		this.inhibitorHandler = new InhibitorHandler(this, {
 			directory: './bots',
-			loadFilter:loadFilter.bind(loadFilter,config.botPath,'inhibitors'),
+			loadFilter:loadFilter.bind(loadFilter,opts.botPath,'inhibitors'),
 		});
 		// Init Setting
 		this.settings = new SettingsProvider(Setting);

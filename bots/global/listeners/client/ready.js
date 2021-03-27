@@ -1,7 +1,8 @@
 const { Listener } = require('discord-akairo');
 const {reactions,defaultAvatar} = require.main.require('./common');
-const config = require.main.require('./config')
-const commandVars = require.main.require('./common').commandVars(__filename);
+const config = util.config;
+const util = require.main.require('./util');
+const commandVars = util.commandVars(__filename);
 
 class ReadyListener extends Listener {
 	constructor() {
@@ -20,7 +21,12 @@ class ReadyListener extends Listener {
 		client.user.setActivity(process.env.ACTIVITY||'Type '+client.commandHandler.prefix+'help to get started', { type: 'PLAYING' });
 		//trigger listeners
 		
-		
+		/* devnote
+		 * Loop through all guilds
+		 * loop through all channels we have permission to in those guilds
+		 * emit voice channel changes for voice-to-text channel linking
+		 * check if there are any commands that were not executed
+		 */
 		const Guild = client.guilds.cache.forEach(function(Guild){ //.get("690661623831986266"); // Getting the guild.
 			let voiceChannels = Guild.channels.cache.filter(c => c.type == 'voice').array();
 			voiceChannels.forEach(function(channel){
@@ -43,6 +49,7 @@ class ReadyListener extends Listener {
 			}); //end voicechannels
 			
 			return
+			
 			//read all previous commands
 			let textChannels = Guild.channels.cache.filter(c => c.type == 'text').array();
 			textChannels.forEach(function(channel){

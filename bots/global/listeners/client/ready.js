@@ -32,7 +32,7 @@ class ReadyListener extends Listener {
 		client.guilds.cache.forEach(function(Guild){ //.get("690661623831986266"); // Getting the guild.
 			console.log('checking guild',Guild.name,Guild.id)
 			if(!Guild.channels){
-				continue
+				return
 			}
 			let voiceChannels = Guild.channels.cache.filter(c => c.type == 'voice').array();
 			voiceChannels.forEach(function(channel){

@@ -29,7 +29,7 @@ class ReadyListener extends Listener {
 		 * emit voice channel changes for voice-to-text channel linking
 		 * check if there are any commands that were not executed
 		 */
-		client.guilds.cache.forEach(function(Guild){ //.get("690661623831986266"); // Getting the guild.
+		client.guilds.cache.forEach(async function(Guild){ //.get("690661623831986266"); // Getting the guild.
 			console.log('checking guild',Guild.name,Guild.id)
 			if(!Guild.channels){
 				return

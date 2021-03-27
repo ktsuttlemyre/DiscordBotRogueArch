@@ -1,3 +1,5 @@
+const Discord = require('discord.js');
+
 const { Listener } = require('discord-akairo');
 const {reactions,defaultAvatar} = require.main.require('./common');
 const util = require.main.require('./util');
@@ -56,9 +58,9 @@ class ReadyListener extends Listener {
 					return;
 				}
 				if(util.devChannelGate({channel})){return}
-				console.log('testing',channel.name)
+				console.log('testing',channel.name);
 				
-				/*let promise = */channel.messages.fetch()
+				/*let promise = */channel.messages.fetch();
 				.then(function(messages){
 					messages.some(async function(message){
 						//stop once you find a message that this bot has sent
@@ -69,7 +71,9 @@ class ReadyListener extends Listener {
 							return
 						}
 						let users = await getReactedUsers(message,reactions.shipwash);
-						
+						if(users.get(message.client.user.id){
+						   console.log('processing this message v')
+						 }
 						console.log(message.id,message.content,'reacted with shipwash',users);
 						
 					}) //end messages
@@ -99,10 +103,10 @@ class ReadyListener extends Listener {
 async function getReactedUsers(msg, emoji,callback) {
 	let reactions = msg.reactions.resolve(emoji)
 	if(!reactions){
-		return []
+		return new Discord.Collection();
 	}
 	let userList = await reactions.users.fetch();
-	return (userList.map((user) => user.id));
+	return userList; //(userList.map((user) => user.id));
 }
 
 module.exports = ReadyListener;

@@ -29,7 +29,7 @@ class ReadyListener extends Listener {
 		 * emit voice channel changes for voice-to-text channel linking
 		 * check if there are any commands that were not executed
 		 */
-		for (const Guild in Array.from(client.guilds.cache.values())){ //.get("690661623831986266"); // Getting the guild.
+		client.guilds.cache.forEach(function(Guild){ //.get("690661623831986266"); // Getting the guild.
 			console.log('checking guild',Guild.name,Guild.id)
 			if(!Guild.channels){
 				continue
@@ -108,7 +108,7 @@ class ReadyListener extends Listener {
 // 				if(player.isPlaying(message)){
 // 				  common.nowPlaying(message,null,'I have crashed or gone to sleep!')
 // 				}	
- 			}; //end guilds
+ 			}); //end guilds
 
 	} //end exec
 

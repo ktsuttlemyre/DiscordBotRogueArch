@@ -17,12 +17,8 @@ class ReadyListener extends Listener {
 
 	async exec() {
 		let client = this.client;
-		// Log that the bot is online.
-		client.logger.info(`${client.user.tag}, ready to serve ${client.users.size} users in ${client.guilds.size} servers.`, 'ready');
-		// Set the bot status
-		client.user.setActivity(process.env.ACTIVITY||'Type '+client.commandHandler.prefix+'help to get started', { type: 'PLAYING' });
+
 		//trigger listeners
-		
 		/* devnote
 		 * Loop through all guilds
 		 * loop through all channels we have permission to in those guilds
@@ -111,6 +107,14 @@ class ReadyListener extends Listener {
 // 				  common.nowPlaying(message,null,'I have crashed or gone to sleep!')
 // 				}	
  			}); //end guilds
+		
+		
+		
+		// Log that the bot is online.
+		client.logger.info(`${client.user.tag}, ready to serve ${client.users.size} users in ${client.guilds.size} servers.`, 'ready');
+		// Set the bot status
+		
+		client.user.setActivity(process.env.ACTIVITY||'Type '+util.commandPrefix(client)+'help to get started', { type: 'PLAYING' });
 
 	} //end exec
 

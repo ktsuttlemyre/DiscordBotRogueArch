@@ -49,7 +49,7 @@ module.exports.commandFormat=function(message,name){
 	}
 	
 	var string = (Array.isArray(prefix))?JSON.stringify(prefix):prefix; 
-	string+=' '+name;
+	string+=name;
 	return string;
 }
 

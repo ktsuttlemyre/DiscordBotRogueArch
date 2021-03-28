@@ -62,7 +62,7 @@ class ReadyListener extends Listener {
 				if(util.devChannelGate({channel})){continue}
 				config.debug && console.log('testing',channel.name);
 				
-				let messages = await channel.messages.fetch();
+				let messages = await channel.messages.fetch(); //TODO make this use the util.messages.fetch function so it reads further into the history
 				messages = Array.from(messages.values());
 				for(const message of messages){
 					//stop once you find a message that this bot has sent

@@ -9,6 +9,7 @@ const commandVars = require.main.require('./common').commandVars(__filename);
 const util = require.main.require('./util');
 const _ = require('lodash');
 const cache = {};
+const cacheFunctions = {};
 
 class CustomListener extends Listener {
 	constructor() {
@@ -42,21 +43,23 @@ class CustomListener extends Listener {
 		messagePreview = messagePreview || '<preview unavailable>';
 		
 		console.log(`${name} reacted with "${reaction.emoji.name}" to ${sendToUser.displayName}'s ${message.id} with content ${messagePreview}.`);
-		let key = `${userID}/${message.channel.id}/${message.id}`;
-		let entry = (cache[key])?: @@@@@@@
-		if(!entry){
-		}
-			entry.push(reaction.emoji)
 		
+		let key = `${message.channel.id}/${message.id}/${userID}`;
+		let entry = cache[key] || (cache[key]=[]);
+		entry.push(reaction.emoji);
 		
-		let cacheFunction = cacheFunctions[message.id];
-		if(cacheFunction){
-			cacheFunction();
-		}else{
+		let cacheFunction = cacheFunctions[key];
+		if(!cacheFunction){
 			cacheFunction = _.debounce(function(){
+				let reactions = cache[key];
+				if(!reactions || !reactions.length){
+					return
+				}
+				reactions = reactions.map(e => e.emoji.name).join("");
+				
 				//render
 				let embed = new MessageEmbed();
-				embed.setAuthor(`${name} reacted ${reaction.emoji.name}`, ((member.user)?member.user.displayAvatarURL():member.displayAvatarURL()) || common.defaultAvatar, `https://discordapp.com/users/${member.id}`);
+				embed.setAuthor(`${name} reacted ${reactions}`, ((member.user)?member.user.displayAvatarURL():member.displayAvatarURL()) || common.defaultAvatar, `https://discordapp.com/users/${member.id}`);
 				let permalink = util.messages.permalink(message);
 				embed.setDescription(`channel: [${message.channel.name}](${permalink})\nmessage: [${messagePreview}](${permalink})`)
 					.setFooter(`ID: ${message.id}`)
@@ -74,6 +77,7 @@ class CustomListener extends Listener {
 				delete cacheFunctions[message.id];
 			}, 60*1000);
 		}
+		cacheFunction();
 			
 
 	}

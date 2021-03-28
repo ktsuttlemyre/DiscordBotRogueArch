@@ -53,32 +53,32 @@ class ReadyListener extends Listener {
 
 			//read all previous commands
 			let textChannels = Guild.channels.cache.filter(c => c.type == 'text').array();
-			console.log('checking old commands');
+			config.debug && console.log('checking old commands');
 			let commandMessagesQueue=[];
 			for(const channel of textChannels) {
 				if(!(channel.permissionsFor(Guild.me).has("VIEW_CHANNEL"))){
 					continue
 				}
 				if(util.devChannelGate({channel})){continue}
-				console.log('testing',channel.name);
+				config.debug && console.log('testing',channel.name);
 				
 				let messages = await channel.messages.fetch();
 				messages = Array.from(messages.values());
 				for(const message of messages){
 					//stop once you find a message that this bot has sent
-					console.log('assume',!!Guild.me,!!(message.author||message.author))
+					//console.log('assume',!!Guild.me,!!(message.author||message.author))
 					if(Guild.me.id == (message.member||message.author).id){
 						break; //end loop
 					}
 					if(message.author.bot){
-						break;
+						continue;
 					}
 					let users = await getReactedUsers(message,reactions.shipwash);
 					if(!users.get(Guild.me.id)){
-					   	console.log('processing this message v')
+					   	//console.log('processing this message v')
 						commandMessagesQueue.push(message);
 					}
-					console.log(message.id,message.content,'reacted with shipwash',users);
+					//console.log(message.id,message.content,'reacted with shipwash',users);
 
 				} //end messages
 			} //end textchannels

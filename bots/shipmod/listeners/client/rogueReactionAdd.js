@@ -8,7 +8,7 @@ const config = require.main.require('./config');
 const commandVars = require.main.require('./common').commandVars(__filename);
 const util = require.main.require('./util');
 const _ = require('lodash');
-
+const cache = {};
 
 class CustomListener extends Listener {
 	constructor() {
@@ -32,6 +32,7 @@ class CustomListener extends Listener {
 		
 		
 		let name = member.displayName || member.username || member.tag;
+		let userID = member.id || member.user.id;
 		
 		let sendToUser = /*message.guild.member(message.member.user) ||*/ message.member;
 		
@@ -41,22 +42,40 @@ class CustomListener extends Listener {
 		messagePreview = messagePreview || '<preview unavailable>';
 		
 		console.log(`${name} reacted with "${reaction.emoji.name}" to ${sendToUser.displayName}'s ${message.id} with content ${messagePreview}.`);
-			
-		//render
-		let embed = new MessageEmbed();
-		embed.setAuthor(`${name} reacted ${reaction.emoji.name}`, ((member.user)?member.user.displayAvatarURL():member.displayAvatarURL()) || common.defaultAvatar, `https://discordapp.com/users/${member.id}`);
-		let permalink = util.messages.permalink(message);
-		embed.setDescription(`channel: [${message.channel.name}](${permalink})\nmessage: [${messagePreview}](${permalink})`)
-			.setFooter(`ID: ${message.id}`)
-			.setTimestamp()
-			
-		let logChannel=message.guild.channels.resolve(config.actionLogChannel);
-		logChannel && logChannel.send(embed);
+		let key = `${userID}/${message.channel.id}/${message.id}`;
+		let entry = (cache[key])?: @@@@@@@
+		if(!entry){
+		}
+			entry.push(reaction.emoji)
 		
-		//see if user wants notificaiton
-		console.log(sendToUser.roles.cache)
-		let notify = sendToUser.roles.cache.find(r => r.name === "ReceiveReactAlert");
-		notify && sendToUser.user.send(embed);
+		
+		let cacheFunction = cacheFunctions[message.id];
+		if(cacheFunction){
+			cacheFunction();
+		}else{
+			cacheFunction = _.debounce(function(){
+				//render
+				let embed = new MessageEmbed();
+				embed.setAuthor(`${name} reacted ${reaction.emoji.name}`, ((member.user)?member.user.displayAvatarURL():member.displayAvatarURL()) || common.defaultAvatar, `https://discordapp.com/users/${member.id}`);
+				let permalink = util.messages.permalink(message);
+				embed.setDescription(`channel: [${message.channel.name}](${permalink})\nmessage: [${messagePreview}](${permalink})`)
+					.setFooter(`ID: ${message.id}`)
+					.setTimestamp()
+
+				let logChannel=message.guild.channels.resolve(config.actionLogChannel);
+				logChannel && logChannel.send(embed);
+
+				//see if user wants notificaiton
+				console.log(sendToUser.roles.cache);
+				let notify = sendToUser.roles.cache.find(r => r.name === "ReceiveReactAlert");
+				notify && sendToUser.user.send(embed);
+
+				cacheFunctions[message.id] = null;
+				delete cacheFunctions[message.id];
+			}, 60*1000);
+		}
+			
+
 	}
 }
 module.exports = CustomListener;

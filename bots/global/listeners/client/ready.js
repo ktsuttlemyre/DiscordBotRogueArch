@@ -69,15 +69,15 @@ class ReadyListener extends Listener {
 				let messages = await channel.messages.fetch();
 				for(const message of messages){
 					//stop once you find a message that this bot has sent
-					console.log('assume',!!client.user,!!(message.author||message.author))
-					if(client.user.id == (message.member||message.author).id){
+					console.log('assume',!!Guild.me,!!(message.author||message.author))
+					if(Guild.me.id == (message.member||message.author).id){
 						break; //end loop
 					}
 					if(message.author.bot){
 						break;
 					}
 					let users = await getReactedUsers(message,reactions.shipwash);
-					if(!users.get(client.user.id)){
+					if(!users.get(Guild.me.id)){
 					   	console.log('processing this message v')
 						commandMessagesQueue.push(message);
 					}

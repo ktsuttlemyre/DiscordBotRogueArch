@@ -67,6 +67,7 @@ class ReadyListener extends Listener {
 				console.log('testing',channel.name);
 				
 				let messages = await channel.messages.fetch();
+				messages = Array.from(messages.values());
 				for(const message of messages){
 					//stop once you find a message that this bot has sent
 					console.log('assume',!!Guild.me,!!(message.author||message.author))

@@ -1,3 +1,5 @@
+const { Command } = require('discord-akairo');
+
 module.exports.player=require('./player');
 module.exports.playlists=require('./playlists');
 module.exports.messages=require('./messages') 
@@ -21,6 +23,36 @@ module.exports.devChannelGate=function(message,env){
             return true;
         }
 }
+
+//accepts message or client
+module.exports.commandPrefix=function(client,name){
+}
+
+//accepts message and name||command
+module.exports.commandFormat=function(message,name){
+	let client=message.client
+
+	let command;
+	if(!name instanceof Command){
+		command = client.commandHandler.findCommand(name.id.split('/').pop());
+	}else{
+		command = name
+		name = command.id.split('/').pop();
+	}
+	
+	let prefix = command.prefix
+	if(!prefix && command.handler && command.handler.prefix){
+		prefix = (command.handler.prefix.call)?command.handler.prefix(message):command.handler.prefix;
+	}
+	if(!prefix){ //fix any null and undefined
+		prefix='';
+	}
+	
+	var string = (Array.isArray(prefix))?JSON.stringify(prefix):prefix; 
+	string+=' '+name;
+	return string;
+}
+
 
 let web={}
 		web.RegExp={alphabetical:/[a-zA-Z]/g

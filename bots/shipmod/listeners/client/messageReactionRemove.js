@@ -54,8 +54,8 @@ class CustomListener extends Listener {
 		//let cacheFunctions = this.client.memory.channelGet(message,'reactionListener',{});
 	  
 		let entry = cache[key] || (cache[key]=[]);
-		entry = entry.filter(function( obj ) {
-			return obj.emoji.name !== reaction.emoji.name;
+		_.remove(entry,function( obj ) {
+			return obj.emoji.name === reaction.emoji.name;
 		});
 	  
 		//render

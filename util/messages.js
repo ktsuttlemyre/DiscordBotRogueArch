@@ -81,7 +81,7 @@ module.exports.encapsulate = async function(message,override,dontDelete){
 	//if channel is set then
 	let channel = message.channel;
 	if(isAdmin && doc.channel){
-		channel = await message.client.channels.fetch(doc.channel)
+		channel = await message.client.channels.fetch(doc.channel.toString());
 	}
 	
 	let reply;
@@ -96,6 +96,7 @@ module.exports.encapsulate = async function(message,override,dontDelete){
 	if(isAdmin && doc.reactions){
 		for(var i=0,l=doc.reactions.length;i<l;i++){
 			let reaction = doc.reactions[i];
+			reaction = reaction.trim()
 			console.log('reacting to encapsulated message',reaction)
 			await reply.react(reaction);
 		}
@@ -103,7 +104,10 @@ module.exports.encapsulate = async function(message,override,dontDelete){
 	
 	
 	//dont delete original source
-	if((!dontDelete || !doc.dontDelete) && !message.deleted){
+	if(dontDelete || doc.dontDelete){
+		return
+	}
+	if(!message.deleted){
 		await message.delete();
 	}
 }

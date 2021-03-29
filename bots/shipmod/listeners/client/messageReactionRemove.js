@@ -33,21 +33,28 @@ class CustomListener extends Listener {
 		// 		}
 		// 	}
 		// }
-
-
+	  
+	  
 		//make sure message is resolved
 		let message = await util.messages.resolve(reaction.message);
 		
 		let member = message.guild.member(user) || user;
 		let name = member.displayName || member.username || member.tag;
-		let mEmbed = message.embed || message.embeds[0];
-		let messageContent = message.content || mEmbed.title || mEmbed.description || '<preview unavailable>';
-		messageContent = _.truncate(message.content);
-		messageContent = messageContent || '<preview unavailable>';
-		let sendToUser = /*message.guild.member(message.member.user) ||*/ message.member;
+		let userID = member.id || member.user.id;
+	  
+	  	let sendToUser = /*message.guild.member(message.member.user) ||*/ message.member;
 		
-		console.log(`${name} removed reaction "${reaction.emoji.name}" on ${sendToUser.displayName}'s ${message.id} with content ${messageContent}.`);
-			
+	  	console.log(`${name} removed reaction "${reaction.emoji.name}" on ${sendToUser.displayName}'s ${message.id} with content ${messageContent}.`);
+		
+	  	let key = `${message.id}/${userID}`;
+		let cache = this.client.memory.channelGet(message,'reactionListener',{});
+		//let cacheFunctions = this.client.memory.channelGet(message,'reactionListener',{});
+	  
+		let entry = cache[key] || (cache[key]=[]);
+		entry = entry.filter(function( obj ) {
+			return obj.emoji.name !== reaction.emoji.name;
+		});
+	  
 		//render
 		let embed = new MessageEmbed();
 		embed.setAuthor(`${name} removed reaction ${reaction.emoji.name}`, user.displayAvatarURL() || common.defaultAvatar, `https://discordapp.com/users/${user.id}`);

@@ -94,7 +94,8 @@ module.exports.encapsulate = async function(message,override,dontDelete){
 	
 	//if reactions are set then
 	if(isAdmin && doc.reactions){
-		for(const reaction in doc.reactions){
+		for(var i=0;l=doc.reactions.length;i<l;i++){
+			let reaction = doc.reactions[i];
 			console.log('reacting to encapsulated message',reaction)
 			await reply.react(reaction);
 		}

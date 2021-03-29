@@ -3,9 +3,12 @@
 // code example
 //https://github.com/discordjs/guide/blob/master/code-samples/popular-topics/reactions/12/uncached-messages.js
 
+const { MessageEmbed } = require('discord.js');
 const { Listener } = require('discord-akairo');
 const config = require.main.require('./config');
 const commandVars = require.main.require('./common').commandVars(__filename);
+const util = require.main.require('./util');
+const _ = require('lodash');
 
 class CustomListener extends Listener {
 	constructor() {

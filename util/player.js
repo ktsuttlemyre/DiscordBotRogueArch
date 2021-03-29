@@ -22,7 +22,7 @@ module.exports.commandPermissions=function(message,requireDJ){
 	//Check they are in the same voice channel as the bot
 	if (message.guild.me.voice.channel && channel.id !== message.guild.me.voice.channel.id) return `${emotes.error} - You are not in the same voice channel !`;
 	//if the user is the only one in the channel then allow action
-	if(channel && channel.members.size==1){
+	if(channel && channel.members.filter(user => !user.bot).size==1){
 		return null;
 	}
 	//do voting (optional)

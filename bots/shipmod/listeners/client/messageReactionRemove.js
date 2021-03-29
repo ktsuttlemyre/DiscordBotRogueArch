@@ -50,7 +50,7 @@ class CustomListener extends Listener {
 	  	console.log(`${name} removed reaction "${reaction.emoji.name}" on ${sendToUser.displayName}'s ${message.id} with content ${messageContent}.`);
 		
 	  	let key = `${message.id}/${userID}`;
-		let cache = this.client.memory.channelGet(message,'reactionListener',{});
+		let cache = this.client.memory.channelGet(message,'reactionCache',{});
 		//let cacheFunctions = this.client.memory.channelGet(message,'reactionListener',{});
 	  
 		let entry = cache[key] || (cache[key]=[]);

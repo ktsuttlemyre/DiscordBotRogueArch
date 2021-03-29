@@ -48,6 +48,7 @@ module.exports.encapsulate = async function(message,override,dontDelete){
 	}
 
 	let doc = override || {}
+	console.log('pre parsed encapsulation',override)
 	var type = typeof doc;
 	if(type == 'string'){
 		let split = doc.split('\n');

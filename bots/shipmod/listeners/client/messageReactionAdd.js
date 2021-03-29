@@ -62,7 +62,7 @@ class CustomListener extends Listener {
 				if(!reactions || !reactions.length){
 					return
 				}
-				reactions = reactions.map(e => e.emoji.name).join("");
+				reactions = reactions.map(e => e.name).join("");
 				
 				//render
 				let embed = new MessageEmbed();

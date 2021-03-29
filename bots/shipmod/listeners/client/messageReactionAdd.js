@@ -53,7 +53,7 @@ class CustomListener extends Listener {
 		let cacheFunctions = this.client.memory.channelGet(message,'reactionListener',{});
 		
 		let entry = cache[key] || (cache[key]=[]);
-		entry.push(reaction.emoji);
+		entry.push(reaction);
 		
 		let cacheFunction = cacheFunctions[key];
 		if(!cacheFunction){
@@ -62,7 +62,10 @@ class CustomListener extends Listener {
 				if(!reactions || !reactions.length){
 					return
 				}
-				reactions = reactions.map(e => e.name).join("");
+				reactions.sort(function(a,b){
+					a.message.createdTimestamp-b.message..createdTimestamp;
+				})
+				reactions = reactions.map(e => e.emoji.name).join("");
 				
 				//render
 				let embed = new MessageEmbed();
@@ -80,6 +83,9 @@ class CustomListener extends Listener {
 				let notify = sendToUser.roles.cache.find(r => r.name === "ReceiveReactAlert");
 				notify && sendToUser.user.send(embed);
 
+				cache[key] = null
+				delete cache[key]
+				
 				cacheFunctions[message.id] = null;
 				delete cacheFunctions[message.id];
 			}, 60*1000);

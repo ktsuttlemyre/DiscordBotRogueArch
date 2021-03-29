@@ -18,7 +18,7 @@ class MemoryCache {
 		id=`${id}/${channelID}`;
 		let value = (cache[id])?cache[id][key]:(cache[id]={}) && undefined;
 		if(value === undefined){
-			return defaultValue;
+			return cache[id][key]=defaultValue;;
 		}
 		return value;
 	}
@@ -42,7 +42,7 @@ class MemoryCache {
 		const id = this.constructor.getGuildID(message.guild);
 		let value = (cache[id])?cache[id][key]:(cache[id]={}) && undefined;
 		if(value === undefined){
-			return defaultValue;
+			return cache[id][key]=defaultValue;
 		}
 		return value;
 	}

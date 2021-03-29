@@ -57,7 +57,7 @@ class CustomListener extends Listener {
 		
 		let cacheFunction = cacheFunctions[key];
 		if(!cacheFunction){
-			cacheFunction = _.debounce(function(){
+			cacheFunction = cacheFunctions[key] =_.debounce(function(){
 				let reactions = cache[key];
 				if(!reactions || !reactions.length){
 					return

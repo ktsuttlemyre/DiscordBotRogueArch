@@ -15,6 +15,7 @@ let config = {
 	
 }
 let defaults={
+	encapsulateAdminRoles:'Admin',
 	DJ_Role:'DJ',
 	voiceTextLinkMap:{
 		//general: shiptunes

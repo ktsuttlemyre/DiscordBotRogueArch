@@ -60,6 +60,8 @@ module.exports.encapsulate = async function(message,override,dontDelete){
 	}else if(Array.isArray(doc)){
 		return message.channel.send('Can not process arrays');
 	}
+	
+	//set author if needed
 	let user = message.member || message.author
 	let author = {
 		name: user.displayName || user.tag,
@@ -67,8 +69,37 @@ module.exports.encapsulate = async function(message,override,dontDelete){
 		url: `https://discordapp.com/users/${user.id}`,
 	}
 	doc.author=author;
-	message.channel.send({embed:doc});
-	if(!dontDelete && !message.deleted){
+	
+	//if user is admin and requests anon then 
+	let isAdmin = message.member.roles.cache.find(role => role.name === config.DJ_Role)@@@@@@
+	if(isAdmin && doc.anon || doc.anonymous){
+		doc.author = undefined;
+		delete doc.author;
+	}
+	//if channel is set then
+	let channel = message.channel;
+	if(isAdmin && doc.channel){
+		channel = await message.client.channels.fetch(doc.channel)
+	}
+	
+	let reply;
+	if(isAdmin && doc.edit){
+		message = await channel.messages.fetch(doc.edit)
+		reply = await message.edit({embed:doc});
+	}else{
+		reply = await channel.send({embed:doc});
+	}
+	
+	//if reactions are set then
+	if(isAdmin && doc.reactions){
+		for(const reaction in doc.reactions){
+			await reply.react(reaction);
+		}
+	}
+	
+	
+	//dont delete original source
+	if((!dontDelete || !doc.dontDelete) && !message.deleted){
 		await message.delete();
 	}
 }

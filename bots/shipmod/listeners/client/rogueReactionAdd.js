@@ -8,8 +8,6 @@ const config = require.main.require('./config');
 const commandVars = require.main.require('./common').commandVars(__filename);
 const util = require.main.require('./util');
 const _ = require('lodash');
-const cache = {};
-const cacheFunctions = {};
 
 class CustomListener extends Listener {
 	constructor() {
@@ -44,7 +42,10 @@ class CustomListener extends Listener {
 		
 		console.log(`${name} reacted with "${reaction.emoji.name}" to ${sendToUser.displayName}'s ${message.id} with content ${messagePreview}.`);
 		
-		let key = `${message.channel.id}/${message.id}/${userID}`;
+		let key = `${message.id}/${userID}`;
+		let cache = this.client.memory.channelGet(message,'reactionListener',{});
+		let cacheFunctions = this.client.memory.channelGet(message,'reactionListener',{});
+		
 		let entry = cache[key] || (cache[key]=[]);
 		entry.push(reaction.emoji);
 		

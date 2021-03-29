@@ -63,7 +63,7 @@ class CustomListener extends Listener {
 					return
 				}
 				reactions.sort(function(a,b){
-					a.message.createdTimestamp-b.message..createdTimestamp;
+					a.message.createdTimestamp-b.message.createdTimestamp;
 				})
 				reactions = reactions.map(e => e.emoji.name).join("");
 				

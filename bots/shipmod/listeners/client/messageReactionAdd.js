@@ -41,7 +41,7 @@ class CustomListener extends Listener {
 		
 		let sendToUser = /*message.guild.member(message.member.user) ||*/ message.member;
 		
-		let mEmbed = message.embed || message.embeds[0];
+		let mEmbed = message.embed || message.embeds[0] || {};
 		let messagePreview = message.content || mEmbed.title || mEmbed.description || '<preview unavailable>';
 		messagePreview = _.truncate(message.content);
 		messagePreview = messagePreview || '<preview unavailable>';

@@ -19,7 +19,10 @@ class CustomListener extends Listener {
 	}
 
 
-	async exec( message, reaction, member ) {
+	async exec( reaction, user) {
+		if(user.bot){
+			return
+		}
 // 		//note don't do bot check here because we already did it on the global messaeReacitonAdd.
 // 		if(sendToUser.bot || sendToUser.user.bot){
 // 			//Do bot application functions here
@@ -29,7 +32,10 @@ class CustomListener extends Listener {
 // 			}
 // 		}
 		
+		//make sure message is resolved
+		let message = await util.messages.resolve(reaction.message);
 		
+		let member = message.guild.member(user) || user;
 		let name = member.displayName || member.username || member.tag;
 		let userID = member.id || member.user.id;
 		

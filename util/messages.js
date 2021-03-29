@@ -5,6 +5,7 @@ const emotes={error:":error:"}
 const {reactions,defaultAvatar} = require.main.require('./common');
 const common = require.main.require('./common');
 const commandVars = common.commandVars(__filename);
+const config = require.main.require('./config');
 const _ = require('lodash');
 const web = require.main.require('./web');
 const yaml = require('js-yaml');

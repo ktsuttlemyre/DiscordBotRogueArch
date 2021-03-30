@@ -36,7 +36,7 @@ class CustomListener extends Listener {
 		// 	}
 		// }
 	  
-	  
+	  	/** Information gathering **/
 		//make sure message is resolved
 		let message = await util.messages.resolve(reaction.message);
 		
@@ -53,6 +53,7 @@ class CustomListener extends Listener {
 		
 	  	console.log(`${name} removed reaction "${reaction.emoji.name}" on ${sendToUser.displayName}'s ${message.id} with content ${messagePreview}.`);
 		
+	  	/** Emoji alerts **/
 	  	let key = `${message.id}/${userID}`;
 		let cache = this.client.memory.channelGet(message,'reactionCache',{});
 		//let cacheFunctions = this.client.memory.channelGet(message,'reactionListener',{});
@@ -80,6 +81,14 @@ class CustomListener extends Listener {
 		//see if user wants notificaiton
 		let notify = sendToUser.roles.cache.find(r => r.name === "ReceiveReactAlert");
 		notify && sendToUser.user.send(embed);
+	  
+	  
+	  	/** Reaction router **/
+		//util.messages.ractionRouter(reaction,message,member);
+		this.client.emit('reactionRemoveEvent',message,reaction,member);
+		
+		/** role reactions **/
+		//config.roleReaction
 	}
 }
 

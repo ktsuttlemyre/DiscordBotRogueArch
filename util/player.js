@@ -189,75 +189,71 @@ var create = module.exports.create= function(message,client){
 			"description":/*'> '+message.content.split('\n').join('\n> ')+`\n*/`Added: [${title}](${track.url})`,
 			"thumbnail": {
 				"url": `${track.thumbnail}`
+			},
+			"callback":function(reply){
+				//save track/message association in memory for quick queue jump back functionaity
+				await message.client.memory.channelSet(message, util.getYoutubeHash(track.url)+'_'+track.requestedBy.id+'_'+message, reply.id);
+
+				//add custom properties permalinks to entries			
+				//message.permalink=common.permalinkMessage(message.guild,message.channel,reply);
+				reply.permalink=common.permalinkMessage(reply.guild,reply.channel,reply);
+
+				await reply.react(reactions.upvote);
+				await reply.react(reactions.downvote);
+
+				const collector = reply.createReactionCollector((reaction, user) => {
+					return [reactions.upvote, reactions.downvote].includes(reaction.emoji.name) 
+				}); //{ time: 15000 }
+
+				collector.on('collect', async(reaction, user) => {
+					if(reaction.emoji.name === reactions.downvote){ //if downvote
+						let originalPoster=(reply.embed || reply.embeds[0]).author
+						if(!originalPoster){
+							return //reaction.channel.send('not able to act upon this request')
+						}
+						let ogPosterID = (originalPoster.url || '').split('#').shift().split('/').pop();			
+						if(user.id === ogPosterID){ //if original poster
+							//delete message
+							await reply.delete();
+
+							//set it to be skipped
+							track.skip=true;
+
+							//if it is currently playing then skip
+							var nowPlaying=player.nowPlaying(message)
+							if(nowPlaying && nowPlaying===track){ //or message maybe?
+								player.skip(message);
+							}else{ //if it isn't playing then delete it
+								player.remove(message,track);
+							}
+
+							//delete track from queue
+		// 							common.filterInPlace(track.queue.tracks,function(o) {
+		// 							   console.log('comparing',o.url,track.url)
+		// 							   return o.url !== track.url;
+		// 							});
+
+
+							//alert everyone
+							GUIMessages.nowPlaying(message,player,`${user.username} removed ${track.title}`);
+						}else{ //these are just users that don't like the song and we will pass on their message
+							GUIMessages.nowPlaying(message,player,`${user.username} does not like ${track.title}`);
+						}
+					}else if(reaction.emoji.name === reactions.upvote){ //these are users that like the song and we will pass on their message
+						GUIMessages.nowPlaying(message,player,`${user.username} likes ${track.title}`);
+					}
+					console.log(`Collected ${reaction.emoji.name} from ${user.tag}`);
+				});
+
+		// 				collector.on('end', collected => {
+		// 					console.log(`Collected ${collected.size} items`);
+		// 				});
+
+				GUIMessages.nowPlaying(message,player,`${message.member.displayName} has added ${track.title}`);	
 			}
 		}
 		let returnResolve = await resolve(embed)
-		console.log('returnResolve',returnResolve);
-		return
-
-		//Changing reply encapsulate function flow now
-		var reply = await message.channel.send({embed:embed}) //content:message.content
-
-		//add custom properties 
-		//to track
-		await message.client.memory.channelSet(message, util.getYoutubeHash(track.url)+'_'+track.requestedBy.id+'_'+message, reply.id);
-
-		//add custom properties permalinks to entries			
-		//message.permalink=common.permalinkMessage(message.guild,message.channel,reply);
-		reply.permalink=common.permalinkMessage(reply.guild,reply.channel,reply);
-
-		await reply.react(reactions.upvote);
-		await reply.react(reactions.downvote);
-
-		const collector = reply.createReactionCollector((reaction, user) => {
-			return [reactions.upvote, reactions.downvote].includes(reaction.emoji.name) 
-		}); //{ time: 15000 }
-
-		collector.on('collect', async(reaction, user) => {
-			if(reaction.emoji.name === reactions.downvote){ //if downvote
-				let originalPoster=(reply.embed || reply.embeds[0]).author
-				if(!originalPoster){
-					return //reaction.channel.send('not able to act upon this request')
-				}
-				let ogPosterID = (originalPoster.url || '').split('#').shift().split('/').pop();			
-				if(user.id === ogPosterID){ //if original poster
-					//delete message
-					await reply.delete();
-
-					//set it to be skipped
-					track.skip=true;
-
-					//if it is currently playing then skip
-					var nowPlaying=player.nowPlaying(message)
-					if(nowPlaying && nowPlaying===track){ //or message maybe?
-						player.skip(message);
-					}else{ //if it isn't playing then delete it
-						player.remove(message,track);
-					}
-
-					//delete track from queue
-// 							common.filterInPlace(track.queue.tracks,function(o) {
-// 							   console.log('comparing',o.url,track.url)
-// 							   return o.url !== track.url;
-// 							});
-
-
-					//alert everyone
-					GUIMessages.nowPlaying(message,player,`${user.username} removed ${track.title}`);
-				}else{ //these are just users that don't like the song and we will pass on their message
-					GUIMessages.nowPlaying(message,player,`${user.username} does not like ${track.title}`);
-				}
-			}else if(reaction.emoji.name === reactions.upvote){ //these are users that like the song and we will pass on their message
-				GUIMessages.nowPlaying(message,player,`${user.username} likes ${track.title}`);
-			}
-			console.log(`Collected ${reaction.emoji.name} from ${user.tag}`);
-		});
-
-// 				collector.on('end', collected => {
-// 					console.log(`Collected ${collected.size} items`);
-// 				});
-
-		GUIMessages.nowPlaying(message,player,`${message.member.displayName} has added ${track.title}`);
+		console.log('returnResolve',returnResolve);		
 	})
 	.on('playlistAdd',function(message, queue, playlist){
 		message.react(reactions.shipwash);

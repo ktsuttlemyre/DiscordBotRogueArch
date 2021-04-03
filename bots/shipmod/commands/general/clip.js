@@ -49,22 +49,7 @@ class CustomCommand extends Command {
 		    console.log('arg after match',arg);
 		    arg = map[arg]||arg;
 	            console.log('arg after map',arg)
-		    try {
-		      var connection = await channel.join();
-		      const dispatcher = connection
-		        //.play(ytdl('https://www.youtube.com/watch?v=ZlAU_w7-Xp8', { quality: 'highestaudio', volume: 0.5}))
-			.play(`./sounds/${arg}.mp3`)
-			.on("finish", () => {
-			  //channel.leave();
-			})
-			.on("error", err => {
-			  //channel.leave();
-			  console.error(err);
-			});
-		    } catch (error) {
-		      console.error(error);
-		    }
-
+		    await uti.playSound(`./sounds/${arg}.mp3`)
 		}
 }
 

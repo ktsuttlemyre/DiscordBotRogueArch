@@ -114,7 +114,7 @@ class ReadyListener extends Listener {
 		client.logger.info(`${client.user.tag}, ready to serve ${client.users.size} users in ${client.guilds.size} servers.`, 'ready');
 		// Set the bot status
 		
-		client.user.setActivity(process.env.ACTIVITY||'Text @'+(client.user.username||client.user.tag)+' help to get started', { type: 'LISTENING' });
+		client.user.setActivity(process.env.ACTIVITY||' @'+(client.user.username||client.user.tag)+' help to get started', { type: 'LISTENING' });
 
 	} //end exec
 

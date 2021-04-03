@@ -12,7 +12,7 @@ class CustomListener extends Listener {
 		});
 	}
 
-	async exec( oldstate, newstate ) {
+	async exec( oldstate, newstate, manuallyTriggered ) {
 		var env = process.env.ENVIRONMENT
         	if(env != 'production'){
 			return;
@@ -22,6 +22,8 @@ class CustomListener extends Listener {
 			return
 		}
 		let guild = newstate.guild;
+		let client = this.client;
+		
 		
 		// voice-text-channel-link
 		let roomChanged = ((oldstate.channelID || newstate.channelID) && oldstate.channelID !== newstate.channelID);
@@ -45,6 +47,10 @@ class CustomListener extends Listener {
 			}else{
 				console.log('bot does not have permission to change permissions in '+textChannel.name)
 			}
+		}
+		if(!manuallyTriggered){
+			await util.playClip(thisMember.id);
+			//client.commandHandler.runCommand(message,client.commandHandler.findCommand('clip'),thisMember.id);
 		}
 		
 		//leave old chatroom (if they left a room)
@@ -79,6 +85,9 @@ class CustomListener extends Listener {
 
 			}
 		}
+		
+		
+		
 	    
 	}
 }

@@ -228,13 +228,13 @@ module.exports.zodiac=function(birthday){
     return zodiacSigns[sign];
 }
 
-module.exports.playClip=function(id){
-	return playSound(`./sounds/${id}.mp3`)
+module.exports.playClip=function(message,id){
+	return playSound(message,`./sounds/${id}.mp3`)
 }
-var playSound = module.exports.playSound = async function(location){
+var playSound = module.exports.playSound = async function(message,location){
 	let dispatcher;
 	try {
-	      var connection = await channel.join();
+	      var connection = await message.channel.join();
 	      dispatcher = connection
 		//.play(ytdl('https://www.youtube.com/watch?v=ZlAU_w7-Xp8', { quality: 'highestaudio', volume: 0.5}))
 		.play(location)

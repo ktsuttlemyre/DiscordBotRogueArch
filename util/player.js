@@ -190,6 +190,7 @@ var create = module.exports.create= function(message,client){
 			"thumbnail": {
 				"url": `${track.thumbnail}`
 			},
+			"reactions":[reactions.upvote,reactions.downvote],
 			"callback":async function(reply){
 				//save track/message association in memory for quick queue jump back functionaity
 				await message.client.memory.channelSet(message, util.getYoutubeHash(track.url)+'_'+track.requestedBy.id+'_'+message, reply.id);
@@ -197,9 +198,6 @@ var create = module.exports.create= function(message,client){
 				//add custom properties permalinks to entries			
 				//message.permalink=common.permalinkMessage(message.guild,message.channel,reply);
 				reply.permalink=common.permalinkMessage(reply.guild,reply.channel,reply);
-
-				await reply.react(reactions.upvote);
-				await reply.react(reactions.downvote);
 
 				const collector = reply.createReactionCollector((reaction, user) => {
 					return [reactions.upvote, reactions.downvote].includes(reaction.emoji.name) 

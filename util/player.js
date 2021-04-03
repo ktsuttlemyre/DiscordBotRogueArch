@@ -190,7 +190,7 @@ var create = module.exports.create= function(message,client){
 			"thumbnail": {
 				"url": `${track.thumbnail}`
 			},
-			"callback":function(reply){
+			"callback":async function(reply){
 				//save track/message association in memory for quick queue jump back functionaity
 				await message.client.memory.channelSet(message, util.getYoutubeHash(track.url)+'_'+track.requestedBy.id+'_'+message, reply.id);
 

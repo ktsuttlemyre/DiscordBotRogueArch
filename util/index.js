@@ -233,7 +233,11 @@ module.exports.playClip=function(message,id){
 }
 var playSound = module.exports.playSound = async function(message,location){
 	let dispatcher;
+	if(!message.channel){
+		return
+	}
 	try {
+	      
 	      var connection = await message.channel.join();
 	      dispatcher = connection
 		//.play(ytdl('https://www.youtube.com/watch?v=ZlAU_w7-Xp8', { quality: 'highestaudio', volume: 0.5}))

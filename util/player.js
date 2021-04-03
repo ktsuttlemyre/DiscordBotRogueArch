@@ -191,8 +191,8 @@ var create = module.exports.create= function(message,client){
 				"url": `${track.thumbnail}`
 			}
 		}
-		
-		resolve(embed);
+		let returnResolve = await resolve(embed)
+		console.log('returnResolve',returnResolve);
 		return
 
 		var reply = await message.channel.send({embed:embed}) //content:message.content

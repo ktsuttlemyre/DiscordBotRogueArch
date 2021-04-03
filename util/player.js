@@ -195,6 +195,7 @@ var create = module.exports.create= function(message,client){
 		console.log('returnResolve',returnResolve);
 		return
 
+		//Changing reply encapsulate function flow now
 		var reply = await message.channel.send({embed:embed}) //content:message.content
 
 		//add custom properties 

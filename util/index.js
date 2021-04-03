@@ -227,3 +227,26 @@ module.exports.zodiac=function(birthday){
     let sign = Number(new Intl.DateTimeFormat('fr-TN-u-ca-persian', {month: 'numeric'}).format(Date.now())) - 1;
     return zodiacSigns[sign];
 }
+
+module.exports.playClip=function(id){
+	return playSound(`./sounds/${id}.mp3`)
+}
+var playSound = module.exports.playSound = async function(location){
+	const dispatcher;
+	try {
+	      var connection = await channel.join();
+	      dispatcher = connection
+		//.play(ytdl('https://www.youtube.com/watch?v=ZlAU_w7-Xp8', { quality: 'highestaudio', volume: 0.5}))
+		.play(location)
+		.on("finish", () => {
+		  //channel.leave();
+		})
+		.on("error", err => {
+		  //channel.leave();
+		  console.error(err);
+		});
+	    } catch (error) {
+	      console.error(error);
+	    }
+	return dispatcher
+}

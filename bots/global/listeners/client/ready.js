@@ -66,7 +66,7 @@ class ReadyListener extends Listener {
 				messages = Array.from(messages.values());
 				for(const message of messages){
 					//stop once you find a message that this bot has sent
-					console.log('id check',Guild.me.id,(message.member||message.author).id);
+					config.debug && console.log('id check',Guild.me.id,(message.member||message.author).id);
 					if(Guild.me.id == (message.member||message.author).id){
 						break; //end loop
 					}

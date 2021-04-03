@@ -49,7 +49,7 @@ class CustomListener extends Listener {
 			}
 		}
 		if(!manuallyTriggered){
-			await util.playClip(thisMember.id);
+			await util.playClip({channel:newstate.channel},thisMember.id);
 			//client.commandHandler.runCommand(message,client.commandHandler.findCommand('clip'),thisMember.id);
 		}
 		

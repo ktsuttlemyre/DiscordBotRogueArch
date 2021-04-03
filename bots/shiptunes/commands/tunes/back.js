@@ -49,7 +49,7 @@ class CustomCommand extends Command {
 		}
 		
 		//Notify the user what we are doing
-		let track = queue.previousTracks[0]; //[queue.previousTracks.length-1];
+		let track = queue.previousTracks[queue.previousTracks.length-1];
 		if(!track){
 			return GUIMessages.nowPlaying(message,player,'Can\'t go back any further');
 		}

@@ -228,29 +228,33 @@ module.exports.zodiac=function(birthday){
     return zodiacSigns[sign];
 }
 
-module.exports.playClip=function(message,id){
-	return playSound(message,`./sounds/${id}.mp3`)
+module.exports.playClip=function(message,id,opts){
+	return playSound(message,`./sounds/${id}.mp3`,opts)
 }
-var playSound = module.exports.playSound = async function(message,location){
+var playSound = module.exports.playSound = async function(message,location,opts){
+	opts=opts||{volume:.5};
 	let dispatcher;
 	if(!message.channel){
 		return
 	}
 	try {
-	      
-	      var connection = await message.channel.join();
-	      dispatcher = connection
-		//.play(ytdl('https://www.youtube.com/watch?v=ZlAU_w7-Xp8', { quality: 'highestaudio', volume: 0.5}))
-		.play(location)
-		.on("finish", () => {
-		  //channel.leave();
-		})
-		.on("error", err => {
-		  //channel.leave();
-		  console.error(err);
-		});
-	    } catch (error) {
-	      console.error(error);
-	    }
+		var connection = await message.channel.join();
+		dispatcher = connection
+			//.play(ytdl('https://www.youtube.com/watch?v=ZlAU_w7-Xp8', { quality: 'highestaudio', volume: 0.5}))
+			.play(location,{ volume: opts.volume });
+		dispatcher
+			.on("start", () => {
+			  //channel.leave();
+			})
+			.on("finish", () => {
+			  //channel.leave();
+			})
+			.on("error", err => {
+				//channel.leave();
+				console.error(err);
+			});
+		} catch (error) {
+			console.error(error);
+		}
 	return dispatcher
 }

@@ -232,7 +232,7 @@ module.exports.playClip=function(id){
 	return playSound(`./sounds/${id}.mp3`)
 }
 var playSound = module.exports.playSound = async function(location){
-	const dispatcher;
+	let dispatcher;
 	try {
 	      var connection = await channel.join();
 	      dispatcher = connection

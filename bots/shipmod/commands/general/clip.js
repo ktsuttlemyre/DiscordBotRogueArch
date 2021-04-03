@@ -4,6 +4,7 @@ const { Player } = require("discord-player");
 const emotes={error:":error:"}
 const {reactions,defaultAvatar} = require.main.require('./common');
 const common = require.main.require('./common');
+const util = require.main.require('./util');
 const commandVars = common.commandVars(__filename);
 const _ = require('lodash');
 const map = require.main.require('./sounds')
@@ -49,7 +50,7 @@ class CustomCommand extends Command {
 		    console.log('arg after match',arg);
 		    arg = map[arg]||arg;
 	            console.log('arg after map',arg)
-		    await uti.playSound(`./sounds/${arg}.mp3`)
+		    await uti.playClip(arg)
 		}
 }
 

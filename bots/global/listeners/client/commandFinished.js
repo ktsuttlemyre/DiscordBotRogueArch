@@ -34,7 +34,8 @@ class CommandBlockedListener extends Listener {
         //respond
         if(message && !message.deleted){ //if they deleted the message then don't do anything
            let reply = await util.messages.encapsulate(message,returnValue);
-           if(returnValue.callback){
+           let callback = returnValue.callback
+           if(callback){
                callback.call && callback(reply);
            }
         }

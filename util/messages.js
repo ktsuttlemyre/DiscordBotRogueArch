@@ -60,7 +60,8 @@ module.exports.encapsulate = async function(message,override,dontDelete){
 		doc.description = split.join('\n')
 		}
 	}else if(Array.isArray(doc)){
-		return message.channel.send('Can not process arrays');
+		message.channel.send('Can not process arrays');
+		return
 	}
 	
 	//set author if needed
@@ -105,11 +106,12 @@ module.exports.encapsulate = async function(message,override,dontDelete){
 	
 	//dont delete original source
 	if(dontDelete || doc.dontDelete){
-		return
+		return reply
 	}
 	if(!message.deleted){
 		await message.delete();
 	}
+	return reply
 }
 
 module.exports.permalink=function(message){

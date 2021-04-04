@@ -6,6 +6,7 @@ module.exports.messages=require('./messages')
 module.exports.commandVars=require.main.require('./common').commandVars  //TODO move commandVars here and delete common
 const config = require.main.require('./config');
 module.exports.config=config;
+const PromiseQueue = module.exports.PromiseQueue=require.main.require('./util/promiseQueue');
 
 
 module.exports.devChannelGate=function(message,env){
@@ -231,7 +232,15 @@ module.exports.zodiac=function(birthday){
 module.exports.playClip=function(message,id,opts){
 	return playSound(message,`./sounds/${id}.mp3`,opts)
 }
-var playSound = module.exports.playSound = async function(message,location,opts){
+
+const playQueue=new PromiseQueue();
+const playSound = module.exports.playSound = function(message,location,opts){
+	playQueue.push(arguments);
+	await _playSound();
+}
+      
+      @@@@@@
+const _playSound = async function(message,location,opts){
 	opts=opts||{volume:.5};
 	let dispatcher;
 	if(!message.channel){
@@ -258,3 +267,5 @@ var playSound = module.exports.playSound = async function(message,location,opts)
 		}
 	return dispatcher
 }
+
+

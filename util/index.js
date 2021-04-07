@@ -6,7 +6,7 @@ module.exports.messages=require('./messages')
 module.exports.commandVars=require.main.require('./common').commandVars  //TODO move commandVars here and delete common
 const config = require.main.require('./config');
 module.exports.config=config;
-const PromiseQueue = module.exports.PromiseQueue=require.main.require('./util/promiseQueue');
+const PromiseQueue = module.exports.PromiseQueue = require.main.require('./util/PromiseQueue');
 
 
 module.exports.devChannelGate=function(message,env){

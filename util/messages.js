@@ -213,7 +213,7 @@ module.exports.fetchMessagesLegacy = async function fetchMessages(channel, optio
 		}
 	}
 
-module.exports.fetch = async function fetchMessages(channel, options, callback) {
+module.exports.fetchForEach = async function fetchMessages(channel, options, callback) {
 	    if(typeof options == 'function'){
 	    	callback=options
 	    	options={}
@@ -238,7 +238,10 @@ module.exports.fetch = async function fetchMessages(channel, options, callback) 
 				let response = await callback(array[index], index, array, gIndex);
 				//console.log('got response',response);
 				if(typeof response == 'number'){
-					index=response-1
+					let delta = index-response
+					gOffset+=delta
+					gIndex+=delta
+					index+=response
 					continue;
 				}
 				if(response){
@@ -287,6 +290,69 @@ module.exports.fetch = async function fetchMessages(channel, options, callback) 
 		});
 	}
 
+module.exports.fetchShift = async function fetchMessages(channel, options) {
+	if(typeof options == 'function'){
+		//callback=options
+		options={}
+	}
+	let opts={limit:20};
+
+	let loadedAllMessages = false; //denote all messages are loaded
+
+	let gIndex=0;
+	let gOffset=0;
+	let nBuffer=5;
+
+	const array = [];
+
+	return function(){
+		return new Promise(async (resolve) => {
+			let index=gIndex+gOffset;
+			
+			let messagesArray = [];
+			if(!loadedAllMessages && index>array.length-nBuffer){ //if we have messages on the server and getting close to buffer then
+				//https://discord.js.org/#/docs/main/master/class/MessageManager?scrollTo=fetch
+				let messages = await channel.messages.fetch(opts,false,true);
+				//console.log('fetched messages',messages.length)
+				messagesArray = messages.array();
+				if(!messagesArray.length){
+					loadedAllMessages=true;
+				}else{
+					array.push.apply(array,messagesArray);
+					opts.before = messagesArray[(messagesArray.length - 1)].id
+				}
+			}
+			console.log('processing tick');
+			
+			if(loadedAllMessages && index>array.length){ //no more results. return nothing free memory
+				array.length = 0
+				array = null;
+				return resolve(undefined);
+			}
+			
+			console.log('calling callback with',index,gIndex)
+			let response = array[index]; //await callback(array[index], index, array, gIndex);
+
+			index++;
+			gIndex++;
+
+			//test length and delete the beginning of the array to clean up
+			if(array.length>(nBuffer*2)+1){
+				let remove = array.length-((nBuffer*2)+1);
+				gOffset-= remove;  //array.length-(nBuffer)
+				array.splice(0,remove);	
+			}
+
+			resolve(response);
+			});
+		}
+	}
+/*example
+let fetcher = uti.messages.stepFetch(options stuff here)
+...
+let message = await fetcher()
+
+*/
 
 
 /*

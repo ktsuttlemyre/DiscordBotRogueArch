@@ -235,37 +235,33 @@ module.exports.playClip=function(message,id,opts){
 
 const playQueue=new PromiseQueue();
 const playSound = module.exports.playSound = function(message,location,opts){
-	playQueue.push(arguments);
-	await _playSound();
-}
-      
-      @@@@@@
-const _playSound = async function(message,location,opts){
-	opts=opts||{volume:.5};
-	let dispatcher;
-	if(!message.channel){
-		return
-	}
-	try {
-		var connection = await message.channel.join();
-		dispatcher = connection
-			//.play(ytdl('https://www.youtube.com/watch?v=ZlAU_w7-Xp8', { quality: 'highestaudio', volume: 0.5}))
-			.play(location,{ volume: opts.volume });
-		dispatcher
-			.on("start", () => {
-			  //channel.leave();
-			})
-			.on("finish", () => {
-			  //channel.leave();
-			})
-			.on("error", err => {
-				//channel.leave();
-				console.error(err);
-			});
-		} catch (error) {
-			console.error(error);
+	return playQueue.enqueue(function(){
+		opts=opts||{volume:.5};
+		let dispatcher;
+		if(!message.channel){
+			return
 		}
-	return dispatcher
+		try {
+			var connection = await message.channel.join();
+			dispatcher = connection
+				//.play(ytdl('https://www.youtube.com/watch?v=ZlAU_w7-Xp8', { quality: 'highestaudio', volume: 0.5}))
+				.play(location,{ volume: opts.volume });
+			dispatcher
+				.on("start", () => {
+				  //channel.leave();
+				})
+				.on("finish", () => {
+				  //channel.leave();
+				})
+				.on("error", err => {
+					//channel.leave();
+					console.error(err);
+				});
+			} catch (error) {
+				console.error(error);
+			}
+		//return dispatcher
+	})
 }
 
 

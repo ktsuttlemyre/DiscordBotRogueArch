@@ -7,7 +7,7 @@ module.exports.commandVars=require.main.require('./common').commandVars  //TODO 
 const config = require.main.require('./config');
 module.exports.config=config;
 const PromiseQueue = module.exports.PromiseQueue = require.main.require('./util/PromiseQueue');
-
+const ytdl = require('ytdl-core');
 
 module.exports.devChannelGate=function(message,env){
         env = env || process.env.ENVIRONMENT;
@@ -84,7 +84,7 @@ let web={}
 
 		//http://stackoverflow.com/questions/3717115/regular-expression-for-youtube-links
 		//inspiration: http://stackoverflow.com/questions/3452546/javascript-regex-how-to-get-youtube-video-id-from-url
-module.exports.getYoutubeHash=function(url){
+const getYoutubeHash = module.exports.getYoutubeHash=function(url){
 			if(!url){return ''}
 			if(url.length<11){return ''}
 			//if(!web.isString(url)){return ''}
@@ -242,9 +242,12 @@ const playSound = module.exports.playSound = function(message,location,opts){
 			return
 		}
 		try {
+			if(getYoutubeHash(location)){
+				location = ytdl(location, { filter: 'audioonly' })
+				//ytdl('https://www.youtube.com/watch?v=ZlAU_w7-Xp8', { quality: 'highestaudio', volume: 0.5})
+			}
 			var connection = await message.channel.join();
 			dispatcher = connection
-				//.play(ytdl('https://www.youtube.com/watch?v=ZlAU_w7-Xp8', { quality: 'highestaudio', volume: 0.5}))
 				.play(location,{ volume: opts.volume });
 			dispatcher
 				.on("start", () => {

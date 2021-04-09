@@ -253,6 +253,7 @@ const playSound = module.exports.playSound = function(message,location,opts){
 		opts=opts||{volume:.5};
 		let dispatcher;
 		if(!message.channel){
+			resolve('resolved')
 			return
 		}
 
@@ -264,6 +265,7 @@ const playSound = module.exports.playSound = function(message,location,opts){
 			  await access(location, constants.F_OK);
 			} catch (error) {
 			  console.error(error);
+			  resolve('resolved')
 			  return error
 			}
 		}

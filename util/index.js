@@ -236,15 +236,17 @@ module.exports.zodiac=function(birthday){
 
 module.exports.playClip=async function(message,id,opts){
 	let dir = './sounds/';
-	let location = path.resolve(dir,soundMap[id]);
+	let location = soundMap[id];
 	if(!location){
-		location = path.resolve(`${dir}${id}.mp3`)
+		location = `${dir}${id}.mp3`
 		try {
 		  await access(location, constants.F_OK);
 		} catch (error) {
-		  location = path.resolve(dir,soundMap['default']);
+		  location = soundMap['default'];
 		}
 	}
+	location = path.resolve(dir,location)
+		
 	
 	return playSound(message,location,opts)
 }

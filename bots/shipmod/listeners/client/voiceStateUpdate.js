@@ -48,11 +48,7 @@ class CustomListener extends Listener {
 				console.log('bot does not have permission to change permissions in '+textChannel.name)
 			}
 		}
-		if(!manuallyTriggered){
-			await util.playClip({channel:oldstate.channel},'https://youtu.be/xk093ODaNjc');
-			await util.playClip({channel:newstate.channel},thisMember.id);
-			//client.commandHandler.runCommand(message,client.commandHandler.findCommand('clip'),thisMember.id);
-		}
+
 		
 		//leave old chatroom (if they left a room)
 		textChannelID = channelMap[oldstate.channelID];
@@ -73,18 +69,35 @@ class CustomListener extends Listener {
 		
 		
 		//handle amongus mute mode
-		let muteChanged = oldstate.selfMute!=newstate.selfMute
-		let muted= newstate.selfMute;
-		if(newstate.channel && muteChanged){
+		let changed ={	
+			channelID: oldstate.channelID !== newstate.channelID,
+			deaf: oldstate.deaf !== newstate.deaf,
+			mute: oldstate.mute !== newstate.mute,
+			selfDeaf: oldstate.selfDeaf !== newstate.selfDeaf,
+			selfMute: oldstate.selfMute !== newstate.selfMute,
+			selfVideo: oldstate.selfVideo !== newstate.selfVideo,
+			serverDeaf: oldstate.serverDeaf !== newstate.serverDeaf,
+			serverMute: oldstate.serverMute !== newstate.serverMute,
+			speaking: oldstate.speaking !== newstate.speaking,
+			streaming: oldstate.streaming !== newstate.streaming
+		}
+
+		if(changed.selfMute){
 			let amongusMode = this.client.memory.channelGet(newstate, 'amongusMode');
 			//mute handler
 			if(amongusMode){
 				newstate.channel.members.forEach(function(member){
 					if(member.id == thisMember.id){return}
-					member.voice.setMute(muted);
+					member.voice.setMute(newstate.mute);
 				}); //end members
 
 			}
+		}
+		
+		if(!manuallyTriggered && newstate.channelID !== oldstate.channelID){
+			await util.playClip({channel:oldstate.channel},'https://youtu.be/xk093ODaNjc');
+			await util.playClip({channel:newstate.channel},thisMember.id);
+			//client.commandHandler.runCommand(message,client.commandHandler.findCommand('clip'),thisMember.id);
 		}
 		
 		

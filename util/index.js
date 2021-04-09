@@ -276,11 +276,11 @@ const playSound = module.exports.playSound = function(message,location,opts){
 				  //channel.leave();
 				})
 				.on("finish", () => {
-					resovle('resolved')
+					resolve('resolved')
 					//channel.leave();
 				})
 				.on("error", err => {
-					resovle('resolved')
+					resolve('resolved')
 					//channel.leave();
 					console.error(err);
 				});

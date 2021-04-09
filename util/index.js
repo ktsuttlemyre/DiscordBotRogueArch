@@ -1,7 +1,7 @@
 const { Command } = require('discord-akairo');
 
-const { access } require('fs/promises');
-const { constants } require('fs');
+const { access } = require('fs/promises');
+const { constants } = require('fs');
 
 module.exports.player=require('./player');
 module.exports.playlists=require('./playlists');

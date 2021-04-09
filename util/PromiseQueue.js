@@ -10,9 +10,15 @@ class PromiseQueue {
      this.stop = true;
   }
   enqueue(promise) {
+    let fn = function(){
+      return new Promise((resolve, reject) => {
+        promise(resolve,reject);
+      }
+   }
+    
     return new Promise((resolve, reject) => {
       this.queue.push({
-        promise,
+        promise:fn,
         resolve,
         reject,
       });

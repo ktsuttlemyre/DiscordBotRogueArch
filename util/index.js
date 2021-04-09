@@ -1,5 +1,8 @@
 const { Command } = require('discord-akairo');
 
+import { access } from 'fs/promises';
+import { constants } from 'fs';
+
 module.exports.player=require('./player');
 module.exports.playlists=require('./playlists');
 module.exports.messages=require('./messages') 
@@ -8,6 +11,7 @@ const config = require.main.require('./config');
 module.exports.config=config;
 const PromiseQueue = module.exports.PromiseQueue = require.main.require('./util/PromiseQueue');
 const ytdl = require('ytdl-core');
+const soundMap = require.main.require('./sounds');
 
 module.exports.devChannelGate=function(message,env){
         env = env || process.env.ENVIRONMENT;
@@ -229,34 +233,54 @@ module.exports.zodiac=function(birthday){
     return zodiacSigns[sign];
 }
 
-module.exports.playClip=function(message,id,opts){
-	return playSound(message,`./sounds/${id}.mp3`,opts)
+module.exports.playClip=async function(message,id,opts){
+	let location = soundMap[id];
+	if(!location){
+		location = `./sounds/${id}.mp3`
+		try {
+		  await access(location, constants.F_OK);
+		} catch (error) {
+		  location = soundMap['default'];
+		}
+	}
+	
+	return playSound(message,location,opts)
 }
 
 const playQueue=new PromiseQueue();
 const playSound = module.exports.playSound = function(message,location,opts){
-	return playQueue.enqueue(async function(){
+	return playQueue.enqueue(async function(resolve){
 		opts=opts||{volume:.5};
 		let dispatcher;
 		if(!message.channel){
 			return
 		}
-		try {
-			if(getYoutubeHash(location)){
-				location = ytdl(location, { filter: 'audioonly' })
-				//ytdl('https://www.youtube.com/watch?v=ZlAU_w7-Xp8', { quality: 'highestaudio', volume: 0.5})
+
+		if(getYoutubeHash(location)){
+			location = ytdl(location, { filter: 'audioonly' })
+			//ytdl('https://www.youtube.com/watch?v=ZlAU_w7-Xp8', { quality: 'highestaudio', volume: 0.5})
+		}else{
+			try {
+			  await access(location, constants.F_OK);
+			} catch (error) {
+			  console.error(error);
+			  return error
 			}
+		}
+			
+			
+		try {
 			var connection = await message.channel.join();
-			dispatcher = connection
-				.play(location,{ volume: opts.volume });
-			dispatcher
-				.on("start", () => {
+			dispatcher = connection.play(location,{ volume: opts.volume });
+			dispatcher.on("start", () => {
 				  //channel.leave();
 				})
 				.on("finish", () => {
-				  //channel.leave();
+					resovle('resolved')
+					//channel.leave();
 				})
 				.on("error", err => {
+					resovle('resolved')
 					//channel.leave();
 					console.error(err);
 				});

@@ -1,5 +1,6 @@
 const { Command } = require('discord-akairo');
 
+const path = require('path');
 const { access } = require('fs/promises');
 const { constants } = require('fs');
 
@@ -234,13 +235,14 @@ module.exports.zodiac=function(birthday){
 }
 
 module.exports.playClip=async function(message,id,opts){
-	let location = soundMap[id];
+	let dir = './sounds/';
+	let location = path.resolve(dir,soundMap[id]);
 	if(!location){
-		location = `./sounds/${id}.mp3`
+		location = path.resolve(`${dir}${id}.mp3)`
 		try {
 		  await access(location, constants.F_OK);
 		} catch (error) {
-		  location = soundMap['default'];
+		  location = path.resolve(dir,soundMap['default']);
 		}
 	}
 	

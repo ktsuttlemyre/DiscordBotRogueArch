@@ -237,6 +237,7 @@ module.exports.zodiac=function(birthday){
 module.exports.playClip=async function(message,id,opts){
 	let dir = './sounds/';
 	let location = soundMap[id];
+
 	if(!location){
 		location = `${dir}${id}.mp3`
 		try {
@@ -245,8 +246,9 @@ module.exports.playClip=async function(message,id,opts){
 		  location = soundMap['default'];
 		}
 	}
-	location = path.resolve(dir,location)
-		
+	if(location.indexOf('http')!=0){
+		location = path.resolve(dir,location);
+	}
 	
 	return playSound(message,location,opts)
 }

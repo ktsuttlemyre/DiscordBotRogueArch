@@ -13,7 +13,7 @@ class PromiseQueue {
     let fn = function(){
       return new Promise((resolve, reject) => {
         promise(resolve,reject);
-      }
+      });
    }
     
     return new Promise((resolve, reject) => {

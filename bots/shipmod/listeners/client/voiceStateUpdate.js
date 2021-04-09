@@ -14,9 +14,9 @@ class CustomListener extends Listener {
 
 	async exec( oldstate, newstate, manuallyTriggered ) {
 		var env = process.env.ENVIRONMENT
-        	//if(env != 'production'){
-		//	return;
-		//}
+        	if(env != 'production'){
+			return;
+		}
 		let thisMember = newstate.member;
 		if(thisMember.user.bot){
 			return

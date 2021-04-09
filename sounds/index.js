@@ -1,4 +1,5 @@
 module.exports={
+  "default":"https://www.youtube.com/watch?v=QFewaD67FEY",
   "125821419308318720":"seinfeld", //wholius
   "217497619537068032":"nickelodeon", //nick monger
   "692186689946255490":"nickelodeon", //nick monger2

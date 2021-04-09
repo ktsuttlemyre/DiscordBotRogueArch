@@ -238,7 +238,7 @@ module.exports.playClip=async function(message,id,opts){
 	let dir = './sounds/';
 	let location = path.resolve(dir,soundMap[id]);
 	if(!location){
-		location = path.resolve(`${dir}${id}.mp3)`
+		location = path.resolve(`${dir}${id}.mp3`)
 		try {
 		  await access(location, constants.F_OK);
 		} catch (error) {
@@ -267,7 +267,7 @@ const playSound = module.exports.playSound = function(message,location,opts){
 			  await access(location, constants.F_OK);
 			} catch (error) {
 			  console.error(error);
-			  resolve('resolved')
+			  error(error)
 			  return error
 			}
 		}

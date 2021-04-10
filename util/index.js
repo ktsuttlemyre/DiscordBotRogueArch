@@ -255,7 +255,7 @@ module.exports.playClip=async function(message,id,opts){
 
 const playQueue=new PromiseQueue();
 const playSound = module.exports.playSound = function(message,location,opts){
-	return playQueue.enqueue(async function(resolve){
+	playQueue.enqueue(async function(resolve){
 		opts=opts||{volume:.5};
 		let dispatcher;
 		if(!message.channel){
@@ -296,7 +296,8 @@ const playSound = module.exports.playSound = function(message,location,opts){
 				console.error(error);
 			}
 		//return dispatcher
-	})
+	});
+	return
 }
 
 

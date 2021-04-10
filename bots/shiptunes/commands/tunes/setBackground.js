@@ -50,7 +50,7 @@ class CustomCommand extends Command {
 		let track = player.nowPlaying(message);
 		
 		let fetcher = util.playlists.fetchShift(subreddit);
-		message.memory.channelSet(message, 'backgroundPlaylistFetcher', fetcher);
+		message.client.memory.channelSet(message, 'backgroundPlaylistFetcher', fetcher);
 		this.handler.emit('commandBlocked', message, this, 'Sending skip command to player failed');
 	}
 }

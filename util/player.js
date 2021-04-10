@@ -93,7 +93,7 @@ let library={'chill nintendo beats':[
 };
 
 
-let defaultFetcher = function(){
+const defaultFetcher = function(){
 	let playlist=library[playlistName];
 	//if(!playlist){
 	//	playlist = await util.playlists.subredditArray(playlistName,'top');
@@ -108,7 +108,7 @@ let defaultFetcher = function(){
 let playBackgroundPlaylist = module.exports.playBackgroundPlaylist = async (message,player,notice) => {
 	init(message,player,notice);
 	
-	let fetchNext = message.client.memory.channelGet(message,"backgroundPlaylistFetcher") || defaultFetcher
+	let fetchNext = message.client.memory.channelGet(message,"backgroundPlaylistFetcher") || defaultFetcher;
 	let selection = fetchNext();
 	
 	player.backgroundPlaylist=true;

@@ -13,16 +13,16 @@ const embedCommand = require.main.require('./bots/shipmod/commands/general/embed
 class CustomCommand extends Command {
 	constructor() {
 		super(commandVars.name, {
-		description: { content: 'set background'},
-		aliases: [commandVars.name],
+		description: { content: 'set background playlist'},
+		aliases: [commandVars.name,'background'],
 		category: commandVars.category,
 		clientPermissions: ['SEND_MESSAGES'],
 		args: [
-			// {
-			// 	id: 'search',
-			// 	default: '',
-			// 	match: 'content',
-			// },
+			 {
+			 	id: 'subreddit',
+			 	default: '',
+			 	match: 'content',
+			 },
 			],
 		channelRestriction: 'guild', 
 		});
@@ -32,14 +32,14 @@ class CustomCommand extends Command {
 		return util.player.commandPermissions(message,true);
 	}
 	
-	async exec(message) {
+	async exec(message, { subreddit }) {
 		var player = this.client.memory.channelGet(message, 'player');
 		if(!player){
 			return this.handler.emit('commandBlocked',message,this,'No player playing to act on');
 		}
 		
 		//ensure playing
-		var queue=player.getQueue(message);
+		var queue = player.getQueue(message);
 		if(queue && (queue.paused || queue.stopped)){
 			if(player.resume(message)){
 				await GUIMessages.nowPlaying(message,player,"Continuing where we left off "+common.randomMusicEmoji());
@@ -47,19 +47,11 @@ class CustomCommand extends Command {
 				await GUIMessages.nowPlaying(message,player,"Error resuming queue");
 			}
 		}
-		
 		let track = player.nowPlaying(message);
-		let response = 'Skipped: last track';
-		if(track){
-			response = 'Skipped: '+track.title
-		}
-		await GUIMessages.nowPlaying(message,player,response);
 		
-		if(player.skip(message)){
-			return util.messages.encapsulate(message,{description:response});
-			//this.handler.modules['embed'].exec(message,)	
-		}
-		this.handler.emit('commandBlocked',message,this,'Sending skip command to player failed');
+		let fetcher = util.playlists.fetchShift(subreddit);
+		message.memory.channelSet(message, 'backgroundPlaylistFetcher', fetcher);
+		this.handler.emit('commandBlocked', message, this, 'Sending skip command to player failed');
 	}
 }
 

@@ -33,21 +33,21 @@ class CustomCommand extends Command {
 	}
 	
 	async exec(message, { subreddit }) {
-		var player = this.client.memory.channelGet(message, 'player');
-		if(!player){
-			return this.handler.emit('commandBlocked',message,this,'No player playing to act on');
-		}
+// 		var player = this.client.memory.channelGet(message, 'player');
+// 		if(!player){
+// 			return this.handler.emit('commandBlocked',message,this,'No player playing to act on');
+// 		}
 		
-		//ensure playing
-		var queue = player.getQueue(message);
-		if(queue && (queue.paused || queue.stopped)){
-			if(player.resume(message)){
-				await GUIMessages.nowPlaying(message,player,"Continuing where we left off "+common.randomMusicEmoji());
-			}else{
-				await GUIMessages.nowPlaying(message,player,"Error resuming queue");
-			}
-		}
-		let track = player.nowPlaying(message);
+// 		//ensure playing
+// 		var queue = player.getQueue(message);
+// 		if(queue && (queue.paused || queue.stopped)){
+// 			if(player.resume(message)){
+// 				await GUIMessages.nowPlaying(message,player,"Continuing where we left off "+common.randomMusicEmoji());
+// 			}else{
+// 				await GUIMessages.nowPlaying(message,player,"Error resuming queue");
+// 			}
+// 		}
+// 		let track = player.nowPlaying(message);
 		
 		let fetcher = util.playlists.fetchShift(subreddit);
 		message.client.memory.channelSet(message, 'backgroundPlaylistFetcher', fetcher);

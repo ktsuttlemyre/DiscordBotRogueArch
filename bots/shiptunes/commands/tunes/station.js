@@ -14,7 +14,7 @@ class CustomCommand extends Command {
 	constructor() {
 		super(commandVars.name, {
 		description: { content: 'set background playlist'},
-		aliases: [commandVars.name,'setbackground','setbackgroundplaylist','setradio','setstation'],
+		aliases: [commandVars.name, 'backgroundplaylist','background','setbackground','setbackgroundplaylist','setradio','setstation','radio','station','radiostation'],
 		category: commandVars.category,
 		clientPermissions: ['SEND_MESSAGES'],
 		args: [

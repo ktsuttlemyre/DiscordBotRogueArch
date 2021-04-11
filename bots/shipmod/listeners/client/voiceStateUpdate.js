@@ -94,7 +94,11 @@ class CustomListener extends Listener {
 			}
 		}
 		
+		//only work if this is a real event and the channel has changed
 		if(!manuallyTriggered && newstate.channelID !== oldstate.channelID){
+			//channel changed
+			newstate.setMute(false);
+			newstate.setDeaf(false);
 			util.playClip({channel:oldstate.channel},'https://youtu.be/xk093ODaNjc');
 			util.playClip({channel:newstate.channel},thisMember.id);
 			//client.commandHandler.runCommand(message,client.commandHandler.findCommand('clip'),thisMember.id);

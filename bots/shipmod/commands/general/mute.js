@@ -7,7 +7,7 @@ const commandVars = util.commandVars(__filename);
 class CustomCommand extends Command {
 	constructor() {
 		super(commandVars.name, {
-		description: { content: 'unmute'},
+		description: { content: 'mute'},
 		aliases: [commandVars.name],
 		category: commandVars.category,
 		clientPermissions: ['SEND_MESSAGES'],

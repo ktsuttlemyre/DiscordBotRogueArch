@@ -12,24 +12,24 @@ class CustomCommand extends Command {
 		category: commandVars.category,
 		clientPermissions: ['SEND_MESSAGES'],
 		args: [
-			// {
-			// 	id: 'search',
-			// 	default: '',
-			// 	match: 'content',
-			// },
+			{
+				id: 'id',
+				default: '',
+				match: 'content',
+			},
 			],
 		channelRestriction: 'guild', 
 		});
 	}
 	
-// 	userPermissions(message) {
-// 		if (!message.member.roles.cache.some(role => role.name === 'Admin')) {
-// 			return 'Admin';
-// 		}
-// 		return null;
-// 	}
+	userPermissions(message) {
+		if (!message.member.roles.cache.some(role => role.name === 'Admin')) {
+			return 'Admin';
+		}
+		return null;
+	}
 
-	async exec(message) {
+	async exec(message, { id }) {
 // 		if (!message.member.voice.channel) return message.channel.send(`${emotes.error} - You're not in a voice channel !`);
 // 		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${emotes.error} - You are not in the same voice channel !`);
 // 		var player = this.client.memory.get(message.guild, 'player')
@@ -45,8 +45,11 @@ class CustomCommand extends Command {
 // 		}
 // 		player.skip(message);
    		// process.exit(0);
-		var account = message.member || message.author //message.mentions.users.first() ||
-    account.voice.setMute(true)
+		var account = message.mentions.users.first() || message.member || message.author;
+		if(!account){
+			account = await message.client.users.fetch(id);
+		}
+   		account.voice.setMute(true)
     
 	}
 }

@@ -49,7 +49,11 @@ class CustomCommand extends Command {
 		if(!account){
 			account = await message.client.users.fetch(id);
 		}
-   		account.voice.setMute(true)
+		try{
+   			account.voice.setMute(true)
+		}catch(error){
+			message.channel.send('error muting user')
+		}
     
 	}
 }

@@ -46,7 +46,11 @@ class CustomCommand extends Command {
 // 		player.skip(message);
    		// process.exit(0);
 		var account = message.member || message.author //message.mentions.users.first() ||
-    account.voice.setMute(false)
+		try{
+   			account.voice.setMute(false)
+		}catch(error){
+			message.channel.send('error muting user')
+		}
     
 	}
 }

@@ -255,7 +255,7 @@ module.exports.playClip=async function(message,id,opts){
 
 const playQueue=new PromiseQueue();
 const playSound = module.exports.playSound = function(message,location,opts){
-	playQueue.enqueue(async function(resolve){
+	playQueue.enqueue(async function(resolve,error){
 		opts=opts||{volume:.5};
 		let dispatcher;
 		if(!message.channel){
@@ -269,10 +269,10 @@ const playSound = module.exports.playSound = function(message,location,opts){
 		}else{
 			try {
 			  await access(location, constants.F_OK);
-			} catch (error) {
-			  console.error(error);
-			  error(error)
-			  return error
+			} catch (err) {
+			  console.error(err);
+			  error(err)
+			  return err
 			}
 		}
 			
@@ -288,12 +288,14 @@ const playSound = module.exports.playSound = function(message,location,opts){
 					//channel.leave();
 				})
 				.on("error", err => {
-					resolve('resolved')
-					//channel.leave();
 					console.error(err);
+					error(err)
+					//channel.leave();
 				});
 			} catch (error) {
-				console.error(error);
+				console.error(err);
+				error(err)
+				return err
 			}
 		//return dispatcher
 	});

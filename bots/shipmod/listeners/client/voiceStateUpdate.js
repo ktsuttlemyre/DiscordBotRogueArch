@@ -97,9 +97,13 @@ class CustomListener extends Listener {
 		//only work if this is a real event and the channel has changed
 		if(!manuallyTriggered && newstate.channelID !== oldstate.channelID){
 			//channel changed
-			newstate.setMute(false);
-			newstate.setDeaf(false);
-			util.playClip({channel:oldstate.channel},'https://youtu.be/xk093ODaNjc');
+			//reset the users status removing serverMute and serverDeafen
+			
+			if(!newstate.member.user.bot && config.resetUserStateOnJoinLeave){
+				!member.roles.cache.some(role => role.name === config.roles.VoiceMute) && newstate.setMute(false);
+				!member.roles.cache.some(role => role.name === config.roles.VoiceDeaf) && newstate.setDeaf(false);
+			}
+			util.playClip({channel:oldstate.channel},config.leaveTone);
 			util.playClip({channel:newstate.channel},thisMember.id);
 			//client.commandHandler.runCommand(message,client.commandHandler.findCommand('clip'),thisMember.id);
 		}

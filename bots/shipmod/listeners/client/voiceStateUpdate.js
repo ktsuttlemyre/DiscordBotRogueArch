@@ -94,17 +94,21 @@ class CustomListener extends Listener {
 			}
 		}
 		
+		let joinLeaveConfig=config.voiceJoinLeave
+		
 		//only work if this is a real event and the channel has changed
 		if(!manuallyTriggered && newstate.channelID !== oldstate.channelID){
 			//channel changed
 			//reset the users status removing serverMute and serverDeafen
 			
-			if(!newstate.member.user.bot && config.resetUserStateOnJoinLeave){
+			if(!newstate.member.user.bot && joinLeaveConfig.resetUserState){
 				!member.roles.cache.some(role => role.name === config.roles.VoiceMute) && newstate.setMute(false);
 				!member.roles.cache.some(role => role.name === config.roles.VoiceDeaf) && newstate.setDeaf(false);
 			}
-			util.playClip({channel:oldstate.channel},config.leaveTone);
-			util.playClip({channel:newstate.channel},thisMember.id);
+			if(joinLeaveConfig.tones && joinLeaveConfig.tones.on){
+				util.playClip({channel:oldstate.channel},joinLeaveConfig.tones.defaultLeaveTone);
+				util.playClip({channel:newstate.channel},thisMember.id);
+			}
 			//client.commandHandler.runCommand(message,client.commandHandler.findCommand('clip'),thisMember.id);
 		}
 		

@@ -15,6 +15,12 @@ let config = {
 	
 }
 let defaults={
+	roles:{
+		VoiceMute:"VoiceMute",
+		VoiceDeaf:"VoiceDeaf"
+	},
+	resetUserStateOnJoinLeave:true,
+	leaveTone:'https://youtu.be/xk093ODaNjc',
 	encapsulateAdminRoles:'Admin',
 	DJ_Role:'DJ',
 	voiceTextLinkMap:{

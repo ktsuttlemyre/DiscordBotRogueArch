@@ -13,6 +13,9 @@ class CustomListener extends Listener {
 	}
 
 	async exec( oldstate, newstate, manuallyTriggered ) {
+		if(oldstate.partial || newstate.partial){
+			return
+		}
 		var env = process.env.ENVIRONMENT
         	if(env != 'production'){
 			return;

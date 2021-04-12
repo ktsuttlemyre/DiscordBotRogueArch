@@ -19,8 +19,14 @@ let defaults={
 		VoiceMute:"VoiceMute",
 		VoiceDeaf:"VoiceDeaf"
 	},
-	resetUserStateOnJoinLeave:true,
-	leaveTone:'https://youtu.be/xk093ODaNjc',
+	voiceJoinLeave:{
+		resetUserState:true,
+		tones:{
+			on:true,
+			defaultJoinTone:"", //currently not used
+			defaultLeaveTone:'https://youtu.be/xk093ODaNjc',
+		}	
+	},
 	encapsulateAdminRoles:'Admin',
 	DJ_Role:'DJ',
 	voiceTextLinkMap:{

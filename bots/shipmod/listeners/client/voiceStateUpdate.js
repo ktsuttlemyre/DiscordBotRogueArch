@@ -102,8 +102,8 @@ class CustomListener extends Listener {
 			//reset the users status removing serverMute and serverDeafen
 			
 			if(!newstate.member.user.bot && joinLeaveConfig.resetUserState){
-				!member.roles.cache.some(role => role.name === config.roles.VoiceMute) && newstate.setMute(false);
-				!member.roles.cache.some(role => role.name === config.roles.VoiceDeaf) && newstate.setDeaf(false);
+				!thisMember.roles.cache.some(role => role.name === config.roles.VoiceMute) && newstate.setMute(false);
+				!thisMember.roles.cache.some(role => role.name === config.roles.VoiceDeaf) && newstate.setDeaf(false);
 			}
 			if(joinLeaveConfig.tones && joinLeaveConfig.tones.on){
 				util.playClip({channel:oldstate.channel},joinLeaveConfig.tones.defaultLeaveTone);

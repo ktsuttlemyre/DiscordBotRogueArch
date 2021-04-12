@@ -14,6 +14,8 @@ const PromiseQueue = module.exports.PromiseQueue = require.main.require('./util/
 const ytdl = require('ytdl-core');
 const soundMap = require.main.require('./sounds');
 
+const _ = require('lodash')
+
 module.exports.devChannelGate=function(message,env){
         env = env || process.env.ENVIRONMENT;
 	
@@ -237,6 +239,10 @@ module.exports.zodiac=function(birthday){
 module.exports.playClip=async function(message,id,opts){
 	let dir = './sounds/';
 	let location = soundMap[id];
+	
+	if(Array.isArray(location)){
+		location = _.sample(location)
+	}
 
 	if(!location){
 		location = `${dir}${id}.mp3`

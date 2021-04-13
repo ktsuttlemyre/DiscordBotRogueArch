@@ -237,7 +237,7 @@ module.exports.zodiac=function(birthday){
 }
 
 module.exports.playClip=async function(message,id,opts){
-	let dir = './sounds/';
+	let dir = config.voiceJoinLeave.tones.location;
 	let location = soundMap[id];
 	
 	if(Array.isArray(location)){

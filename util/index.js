@@ -275,7 +275,7 @@ const playSound = module.exports.playSound = function(message,location,opts){
 		}
 
 		let hash =getYoutubeHash(location)
-		console.log('hash',hash)
+		console.log('hash',hash,location)
 		if(hash){ //is youtube link
 			location = ytdl(location, { filter: 'audioonly' })
 			//ytdl('https://www.youtube.com/watch?v=ZlAU_w7-Xp8', { quality: 'highestaudio', volume: 0.5})

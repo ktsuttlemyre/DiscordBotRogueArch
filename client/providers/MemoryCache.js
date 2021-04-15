@@ -11,6 +11,9 @@ class MemoryCache {
 
 	channelGet(message, key, defaultValue) {
 		let id = this.constructor.getGuildID(message.guild);
+		if(!message.channel){
+			throw new Error('Memory ChannelGet needs to have a message with a proper channel object passed to it')
+		}
 		const channelID = this.constructor.getChannelID(message.channel);
 		if(!channelID){
 			throw new Error('Channel.id must be specified if you want to get a channel value in memory')
@@ -26,6 +29,9 @@ class MemoryCache {
 
 	channelSet(message, key, value) {
 		let id = this.constructor.getGuildID(message.guild);
+		if(!message.channel){
+			throw new Error('Memory ChannelSet needs to have a message with a proper channel object passed to it')
+		}
 		const channelID = this.constructor.getChannelID(message.channel);
 		if(!channelID){
 			throw new Error('Channel.id must be specified if you want to set a channel value in memory')

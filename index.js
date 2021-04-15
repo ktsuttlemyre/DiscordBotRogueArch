@@ -95,7 +95,8 @@ process.on('unhandledRejection', (err,p) => {
    })
   .on('SIGTERM', shutdown('SIGTERM'))
   .on('SIGINT', shutdown('SIGINT'))
-  .on('uncaughtException', shutdown('uncaughtException'));
+  .on('uncaughtException', shutdown('uncaughtException'))
+  .on('warning', e => console.warn(e.stack));
 
 function shutdown(signal) {
     return (err) => {

@@ -251,6 +251,7 @@ let playClip = module.exports.playClip=async function(message,id,opts){
 		location = path.resolve(dir,location);
 	}
 	
+	console.log('location',location)
 	
 	try {
 		await access(location, constants.F_OK);

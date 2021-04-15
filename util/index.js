@@ -247,7 +247,7 @@ let playClip = module.exports.playClip=async function(message,id,opts){
 	if(!location){
 		location = `${id}.mp3`
 	}
-	if(location.indexOf('http')!=0){
+	if(location.indexOf('http')!=0 && dir.indexOf('http')!=0){
 		location = path.resolve(dir,location);
 	}
 	

@@ -25,7 +25,7 @@ let defaults={
 			on:true,
 			defaultJoinTone:"", //currently not used
 			defaultLeaveTone:'https://youtu.be/xk093ODaNjc',
-			location: 'http://s3.amazonaws.com/shiptunes/',
+			location: 'http://s3.amazonaws.com/shiptunes/', //'./sounds/'
 		}	
 	},
 	encapsulateAdminRoles:'Admin',

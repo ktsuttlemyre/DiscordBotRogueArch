@@ -281,7 +281,7 @@ const playSound = module.exports.playSound = async function(message,location,opt
 		}
 
 		let hash =getYoutubeHash(location)
-		console.log('Playing Sound',location,'with hash',hash)
+		console.log('Queing Sound',location,'with hash',hash)
 		if(hash){ //is youtube link
 			location = ytdl(location, { filter: 'audioonly' })
 			//ytdl('https://www.youtube.com/watch?v=ZlAU_w7-Xp8', { quality: 'highestaudio', volume: 0.5})
@@ -301,6 +301,7 @@ const playSound = module.exports.playSound = async function(message,location,opt
 			dispatcher = connection.play(location,{ volume: opts.volume });
 			dispatcher.on("start", () => {
 				  //channel.leave();
+				  console.log('Playing Sound',location)
 				})
 				.on("finish", () => {
 					resolve('resolved')

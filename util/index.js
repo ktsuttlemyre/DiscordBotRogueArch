@@ -250,18 +250,19 @@ let playClip = module.exports.playClip=async function(message,id,opts){
 	if(location.indexOf('http')!=0 && dir.indexOf('http')!=0){
 		location = path.resolve(dir,location);
 	}
-	
-	console.log('location',location)
-	
-	try {
-		await access(location, constants.F_OK);
-	} catch (error) {
-		if(id=='default'){
-			throw Error('default theme tone not found')
-			return
+	if(location.indexOf('http')!=0){
+		try {
+			await access(location, constants.F_OK);
+		} catch (error) {
+			if(id=='default'){
+				throw Error('default theme tone not found')
+				return
+			}
+			return await playClip(message,'default',opts)
 		}
-		return await playClip(message,'default',opts)
 	}
+	
+
 	return await playSound(message,location,opts)
 }
 

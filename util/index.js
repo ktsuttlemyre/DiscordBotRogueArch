@@ -274,10 +274,10 @@ const playSound = module.exports.playSound = function(message,location,opts){
 			return
 		}
 
-		if(getYoutubeHash(location)){
+		if(getYoutubeHash(location)){ //is youtube link
 			location = ytdl(location, { filter: 'audioonly' })
 			//ytdl('https://www.youtube.com/watch?v=ZlAU_w7-Xp8', { quality: 'highestaudio', volume: 0.5})
-		}else{
+		}else if(location.indexOf('http')!=0){ //is local resource
 			try {
 			  await access(location, constants.F_OK);
 			} catch (err) {

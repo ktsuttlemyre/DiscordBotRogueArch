@@ -236,7 +236,7 @@ module.exports.zodiac=function(birthday){
     return zodiacSigns[sign];
 }
 
-module.exports.playClip=async function(message,id,opts){
+let playClip = module.exports.playClip=async function(message,id,opts){
 	let dir = config.voiceJoinLeave.tones.location;
 	let location = soundMap[id];
 	
@@ -244,18 +244,23 @@ module.exports.playClip=async function(message,id,opts){
 		location = _.sample(location)
 	}
 
-	if(!location){
-		location = `${dir}${id}.mp3`
-		try {
-		  await access(location, constants.F_OK);
-		} catch (error) {
-		  location = soundMap['default'];
-		}
-	}
+	location = (location)?`${dir}${location}`:`${dir}${id}.mp3`
+
+	//if local file
 	if(location.indexOf('http')!=0){
 		location = path.resolve(dir,location);
+		try {
+			await access(location, constants.F_OK);
+		} catch (error) {
+			if(id=='default'){
+				throw Error('default theme tone not found')
+				return
+			}
+		  	await playClip(message,'default',opts)
+		  	return
+		}
 	}
-	
+
 	return playSound(message,location,opts)
 }
 

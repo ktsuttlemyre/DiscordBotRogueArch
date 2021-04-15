@@ -85,7 +85,7 @@ class CustomListener extends Listener {
 			streaming: oldstate.streaming !== newstate.streaming
 		}
 
-		if(changed.selfMute){
+		if(newstate.channelID && changed.selfMute){ //if in a channel and mute state changed
 			let amongusMode = this.client.memory.channelGet(newstate, 'amongusMode');
 			//mute handler
 			if(amongusMode){

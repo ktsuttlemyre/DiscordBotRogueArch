@@ -244,28 +244,28 @@ let playClip = module.exports.playClip=async function(message,id,opts){
 		location = _.sample(location)
 	}
 
-	location = (location)?`${dir}${location}`:`${dir}${id}.mp3`
-
-	//if local file
+	if(!location){
+		location = `${id}.mp3`
+	}
 	if(location.indexOf('http')!=0){
 		location = path.resolve(dir,location);
-		try {
-			await access(location, constants.F_OK);
-		} catch (error) {
-			if(id=='default'){
-				throw Error('default theme tone not found')
-				return
-			}
-		  	await playClip(message,'default',opts)
-		  	return
-		}
 	}
-
-	return playSound(message,location,opts)
+	
+	
+	try {
+		await access(location, constants.F_OK);
+	} catch (error) {
+		if(id=='default'){
+			throw Error('default theme tone not found')
+			return
+		}
+		return await playClip(message,'default',opts)
+	}
+	return await playSound(message,location,opts)
 }
 
 const playQueue=new PromiseQueue();
-const playSound = module.exports.playSound = function(message,location,opts){
+const playSound = module.exports.playSound = async function(message,location,opts){
 	playQueue.enqueue(async function(resolve,error){
 		opts=opts||{volume:.5};
 		let dispatcher;

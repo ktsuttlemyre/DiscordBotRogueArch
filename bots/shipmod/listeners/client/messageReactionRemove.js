@@ -20,9 +20,17 @@ class CustomListener extends Listener {
 	}
 
   async exec( reaction, user ) {
+		if(reaction.partial){
+			return
+		}
+		var env = process.env.ENVIRONMENT
+        	if(env != 'production'){
+			return;
+		}
 		if(user.bot){
 			return
 		}
+		let client = this.client;
 
 
  		//this is off because it is probably a bad idea to use a partial before calling .fetch()

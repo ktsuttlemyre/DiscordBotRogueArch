@@ -16,6 +16,13 @@ class ReadyListener extends Listener {
 	}
 
 	async exec() {
+		var env = process.env.ENVIRONMENT
+        	if(env != 'production'){
+			return;
+		}
+		if(user.bot){
+			return
+		}
 		let client = this.client;
 
 		//trigger listeners

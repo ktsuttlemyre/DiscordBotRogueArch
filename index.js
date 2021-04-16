@@ -143,7 +143,7 @@ function shutdown(signal) {
 				});
 			
 			let logChannel=guild.channels.resolve(config.actionLogChannel);
-			logChannel && logChannel.send(`Going to sleep`);
+			logChannel && logChannel.send(`Going to sleep for reason ${signal}`);
 		}
       }); //end iter guilds
       if(signal == 'SIGTERM'){

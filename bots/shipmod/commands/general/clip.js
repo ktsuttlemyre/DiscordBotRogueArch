@@ -7,7 +7,8 @@ const common = require.main.require('./common');
 const util = require.main.require('./util');
 const commandVars = common.commandVars(__filename);
 const _ = require('lodash');
-const map = require.main.require('./sounds')
+const config = require.main.require('./config');
+const map = config.voiceJoinLeave.tones.custom
 
 //sound effects https://www.youtube.com/channel/UCok6P4rwxBMun9ghaIV4ufQ
 

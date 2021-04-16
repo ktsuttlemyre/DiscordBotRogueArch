@@ -105,7 +105,11 @@ class ReadyListener extends Listener {
 // 				var message = queue.firstMessage
 // 				if(player.isPlaying(message)){
 // 				  common.nowPlaying(message,null,'I have crashed or gone to sleep!')
-// 				}	
+// 				}
+			
+			let logChannel=Guild.channels.resolve(config.actionLogChannel);
+			logChannel && logChannel.send(`${client.user.tag} woke up`);
+
  			}); //end guilds
 		
 		
@@ -115,6 +119,8 @@ class ReadyListener extends Listener {
 		// Set the bot status
 		
 		client.user.setActivity(process.env.ACTIVITY||' @'+(client.user.username||client.user.tag)+' help to get started', { type: 'LISTENING' });
+		
+
 
 	} //end exec
 

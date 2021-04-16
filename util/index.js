@@ -238,7 +238,7 @@ module.exports.zodiac=function(birthday){
 
 let playClip = module.exports.playClip=async function(message,id,opts){
 	let dir = config.voiceJoinLeave.tones.location;
-	let location = soundMap[id];
+	let location = (id=='default')?config.voiceJoinLeave.tones.defaultJoinTone:soundMap[id];
 	
 	if(Array.isArray(location)){
 		location = _.sample(location)

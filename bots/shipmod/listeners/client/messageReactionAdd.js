@@ -20,9 +20,18 @@ class CustomListener extends Listener {
 
 
 	async exec( reaction, user) {
+		if(reaction.partial){
+			return
+		}
+		var env = process.env.ENVIRONMENT
+        	if(env != 'production'){
+			return;
+		}
 		if(user.bot){
 			return
 		}
+		let client = this.client;
+		
 // 		//note don't do bot check here because we already did it on the global messaeReacitonAdd.
 // 		if(sendToUser.bot || sendToUser.user.bot){
 // 			//Do bot application functions here

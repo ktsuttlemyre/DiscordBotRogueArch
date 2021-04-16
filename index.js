@@ -6,6 +6,7 @@ require('dotenv').config();
 const Sentry = require('@sentry/node');
 const i18n = require("i18n");
 
+const config = require.main.require('./config');
 
 // overall application Logger
 const Logger = require.main.require('./util/logger');
@@ -100,13 +101,15 @@ process.on('unhandledRejection', (err,p) => {
 
 function shutdown(signal) {
     return (err) => {
+	var shipmod = bots["shipmod"] || bots[Object.keys(bots)[0]]; //get shipmod or any other first defined bot
 	console.log(`Shutting down with signal: ${ signal }`);
 	if (err){
 		console.error('Error:',err.stack || err);
 	}
 
 	// do cleanup
-	bots['shipmod'] && bots['shipmod'].guilds.cache.forEach(function(guild){ //iter guilds
+	shipmod.guilds.cache.forEach(function(guild){ //iter guilds
+		console.log('checking guild',guild.name,guild.id)
 		switch(signal){
 			case 'SIGTERM': //heroku sends sigterm for restarting dynos and sleep
 			case 'SIGINT':
@@ -138,6 +141,9 @@ function shutdown(signal) {
 					  common.nowPlaying(message,null,'I have crashed or gone to sleep!')
 					}	
 				});
+			
+			let logChannel=guild.channels.resolve(config.actionLogChannel);
+			logChannel && logChannel.send(`Going to sleep`);
 		}
       }); //end iter guilds
       if(signal == 'SIGTERM'){

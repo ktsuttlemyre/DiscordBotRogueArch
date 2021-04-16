@@ -12,7 +12,7 @@ const config = require.main.require('./config');
 module.exports.config=config;
 const PromiseQueue = module.exports.PromiseQueue = require.main.require('./util/PromiseQueue');
 const ytdl = require('ytdl-core');
-const soundMap = require.main.require('./sounds');
+const soundMap = config.voiceJoinLeave.tones.custom
 
 const _ = require('lodash')
 

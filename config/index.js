@@ -39,6 +39,7 @@ let defaults={
 			  "141026440782020608":"Show_me_that_smile.mp3", //troy
 			  "218890918764347393":"TRUMPETS.mp3", //enzan
 			  "337441260992200706":["garzon1.mp3","garzon2.mp3"], //garzon
+			  "116021432894357511":"shipmod-joelseph.mp3", //joel
 			  "":"",
 			  "500468522468507648":"WhoCanItBeNow.mp3", //shipwash
 			  "500467960914116609":"WhoCanItBeNow.mp3" //streamwash

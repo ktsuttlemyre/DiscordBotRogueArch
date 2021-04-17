@@ -36,44 +36,44 @@ module.exports.fetchShift = function (subreddit, options) {
 	let gOffset=0;
 	let nBuffer=5;
 
-	const array = [];
+	const items = [];
 
 	return function(){
 		return new Promise(async (resolve) => {
 			let index=gIndex+gOffset;
 			
-			let itemsArray = [];
-			if(!loadedAllItemss && index>array.length-nBuffer){ //if we have items on the server and getting close to buffer then
-				let items = await subredditBatch(subreddit,opts);
-				if(!itemsArray.length){
+			let itemsResponse = [];
+			if(!loadedAllItemss && index>items.length-nBuffer){ //if we have items on the server and getting close to buffer then
+				itemsResponse = await subredditBatch(subreddit,opts);
+				if(!itemsResponse.length){
 					loadedAllItems=true;
 				}else{
-					array.push.apply(array,itemsArray);
-					opts.before = itemsArray[(itemsArray.length - 1)].id
+					items.push.apply(items,itemsResponse);
+					opts.before = itemsResponse[(itemsResponse.length - 1)].id
 				}
 			}
 			console.log('processing tick');
 			
-			if(loadedAllItems && index>array.length){ //no more results. return nothing free memory
-				array.length = 0
-				array = null;
+			if(loadedAllItems && index>items.length){ //no more results. return nothing free memory
+				items.length = 0
+				items = null;
 				return resolve(undefined);
 			}
 			
 			console.log('calling callback with',index,gIndex)
-			console.log('itemsArray',itemsArray)
-			console.log('array',array)
+			console.log('itemsResponse',itemsResponse)
+			console.log('items',items)
 			
-			let response = g(array[index])[0]; //await callback(array[index], index, array, gIndex);
+			let response = g(items[index])[0]; //await callback(items[index], index, items, gIndex);
 			
 			index++;
 			gIndex++;
 
-			//test length and delete the beginning of the array to clean up
-			if(array.length>(nBuffer*2)+1){
-				let remove = array.length-((nBuffer*2)+1);
-				gOffset-= remove;  //array.length-(nBuffer)
-				array.splice(0,remove);	
+			//test length and delete the beginning of the items to clean up
+			if(items.length>(nBuffer*2)+1){
+				let remove = items.length-((nBuffer*2)+1);
+				gOffset-= remove;  //items.length-(nBuffer)
+				items.splice(0,remove);	
 			}
 
 			resolve(response);

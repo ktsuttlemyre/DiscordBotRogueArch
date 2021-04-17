@@ -42,14 +42,14 @@ module.exports.fetchShift = function (subreddit, options) {
 		return new Promise(async (resolve) => {
 			let index=gIndex+gOffset;
 			
-			let itemsResponse = [];
+			let itemsResponse = null;;
 			if(!loadedAllItemss && index>items.length-nBuffer){ //if we have items on the server and getting close to buffer then
 				itemsResponse = await subredditBatch(subreddit,opts);
-				if(!itemsResponse.length){
+				if(!itemsResponse || !itemsResponse.data || !itemsResponse.data.children || !itemsResponse.data.children.length){
 					loadedAllItems=true;
 				}else{
-					items.push.apply(items,itemsResponse);
-					opts.before = itemsResponse[(itemsResponse.length - 1)].id
+					items.push.apply(items,itemsResponse.data.children);
+					opts.before = itemsRepsonse.data.after //itemsResponse[(itemsResponse.length - 1)].id
 				}
 			}
 			console.log('processing tick');

@@ -2,7 +2,8 @@ const fetch = require("node-fetch");
 const util = require.main.require("./util");
 
 
-var g = function(json){
+let g = function(json){
+	//console.log('json',json);
 	let youtubeLinks=[]  
 	let text = JSON.stringify(json,null,2).replace(/(\r\n|\n|\r)/gm,"\n");
 	if(text){
@@ -60,6 +61,9 @@ module.exports.fetchShift = function (subreddit, options) {
 			}
 			
 			console.log('calling callback with',index,gIndex)
+			console.log('itemsArray',itemsArray)
+			console.log('array',array)
+			
 			let response = g(array[index])[0]; //await callback(array[index], index, array, gIndex);
 			
 			index++;

@@ -22,7 +22,7 @@ var g = function(json){
 }
 
 
-module.exports.fetchShift = async function (subreddit, options) {
+module.exports.fetchShift = function (subreddit, options) {
 	if(typeof options == 'function'){
 		//callback=options
 		options={}

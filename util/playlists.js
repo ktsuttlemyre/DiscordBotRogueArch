@@ -22,14 +22,14 @@ var g = function(json){
 }
 
 
-module.exports.fetchShift = async function fetchMessages(channel, options) {
+module.exports.fetchShift = async function (subreddit, options) {
 	if(typeof options == 'function'){
 		//callback=options
 		options={}
 	}
 	let opts={limit:20};
 
-	let loadedAllMessages = false; //denote all messages are loaded
+	let loadedAllItemss = false; //denote all items are loaded
 
 	let gIndex=0;
 	let gOffset=0;
@@ -41,30 +41,27 @@ module.exports.fetchShift = async function fetchMessages(channel, options) {
 		return new Promise(async (resolve) => {
 			let index=gIndex+gOffset;
 			
-			let messagesArray = [];
-			if(!loadedAllMessages && index>array.length-nBuffer){ //if we have messages on the server and getting close to buffer then
-				//https://discord.js.org/#/docs/main/master/class/MessageManager?scrollTo=fetch
-				let messages = await channel.messages.fetch(opts,false,true);
-				//console.log('fetched messages',messages.length)
-				messagesArray = messages.array();
-				if(!messagesArray.length){
-					loadedAllMessages=true;
+			let itemsArray = [];
+			if(!loadedAllItemss && index>array.length-nBuffer){ //if we have items on the server and getting close to buffer then
+				let items = await subredditBatch(subreddit,opts);
+				if(!itemsArray.length){
+					loadedAllItems=true;
 				}else{
-					array.push.apply(array,messagesArray);
-					opts.before = messagesArray[(messagesArray.length - 1)].id
+					array.push.apply(array,itemsArray);
+					opts.before = itemsArray[(itemsArray.length - 1)].id
 				}
 			}
 			console.log('processing tick');
 			
-			if(loadedAllMessages && index>array.length){ //no more results. return nothing free memory
+			if(loadedAllItems && index>array.length){ //no more results. return nothing free memory
 				array.length = 0
 				array = null;
 				return resolve(undefined);
 			}
 			
 			console.log('calling callback with',index,gIndex)
-			let response = array[index]; //await callback(array[index], index, array, gIndex);
-
+			let response = g(array[index])[0]; //await callback(array[index], index, array, gIndex);
+			
 			index++;
 			gIndex++;
 
@@ -81,14 +78,17 @@ module.exports.fetchShift = async function fetchMessages(channel, options) {
 	}
 
 //https://www.reddit.com/dev/api#GET_new
-var subredditBatch = module.exports.subredditBatch = function(subreddit,sort){
-	sort=(sort||'new').toLowerCase();
-	if(Array.isArray(subreddit)){
+let subredditBatch = module.exports.subredditBatch = function(subreddit,opts){
+	opts = opts || {};
+	opts.sort=(opts.sort||'new').toLowerCase(); //default to new and lowercase all sort
+	opts.before = opts.before || ''
+	
+	if(Array.isArray(subreddit)){ //turn arry into string
 		subreddit=subreddit.join('+');
 	}
-	let url = `https://api.reddit.com/r/${subreddit}/${sort}.json?limit=100`;
-	if(before){
-		url+'&before='+before;
+	let url = `https://api.reddit.com/r/${subreddit}/${opts.sort}.json?limit=100`;
+	if(opts.before){
+		url+'&before='+opts.before;
 	}
 	return new Promise(resolve => {
 		fetch(url) //?sort=top&t=day&limit=1`)

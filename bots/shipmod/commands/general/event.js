@@ -3,6 +3,7 @@ const GUIMessages = require.main.require('./templates/messages');
 const { Command } = require('discord-akairo');
 const { Player } = require("discord-player");
 const common = require.main.require('./common');
+const util = require.main.require('./util');
 const commandVars = common.commandVars(__filename);
 const _ = require('lodash');
 const roomMap = require.main.require('./config').eventRoomMap;
@@ -24,6 +25,10 @@ class CustomCommand extends Command {
 // 			],
 		channelRestriction: 'guild', 
 		});
+	}
+	
+	parseInput(message){
+		
 	}
 
 	async exec(message) {

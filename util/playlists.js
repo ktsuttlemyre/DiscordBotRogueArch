@@ -49,7 +49,7 @@ module.exports.fetchShift = function (subreddit, options) {
 					loadedAllItems=true;
 				}else{
 					items.push.apply(items,itemsResponse.data.children);
-					opts.before = itemsRepsonse.data.after //itemsResponse[(itemsResponse.length - 1)].id
+					opts.before = itemsResponse.data.after //itemsResponse[(itemsResponse.length - 1)].id
 				}
 			}
 			console.log('processing tick');

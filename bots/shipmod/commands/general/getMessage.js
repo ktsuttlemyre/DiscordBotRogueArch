@@ -3,7 +3,6 @@ const { Command } = require('discord-akairo');
 const { Player } = require("discord-player");
 const emotes={error:":error:"}
 const {reactions,defaultAvatar} = require.main.require('./common');
-const common = require.main.require('./common');
 const _ = require('lodash');
 const path = require('path');
 const util= require.main.require('./util');
@@ -36,17 +35,18 @@ class CustomCommand extends Command {
 
 	async exec(message, {search}) {
 
-	    //let messages = await common.getMessages(message.channel);
+	    //let messages = await util.getMessages(message.channel);
 	    //message.channel.send(`got ${messages.length} messages`);
 		
 		let id = search
-	await common.fetchMessages(message.channel,function(message,index,messages,gIndex){
-		if(message.id == search){
-      return 
-    }
-	})
+		let found = null
+		await util.message.fetchForEach(message.channel,function(message,index,messages,gIndex){
+			if(message.id == search){
+				return true
+			}
+		})
 
- message.channel.send('```'+JSON.stringify(message)+'```')
+		message.channel.send('```'+JSON.stringify(found)+'```')
 
     
 	}

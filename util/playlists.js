@@ -30,7 +30,7 @@ module.exports.fetchShift = function (subreddit, options) {
 	}
 	let opts={limit:20};
 
-	let loadedAllItemss = false; //denote all items are loaded
+	let loadedAllItems = false; //denote all items are loaded
 
 	let gIndex=0;
 	let gOffset=0;
@@ -43,7 +43,7 @@ module.exports.fetchShift = function (subreddit, options) {
 			let index=gIndex+gOffset;
 			
 			let itemsResponse = null;;
-			if(!loadedAllItemss && index>items.length-nBuffer){ //if we have items on the server and getting close to buffer then
+			if(!loadedAllItems && index>items.length-nBuffer){ //if we have items on the server and getting close to buffer then
 				itemsResponse = await subredditBatch(subreddit,opts);
 				if(!itemsResponse || !itemsResponse.data || !itemsResponse.data.children || !itemsResponse.data.children.length){
 					loadedAllItems=true;

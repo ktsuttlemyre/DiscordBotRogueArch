@@ -7,13 +7,14 @@ const common = require.main.require('./common');
 const _ = require('lodash');
 const path = require('path');
 const util= require.main.require('./util');
+const commandVars = util.commandVars(__filename);
 
 class CustomCommand extends Command {
 	constructor() {
-		super(path.parse(__filename).name, {
+		super(commandVars.name, {
 		description: { content: 'fetchall'},
-		aliases: ['fetchall'],
-		category: path.basename(path.dirname(__filename)),
+		aliases: [commandVars.name],
+		category: commandVars.category,
 		clientPermissions: ['SEND_MESSAGES'],
 		args: [
 			{

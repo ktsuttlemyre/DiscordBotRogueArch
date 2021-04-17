@@ -42,7 +42,7 @@ let defaults={
 			  "116021432894357511":"shipmod-joelseph.mp3", //joel
 			  "":"",
 			  "500468522468507648":"WhoCanItBeNow.mp3", //shipwash
-			  "500467960914116609":"WhoCanItBeNow.mp3" //streamwash
+			  "500467960914116609":"https://www.youtube.com/watch?v=P6CzzynlYuY" //streamwash
 			}
 		}	
 	},

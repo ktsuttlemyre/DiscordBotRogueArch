@@ -53,6 +53,7 @@ let defaults={
 
 
 let loadToneMap = async function(configInstance){
+	console.log('loading external tone map')
 	
 	let url = configInstance.voiceJoinLeave.tones.externalMap
 
@@ -61,9 +62,12 @@ let loadToneMap = async function(configInstance){
 	fetch(url, settings)
 	    .then(res => res.json())
 	    .then((json) => {
+		
 		if(!json){
+			console.error('external tone map not available')
 			return
 		}
+		console.log('applying external tone map')
 		configInstance.voiceJoinLeave.tones.custom = Object.assign(configInstance.voiceJoinLeave.tones.custom, json)
 	    });
 }

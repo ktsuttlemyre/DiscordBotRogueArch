@@ -20,9 +20,6 @@ class ReadyListener extends Listener {
         	if(env != 'production'){
 			return;
 		}
-		if(user.bot){
-			return
-		}
 		let client = this.client;
 
 		//trigger listeners

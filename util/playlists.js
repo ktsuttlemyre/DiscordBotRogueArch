@@ -60,9 +60,9 @@ module.exports.fetchShift = function (subreddit, options) {
 				return resolve(undefined);
 			}
 			
-			console.log('calling callback with',index,gIndex)
-			console.log('itemsResponse',itemsResponse)
-			console.log('items',items)
+			//console.log('calling callback with',index,gIndex)
+			//console.log('itemsResponse',itemsResponse)
+			//console.log('items',items)
 			
 			let response = g(items[index])[0]; //await callback(items[index], index, items, gIndex);
 			

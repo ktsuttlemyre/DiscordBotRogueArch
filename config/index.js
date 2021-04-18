@@ -1,3 +1,5 @@
+const fetch = require('node-fetch');
+
 let config = {
 	"development": {
 		"dialect": "sqlite",
@@ -26,6 +28,8 @@ let defaults={
 			defaultJoinTone: "https://www.youtube.com/watch?v=RtCt5gKMBMw", //"https://www.youtube.com/watch?v=QFewaD67FEY", //currently not used
 			defaultLeaveTone: "https://www.youtube.com/watch?v=ea44CKOKlP8", //'https://youtu.be/xk093ODaNjc',
 			location: 'https://shipwa.sh/discord/tones/',//'http://s3.amazonaws.com/shiptunes/tones/', //'./sounds/'
+			externalMap: 'https://shipwa.sh/discord/tones/index.js',
+			externalMapUpdateInterval:0,
 			enableCustom:true,
 			custom:{
 			  "125821419308318720":"seinfeld.mp3", //wholius
@@ -63,5 +67,24 @@ let defaults={
 	},
 	devChannelID:'814518995755335773',
 }
+
+
+let loadToneMap = async function(configInstance){
+	
+	let url = configInstance.voiceJoinLeave.tones.externalMap
+
+	let settings = { method: "Get" };
+
+	fetch(url, settings)
+	    .then(res => res.json())
+	    .then((json) => {
+		configInstance.voiceJoinLeave.tones.externalMap = Object.assign(configInstance.voiceJoinLeave.tones.externalMap, json)
+	    });
+}
+
 const env = process.env.NODE_ENV || process.env.ENVIRONMENT || 'development';
-module.exports =  Object.assign(defaults, config[env]);
+let configInstance = Object.assign(defaults, config[env]);
+if(configInstance.voiceJoinLeave && configInstance.voiceJoinLeave.tones && configInstance.voiceJoinLeave.tones.externalMap){
+	setInterval(function(){loadToneMap(configInstance)},configInstance.voiceJoinLeave.tones.externalMapUpdateInterval||15*60*1000); //15 minutes
+}
+module.exports = configInstance;

@@ -78,7 +78,10 @@ let loadToneMap = async function(configInstance){
 	fetch(url, settings)
 	    .then(res => res.json())
 	    .then((json) => {
-		configInstance.voiceJoinLeave.tones.externalMap = Object.assign(configInstance.voiceJoinLeave.tones.externalMap, json)
+		if(!json){
+			return
+		}
+		configInstance.voiceJoinLeave.tones.custom = Object.assign(configInstance.voiceJoinLeave.tones.custom, json)
 	    });
 }
 

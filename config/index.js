@@ -28,7 +28,7 @@ let defaults={
 			defaultJoinTone: "https://www.youtube.com/watch?v=RtCt5gKMBMw", //"https://www.youtube.com/watch?v=QFewaD67FEY", //currently not used
 			defaultLeaveTone: "https://www.youtube.com/watch?v=ea44CKOKlP8", //'https://youtu.be/xk093ODaNjc',
 			location: 'https://shipwa.sh/discord/tones/',//'http://s3.amazonaws.com/shiptunes/tones/', //'./sounds/'
-			externalMap: 'https://shipwa.sh/discord/tones/index.json',
+			externalMap: 'https://shipwa.sh/discord/tones/index.yaml',
 			externalMapUpdateInterval:0,
 			enableCustom:true,
 			custom:{}

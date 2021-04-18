@@ -110,6 +110,7 @@ let playBackgroundPlaylist = module.exports.playBackgroundPlaylist = async (mess
 	
 	let fetchNext = message.client.memory.channelGet(message,"backgroundPlaylistFetcher") || defaultFetcher;
 	let selection = await fetchNext();
+	console.log('background playing',selection)
 	
 	player.backgroundPlaylist=true;
 	return player.play(message, selection, { firstResult: true });

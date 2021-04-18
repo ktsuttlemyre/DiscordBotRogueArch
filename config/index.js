@@ -1,4 +1,5 @@
 const fetch = require('node-fetch');
+const yaml = require('js-yaml');
 
 let config = {
 	"development": {

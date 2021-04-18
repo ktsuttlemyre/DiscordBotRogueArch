@@ -85,6 +85,8 @@ let loadToneMap = async function(configInstance){
 const env = process.env.NODE_ENV || process.env.ENVIRONMENT || 'development';
 let configInstance = Object.assign(defaults, config[env]);
 if(configInstance.voiceJoinLeave && configInstance.voiceJoinLeave.tones && configInstance.voiceJoinLeave.tones.externalMap){
-	setInterval(function(){loadToneMap(configInstance)},configInstance.voiceJoinLeave.tones.externalMapUpdateInterval||15*60*1000); //15 minutes
+	let fn = function(){loadToneMap(configInstance)}
+	setInterval(fn,configInstance.voiceJoinLeave.tones.externalMapUpdateInterval||15*60*1000); //15 minutes
+	fn()
 }
 module.exports = configInstance;

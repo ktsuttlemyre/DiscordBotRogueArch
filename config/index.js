@@ -57,19 +57,20 @@ let loadToneMap = async function(configInstance){
 	
 	let url = configInstance.voiceJoinLeave.tones.externalMap
 
-	let settings = { method: "Get" };
-
-	fetch(url, settings)
-	    .then(res => res.json())
-	    .then((json) => {
-		
-		if(!json){
-			console.error('external tone map not available')
-			return
-		}
-		console.log('applying external tone map')
-		configInstance.voiceJoinLeave.tones.custom = Object.assign(configInstance.voiceJoinLeave.tones.custom, json)
-	    });
+	const response = await fetch(url,{ method: "Get" });
+	const body = await response.text();
+	let json = {}
+	try { //TODO test yaml
+		json = yaml.load(body);
+	} catch (e) {
+		console.error(e);
+	}
+	if(!json){
+		console.error('external tone map not available')
+		return
+	}
+	console.log('applying external tone map')
+	configInstance.voiceJoinLeave.tones.custom = Object.assign(configInstance.voiceJoinLeave.tones.custom, json)
 }
 
 const env = process.env.NODE_ENV || process.env.ENVIRONMENT || 'development';

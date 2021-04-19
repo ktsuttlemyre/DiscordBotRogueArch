@@ -45,6 +45,7 @@ class CustomCommand extends Command {
 // 		}
 // 		player.skip(message);
    		// process.exit(0);
+		message.client.destroy();
 		process.kill(process.pid, 'SIGINT');
 	}
 }

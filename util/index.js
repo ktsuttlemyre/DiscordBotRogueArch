@@ -312,7 +312,7 @@ const playSound = module.exports.playSound = async function(message,location,opt
 					error(err)
 					//channel.leave();
 				});
-			} catch (error) {
+			} catch (err) {
 				console.error(err);
 				error(err)
 				return err

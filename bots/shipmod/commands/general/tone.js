@@ -85,13 +85,13 @@ class CustomCommand extends Command {
             .on("error", err => {
               console.log('context disconnected from discord due to error')
               console.error(err);
-              error(err)
+              //error(err)
               //channel.leave();
             });
           } catch (err) {
             console.log('context didnt connect to discord due to error')
             console.error(err);
-            error(err)
+            //error(err)
             return err
           }
       

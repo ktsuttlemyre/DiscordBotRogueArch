@@ -70,7 +70,7 @@ class CustomCommand extends Command {
  
       // composeWith(context);
 
-    
+    let dispatcher;
     		try {
           var connection = await message.member.voice.channel();
           dispatcher = connection.play(context);

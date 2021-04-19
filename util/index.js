@@ -274,7 +274,6 @@ const playQueue=new PromiseQueue();
 const playSound = module.exports.playSound = async function(channel,location,opts){
 	playQueue.enqueue(async function(resolve,error){
 		opts=opts||{volume:.5};
-		let dispatcher;
 		if(!channel){
 			resolve('resolved')
 			return
@@ -295,7 +294,7 @@ const playSound = module.exports.playSound = async function(channel,location,opt
 			}
 		}
 			
-			
+		let dispatcher;
 		try {
 			var connection = await channel.join();
 			dispatcher = connection.play(location,{ volume: opts.volume });

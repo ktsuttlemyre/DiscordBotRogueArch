@@ -15,8 +15,8 @@ const map = config.voiceJoinLeave.tones.custom
 class CustomCommand extends Command {
 	constructor() {
 		super(commandVars.name, {
-		description: { content: 'clip'},
-		aliases: [commandVars.name,'sound'],
+		description: { content: 'play someone\'s theme tone'},
+		aliases: [commandVars.name],
 		category: commandVars.category,
 		clientPermissions: ['SEND_MESSAGES'],
 		args: [
@@ -52,7 +52,7 @@ class CustomCommand extends Command {
 		    //arg = map[arg]||arg;
 	            //console.log('arg after map',arg)
 		    arg = (arg || '').trim() || null
-		    await util.playClip(message.member.voice.channel,arg)
+		    await util.playTemeTone(message.member.voice.channel,arg);
 		}
 }
 

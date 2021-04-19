@@ -49,8 +49,8 @@ class CustomCommand extends Command {
 		    console.log('arg',arg)
 		    arg = (arg||'').match(/(\<\@\!)?(\d+)(>)?/)[2]||arg;
 		    console.log('arg after match',arg);
-		    arg = map[arg]||arg;
-	            console.log('arg after map',arg)
+		    //arg = map[arg]||arg;
+	            //console.log('arg after map',arg)
 		    arg = (arg || '').trim() || null
 		    await util.playClip(message.member.voice.channel,arg)
 		}

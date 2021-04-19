@@ -53,7 +53,7 @@ class CustomCommand extends Command {
     Tone.setContext(context)
     
     //create a synth and connect it to the main output (your speakers)
-    const synth = new Tone.Synth().toDestination();
+    const synth = new Tone.Synth() //.toDestination();
 
 
     

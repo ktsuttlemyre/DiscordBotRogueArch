@@ -16,7 +16,7 @@ class CustomCommand extends Command {
 	constructor() {
 		super(commandVars.name, {
 		description: { content: 'play someone\'s theme tone'},
-		aliases: [commandVars.name],
+		aliases: [commandVars.name,"clip"],
 		category: commandVars.category,
 		clientPermissions: ['SEND_MESSAGES'],
 		args: [

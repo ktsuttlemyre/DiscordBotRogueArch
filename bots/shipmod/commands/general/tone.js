@@ -76,7 +76,7 @@ class CustomCommand extends Command {
           dispatcher = connection.play(context);
           dispatcher.on("start", () => {
               //channel.leave();
-              console.log('context set)
+              console.log('context set')
             })
             .on("finish", () => {
               console.log('context disconnected from discord')

@@ -147,6 +147,9 @@ function shutdown(signal) {
 		}
       }); //end iter guilds
       if(signal == 'SIGTERM'){
+		Object.keys(bots).forEach(name => {
+			bots[name].destroy();
+		});
 	      return process.exit(0);
       }else if(signal =='uncaughtException'){
 	      /*
@@ -170,8 +173,14 @@ function shutdown(signal) {
 
 */
 	      console.log('log object=',err)
+		Object.keys(bots).forEach(name => {
+			bots[name].destroy();
+		});
 	      return process.exit(0);
       }
+	Object.keys(bots).forEach(name => {
+		bots[name].destroy();
+	});
       process.exit(err ? 1 : 0);
 
     };

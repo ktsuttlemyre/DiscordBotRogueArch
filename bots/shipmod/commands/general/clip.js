@@ -52,7 +52,7 @@ class CustomCommand extends Command {
 		    arg = map[arg]||arg;
 	            console.log('arg after map',arg)
 		    arg = (arg || '').trim() || null
-		    await util.playClip(message,arg)
+		    await util.playClip(message.member.voice.channel,arg)
 		}
 }
 

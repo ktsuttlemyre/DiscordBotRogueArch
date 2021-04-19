@@ -109,8 +109,8 @@ class CustomListener extends Listener {
 				!thisMember.roles.cache.some(role => role.name === config.roles.VoiceDeaf) && newstate.setDeaf(false);
 			}
 			if(joinLeaveConfig.tones && joinLeaveConfig.tones.on){
-				await util.playClip(oldstate.channel,joinLeaveConfig.tones.defaultLeaveTone);
-				await util.playClip(newstate.channel,thisMember.id);
+				await util.playThemeTone(oldstate.channel,joinLeaveConfig.tones.defaultLeaveTone);
+				await util.playThemeTone(newstate.channel,thisMember.id);
 			}
 			//client.commandHandler.runCommand(message,client.commandHandler.findCommand('clip'),thisMember.id);
 		}

@@ -84,7 +84,7 @@ class CustomCommand extends Command {
 
     
     		try {
-          var connection = await message.member.voice.channel();
+          var connection = await message.member.voice.channel.join();
           dispatcher = connection.play(bufferToStream(b));
           dispatcher.on("start", () => {
               //channel.leave();
@@ -103,7 +103,6 @@ class CustomCommand extends Command {
           } catch (err) {
             console.log('context didnt connect to discord due to error')
             console.error(err);
-            error(err)
             return err
           }
       

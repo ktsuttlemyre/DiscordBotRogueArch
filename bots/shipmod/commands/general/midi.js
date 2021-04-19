@@ -84,7 +84,7 @@ class CustomCommand extends Command {
 
     
     		try {
-          var connection = await message.channel.join();
+          var connection = await message.member.voice.channel();
           dispatcher = connection.play(bufferToStream(b));
           dispatcher.on("start", () => {
               //channel.leave();

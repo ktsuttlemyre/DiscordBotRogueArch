@@ -82,7 +82,7 @@ class CustomCommand extends Command {
 
 
 
-    
+    let dispatcher;
     		try {
           var connection = await message.member.voice.channel.join();
           dispatcher = connection.play(bufferToStream(b));

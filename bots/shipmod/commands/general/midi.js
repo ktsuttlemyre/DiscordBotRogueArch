@@ -105,9 +105,7 @@ class CustomCommand extends Command {
             console.error(err);
             return err
           }
-      
-    //play a middle 'C' for the duration of an 8th note
-    synth.triggerAttackRelease("C4", "8n");
+
     
     
 //  	 	    const { channel } = message.member.voice;

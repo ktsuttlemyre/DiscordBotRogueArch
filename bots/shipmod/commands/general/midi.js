@@ -100,7 +100,7 @@ class CustomCommand extends Command {
               error(err)
               //channel.leave();
             });
-          } catch (error) {
+          } catch (err) {
             console.log('context didnt connect to discord due to error')
             console.error(err);
             error(err)

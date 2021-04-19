@@ -236,7 +236,7 @@ module.exports.zodiac=function(birthday){
     return zodiacSigns[sign];
 }
 
-let playClip = module.exports.playClip=async function(message,id,opts){
+let playClip = module.exports.playClip=async function(channel,id,opts){
 	let dir = config.voiceJoinLeave.tones.location;
 	let location = (id=='default')?config.voiceJoinLeave.tones.defaultJoinTone:soundMap[id];
 	
@@ -262,20 +262,20 @@ let playClip = module.exports.playClip=async function(message,id,opts){
 				throw Error('default theme tone not found')
 				return
 			}
-			return await playClip(message,'default',opts)
+			return await playClip(channel,'default',opts)
 		}
 	}
 	
 
-	return await playSound(message,location,opts)
+	return await playSound(channel,location,opts)
 }
 
 const playQueue=new PromiseQueue();
-const playSound = module.exports.playSound = async function(message,location,opts){
+const playSound = module.exports.playSound = async function(channel,location,opts){
 	playQueue.enqueue(async function(resolve,error){
 		opts=opts||{volume:.5};
 		let dispatcher;
-		if(!message.channel){
+		if(!channel){
 			resolve('resolved')
 			return
 		}
@@ -297,7 +297,7 @@ const playSound = module.exports.playSound = async function(message,location,opt
 			
 			
 		try {
-			var connection = await message.channel.join();
+			var connection = await channel.join();
 			dispatcher = connection.play(location,{ volume: opts.volume });
 			dispatcher.on("start", () => {
 				  //channel.leave();

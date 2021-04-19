@@ -51,7 +51,7 @@ class CustomCommand extends Command {
 		    console.log('arg after match',arg);
 		    arg = map[arg]||arg;
 	            console.log('arg after map',arg)
-		    arg = (arg|'').trim() || null
+		    arg = (arg || '').trim() || null
 		    await uti.playClip(message,arg)
 		}
 }

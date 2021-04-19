@@ -236,7 +236,7 @@ module.exports.zodiac=function(birthday){
     return zodiacSigns[sign];
 }
 
-let playClip = module.exports.playClip=async function(channel,id,opts){
+let playThemeTone = module.exports.playThemeTone=async function(channel,id,opts){
 	let dir = config.voiceJoinLeave.tones.location;
 	let location = (id=='default')?config.voiceJoinLeave.tones.defaultJoinTone:soundMap[id];
 	
@@ -262,7 +262,7 @@ let playClip = module.exports.playClip=async function(channel,id,opts){
 				throw Error('default theme tone not found')
 				return
 			}
-			return await playClip(channel,'default',opts)
+			return await playThemeTone(channel,'default',opts)
 		}
 	}
 	

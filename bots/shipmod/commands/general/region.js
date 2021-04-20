@@ -1,4 +1,7 @@
 //https://github.com/Decicus/discord-server-change/blob/master/index.js
+  
+const DiscordJs = require('discord.js');
+const Permissions = DiscordJs.Permissions.FLAGS;
 
 const { Command } = require('discord-akairo');
 const emotes={error:":error:"}

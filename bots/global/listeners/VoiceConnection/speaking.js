@@ -14,12 +14,12 @@ class CustomListener extends Listener {
 	}
     
     async exec(user,speaking) {
-        message.react(reactions.shipwash); //THIS should be handled elsewhere
-        //console.log(`${message.author.username} was blocked from using ${command.id} because of ${reason}!`);
+//         message.react(reactions.shipwash); //THIS should be handled elsewhere
+//         //console.log(`${message.author.username} was blocked from using ${command.id} because of ${reason}!`);
             
-        this.client.memory.channelSet(message,`${message.id}_promise`,new Promise(resolve => {
-            this.client.memory.channelSet(message,`${message.id}_resolve`,resolve);
-        }));
+//         this.client.memory.channelSet(message,`${message.id}_promise`,new Promise(resolve => {
+//             this.client.memory.channelSet(message,`${message.id}_resolve`,resolve);
+//         }));
       
       
       

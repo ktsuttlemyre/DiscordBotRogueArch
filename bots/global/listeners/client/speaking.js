@@ -1,16 +1,18 @@
 const { Listener } = require('discord-akairo');
-const {reactions,defaultAvatar} = require.main.require('./common');
-const commandVars = require.main.require('./util').commandVars(__filename);
+const util = require.main.require('./util');
+const config = util.config;
+const commandVars = util.commandVars(__filename);
 
 // https://discord-akairo.github.io/#/docs/main/master/class/CommandHandler?scrollTo=e-commandStarted
-class CommandBlockedListener extends Listener {
-    constructor() {
-        super('global/'+commandVars.id, {
-            emitter: 'VoiceConnection',
-            event: 'speaking'
-        });
-    }
-
+class CustomListener extends Listener {
+	constructor() {
+		super(commandVars.name, {
+			emitter: commandVars.category,
+			event: commandVars.name,
+			category: commandVars.category,
+		});
+	}
+    
     async exec(user,speaking) {
         message.react(reactions.shipwash); //THIS should be handled elsewhere
         //console.log(`${message.author.username} was blocked from using ${command.id} because of ${reason}!`);

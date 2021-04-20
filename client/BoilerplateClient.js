@@ -30,7 +30,7 @@ function loadFilter (botPath,folderName,dir){
 	const commands = path.join(botPath,folderName);
 	const globalCommands = path.join(botPath,'../global',folderName);
 	const load = isSubdir(commands,dir) || isSubdir(globalCommands,dir);
-	config.debug && console.info(`botPath=${botPath} folderName=${folderName} dir=${dir} load=${load}`)
+	console.info(`botPath=${botPath} folderName=${folderName} dir=${dir} load=${load}`)
 	return load;
 }
 

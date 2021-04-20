@@ -84,37 +84,37 @@ class CustomCommand extends Command {
     }
 
     await updateCooldown(guildId, cmd);
-});
+};
 
 
-    const guild = message.guild;
-    let regions;
-    try {
-        regions = await guild.fetchVoiceRegions();
-    } catch (err) {
-        console.error(err);
-    }
+//     const guild = message.guild;
+//     let regions;
+//     try {
+//         regions = await guild.fetchVoiceRegions();
+//     } catch (err) {
+//         console.error(err);
+//     }
 
-    let region = guild.region;
+//     let region = guild.region;
 
-    if (regions !== undefined) {
-        const findRegion = regions.get(region);
-        region = findRegion.name;
+//     if (regions !== undefined) {
+//         const findRegion = regions.get(region);
+//         region = findRegion.name;
 
-        if (findRegion.deprecated) {
-            region += ' [Deprecated]';
-        }
+//         if (findRegion.deprecated) {
+//             region += ' [Deprecated]';
+//         }
 
-        if (findRegion.vip) {
-            region += ' [VIP]';
-        }
-    }
+//         if (findRegion.vip) {
+//             region += ' [VIP]';
+//         }
+//     }
 
-    return (`Current server region: ${region}`);
+//     return (`Current server region: ${region}`);
 
 
 
-	}
+// 	}
 }
 
 module.exports = CustomCommand;

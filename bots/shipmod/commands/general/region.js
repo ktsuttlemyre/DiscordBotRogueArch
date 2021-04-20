@@ -39,7 +39,8 @@ class CustomCommand extends Command {
 			// 	match: 'content',
 			// },
 			],
-		channelRestriction: 'guild', 
+		channel: 'guild',
+		ownerOnly: true,
 		});
 	}
 	

@@ -9,8 +9,6 @@ const util = require.main.require('./util');
 const commandVars = util.commandVars(__filename);
 
 
-
-const Permissions = DiscordJs.Permissions.FLAGS;
 /**
  * Region aliases
  */

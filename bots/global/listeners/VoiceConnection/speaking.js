@@ -63,7 +63,7 @@ class CustomListener extends Listener {
     }
 }
 
-module.exports = CommandBlockedListener;
+module.exports = CustomListener;
 
 
 

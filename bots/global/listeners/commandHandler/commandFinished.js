@@ -1,15 +1,17 @@
 const { Listener } = require('discord-akairo');
 const util = require.main.require('./util');
+const config = util.config;
 const commandVars = util.commandVars(__filename);
 
-// https://discord-akairo.github.io/#/docs/main/master/class/CommandHandler?scrollTo=e-commandFinished
-class CommandBlockedListener extends Listener {
-    constructor() {
-        super('global/'+commandVars.id, {
-            emitter: 'commandHandler',
-            event: 'commandFinished'
-        });
-    }
+// https://discord-akairo.github.io/#/docs/main/master/class/CommandHandler?scrollTo=e-commandStarted
+class CustomListener extends Listener {
+	constructor() {
+		super('global/'+commandVars.id, {
+			emitter: commandVars.category,
+			event: commandVars.name,
+			category: commandVars.category,
+		});
+	}
 
     async exec(message, command, args, returnValue) {
         let promise = this.client.memory.channelGet(message,`${message.id}_promise`);
@@ -42,4 +44,4 @@ class CommandBlockedListener extends Listener {
     }
 }
 
-module.exports = CommandBlockedListener;
+module.exports = CustomListener;

@@ -29,7 +29,10 @@ function isSubdir (parent,dir){
 function loadFilter (botPath,folderName,dir){
 	const commands = path.join(botPath,folderName);
 	const globalCommands = path.join(botPath,'../global',folderName);
-	const load = isSubdir(commands,dir) || isSubdir(globalCommands,dir);
+	let load = isSubdir(commands,dir) || isSubdir(globalCommands,dir);
+	if(dir.indexOf('VoiceConnection')>-1){
+		load = false;
+	   }
 	console.info(`botPath=${botPath} folderName=${folderName} dir=${dir} load=${load}`)
 	return load;
 }

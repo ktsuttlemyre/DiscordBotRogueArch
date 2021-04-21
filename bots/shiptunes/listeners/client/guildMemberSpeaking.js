@@ -7,7 +7,7 @@ const commandVars = require.main.require('./common').commandVars(__filename);
 const SILENCE=new Discord.Speaking(0);
 
 
-
+//original atteniton code https://github.com/ktsuttlemyre/evobot/blob/attention-volume/index.js
 class CustomListener extends Listener {
 	constructor() {
 		super(commandVars.id, {

@@ -106,21 +106,26 @@ process.on('unhandledRejection', (err,p) => {
 function shutdown(signal) {
     return (err) => {
 		console.log(`Shutting down with signal: ${ signal }`);
-		if (err){
-			console.error('Error:',err.stack || err);
-		}
+
 
 
 		let reason = err;
 		switch(signal){
 			case 'SIGTERM': //heroku sends sigterm for restarting dynos and sleep
 				reason = 'Going to sleep or restarting'
+				err = '';
 			case 'SIGINT':
 				reason = 'Killed'
+				//err = '';
 			case 'uncaughtException':
 			default:
 				reason = err || "unknown event"
 		}
+	    
+	    	if (err){
+			console.error('Error:',err.stack || err);
+		}
+	    
 		//if(signal=='uncaughtException'){
 			/*
 			2021-03-19T08:19:00.635185+00:00 app[web.1]: Shutting down with signal: uncaughtException

@@ -5,6 +5,8 @@ const BoilerplateClient = require(path.join(__dirname,'/client/BoilerplateClient
 require('dotenv').config();
 const Sentry = require('@sentry/node');
 const i18n = require("i18n");
+const GUIMessages = require.main.require('./templates/messages');
+
 
 const config = require.main.require('./config');
 
@@ -96,64 +98,20 @@ process.on('unhandledRejection', (err,p) => {
    })
   .on('SIGTERM', shutdown('SIGTERM'))
   .on('SIGINT', shutdown('SIGINT'))
-  .on('uncaughtException', shutdown('uncaughtException'))
+  .on('uncaughtException', shutdown('uncaughtException')) //it is not safe to resume normal operation after 'uncaughtException', because the system becomes corrupted:
   .on('warning', e => console.warn(e.stack));
 
 function shutdown(signal) {
     return (err) => {
-	var shipmod = bots["shipmod"] || bots[Object.keys(bots)[0]]; //get shipmod or any other first defined bot
+	let shipmod = bots["shipmod"] || bots[Object.keys(bots)[0]]; //get shipmod or any other first defined bot
+	let musicBots = [bots["shiptunes"]];
 	console.log(`Shutting down with signal: ${ signal }`);
 	if (err){
 		console.error('Error:',err.stack || err);
 	}
-
-	// do cleanup
-	shipmod.guilds.cache.forEach(function(guild){ //iter guilds
-		console.log('checking guild',guild.name,guild.id)
-		switch(signal){
-			case 'SIGTERM': //heroku sends sigterm for restarting dynos and sleep
-			case 'SIGINT':
-				guild.members.cache.some(function(member){ //iter members
-					if(member.user.bot){ //ignore bots
-						return false;
-					}
-					if(member.voice.serverMute){
-						console.log('unServerMuting', member.displayName);
-						member.voice.setMute(false); //unmute
-					}
-
-					if(member.voice.serverDeaf){
-						console.log('unServerDeafening', member.displayName);
-						member.voice.setDeaf(false); //undefen
-					}
-				}); //end iter members
-			
-			default:
-				//TODO!!!! this needs to access the memory of shiptunes
-				var memory=bots['shiptunes'].memory
-				if(!memory){return}
-				var player=memory.get({guild}, 'player');
-				if(!player){return}
-				var queues=memory.get({guild}, 'queues')||[];
-				queues.forEach(function(queue){
-					var message = queue.firstMessage
-					if(player.isPlaying(message)){
-					  common.nowPlaying(message,null,'I have crashed or gone to sleep!')
-					}	
-				});
-			
-			let logChannel=guild.channels.resolve(config.actionLogChannel);
-			logChannel && logChannel.send(`Going to sleep for reason ${signal}`);
-		}
-      }); //end iter guilds
-      if(signal == 'SIGTERM'){
-		Object.keys(bots).forEach(name => {
-			bots[name].destroy();
-		});
-	      return process.exit(0);
-      }else if(signal =='uncaughtException'){
-	      /*
-	      2021-03-19T08:19:00.635185+00:00 app[web.1]: Shutting down with signal: uncaughtException
+	//if(signal=='uncaughtException'){
+		/*
+2021-03-19T08:19:00.635185+00:00 app[web.1]: Shutting down with signal: uncaughtException
 2021-03-19T08:19:00.635303+00:00 app[web.1]: Error: Error: input stream: Status code: 429
 2021-03-19T08:19:00.635304+00:00 app[web.1]:     at ClientRequest.<anonymous> (/app/node_modules/miniget/dist/index.js:204:31)
 2021-03-19T08:19:00.635305+00:00 app[web.1]:     at Object.onceWrapper (events.js:422:26)
@@ -170,20 +128,60 @@ function shutdown(signal) {
 2021-03-19T08:19:00.635310+00:00 app[web.1]:     at TLSWrap.onStreamRead (internal/stream_base_commons.js:188:23)
 2021-03-19T08:19:00.760089+00:00 heroku[web.1]: Process exited with status 1
 2021-03-19T08:19:00.965776+00:00 heroku[web.1]: State changed from up to crashed
-
 */
-	      console.log('log object=',err)
-		Object.keys(bots).forEach(name => {
-			bots[name].destroy();
-		});
-	      return process.exit(0);
-      }
+	//}
+
+	// do cleanup
+	shipmod.guilds.cache.forEach(function(guild){ //iter guilds
+		console.log('checking guild',guild.name,guild.id)
+		let reason = err;
+		switch(signal){
+			case 'SIGTERM': //heroku sends sigterm for restarting dynos and sleep
+				reason = 'Going to sleep or restarting'
+			case 'SIGINT':
+				reason = 'Killed'
+// 				guild.members.cache.some(function(member){ //iter members
+// 					if(member.user.bot){ //ignore bots
+// 						return false;
+// 					}
+// 					if(member.voice.serverMute){
+// 						console.log('unServerMuting', member.displayName);
+// 						member.voice.setMute(false); //unmute
+// 					}
+
+// 					if(member.voice.serverDeaf){
+// 						console.log('unServerDeafening', member.displayName);
+// 						member.voice.setDeaf(false); //undefen
+// 					}
+// 				}); //end iter members
+			case 'uncaughtException':
+				reaon = err
+			default:
+				//TODO!!!! this needs to access the memory of shiptunes
+				musicBots.forEach(function(musicBot){
+					let memory=musicBot.memory
+					let player = (memory)?memory.get({guild:guild}, 'musicPlayer'):null;
+					if(!player){return}
+					player.queues && player.queues.forEach(function(queue){
+						var message = queue.firstMessage
+						if(player.isPlaying(message)){
+						  GUIMessages.nowPlaying(message,null,'Music will stop. Reason:${reason}')
+						}	
+					});
+				});
+			
+			let logChannel=guild.channels.resolve(config.actionLogChannel);
+			logChannel && logChannel.send(`Going to sleep for reason ${signal}`);
+			process.exit(err ? 1 : 0);
+		}
+      }); //end iter guilds
+
+
+	//clean up clients and disconnect
 	Object.keys(bots).forEach(name => {
 		bots[name].destroy();
 	});
-      process.exit(err ? 1 : 0);
-
-    };
+	return process.exit(err ? 1 : 0);
 }//end graceful shutdown
 
 

@@ -89,6 +89,116 @@ i18n.configure({
     }
   });
 
+  //shutdown gracefully and clean up 
+  //Heroku sends SIGTERM when you restart dynos
+process.on('unhandledRejection', (err,p) => {
+	Logger.error('An unhandled promise rejection occured at: Promise');
+	console.log(p);
+	Logger.stacktrace(err);
+   })
+  .on('warning', e => console.warn(e.stack))
+  //now for the shutdown signals
+  .on('SIGTERM', shutdown('SIGTERM'))
+  .on('SIGINT', shutdown('SIGINT'))
+  .on('uncaughtException', shutdown('uncaughtException')); //it is not safe to resume normal operation after 'uncaughtException', because the system becomes corrupted:
+
+
+function shutdown(signal) {
+    return (err) => {
+		console.log(`Shutting down with signal: ${ signal }`);
+
+
+
+		let reason = err;
+		switch(signal){
+			case 'SIGTERM': //heroku sends sigterm for restarting dynos and sleep
+				reason = 'Going to sleep or restarting'
+				err = '';
+			case 'SIGINT':
+				reason = 'Killed'
+				//err = '';
+			case 'uncaughtException':
+			default:
+				reason = err || "unknown event"
+		}
+
+	    	if (err){
+			console.error('Error:',err.stack || err);
+		}
+
+		//if(signal=='uncaughtException'){
+			/*
+			2021-03-19T08:19:00.635185+00:00 app[web.1]: Shutting down with signal: uncaughtException
+			2021-03-19T08:19:00.635303+00:00 app[web.1]: Error: Error: input stream: Status code: 429
+			2021-03-19T08:19:00.635304+00:00 app[web.1]:     at ClientRequest.<anonymous> (/app/node_modules/miniget/dist/index.js:204:31)
+			2021-03-19T08:19:00.635305+00:00 app[web.1]:     at Object.onceWrapper (events.js:422:26)
+			2021-03-19T08:19:00.635305+00:00 app[web.1]:     at ClientRequest.emit (events.js:315:20)
+			2021-03-19T08:19:00.635306+00:00 app[web.1]:     at ClientRequest.EventEmitter.emit (domain.js:467:12)
+			2021-03-19T08:19:00.635306+00:00 app[web.1]:     at HTTPParser.parserOnIncomingClient (_http_client.js:641:27)
+			2021-03-19T08:19:00.635307+00:00 app[web.1]:     at HTTPParser.parserOnHeadersComplete (_http_common.js:126:17)
+			2021-03-19T08:19:00.635307+00:00 app[web.1]:     at TLSSocket.socketOnData (_http_client.js:509:22)
+			2021-03-19T08:19:00.635308+00:00 app[web.1]:     at TLSSocket.emit (events.js:315:20)
+			2021-03-19T08:19:00.635308+00:00 app[web.1]:     at TLSSocket.EventEmitter.emit (domain.js:467:12)
+			2021-03-19T08:19:00.635308+00:00 app[web.1]:     at addChunk (internal/streams/readable.js:309:12)
+			2021-03-19T08:19:00.635309+00:00 app[web.1]:     at readableAddChunk (internal/streams/readable.js:284:9)
+			2021-03-19T08:19:00.635309+00:00 app[web.1]:     at TLSSocket.Readable.push (internal/streams/readable.js:223:10)
+			2021-03-19T08:19:00.635310+00:00 app[web.1]:     at TLSWrap.onStreamRead (internal/stream_base_commons.js:188:23)
+			2021-03-19T08:19:00.760089+00:00 heroku[web.1]: Process exited with status 1
+			2021-03-19T08:19:00.965776+00:00 heroku[web.1]: State changed from up to crashed
+			*/
+		//}
+
+		// Do logging and user awareness messages
+		let shipmod = bots["shipmod"] || bots[Object.keys(bots)[0]]; //get shipmod or any other first defined bot
+		shipmod.guilds.cache.forEach(function(guild){ //iter guilds
+			console.log('checking guild',guild.name,guild.id)
+			//guild.members.cache.some(function(member){ //iter members
+			// 	if(member.user.bot){ //ignore bots
+			// 		return false;
+			// 	}
+			// 	if(member.voice.serverMute){
+			// 		console.log('unServerMuting', member.displayName);
+			// 		member.voice.setMute(false); //unmute
+			// 	}
+
+			// 	if(member.voice.serverDeaf){
+			// 		console.log('unServerDeafening', member.displayName);
+			// 		member.voice.setDeaf(false); //undefen
+			// 	}
+			// }); //end iter members
+			let logChannel=guild.channels.resolve(config.actionLogChannel);
+			logChannel && logChannel.send(`Going to sleep for reason ${reason}`);
+		}); //end iter guilds
+
+
+
+		//music bots
+		let musicBots = [bots["shiptunes"]]; //TODO figure a better way to find all music bots
+		musicBots.forEach(function(musicBot){
+			musicBot.guilds.cache.forEach(function(guild){ //iter guilds
+				let memory=musicBot.memory
+				let player = (memory)?memory.get({guild:guild}, 'musicPlayer'):null;
+				if(!player){return}
+				player.queues && player.queues.forEach(function(queue){
+					var message = queue.firstMessage
+					if(player.isPlaying(message)){
+					  GUIMessages.nowPlaying(message,null,`Music will stop. Reason:${reason}`)
+					}	
+				}); //end iter queues
+			   	let logChannel=guild.channels.resolve(config.actionLogChannel);
+				logChannel && logChannel.send(`Going to sleep for reason ${reason}`);
+			}); //end iter guilds
+		}); //end iter musicbots
+
+
+		//clean up clients and disconnect
+		Object.keys(bots).forEach(name => {
+			bots[name].destroy();
+		});
+		return process.exit(err ? 1 : 0);
+	}//end graceful shutdown
+} //end shudown Wrapper 
+
 
 (function server(){
   const requestListener = function (req, res) {

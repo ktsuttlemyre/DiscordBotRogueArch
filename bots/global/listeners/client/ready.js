@@ -6,7 +6,7 @@ const util = require.main.require('./util');
 const config = util.config;
 const commandVars = util.commandVars(__filename);
 
-class ReadyListener extends Listener {
+class CustomListener extends Listener {
 	constructor() {
 		super('global/'+commandVars.id, {
 			emitter: commandVars.category,
@@ -139,4 +139,4 @@ async function getReactedUsers(msg, emoji,callback) {
 	return userList; //(userList.map((user) => user.id));
 }
 
-module.exports = ReadyListener;
+module.exports = CustomListener;

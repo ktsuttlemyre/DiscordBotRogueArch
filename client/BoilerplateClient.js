@@ -156,6 +156,7 @@ class BoilerplateClient extends AkairoClient {
 			commandHandler: this.commandHandler,
 			inhibitorHandler: this.inhibitorHandler,
 			listenerHandler: this.listenerHandler,
+			process:process,
 		});
 		// Load all handlers
 		this.commandHandler.loadAll();

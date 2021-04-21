@@ -2,6 +2,7 @@ const { Listener } = require('discord-akairo');
 const util = require.main.require('./util');
 const config = util.config;
 const commandVars = util.commandVars(__filename);
+const {reactions,defaultAvatar} = require.main.require('./common');
 
 // https://discord-akairo.github.io/#/docs/main/master/class/CommandHandler?scrollTo=e-commandStarted
 class CustomListener extends Listener {
@@ -14,7 +15,8 @@ class CustomListener extends Listener {
 	}
 
 
-    exec(message, command, args) {            
+    exec(message, command, args) {
+	message.react(reactions.shipwash);
         this.client.memory.channelSet(message,`${message.id}_promise`,new Promise(resolve => {
             this.client.memory.channelSet(message,`${message.id}_resolve`,resolve);
         }));

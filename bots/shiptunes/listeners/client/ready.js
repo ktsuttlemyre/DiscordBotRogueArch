@@ -6,7 +6,7 @@ const commandVars = require.main.require('./common').commandVars(__filename);
 class ReadyListener extends Listener {
 	constructor() {
 		super(commandVars.id, {
-			emitter: 'client',
+			emitter: commandVars.category,
 			event: commandVars.name,
 			category: commandVars.category,
 		});

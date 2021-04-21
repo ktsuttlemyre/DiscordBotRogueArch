@@ -3,7 +3,7 @@ const {reactions,defaultAvatar} = require.main.require('./common');
 const config = require.main.require('./config')
 const commandVars = require.main.require('./common').commandVars(__filename);
 
-
+const Discord = require("discord.js");
 const SILENCE=new Discord.Speaking(0);
 
 

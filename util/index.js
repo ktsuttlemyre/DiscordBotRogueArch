@@ -16,6 +16,29 @@ const soundMap = config.voiceJoinLeave.tones.custom
 
 const _ = require('lodash')
 
+
+const request = require('request');
+
+
+let lastKeepAlive=null;
+var pinging=false;
+module.exports.wakeupPing = function (string){
+  pinging=true;
+  let website=`https://${process.env.HEROKU_APP_NAME}.herokuapp.com/heartbeat`;
+  console.log(`wake.js - Pinging ${website} for reason:${string}`);
+  request(website, function(err, res, body){
+    if (err) { 
+      console.error('wake.js',err);
+      process.exit(1);
+    }
+    console.log('wake.js - Successfully pinged');
+    lastKeepAlive=Date.now();
+    process.exit(0);
+    //console.log(body.url);
+    //console.log(body.explanation);
+  });
+};
+
 module.exports.devChannelGate=function(message,env){
         env = env || process.env.ENVIRONMENT;
 	

@@ -20,8 +20,11 @@ const _ = require('lodash')
 const request = require('request');
 
 
+//create an object of EventEmitter class by using above reference
+module.exports.frameworkEmitter = new require('events').EventEmitter(); 
+
 let lastKeepAlive=null;
-var pinging=false;
+let pinging=false;
 module.exports.wakeupPing = _.debounce(function (string,forceEnd){
   pinging=true;
   let website=`https://${process.env.HEROKU_APP_NAME}.herokuapp.com/heartbeat`;

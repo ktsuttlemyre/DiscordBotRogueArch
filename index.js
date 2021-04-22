@@ -76,7 +76,7 @@ function init(client){
 		'guildDelete',
 		'guildIntegrationsUpdate',
 		'guildMemberAdd',
-		'guildMemberAvailable',
+		//'guildMemberAvailable',
 		'guildMemberRemove',
 		//'guildMembersChunk',
 		'guildMemberSpeaking',

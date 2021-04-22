@@ -6,6 +6,7 @@ require('dotenv').config();
 const Sentry = require('@sentry/node');
 const i18n = require("i18n");
 const GUIMessages = require.main.require('./templates/messages');
+const util = require.main.require('./util');
 
 
 const config = require.main.require('./config');
@@ -57,6 +58,61 @@ function init(client){
 		.on('reconnect', () => client.logger.info('Attempting to reconnect...'))
 		.on('error', err => client.logger.error(err))
 		.on('warn', info => client.logger.warn(info));
+	
+	//wakup ping for any activity
+	['channelCreate',
+	'channelDelete',
+	'channelPinsUpdate',
+	'channelUpdate',
+	'debug',
+	'emojiCreate',
+	'emojiDelete',
+	'emojiUpdate',
+	'error',
+	'guildBanAdd',
+	'guildBanRemove',
+	'guildCreate',
+	'guildDelete',
+	'guildIntegrationsUpdate',
+	'guildMemberAdd',
+	'guildMemberAvailable',
+	'guildMemberRemove',
+	'guildMembersChunk',
+	'guildMemberSpeaking',
+	'guildMemberUpdate',
+	'guildUnavailable',
+	'guildUpdate',
+	'invalidated',
+	'inviteCreate',
+	'inviteDelete',
+	'message',
+	'messageDelete',
+	'messageDeleteBulk',
+	'messageReactionAdd',
+	'messageReactionRemove',
+	'messageReactionRemoveAll',
+	'messageReactionRemoveEmoji',
+	'messageUpdate',
+	'presenceUpdate',
+	'rateLimit',
+	'ready',
+	'roleCreate',
+	'roleDelete',
+	'roleUpdate',
+	'shardDisconnect',
+	'shardError',
+	'shardReady',
+	'shardReconnecting',
+	'shardResume',
+	'typingStart',
+	'userUpdate',
+	'voiceStateUpdate',
+	'warn',
+	'webhookUpdate'].forEach(function(event){
+		client.on(event,function(){util.wakeupPing('wakeup ping for event:'+event)});
+	})
+	
+
 	client.start();
 }
 

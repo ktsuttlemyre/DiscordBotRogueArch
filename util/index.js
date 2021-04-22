@@ -37,7 +37,7 @@ module.exports.wakeupPing = _.debounce(function (string){
     //console.log(body.url);
     //console.log(body.explanation);
   });
-},1*60*1000,{maxWait:25*60*1000,trailing:true,leading:true});
+},1*60*1000,{maxWait:25*60*1000,trailing:false,leading:true});
 
 module.exports.devChannelGate=function(message,env){
         env = env || process.env.ENVIRONMENT;

@@ -22,7 +22,7 @@ const request = require('request');
 
 let lastKeepAlive=null;
 var pinging=false;
-module.exports.wakeupPing = function (string){
+module.exports.wakeupPing = _.debounce(function (string){
   pinging=true;
   let website=`https://${process.env.HEROKU_APP_NAME}.herokuapp.com/heartbeat`;
   console.log(`wake.js - Pinging ${website} for reason:${string}`);
@@ -37,7 +37,7 @@ module.exports.wakeupPing = function (string){
     //console.log(body.url);
     //console.log(body.explanation);
   });
-};
+},1*60*1000,{maxWait:25*60*1000});
 
 module.exports.devChannelGate=function(message,env){
         env = env || process.env.ENVIRONMENT;

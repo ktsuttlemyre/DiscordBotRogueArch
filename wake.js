@@ -1,7 +1,6 @@
 const { Client, Collection } = require("discord.js");
-var TOKEN = process.env.TOKEN_SHIPMOD;
-
-const request = require('request');
+const TOKEN = process.env.TOKEN_SHIPMOD;
+const util = require.main.require('./util');
 
 const client = new Client({ 
   //disableMentions: "everyone",
@@ -28,25 +27,6 @@ client.on("error", (e) => {
 });
 
 
-let lastKeepAlive=null;
-var pinging=false;
-function keepAlive(string){
-  pinging=true;
-  let website=`https://${process.env.HEROKU_APP_NAME}.herokuapp.com/heartbeat`;
-  console.log(`wake.js - Pinging ${website} for reason:${string}`);
-  request(website, function(err, res, body){
-    if (err) { 
-      console.error('wake.js',err);
-      process.exit(1);
-    }
-    console.log('wake.js - Successfully pinged');
-    lastKeepAlive=Date.now();
-    process.exit(0);
-    //console.log(body.url);
-    //console.log(body.explanation);
-  });
-};
-
 
 
 //wake handler
@@ -57,7 +37,7 @@ function wakeHandler(client){
   //     //check user activity status
   //     var member=Guild.members.cache.get(owners[i]);
   //     if(member.presence.status == 'online'){
-  //       keepAlive(member.displayName+' is online');
+  //       util.wakeupPing(member.displayName+' is online');
   //       return true
   //     }
   //   }
@@ -79,7 +59,7 @@ function wakeHandler(client){
         }
         // The member is connected to a voice channel.
         // https://discord.js.org/#/docs/main/stable/class/VoiceState
-        keepAlive(member.displayName+' is in '+member.voice.channel.name+' voice channel');
+        util.wakeupPing(member.displayName+' is in '+member.voice.channel.name+' voice channel');
         return true
       })
     }); //end some
@@ -104,7 +84,7 @@ function wakeHandler(client){
                 return
               }
               if((Date.now() - message.createdAt) < ttl) { //is user active in the last 30 minutes?
-                 keepAlive('Last message to guild was <'+ttlm+' minutes in channel['+channel.name+'] from user['+ message.author.username+']');
+                 util.wakeupPing('Last message to guild was <'+ttlm+' minutes in channel['+channel.name+'] from user['+ message.author.username+']');
               }
             })
         })

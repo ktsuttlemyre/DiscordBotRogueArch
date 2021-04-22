@@ -7,7 +7,7 @@ const Database = require('../client/Database');
 const SettingsProvider = require('../client/providers/SettingsProvider');
 const MemoryCache = require('../client/providers/MemoryCache');
 
-const util = requre.main.require('./util');
+const util = require.main.require('./util');
 
 // Models
 const Setting = require('../models/settings');

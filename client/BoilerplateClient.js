@@ -7,6 +7,8 @@ const Database = require('../client/Database');
 const SettingsProvider = require('../client/providers/SettingsProvider');
 const MemoryCache = require('../client/providers/MemoryCache');
 
+const util = requre.main.require('./util');
+
 // Models
 const Setting = require('../models/settings');
 // Logger
@@ -157,6 +159,7 @@ class BoilerplateClient extends AkairoClient {
 			inhibitorHandler: this.inhibitorHandler,
 			listenerHandler: this.listenerHandler,
 			process:process,
+			frameworkEmitter:util.frameworkEmitter,
 		});
 		// Load all handlers
 		this.commandHandler.loadAll();

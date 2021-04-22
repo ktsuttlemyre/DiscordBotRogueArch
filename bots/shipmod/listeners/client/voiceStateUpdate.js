@@ -123,7 +123,6 @@ class CustomListener extends Listener {
 			}
 			//client.commandHandler.runCommand(message,client.commandHandler.findCommand('clip'),thisMember.id);
 		}
-		if(
 		
 		
 		

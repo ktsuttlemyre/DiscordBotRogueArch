@@ -232,11 +232,14 @@ function shutdown(signal) {
 		//music bots
 		let musicBots = [bots["shiptunes"]]; //TODO figure a better way to find all music bots
 		musicBots.forEach(function(musicBot){
+			console.log('shutting down music bot');
 			musicBot.guilds.cache.forEach(function(guild){ //iter guilds
+				console.log('shutting down guild'+guild.name)
 				let memory=musicBot.memory
 				let player = (memory)?memory.get({guild:guild}, 'musicPlayer'):null;
 				if(!player){return}
 				player.queues && player.queues.forEach(function(queue){
+					console.log('alerting queue',queue)
 					var message = queue.firstMessage
 					if(player.isPlaying(message)){
 					  GUIMessages.nowPlaying(message,null,`Music will stop. Reason:${reason}`)

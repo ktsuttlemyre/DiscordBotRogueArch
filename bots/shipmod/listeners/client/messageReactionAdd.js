@@ -110,6 +110,9 @@ class CustomListener extends Listener {
 		
 		/** role reactions **/
 		//config.roleReaction
+		
+		/** wake up **/
+		util.wakeupPing()
 
 	}
 }

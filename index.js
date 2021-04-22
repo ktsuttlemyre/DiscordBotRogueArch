@@ -78,10 +78,10 @@ function init(client){
 		'guildMemberAdd',
 		'guildMemberAvailable',
 		'guildMemberRemove',
-		'guildMembersChunk',
+		//'guildMembersChunk',
 		'guildMemberSpeaking',
 		'guildMemberUpdate',
-		'guildUnavailable',
+		//'guildUnavailable',
 		'guildUpdate',
 		//'invalidated',
 		'inviteCreate',
@@ -109,8 +109,7 @@ function init(client){
 		//'userUpdate',
 		'voiceStateUpdate',
 		//'warn',
-		//'webhookUpdate'
-	].forEach(function(event){
+		'webhookUpdate'].forEach(function(event){
 		client.on(event,function(){util.wakeupPing('wakeup ping for event:'+event)});
 	})
 	

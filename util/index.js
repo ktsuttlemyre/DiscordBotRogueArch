@@ -22,18 +22,18 @@ const request = require('request');
 
 let lastKeepAlive=null;
 var pinging=false;
-module.exports.wakeupPing = _.debounce(function (string){
+module.exports.wakeupPing = _.debounce(function (string,forceEnd){
   pinging=true;
   let website=`https://${process.env.HEROKU_APP_NAME}.herokuapp.com/heartbeat`;
   console.log(`wake.js - Pinging ${website} for reason:${string}`);
   request(website, function(err, res, body){
     if (err) { 
       console.error('wake.js',err);
-      process.exit(1);
+      forceEnd && process.exit(1);
     }
     console.log('wake.js - Successfully pinged');
     lastKeepAlive=Date.now();
-    process.exit(0);
+    forceEnd && process.exit(0);
     //console.log(body.url);
     //console.log(body.explanation);
   });

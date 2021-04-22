@@ -37,7 +37,7 @@ function wakeHandler(client){
   //     //check user activity status
   //     var member=Guild.members.cache.get(owners[i]);
   //     if(member.presence.status == 'online'){
-  //       util.wakeupPing(member.displayName+' is online');
+  //       util.wakeupPing(member.displayName+' is online',true);
   //       return true
   //     }
   //   }
@@ -59,7 +59,7 @@ function wakeHandler(client){
         }
         // The member is connected to a voice channel.
         // https://discord.js.org/#/docs/main/stable/class/VoiceState
-        util.wakeupPing(member.displayName+' is in '+member.voice.channel.name+' voice channel');
+        util.wakeupPing(member.displayName+' is in '+member.voice.channel.name+' voice channel',true);
         return true
       })
     }); //end some
@@ -84,7 +84,7 @@ function wakeHandler(client){
                 return
               }
               if((Date.now() - message.createdAt) < ttl) { //is user active in the last 30 minutes?
-                 util.wakeupPing('Last message to guild was <'+ttlm+' minutes in channel['+channel.name+'] from user['+ message.author.username+']');
+                 util.wakeupPing('Last message to guild was <'+ttlm+' minutes in channel['+channel.name+'] from user['+ message.author.username+']',true);
               }
             })
         })

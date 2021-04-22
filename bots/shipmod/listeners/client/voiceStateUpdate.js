@@ -96,7 +96,7 @@ class CustomListener extends Listener {
 
 			}
 		}
-		
+				
 		let joinLeaveConfig=config.voiceJoinLeave
 		
 		//only work if this is a real event and the channel has changed
@@ -104,16 +104,26 @@ class CustomListener extends Listener {
 			//channel changed
 			//reset the users status removing serverMute and serverDeafen
 			
-			if(!newstate.member.user.bot && joinLeaveConfig.resetUserState){
+			if(!newstate.member.user.bot && (joinLeaveConfig.resetUserState || oldstate.channelID == oldstate.guild.afkChannelID)){
 				!thisMember.roles.cache.some(role => role.name === config.roles.VoiceMute) && newstate.setMute(false);
 				!thisMember.roles.cache.some(role => role.name === config.roles.VoiceDeaf) && newstate.setDeaf(false);
 			}
+			if(newstate.channelID == newstate.guild.afkChannelID){
+				newstate.setMute(true)
+				newstate.setDeaf(true)
+			}
+
 			if(joinLeaveConfig.tones && joinLeaveConfig.tones.on){
-				await util.playThemeTone(oldstate.channel,joinLeaveConfig.tones.defaultLeaveTone);
-				await util.playThemeTone(newstate.channel,thisMember.id);
+				if(oldstate.channel.id != oldstate.guild.afkChannelID){
+					await util.playThemeTone(oldstate.channel,joinLeaveConfig.tones.defaultLeaveTone);
+				}
+				if(newstate.channel.id != newstate.guild.afkChannelID){
+					await util.playThemeTone(newstate.channel,thisMember.id);
+				}
 			}
 			//client.commandHandler.runCommand(message,client.commandHandler.findCommand('clip'),thisMember.id);
 		}
+		if(
 		
 		
 		

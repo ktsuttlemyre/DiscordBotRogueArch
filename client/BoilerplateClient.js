@@ -1,3 +1,5 @@
+var debug = false;
+
 // Discord Stuff
 const { AkairoClient, CommandHandler, ListenerHandler, InhibitorHandler } = require('discord-akairo');
 const { MessageEmbed } = require('discord.js');
@@ -27,7 +29,7 @@ function isSubdir (parent,dir){
 	const isSubdir = relative && !relative.startsWith('..') && !path.isAbsolute(relative);
 	return isSubdir;
 }
-
+var currentHandler = null
 function loadFilter (botPath,folderName,dir){
 	const commands = path.join(botPath,folderName);
 	const globalCommands = path.join(botPath,'../global',folderName);
@@ -35,7 +37,8 @@ function loadFilter (botPath,folderName,dir){
 	if(dir.indexOf('VoiceConnection')>-1){
 		load = false;
 	   }
-	console.info(`botPath=${botPath} folderName=${folderName} dir=${dir} load=${load}`)
+	currentHandler = `botPath=${botPath} folderName=${folderName} dir=${dir} load=${load}`
+	debug && console.info(currenthandler)
 	return load;
 }
 
@@ -162,9 +165,13 @@ class BoilerplateClient extends AkairoClient {
 			frameworkEmitter:util.frameworkEmitter,
 		});
 		// Load all handlers
-		this.commandHandler.loadAll();
-		this.inhibitorHandler.loadAll();
-		this.listenerHandler.loadAll();
+		try{
+			this.commandHandler.loadAll();
+			this.inhibitorHandler.loadAll();
+			this.listenerHandler.loadAll();
+		}catch (err){
+			console.error('error with handler'+currentHandler)
+		}
 	}
 	// Start The Bot
 	async start() {

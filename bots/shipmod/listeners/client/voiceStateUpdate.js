@@ -114,10 +114,10 @@ class CustomListener extends Listener {
 			}
 
 			if(joinLeaveConfig.tones && joinLeaveConfig.tones.on){
-				if(oldstate.channel.id != oldstate.guild.afkChannelID){
+				if(oldstate.channelID != oldstate.guild.afkChannelID){
 					await util.playThemeTone(oldstate.channel,joinLeaveConfig.tones.defaultLeaveTone);
 				}
-				if(newstate.channel.id != newstate.guild.afkChannelID){
+				if(newstate.channelID != newstate.guild.afkChannelID){
 					await util.playThemeTone(newstate.channel,thisMember.id);
 				}
 			}

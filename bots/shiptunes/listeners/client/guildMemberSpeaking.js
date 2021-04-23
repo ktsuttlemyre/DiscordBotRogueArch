@@ -18,6 +18,7 @@ class CustomListener extends Listener {
 	}
 
 	async exec (member,speaking) {
+		return
 		var client = this.client;
 		if(member.bot){
 			return

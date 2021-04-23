@@ -1,4 +1,4 @@
-var debug = false; 
+var debug = true; 
 const { Listener } = require('discord-akairo');
 const util = require.main.require('./util');
 const config = util.config;
@@ -101,19 +101,20 @@ class CustomListener extends Listener {
 		let joinLeaveConfig=config.voiceJoinLeave
 		
 		//only work if this is a real event and the channel has changed
-		if(!manuallyTriggered && newstate.channelID !== oldstate.channelID){
-			//channel changed
-			//reset the users status removing serverMute and serverDeafen
+		if(!manuallyTriggered && newstate.channelID !== oldstate.channelID){ //channel changed
 			
+			//reset the users status removing serverMute and serverDeafen if they do not have the voicemute or voicedeaf role
 			if(!newstate.member.user.bot && (joinLeaveConfig.resetUserState || oldstate.channelID == oldstate.guild.afkChannelID)){
 				!thisMember.roles.cache.some(role => role.name === config.roles.VoiceMute) && newstate.setMute(false);
 				!thisMember.roles.cache.some(role => role.name === config.roles.VoiceDeaf) && newstate.setDeaf(false);
 			}
+			//mute if entering afkChannel
 			if(newstate.channelID == newstate.guild.afkChannelID){
 				newstate.setMute(true)
 				newstate.setDeaf(true)
 			}
-
+			
+			// play themetones
 			if(joinLeaveConfig.tones && joinLeaveConfig.tones.on){
 				if(oldstate.channelID != oldstate.guild.afkChannelID){
 					await util.playThemeTone(oldstate.channel,joinLeaveConfig.tones.defaultLeaveTone);

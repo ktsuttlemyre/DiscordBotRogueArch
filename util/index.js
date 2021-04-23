@@ -1,3 +1,4 @@
+var debug = false;
 const { Command } = require('discord-akairo');
 
 const path = require('path');
@@ -305,7 +306,7 @@ const playSound = module.exports.playSound = async function(channel,location,opt
 			return
 		}
 
-		let hash =getYoutubeHash(location)
+		let hash = getYoutubeHash(location)
 		console.log('Queing Sound',location,'with hash',hash)
 		if(hash){ //is youtube link
 			location = ytdl(location, { filter: 'audioonly' })
@@ -326,7 +327,7 @@ const playSound = module.exports.playSound = async function(channel,location,opt
 			dispatcher = connection.play(location,{ volume: opts.volume });
 			dispatcher.on("start", () => {
 				  //channel.leave();
-				  console.log('Playing Sound',location)
+				  debug && console.log('Playing Sound',location)
 				})
 				.on("finish", () => {
 					resolve('resolved')

@@ -1,3 +1,4 @@
+var debug = false; 
 const { Listener } = require('discord-akairo');
 const util = require.main.require('./util');
 const config = util.config;
@@ -34,7 +35,7 @@ class CustomListener extends Listener {
 		
 		let permissionsNeeded = ['VIEW_CHANNEL','MANAGE_CHANNELS'];
 		
-		config.debug && console.info('voiceStateUpdate',oldstate.channelID,newstate.channelID,roomChanged,thisMember.displayName);
+		debug && console.info('voiceStateUpdate',oldstate.channelID,newstate.channelID,roomChanged,thisMember.displayName);
 		    
 		//enter new chatroom
 		let textChannelID = channelMap[newstate.channelID];

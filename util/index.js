@@ -19,9 +19,9 @@ const _ = require('lodash')
 
 const request = require('request');
 
-
+import { EventEmitter } from 'events';
 //create an object of EventEmitter class by using above reference
-module.exports.frameworkEmitter = new require('events').EventEmitter(); 
+module.exports.frameworkEmitter = new EventEmitter(); 
 
 let lastKeepAlive=null;
 let pinging=false;

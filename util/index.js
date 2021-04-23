@@ -19,7 +19,7 @@ const _ = require('lodash')
 
 const request = require('request');
 
-import { EventEmitter } from 'events';
+const { EventEmitter } = require('events');
 //create an object of EventEmitter class by using above reference
 module.exports.frameworkEmitter = new EventEmitter(); 
 

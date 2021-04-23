@@ -8,6 +8,7 @@ const SettingsProvider = require('../client/providers/SettingsProvider');
 const MemoryCache = require('../client/providers/MemoryCache');
 
 const util = require.main.require('./util');
+const config = util.config;
 
 // Models
 const Setting = require('../models/settings');
@@ -18,8 +19,7 @@ const Logger = require('../util/logger');
 const path = require('path');
 require('dotenv').config();
 
-const util = require.main.require('./util');
-const config = util.config;
+
 
 //https://stackoverflow.com/questions/37521893/determine-if-a-path-is-subdirectory-of-another-in-node-js
 function isSubdir (parent,dir){

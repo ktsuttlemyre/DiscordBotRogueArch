@@ -42,12 +42,14 @@ class CustomListener extends Listener {
 		let textChannel = guild.channels.cache.get(textChannelID);
 		let permissions;
 		if(textChannel){
+			debug && console.log('entering a hidden channel',textChannelID)
 			permissions = textChannel.permissionsFor(guild.me)
 			if(permissions.has(permissionsNeeded)){
 				textChannel.updateOverwrite(thisMember, {
 				    //SEND_MESSAGES: false,
 				    VIEW_CHANNEL: true
 				});
+				debug && console.log('showed hidden channel',textChannelID)
 			}else{
 				console.log('bot does not have permission to change permissions in '+textChannel.name)
 			}
@@ -57,7 +59,8 @@ class CustomListener extends Listener {
 		//leave old chatroom (if they left a room)
 		textChannelID = channelMap[oldstate.channelID];
 		textChannel = guild.channels.cache.get(textChannelID);
-		if(roomChanged && textChannel){ //if they actually left a channel because the id changed			
+		if(roomChanged && textChannel){ //if they actually left a channel because the id changed
+			debug && console.log('leaving a hidden channel',textChannelID)
 			permissions = textChannel.permissionsFor(guild.me)
 			//console.log(permissions.toArray())
 			if(permissions.has(permissionsNeeded)){
@@ -66,6 +69,7 @@ class CustomListener extends Listener {
 				    //SEND_MESSAGES: false,
 				    VIEW_CHANNEL: false
 				});
+				debug && console.log('hide hidden channel',textChannelID)
 			}else{
 				console.log('bot does not have permission to change permissions in '+textChannel.name)
 			}

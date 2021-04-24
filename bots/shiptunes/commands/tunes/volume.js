@@ -33,7 +33,7 @@ class CustomCommand extends Command {
 	}
 	
 	async exec(message, { volume }) {
-		var player = this.client.memory.channelGet(message, 'player');
+		var player = this.client.memory.get(message, 'player');
 		if(!player){
 			return this.handler.emit('commandBlocked',message,this,'No player playing to act on');
 		}

@@ -236,7 +236,7 @@ function shutdown(signal) {
 			musicBot.guilds.cache.forEach(function(guild){ //iter guilds
 				console.log('shutting down guild'+guild.name)
 				let memory=musicBot.memory
-				let player = (memory)?memory.get({guild:guild}, 'musicPlayer'):null;
+				let player = (memory)?memory.get({guild:guild}, 'player'):null;
 				if(!player){return}
 				player.queues && player.queues.forEach(function(queue){
 					console.log('alerting queue',queue)

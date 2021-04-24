@@ -26,7 +26,7 @@ client.on("error", (e) => {
   process.exit(1);
 });
 
-
+let pinging = false;
 
 //wake handler
 function wakeHandler(client){
@@ -58,6 +58,7 @@ function wakeHandler(client){
         }
         // The member is connected to a voice channel.
         // https://discord.js.org/#/docs/main/stable/class/VoiceState
+        pinging = true;
         util.wakeupPing(member.displayName+' is in '+member.voice.channel.name+' voice channel',true);
         return true
       })
@@ -83,6 +84,7 @@ function wakeHandler(client){
                 return
               }
               if((Date.now() - message.createdAt) < ttl) { //is user active in the last 30 minutes?
+                 pinging = true
                  util.wakeupPing('Last message to guild was <'+ttlm+' minutes in channel['+channel.name+'] from user['+ message.author.username+']',true);
               }
             })
@@ -93,9 +95,9 @@ function wakeHandler(client){
     
     Promise.all(promises).then((values) => {
       //console.log('Checked all available channels.')
-      //if(!pinging){
+      if(!pinging){
         process.exit(0);
-      //}
+      }
     });
     
   })

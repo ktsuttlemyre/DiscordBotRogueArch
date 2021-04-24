@@ -28,7 +28,6 @@ client.on("error", (e) => {
 
 
 
-
 //wake handler
 function wakeHandler(client){
   const Guild = client.guilds.cache.some(function(Guild){ //.get("690661623831986266"); // Getting the guild.
@@ -91,12 +90,13 @@ function wakeHandler(client){
         .catch(console.error);
       promises.push(p);
     } //test
+    
     Promise.all(promises).then((values) => {
       //console.log('Checked all available channels.')
-      if(!pinging){
+      //if(!pinging){
         process.exit(0);
-      }
+      //}
     });
+    
   })
-  
 };

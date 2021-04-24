@@ -64,7 +64,7 @@ class CustomCommand extends Command {
 	}
 	
 	async exec(message, { search }) {
-		var player = this.client.memory.get(message, 'musicPlayer') || this.client.memory.set(message, 'musicPlayer', util.player.create(message,this.client));
+		var player = this.client.memory.get(message, 'player') || this.client.memory.set(message, 'player', util.player.create(message,this.client));
 		let hasAttachments = message.attachments && !!message.attachments.size;
 		var queue=player.getQueue(message);
 		if(queue){

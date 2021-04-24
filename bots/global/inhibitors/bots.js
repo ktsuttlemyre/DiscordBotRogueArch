@@ -9,6 +9,9 @@ class CustomInhibitor extends Inhibitor {
     }
 
     exec(message) {
+        if(message.webhookID){
+            return false
+        }
         var member = message.member;
         if(member && member.user && member.user.bot){
             return true;

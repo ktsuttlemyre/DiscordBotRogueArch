@@ -29,6 +29,7 @@ class BoilerplateClient extends AkairoClient {
 		this.logger = Logger;
 		// Init Command Handler
 		this.commandHandler = new CommandHandler(this, {
+			blockBots:false,
 			directory: './commands',
 			aliasReplacement: /-/g,
 			prefix: message => this.settings.get(message.guild, 'prefix', ';'),

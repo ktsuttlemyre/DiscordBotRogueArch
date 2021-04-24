@@ -63,6 +63,7 @@ class BoilerplateClient extends AkairoClient {
 		this.logger = Logger;
 		// Init Command Handler
 		this.commandHandler = new CommandHandler(this, {
+			blockBots:false,
 			directory: './bots',
 			loadFilter:loadFilter.bind(loadFilter,opts.botPath,'commands'),
 			aliasReplacement: /-/g,

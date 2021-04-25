@@ -29,7 +29,7 @@ class CustomListener extends Listener {
 
 
 	async exec( oldPresence, newPresence) {
-		if(reaction.partial){ //ignore partials
+		if(oldPresence.partial || newPresence.partial){ //ignore partials
 			return
 		}
     

@@ -42,10 +42,10 @@ class CustomListener extends Listener {
 		return
 		}
 
-			//var env = process.env.ENVIRONMENT
-	    //if(env != 'production'){ //only work on production
-			//	return;
-			//}
+		let env = process.env.ENVIRONMENT
+		if(env != 'production'){ //only work on production
+			return;
+		}
 
 		/** Information gathering **/
 		let name = member.displayName || member.username || member.tag;

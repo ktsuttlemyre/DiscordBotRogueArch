@@ -28,19 +28,24 @@ class CustomListener extends Listener {
 	}
 
 
-	async exec( oldPresence, newPresence) {
+	async exec( oldPresence, newPresence, manuallyTriggered) {
+		if(!oldPresence){
+			manuallyTriggered = newPresence
+			newPresence = oldPresence
+		}
+			
 		if(oldPresence.partial || newPresence.partial){ //ignore partials
 			return
 		}
     
-	    let member = newPresence.member || newPresence.user
-	    let user = newPresence.user
-	    let client = this.client;
-	    let guild = newPresence.guild;
+		let member = newPresence.member || newPresence.user
+		let user = newPresence.user
+		let client = this.client;
+		let guild = newPresence.guild;
 
-	    if(user.bot){ //ignore bots
-	      return
-	    }
+		if(user.bot){ //ignore bots
+		return
+		}
 
 			//var env = process.env.ENVIRONMENT
 	    //if(env != 'production'){ //only work on production

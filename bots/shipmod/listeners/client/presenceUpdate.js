@@ -36,6 +36,7 @@ class CustomListener extends Listener {
 	    let member = newPresence.member || newPresence.user
 	    let user = newPresence.user
 	    let client = this.client;
+	    let guild = newPresence.guild;
 
 	    if(user.bot){ //ignore bots
 	      return
@@ -46,32 +47,40 @@ class CustomListener extends Listener {
 			//	return;
 			//}
 
-	    /** Information gathering **/
-	    let name = member.displayName || member.username || member.tag;
-	    let userID = member.id || member.user.id;
+		/** Information gathering **/
+		let name = member.displayName || member.username || member.tag;
+		let userID = member.id || member.user.id;
 
-	    let presence = newPresence.activities.filter(x=>x.type === "PLAYING") //outputs the presence which the user is playing
-	    if(!presence || !presence.length){return}
-	    let game = (presence[0] || presence).name // will give the name of the game 
-	    if(!game){return}
-	    let roleName = `🎮${game}`
+		let presence = newPresence.activities.filter(x=>x.type === "PLAYING") //outputs the presence which the user is playing
+		if(!presence || !presence.length){return}
+		let game = (presence[0] || presence).name // will give the name of the game 
+		if(!game){return}
+		let roleName = `🎮${game}`
 
-	    //if the role doesn't exist make it
-	    let role = await newPresence.guild.roles.create({
-		data:{
-		  name: roleName,
-		  color: "DEFAULT",
-		  mentionable: true
-		},
-		reason:"Game Activity"
-	    })
+		//if the role doesn't exist make it
+		let role = guild.roles.cache.find(x => x.name === roleName);
+		if (!role) {
+			// Role doesn't exist, safe to create
+			if(!guild.me.hasPermission("MANAGE_ROLES")){
+				consol.log(`${guild.me.displayName} does not have permissions to create roles`)
+				return
+			}
+			role = await guild.roles.create({
+				data:{
+					name: roleName,
+					color: "DEFAULT",
+					mentionable: true
+				},
+				reason:"Game Activity"
+			})
+		}
 
-	    //if the user doesn't have the role then add it
-	    if (! member.roles.cache.some(role => role.name === roleName)) {
-	      member.roles.add(role)
-	    }
+		//if the user doesn't have the role then add it
+		if (! member.roles.cache.some(role => role.name === roleName)) {
+			member.roles.add(role)
+		}
 
-	    //log
+		//log
 
 	}
 }

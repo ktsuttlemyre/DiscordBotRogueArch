@@ -29,12 +29,7 @@ class CustomListener extends Listener {
 
 
 	async exec( oldPresence, newPresence, manuallyTriggered) {
-		if(!oldPresence){
-			manuallyTriggered = newPresence
-			newPresence = oldPresence
-		}
-			
-		if(oldPresence.partial || newPresence.partial){ //ignore partials
+		if((oldPresence && oldPresence.partial) || newPresence.partial){ //ignore partials
 			return
 		}
     

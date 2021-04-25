@@ -51,11 +51,13 @@ class CustomListener extends Listener {
 	    let userID = member.id || member.user.id;
 
 	    let presence = newPresence.activities.filter(x=>x.type === "PLAYING") //outputs the presence which the user is playing
-	    let game = presence[0].name // will give the name of the game 
+	    if(!presence || !presence.length){return}
+	    let game = (presence[0] || presence).name // will give the name of the game 
+	    if(!game){return}
 	    let roleName = `🎮${game}`
 
 	    //if the role doesn't exist make it
-	    let role = await message.guild.roles.create({
+	    let role = await newPresence.guild.roles.create({
 		data:{
 		  name: roleName,
 		  color: "DEFAULT",

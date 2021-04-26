@@ -74,7 +74,7 @@ module.exports.encapsulate = async function(message,override,dontDelete){
 	doc.author=author;
 	
 	//if user is admin and requests anon then 
-	let isAdmin = user && user.roles.cache.find(role => config.encapsulateAdminRoles.includes(role.name));
+	let isAdmin = user && user.roles && user.roles.cache.find(role => config.encapsulateAdminRoles.includes(role.name));
 	if(isAdmin && doc.anon || doc.anonymous){
 		doc.author = undefined;
 		delete doc.author;

@@ -16,7 +16,7 @@ class CustomCommand extends Command {
 	constructor() {
 		super(commandVars.name, {
 		description: { content: 'play someone\'s theme tone'},
-		aliases: [commandVars.name,"clip"],
+		aliases: [commandVars.name,"theme","song","playSound","themesong"],
 		category: commandVars.category,
 		clientPermissions: ['SEND_MESSAGES'],
 		args: [
@@ -38,8 +38,8 @@ class CustomCommand extends Command {
 // 	}
 
 	async exec(message, {arg}) {
-		if (!message.member.voice.channel) return message.channel.send(`${emotes.error} - You're not in a voice channel !`);
-		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${emotes.error} - You are not in the same voice channel !`);
+		//if (!message.member.voice.channel) return message.channel.send(`${emotes.error} - You're not in a voice channel !`);
+		//if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${emotes.error} - You are not in the same voice channel !`);
 // 		var player = this.client.memory.get(message, 'player')
 // 		if(!player){
 // 			return message.channel.send('No player playing to act on')

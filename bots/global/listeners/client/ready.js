@@ -30,6 +30,9 @@ class CustomListener extends Listener {
 		 * check if there are any commands that were not executed
 		 */
 		client.guilds.cache.forEach(async function(Guild){ //.get("690661623831986266"); // Getting the guild.
+			Guild.me.voice.setSelfMute(false);
+			Guild.me.voice.setSelfDeaf(false);
+			
 			console.log('checking guild',Guild.name,Guild.id)
 			if(!Guild.channels){
 				return
@@ -124,9 +127,6 @@ class CustomListener extends Listener {
 		
 		client.user.setActivity(process.env.ACTIVITY||' @'+(client.user.username||client.user.tag)+' help to get started', { type: 'LISTENING' });
 		
-		
-		client.guild.me.voice.setSelfMute(false)
-		client.guild.me.voice.setSelfDeaf(false)
 
 	} //end exec
 

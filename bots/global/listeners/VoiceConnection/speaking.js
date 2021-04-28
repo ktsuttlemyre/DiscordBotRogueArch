@@ -21,7 +21,7 @@ class CustomListener extends Listener {
 //             this.client.memory.channelSet(message,`${message.id}_resolve`,resolve);
 //         }));
       
-      
+      return
       
        if (speaking.bitfield == 0 || user.bot) {
             return

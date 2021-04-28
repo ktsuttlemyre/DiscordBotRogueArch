@@ -32,8 +32,20 @@ class CustomListener extends Listener {
 		if((oldPresence && oldPresence.partial) || newPresence.partial){ //ignore partials
 			return
 		}
-    
-		let member = newPresence.member || newPresence.user
+    		
+		let member = null
+		try{
+			member = newPresence.member 
+		} catch {
+			try{
+				member = newPresence.user
+			}catch{
+				member = null
+			}
+		}
+		if (!member){
+			return
+		}
 		let user = newPresence.user
 		let client = this.client;
 		let guild = newPresence.guild;

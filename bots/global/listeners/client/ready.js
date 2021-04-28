@@ -34,12 +34,11 @@ class CustomListener extends Listener {
 		console.log('Setting ready state for bot ${client.user.tag}`);
 		client.guilds.cache.forEach(async function(Guild){ //.get("690661623831986266"); // Getting the guild.
 			console.log('Ready state setting for guild',Guild.name,Guild.id)
-			if(Guild.me.voice.selfmute){
-				Guild.me.voice.setSelfMute(false);
-			}
-			if(Guild.me.voice.selfDeaf){
-				Guild.me.voice.setSelfDeaf(false);
-			}
+			Guild.me.voice.selfmute && Guild.me.voice.setSelfMute(false);
+			Guild.me.voice.selfDeaf && Guild.me.voice.setSelfDeaf(false);
+			Guild.me.voice.serverMute && Guild.me.voice.setMute(false);
+			build.me.voice.serverDeaf && Guild.me.voice.setDeaf(false);
+			
 			
 			if(!Guild.channels || !Guild.channels.cache){
 				return

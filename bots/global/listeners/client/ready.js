@@ -50,7 +50,7 @@ class CustomListener extends Listener {
 				}); //end voicechannels
 				
 				//oldPresence, newPresencem, startupFlag
-				client.emit('presenceUpdate',{},member.user.presence,true); //true for manually triggered
+				client.emit('presenceUpdate',null,member.user.presence,true); //true for manually triggered
 				
 			}) //end members
 			

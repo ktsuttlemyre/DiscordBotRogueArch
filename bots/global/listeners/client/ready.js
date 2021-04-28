@@ -30,10 +30,14 @@ class CustomListener extends Listener {
 		 * check if there are any commands that were not executed
 		 */
 		client.guilds.cache.forEach(async function(Guild){ //.get("690661623831986266"); // Getting the guild.
-			Guild.me.voice.setSelfMute(false);
-			Guild.me.voice.setSelfDeaf(false);
+			if(Guild.me.voice.selfmute){
+				Guild.me.voice.setSelfMute(false);
+			}
+			if(Guild.me.voice.selfDeaf){
+				Guild.me.voice.setSelfDeaf(false);
+			}
 			
-			console.log('checking guild',Guild.name,Guild.id)
+			console.log('Ready state set for guild',Guild.name,Guild.id)
 			if(!Guild.channels){
 				return
 			}
@@ -96,7 +100,7 @@ class CustomListener extends Listener {
 				return a.createdTimestamp-b.createdTimestamp;
 			})//execute
 			.forEach(function(message){
-				console.log('executing message with command',message.content)
+				debug && console.log('executing message with command',message.content)
 				client.commandHandler.handle(message);
 			})
 

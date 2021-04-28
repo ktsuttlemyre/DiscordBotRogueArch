@@ -124,7 +124,9 @@ class CustomListener extends Listener {
 		
 		client.user.setActivity(process.env.ACTIVITY||' @'+(client.user.username||client.user.tag)+' help to get started', { type: 'LISTENING' });
 		
-
+		
+		client.guild.me.voice.setSelfMute(false)
+		client.guild.me.voice.setSelfDeaf(false)
 
 	} //end exec
 

@@ -45,9 +45,18 @@ class CustomCommand extends Command {
 // 		}
 // 		player.skip(message);
    		// process.exit(0);
-		await message.member.voice.channel.join();
-    message.guild.me.voice.setSelfMute(false);
+		let connection = await message.member.voice.channel.join();
+    		message.guild.me.voice.setSelfMute(false);
 		message.guild.me.voice.setSelfDeaf(false);
+		
+		connection.voice.setSelfMute(false);
+		connection.voice.setSelfDeaf(false);
+		
+		connection.voice.setMute(false);
+		connection.voice.setDeaf(false);
+		
+		message.guild.me.voice.setMute(false);
+		message.guild.me.voice.setDeaf(false);
 	}
 }
 

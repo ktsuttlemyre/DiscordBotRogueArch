@@ -31,7 +31,9 @@ class CustomListener extends Listener {
 		 * emit voice channel changes for voice-to-text channel linking
 		 * check if there are any commands that were not executed
 		 */
+		console.log('Setting ready state for bot ${client.user.tag}`);
 		client.guilds.cache.forEach(async function(Guild){ //.get("690661623831986266"); // Getting the guild.
+			console.log('Ready state setting for guild',Guild.name,Guild.id)
 			if(Guild.me.voice.selfmute){
 				Guild.me.voice.setSelfMute(false);
 			}
@@ -39,10 +41,10 @@ class CustomListener extends Listener {
 				Guild.me.voice.setSelfDeaf(false);
 			}
 			
-			console.log('Ready state set for guild',Guild.name,Guild.id)
-			if(!Guild.channels){
+			if(!Guild.channels || !Guild.channels.cache){
 				return
 			}
+			
 			let voiceChannels = Guild.channels.cache.filter(c => c.type == 'voice').array();
 			Guild.members.cache.forEach(function(member){
 				if(member.user.bot){
@@ -128,7 +130,7 @@ class CustomListener extends Listener {
 		
 		
 		// Log that the bot is online.
-		client.logger.info(`${client.user.tag}, ready to serve ${client.users.size} users in ${client.guilds.size} servers.`, 'ready');
+		client.logger.info(`${client.user.tag}, ready to serve ${client.users.cache.size} users in ${client.guilds.cache.size} servers.`, 'ready');
 		// Set the bot status
 		
 		client.user.setActivity(process.env.ACTIVITY||' @'+(client.user.username||client.user.tag)+' help to get started', { type: 'LISTENING' });

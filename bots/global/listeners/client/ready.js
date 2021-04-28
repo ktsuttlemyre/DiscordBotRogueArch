@@ -1,3 +1,5 @@
+const debug = false;
+
 const Discord = require('discord.js');
 
 const { Listener } = require('discord-akairo');
@@ -64,20 +66,20 @@ class CustomListener extends Listener {
 
 			//read all previous commands
 			let textChannels = Guild.channels.cache.filter(c => c.type == 'text').array();
-			config.debug && console.log('checking old commands');
+			debug && console.log('checking old commands');
 			let commandMessagesQueue=[];
 			for(const channel of textChannels) {
 				if(!(channel.permissionsFor(Guild.me).has("VIEW_CHANNEL"))){
 					continue
 				}
 				if(util.devChannelGate({channel})){continue}
-				config.debug && console.log('testing',channel.name);
+				debug && console.log('testing',channel.name);
 				
 				let messages = await channel.messages.fetch(); //TODO make this use the util.messages.fetch function so it reads further into the history
 				messages = Array.from(messages.values());
 				for(const message of messages){
 					//stop once you find a message that this bot has sent
-					config.debug && console.log('id check',Guild.me.id,(message.member||message.author).id);
+					debug && console.log('id check',Guild.me.id,(message.member||message.author).id);
 					if(Guild.me.id == (message.member||message.author).id){
 						break; //end loop
 					}

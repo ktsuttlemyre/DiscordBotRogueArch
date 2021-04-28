@@ -14,9 +14,9 @@ class CustomListener extends Listener {
 	}
 
 	async exec( oldstate, newstate, manuallyTriggered ) {
-		if(newstate.guild.me.voice){
-			newstate.guild.me.voice.setSelfMute(false)
-		}
+// 		if(newstate.guild.me.voice){
+// 			newstate.guild.me.voice.setSelfMute(false)
+// 		}
 		if(oldstate.partial || newstate.partial){
 			return
 		}

@@ -32,8 +32,7 @@ class CustomListener extends Listener {
 		// voice-text-channel-link
 		let roomChanged = ((oldstate.channelID || newstate.channelID) && oldstate.channelID !== newstate.channelID);
 		let channelMap = config.voiceTextLinkMap;
-		
-		let permissionsNeeded = ['VIEW_CHANNEL','MANAGE_CHANNELS'];
+	
 		
 		debug && console.info('voiceStateUpdate',oldstate.channelID,newstate.channelID,roomChanged,thisMember.displayName);
 		    
@@ -44,7 +43,7 @@ class CustomListener extends Listener {
 		if(textChannel){
 			debug && console.log('entering a hidden channel',textChannelID)
 			permissions = textChannel.permissionsFor(guild.me)
-			if(permissions.has(permissionsNeeded)){
+			if(permissions.has(['VIEW_CHANNEL','MANAGE_CHANNELS'])){
 				textChannel.updateOverwrite(thisMember, {
 				    //SEND_MESSAGES: false,
 				    VIEW_CHANNEL: true
@@ -63,7 +62,7 @@ class CustomListener extends Listener {
 			debug && console.log('leaving a hidden channel',textChannelID)
 			permissions = textChannel.permissionsFor(guild.me)
 			//console.log(permissions.toArray())
-			if(permissions.has(permissionsNeeded)){
+			if(permissions.has(['VIEW_CHANNEL','MANAGE_CHANNELS'])){
 				//leave private rooms
 				textChannel.updateOverwrite(thisMember, {
 				    //SEND_MESSAGES: false,
@@ -93,7 +92,8 @@ class CustomListener extends Listener {
 		if(newstate.channelID && changed.selfMute){ //if in a channel and mute state changed
 			let amongusMode = this.client.memory.channelGet(newstate, 'amongusMode');
 			//mute handler
-			if(amongusMode){
+			permissions = newstate.channel.permissionsFor(guild.me)
+			if(amongusMode && permissions.has(['MUTE_MEMBERS'])){
 				newstate.channel.members.forEach(function(member){
 					if(member.id == thisMember.id){return}
 					member.voice.setMute(newstate.mute);
@@ -104,18 +104,24 @@ class CustomListener extends Listener {
 				
 		let joinLeaveConfig=config.voiceJoinLeave
 		
+		permissions = newstate.channel.permissionsFor(guild.me);
 		//only work if this is a real event and the channel has changed
 		if(!manuallyTriggered && newstate.channelID !== oldstate.channelID){ //channel changed
 			
+			
 			//reset the users status removing serverMute and serverDeafen if they do not have the voicemute or voicedeaf role
 			if(!newstate.member.user.bot && (joinLeaveConfig.resetUserState || oldstate.channelID == oldstate.guild.afkChannelID)){
-				!thisMember.roles.cache.some(role => role.name === config.roles.VoiceMute) && newstate.setMute(false);
-				!thisMember.roles.cache.some(role => role.name === config.roles.VoiceDeaf) && newstate.setDeaf(false);
+				if(permissions.has(['MUTE_MEMBERS']){
+					!thisMember.roles.cache.some(role => role.name === config.roles.VoiceMute) && newstate.setMute(false);
+				}
+				if(permissions.has('DEAFEN_MEMBERS']){
+					!thisMember.roles.cache.some(role => role.name === config.roles.VoiceDeaf) && newstate.setDeaf(false);
+				}
 			}
 			//mute if entering afkChannel
 			if(newstate.channelID == newstate.guild.afkChannelID){
-				newstate.setMute(true)
-				newstate.setDeaf(true)
+				permissions.has(['MUTE_MEMBERS']) && newstate.setMute(true)
+				permissions.has(['DEAFEN_MEMBERS']) && newstate.setDeaf(true)
 			}
 			
 			// play themetones

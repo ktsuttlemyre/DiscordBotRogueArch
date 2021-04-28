@@ -108,12 +108,16 @@ class CustomListener extends Listener {
 
 			}
 		}
-				
+		
+		if(manuallyTriggered){
+			return
+		}
+		
 		let joinLeaveConfig=config.voiceJoinLeave
 		
 		permissions = newstate.channel.permissionsFor(guild.me);
 		//only work if this is a real event and the channel has changed
-		if(!manuallyTriggered && changed.channelID){ //channel changed
+		if(changed.channelID){ //channel changed
 			
 			
 // 			//reset the users status removing serverMute and serverDeafen if they do not have the voicemute or voicedeaf role

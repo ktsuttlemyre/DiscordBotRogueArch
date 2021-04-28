@@ -37,7 +37,7 @@ class CustomListener extends Listener {
 			Guild.me.voice.selfmute && Guild.me.voice.setSelfMute(false);
 			Guild.me.voice.selfDeaf && Guild.me.voice.setSelfDeaf(false);
 			Guild.me.voice.serverMute && Guild.me.voice.setMute(false);
-			build.me.voice.serverDeaf && Guild.me.voice.setDeaf(false);
+			Guild.me.voice.serverDeaf && Guild.me.voice.setDeaf(false);
 			
 			
 			if(!Guild.channels || !Guild.channels.cache){

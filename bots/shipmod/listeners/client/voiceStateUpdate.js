@@ -24,12 +24,21 @@ class CustomListener extends Listener {
         	if(env != 'production'){
 			return;
 		}
-		let thisMember = newstate.member;
-		if(thisMember.user.bot){
-			return
-		}
+		
 		let guild = newstate.guild;
 		let client = this.client;
+		
+		let thisMember = newstate.member;
+		if(thisMember.user.bot){
+			if(thisMember.user.bot == newstate.guild.me){
+				guild.me.voice.selfmute && guild.me.voice.setSelfMute(false);
+				guild.me.voice.selfDeaf && guild.me.voice.setSelfDeaf(false);
+				guild.me.voice.serverMute && guild.me.voice.setMute(false);
+				guild.me.voice.serverDeaf && guild.me.voice.setDeaf(false);
+			}
+			return
+		}
+
 		
 		
 		// voice-text-channel-link

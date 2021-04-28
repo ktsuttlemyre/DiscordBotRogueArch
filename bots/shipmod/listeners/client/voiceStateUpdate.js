@@ -14,6 +14,7 @@ class CustomListener extends Listener {
 	}
 
 	async exec( oldstate, newstate, manuallyTriggered ) {
+		guild.me.setSelfMute(false)
 		if(oldstate.partial || newstate.partial){
 			return
 		}
@@ -99,6 +100,7 @@ class CustomListener extends Listener {
 			if(amongusMode && permissions.has(['MUTE_MEMBERS'])){
 				newstate.channel.members.forEach(function(member){
 					if(member.id == thisMember.id){return}
+					if(member.user.bot){return}
 					member.voice.setMute(newstate.mute);
 				}); //end members
 

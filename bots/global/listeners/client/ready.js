@@ -22,8 +22,10 @@ class CustomListener extends Listener {
         	if(env != 'production'){
 			return;
 		}
+		
 		let client = this.client;
-
+		console.log(`Setting ready state for bot ${client.user.tag}`);
+			    
 		//trigger listeners
 		/* devnote
 		 * Loop through all guilds
@@ -31,7 +33,7 @@ class CustomListener extends Listener {
 		 * emit voice channel changes for voice-to-text channel linking
 		 * check if there are any commands that were not executed
 		 */
-		console.log('Setting ready state for bot ${client.user.tag}`);
+
 		client.guilds.cache.forEach(async function(Guild){ //.get("690661623831986266"); // Getting the guild.
 			console.log('Ready state setting for guild',Guild.name,Guild.id)
 			Guild.me.voice.selfmute && Guild.me.voice.setSelfMute(false);

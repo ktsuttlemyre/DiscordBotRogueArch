@@ -14,6 +14,10 @@ class CustomListener extends Listener {
 	}
 
 	async exec( oldstate, newstate, manuallyTriggered ) {
+		console.log('voicestate triggered')
+// 		if(newstate.guild.me.voice){
+// 			newstate.guild.me.voice.setSelfMute(false)
+// 		}
 		if(oldstate.partial || newstate.partial){
 			return
 		}
@@ -21,17 +25,39 @@ class CustomListener extends Listener {
         	if(env != 'production'){
 			return;
 		}
-		let thisMember = newstate.member;
-		if(thisMember.user.bot){
-			return
-		}
+		
 		let guild = newstate.guild;
 		let client = this.client;
+		
+		let thisMember = newstate.member;
+		if(thisMember.user.bot){
+			if(thisMember.user.bot == newstate.guild.me){
+				guild.me.voice.selfmute && guild.me.voice.setSelfMute(false);
+				guild.me.voice.selfDeaf && guild.me.voice.setSelfDeaf(false);
+				guild.me.voice.serverMute && guild.me.voice.setMute(false);
+				guild.me.voice.serverDeaf && guild.me.voice.setDeaf(false);
+			}
+			return
+		}
+
 		
 		
 		// voice-text-channel-link
 		let roomChanged = ((oldstate.channelID || newstate.channelID) && oldstate.channelID !== newstate.channelID);
 		let channelMap = config.voiceTextLinkMap;
+		
+		let changed ={	
+			channelID: oldstate.channelID !== newstate.channelID,
+			deaf: oldstate.deaf !== newstate.deaf,
+			mute: oldstate.mute !== newstate.mute,
+			selfDeaf: oldstate.selfDeaf !== newstate.selfDeaf,
+			selfMute: oldstate.selfMute !== newstate.selfMute,
+			selfVideo: oldstate.selfVideo !== newstate.selfVideo,
+			serverDeaf: oldstate.serverDeaf !== newstate.serverDeaf,
+			serverMute: oldstate.serverMute !== newstate.serverMute,
+			speaking: oldstate.speaking !== newstate.speaking,
+			streaming: oldstate.streaming !== newstate.streaming
+		}
 	
 		
 		debug && console.info('voiceStateUpdate',oldstate.channelID,newstate.channelID,roomChanged,thisMember.displayName);
@@ -74,55 +100,62 @@ class CustomListener extends Listener {
 			}
 		}
 		
-		
+		//if they aren't currently in a room then don't do anything below here
+		if(!newstate.channelID){
+			return
+		}
 		//handle amongus mute mode
-		let changed ={	
-			channelID: oldstate.channelID !== newstate.channelID,
-			deaf: oldstate.deaf !== newstate.deaf,
-			mute: oldstate.mute !== newstate.mute,
-			selfDeaf: oldstate.selfDeaf !== newstate.selfDeaf,
-			selfMute: oldstate.selfMute !== newstate.selfMute,
-			selfVideo: oldstate.selfVideo !== newstate.selfVideo,
-			serverDeaf: oldstate.serverDeaf !== newstate.serverDeaf,
-			serverMute: oldstate.serverMute !== newstate.serverMute,
-			speaking: oldstate.speaking !== newstate.speaking,
-			streaming: oldstate.streaming !== newstate.streaming
-		}
+// 		if(changed.selfMute){ //if in a channel and mute state changed
+// 			let amongusMode = this.client.memory.channelGet(newstate, 'amongusMode');
+// 			//mute handler
+// 			permissions = newstate.channel.permissionsFor(guild.me)
+// 			if(amongusMode && permissions.has(['MUTE_MEMBERS'])){
+// 				newstate.channel.members.forEach(function(member){
+// 					if(member.id == thisMember.id){return}
+// 					if(member.user.bot){return}
+// 					member.voice.setMute(newstate.mute);
+// 				}); //end members
 
-		if(newstate.channelID && changed.selfMute){ //if in a channel and mute state changed
-			let amongusMode = this.client.memory.channelGet(newstate, 'amongusMode');
-			//mute handler
-			permissions = newstate.channel.permissionsFor(guild.me)
-			if(amongusMode && permissions.has(['MUTE_MEMBERS'])){
-				newstate.channel.members.forEach(function(member){
-					if(member.id == thisMember.id){return}
-					member.voice.setMute(newstate.mute);
-				}); //end members
-
-			}
+// 			}
+// 		}
+		
+		if(manuallyTriggered){
+			return
 		}
-				
+		
 		let joinLeaveConfig=config.voiceJoinLeave
 		
 		permissions = newstate.channel.permissionsFor(guild.me);
 		//only work if this is a real event and the channel has changed
-		if(!manuallyTriggered && newstate.channelID !== oldstate.channelID){ //channel changed
+		if(changed.channelID){ //channel changed
 			
 			
-			//reset the users status removing serverMute and serverDeafen if they do not have the voicemute or voicedeaf role
-			if(!newstate.member.user.bot && (joinLeaveConfig.resetUserState || oldstate.channelID == oldstate.guild.afkChannelID)){
-				if(permissions.has(['MUTE_MEMBERS']){
-					!thisMember.roles.cache.some(role => role.name === config.roles.VoiceMute) && newstate.setMute(false);
-				}
-				if(permissions.has('DEAFEN_MEMBERS']){
-					!thisMember.roles.cache.some(role => role.name === config.roles.VoiceDeaf) && newstate.setDeaf(false);
-				}
-			}
-			//mute if entering afkChannel
-			if(newstate.channelID == newstate.guild.afkChannelID){
-				permissions.has(['MUTE_MEMBERS']) && newstate.setMute(true)
-				permissions.has(['DEAFEN_MEMBERS']) && newstate.setDeaf(true)
-			}
+// 			//reset the users status removing serverMute and serverDeafen if they do not have the voicemute or voicedeaf role
+// 			if(!newstate.member.user.bot && (joinLeaveConfig.resetUserState || oldstate.channelID == oldstate.guild.afkChannelID)){
+// 				if(permissions.has(['MUTE_MEMBERS'])){
+// 					!thisMember.roles.cache.some(role => role.name === config.roles.VoiceMute) && newstate.setMute(false);
+// 				}else{
+// 					console.log(`${guild.me} does not have permissions to set mute state to ${thisMember} in ${newstate.channel.name}`)
+// 				}
+// 				if(permissions.has('DEAFEN_MEMBERS'])){
+// 					!thisMember.roles.cache.some(role => role.name === config.roles.VoiceDeaf) && newstate.setDeaf(false);
+// 				}else{
+// 					console.log(`${guild.me} does not have permissions to set deafen state to ${thisMember} in ${newstate.channel.name}`)
+// 				}
+// 			}
+// 			//mute if entering afkChannel
+// 			if(newstate.channelID == newstate.guild.afkChannelID){
+// 				if(permissions.has(['MUTE_MEMBERS']){
+// 				   newstate.setMute(true);
+// 				}else{
+// 					console.log(`${guild.me} does not have permissions to unmute ${thisMember} in ${newstate.channel.name}`)
+// 				}
+// 				if(permissions.has(['DEAFEN_MEMBERS'])){
+// 					newstate.setDeaf(true);
+// 				}else{
+// 					console.log(`${guild.me} does not have permissions to undeafen ${thisMember} in ${newstate.channel.name}`)
+// 				}
+// 			}
 			
 			// play themetones
 			if(joinLeaveConfig.tones && joinLeaveConfig.tones.on){

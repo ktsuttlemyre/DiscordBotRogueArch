@@ -1,3 +1,5 @@
+const debug = false;
+
 const Discord = require('discord.js');
 
 const { Listener } = require('discord-akairo');
@@ -20,8 +22,10 @@ class CustomListener extends Listener {
         	if(env != 'production'){
 			return;
 		}
+		
 		let client = this.client;
-
+		console.log(`Setting ready state for bot ${client.user.tag}`);
+			    
 		//trigger listeners
 		/* devnote
 		 * Loop through all guilds
@@ -29,11 +33,19 @@ class CustomListener extends Listener {
 		 * emit voice channel changes for voice-to-text channel linking
 		 * check if there are any commands that were not executed
 		 */
+
 		client.guilds.cache.forEach(async function(Guild){ //.get("690661623831986266"); // Getting the guild.
-			console.log('checking guild',Guild.name,Guild.id)
-			if(!Guild.channels){
+			console.log('Ready state setting for guild',Guild.name,Guild.id)
+			Guild.me.voice.selfmute && Guild.me.voice.setSelfMute(false);
+			Guild.me.voice.selfDeaf && Guild.me.voice.setSelfDeaf(false);
+			Guild.me.voice.serverMute && Guild.me.voice.setMute(false);
+			Guild.me.voice.serverDeaf && Guild.me.voice.setDeaf(false);
+			
+			
+			if(!Guild.channels || !Guild.channels.cache){
 				return
 			}
+			
 			let voiceChannels = Guild.channels.cache.filter(c => c.type == 'voice').array();
 			Guild.members.cache.forEach(function(member){
 				if(member.user.bot){
@@ -57,20 +69,20 @@ class CustomListener extends Listener {
 
 			//read all previous commands
 			let textChannels = Guild.channels.cache.filter(c => c.type == 'text').array();
-			config.debug && console.log('checking old commands');
+			debug && console.log('checking old commands');
 			let commandMessagesQueue=[];
 			for(const channel of textChannels) {
 				if(!(channel.permissionsFor(Guild.me).has("VIEW_CHANNEL"))){
 					continue
 				}
 				if(util.devChannelGate({channel})){continue}
-				config.debug && console.log('testing',channel.name);
+				debug && console.log('testing',channel.name);
 				
 				let messages = await channel.messages.fetch(); //TODO make this use the util.messages.fetch function so it reads further into the history
 				messages = Array.from(messages.values());
 				for(const message of messages){
 					//stop once you find a message that this bot has sent
-					config.debug && console.log('id check',Guild.me.id,(message.member||message.author).id);
+					debug && console.log('id check',Guild.me.id,(message.member||message.author).id);
 					if(Guild.me.id == (message.member||message.author).id){
 						break; //end loop
 					}
@@ -93,7 +105,7 @@ class CustomListener extends Listener {
 				return a.createdTimestamp-b.createdTimestamp;
 			})//execute
 			.forEach(function(message){
-				console.log('executing message with command',message.content)
+				debug && console.log('executing message with command',message.content)
 				client.commandHandler.handle(message);
 			})
 
@@ -119,12 +131,11 @@ class CustomListener extends Listener {
 		
 		
 		// Log that the bot is online.
-		client.logger.info(`${client.user.tag}, ready to serve ${client.users.size} users in ${client.guilds.size} servers.`, 'ready');
+		client.logger.info(`${client.user.tag}, ready to serve ${client.users.cache.size} users in ${client.guilds.cache.size} servers.`, 'ready');
 		// Set the bot status
 		
 		client.user.setActivity(process.env.ACTIVITY||' @'+(client.user.username||client.user.tag)+' help to get started', { type: 'LISTENING' });
 		
-
 
 	} //end exec
 

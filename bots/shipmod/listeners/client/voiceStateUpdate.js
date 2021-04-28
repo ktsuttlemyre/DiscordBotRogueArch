@@ -32,6 +32,19 @@ class CustomListener extends Listener {
 		// voice-text-channel-link
 		let roomChanged = ((oldstate.channelID || newstate.channelID) && oldstate.channelID !== newstate.channelID);
 		let channelMap = config.voiceTextLinkMap;
+		
+		let changed ={	
+			channelID: oldstate.channelID !== newstate.channelID,
+			deaf: oldstate.deaf !== newstate.deaf,
+			mute: oldstate.mute !== newstate.mute,
+			selfDeaf: oldstate.selfDeaf !== newstate.selfDeaf,
+			selfMute: oldstate.selfMute !== newstate.selfMute,
+			selfVideo: oldstate.selfVideo !== newstate.selfVideo,
+			serverDeaf: oldstate.serverDeaf !== newstate.serverDeaf,
+			serverMute: oldstate.serverMute !== newstate.serverMute,
+			speaking: oldstate.speaking !== newstate.speaking,
+			streaming: oldstate.streaming !== newstate.streaming
+		}
 	
 		
 		debug && console.info('voiceStateUpdate',oldstate.channelID,newstate.channelID,roomChanged,thisMember.displayName);
@@ -74,22 +87,12 @@ class CustomListener extends Listener {
 			}
 		}
 		
-		
-		//handle amongus mute mode
-		let changed ={	
-			channelID: oldstate.channelID !== newstate.channelID,
-			deaf: oldstate.deaf !== newstate.deaf,
-			mute: oldstate.mute !== newstate.mute,
-			selfDeaf: oldstate.selfDeaf !== newstate.selfDeaf,
-			selfMute: oldstate.selfMute !== newstate.selfMute,
-			selfVideo: oldstate.selfVideo !== newstate.selfVideo,
-			serverDeaf: oldstate.serverDeaf !== newstate.serverDeaf,
-			serverMute: oldstate.serverMute !== newstate.serverMute,
-			speaking: oldstate.speaking !== newstate.speaking,
-			streaming: oldstate.streaming !== newstate.streaming
+		//if they aren't currently in a room then don't do anything below here
+		if(!newstate.channelID){
+			return
 		}
-
-		if(newstate.channelID && changed.selfMute){ //if in a channel and mute state changed
+		//handle amongus mute mode
+		if(changed.selfMute){ //if in a channel and mute state changed
 			let amongusMode = this.client.memory.channelGet(newstate, 'amongusMode');
 			//mute handler
 			permissions = newstate.channel.permissionsFor(guild.me)
@@ -106,7 +109,7 @@ class CustomListener extends Listener {
 		
 		permissions = newstate.channel.permissionsFor(guild.me);
 		//only work if this is a real event and the channel has changed
-		if(!manuallyTriggered && newstate.channelID !== oldstate.channelID){ //channel changed
+		if(!manuallyTriggered && changed.channel){ //channel changed
 			
 			
 // 			//reset the users status removing serverMute and serverDeafen if they do not have the voicemute or voicedeaf role

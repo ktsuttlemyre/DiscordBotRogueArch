@@ -14,6 +14,7 @@ class CustomListener extends Listener {
 	}
 
 	async exec( oldstate, newstate, manuallyTriggered ) {
+		console.log('voicestate triggered')
 // 		if(newstate.guild.me.voice){
 // 			newstate.guild.me.voice.setSelfMute(false)
 // 		}
@@ -104,19 +105,19 @@ class CustomListener extends Listener {
 			return
 		}
 		//handle amongus mute mode
-		if(changed.selfMute){ //if in a channel and mute state changed
-			let amongusMode = this.client.memory.channelGet(newstate, 'amongusMode');
-			//mute handler
-			permissions = newstate.channel.permissionsFor(guild.me)
-			if(amongusMode && permissions.has(['MUTE_MEMBERS'])){
-				newstate.channel.members.forEach(function(member){
-					if(member.id == thisMember.id){return}
-					if(member.user.bot){return}
-					member.voice.setMute(newstate.mute);
-				}); //end members
+// 		if(changed.selfMute){ //if in a channel and mute state changed
+// 			let amongusMode = this.client.memory.channelGet(newstate, 'amongusMode');
+// 			//mute handler
+// 			permissions = newstate.channel.permissionsFor(guild.me)
+// 			if(amongusMode && permissions.has(['MUTE_MEMBERS'])){
+// 				newstate.channel.members.forEach(function(member){
+// 					if(member.id == thisMember.id){return}
+// 					if(member.user.bot){return}
+// 					member.voice.setMute(newstate.mute);
+// 				}); //end members
 
-			}
-		}
+// 			}
+// 		}
 		
 		if(manuallyTriggered){
 			return

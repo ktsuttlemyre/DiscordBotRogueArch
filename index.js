@@ -239,7 +239,7 @@ function shutdown(signal) {
 				let player = (memory)?memory.get({guild:guild}, 'player'):null;
 				if(!player){return}
 				player.queues && player.queues.forEach(function(queue){
-					console.log('alerting queue',queue)
+					console.log('alerting queue with tracks',queue.tracks.length)
 					var message = queue.firstMessage
 					if(player.isPlaying(message)){
 					  GUIMessages.nowPlaying(message,null,`Music will stop. Reason:${reason}`)

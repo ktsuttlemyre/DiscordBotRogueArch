@@ -13,7 +13,7 @@ class CustomListener extends Listener {
 		});
 	}
 
-	async exec( oldstate, newstate, manuallyTriggered ) {
+	async exec( oldstate, newstate, startupTriggered ) {
 		if(oldstate.partial || newstate.partial){
 			return
 		}
@@ -88,7 +88,10 @@ class CustomListener extends Listener {
 			}
 		}
 		
-		
+		/************************ End startup Trigger **************/
+		if(startupTriggered){
+			return
+		}
 		//handle amongus mute mode
 // 		if(newstate.channelID && changed.selfMute){ //if in a channel and mute state changed
 // 			let amongusMode = this.client.memory.channelGet(newstate, 'amongusMode');
@@ -105,8 +108,10 @@ class CustomListener extends Listener {
 				
 		let joinLeaveConfig=config.voiceJoinLeave
 		
+		
+		
 		//only work if this is a real event and the channel has changed
-		if(!manuallyTriggered && newstate.channelID !== oldstate.channelID){ //channel changed
+		if(changed.channelID){ //channel changed
 			permissions = newstate.channel.permissionsFor(guild.me);
 			//reset the users status removing serverMute and serverDeafen if they do not have the voicemute or voicedeaf role
 			if(!newstate.member.user.bot && (joinLeaveConfig.resetUserState || oldstate.channelID == oldstate.guild.afkChannelID)){

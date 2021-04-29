@@ -86,7 +86,7 @@ class CustomCommand extends Command {
     }
 
     await updateCooldown(guildId, cmd);
-}
+};
 
 
 //     const guild = message.guild;

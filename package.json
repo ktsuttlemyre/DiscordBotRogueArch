@@ -34,7 +34,6 @@
     "web-audio-engine":"^0.13.4",
     "tone":"^14.7.77",
     "scribbletune":"^3.15.1",
-    "eslint":"^7.25.0",
     "ytdl-core":"^4.5.0"
   }
 }

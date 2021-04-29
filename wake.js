@@ -101,4 +101,4 @@ function wakeHandler(client){
     });
     
   })
-}
+};

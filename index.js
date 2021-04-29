@@ -57,8 +57,6 @@ function init(client){
 	client.on('disconnect', () => client.logger.warn('Connection lost...'))
 		.on('reconnect', () => client.logger.info('Attempting to reconnect...'))
 		.on('error', err => client.logger.error(err))
-		.on('debug', console.log)
-	        .on('ready',function(){console.log('ready!!!!!')})
 		.on('warn', info => client.logger.warn(info));
 	
 	//wakup ping for any activity

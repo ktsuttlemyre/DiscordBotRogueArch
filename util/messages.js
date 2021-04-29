@@ -248,7 +248,7 @@ module.exports.fetchForEach = async function fetchMessages(channel, options, cal
 					breakOut=true;
 					return resolve('resolved');
 				}
-			}
+			};
 			
 			if(loadedAllMessages){
 				return resolve('resolved');

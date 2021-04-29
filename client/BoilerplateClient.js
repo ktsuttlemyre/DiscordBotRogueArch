@@ -1,4 +1,4 @@
-var debug = true;
+var debug = false;
 
 // Discord Stuff
 const { AkairoClient, CommandHandler, ListenerHandler, InhibitorHandler } = require('discord-akairo');

@@ -43,7 +43,7 @@ module.exports.fetchShift = function (subreddit, options) {
 			let index=gIndex+gOffset;
 			let responseLength = 0
 			
-			let itemsResponse = null;
+			let itemsResponse = null;;
 			if(!loadedAllItems && index>items.length-nBuffer){ //if we have items on the server and getting close to buffer then
 				itemsResponse = await subredditBatch(subreddit,opts);
 				if(!itemsResponse || !itemsResponse.data || !itemsResponse.data.children || !itemsResponse.data.children.length){

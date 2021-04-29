@@ -41,6 +41,7 @@ class CustomListener extends Listener {
 			speaking: oldstate.speaking !== newstate.speaking,
 			streaming: oldstate.streaming !== newstate.streaming
 		}
+		debug && console.log(`voiceStateUpdate Triggered for user ${thisMember.tag} with state`,changed)
 		
 		// voice-text-channel-link
 		let roomChanged = ((oldstate.channelID || newstate.channelID) && oldstate.channelID !== newstate.channelID);

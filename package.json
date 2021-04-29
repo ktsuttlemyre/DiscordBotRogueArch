@@ -6,7 +6,6 @@
   "scripts": {
     "start": "node index.js"
   },
-  "eslint" "**/*.js",
   "author": "Kyle Suttlemyre",
   "license": "ISC",
   "dependencies": {

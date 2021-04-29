@@ -186,7 +186,7 @@ web.global=global = this
 					//for Mozila
 					parser=new DOMParser();
 					xmlDoc=parser.parseFromString(obj,"text/xml");
-					return (new XMLSerializer()).serializeToString(xmlDoc);;
+					return (new XMLSerializer()).serializeToString(xmlDoc);
 				}
 			}
 			if(web.isCollection(obj)){

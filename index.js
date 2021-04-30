@@ -225,7 +225,9 @@ function shutdown(signal) {
 			// 	}
 			// }); //end iter members
 			let logChannel=guild.channels.resolve(config.actionLogChannel);
-			logChannel && logChannel.send(`Going to sleep for reason ${reason}`);
+			if(logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES")){
+				logChannel.send(`Going to sleep for reason ${reason}`);
+			}
 		}); //end iter guilds
 
 
@@ -246,8 +248,10 @@ function shutdown(signal) {
 					  GUIMessages.nowPlaying(message,null,`Music will stop. Reason:${reason}`)
 					}	
 				}); //end iter queues
-			   	let logChannel=guild.channels.resolve(config.actionLogChannel);
-				logChannel && logChannel.send(`Going to sleep for reason ${reason}`);
+				let logChannel=guild.channels.resolve(config.actionLogChannel);
+				if(logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES")){
+					logChannel.send(`Going to sleep for reason ${reason}`);
+				}
 			}); //end iter guilds
 		}); //end iter musicbots
 

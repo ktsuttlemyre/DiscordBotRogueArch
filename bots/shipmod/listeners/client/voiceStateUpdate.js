@@ -14,6 +14,7 @@ class CustomListener extends Listener {
 	}
 
 	async exec( oldstate, newstate, startupTriggered ) {
+		console.log('voicestateupdate!')
 		if(oldstate.partial || newstate.partial){
 			return
 		}

@@ -17,11 +17,22 @@ class CustomListener extends Listener {
 	}
 
 	async exec() {
+		let client = this.client;
+		let statement = `${client.user.tag}, waking up to serve ${client.users.cache.size} users in ${client.guilds.cache.size} servers.` 
+		console.log(statement)
+		
+		// Log that the bot is online.
+		client.logger.info(statement, 'ready');
+		// Set the bot status
+		
+		client.user.setActivity(process.env.ACTIVITY||' @'+(client.user.username||client.user.tag)+' help to get started', { type: 'LISTENING' });
+		
+		
 		var env = process.env.ENVIRONMENT
         	if(env != 'production'){
 			return;
 		}
-		let client = this.client;
+		
 
 		//trigger listeners
 		/* devnote
@@ -92,8 +103,7 @@ class CustomListener extends Listener {
 			//sort
 			commandMessagesQueue.sort(function(a,b){
 				return a.createdTimestamp-b.createdTimestamp;
-			})//execute
-			.forEach(function(message){
+			}).forEach(function(message){ //execute
 				debug && console.log('executing message with command',message.content)
 				client.commandHandler.handle(message);
 			})
@@ -117,19 +127,10 @@ class CustomListener extends Listener {
 				logChannel.send(`${client.user.tag} woke up`);
 			}
 
- 			}); //end guilds
+ 		}); //end guilds
 		
+		console.log(`ready rutine is complete for ${client.user.tag}`)
 		
-		console.log(`${client.user.tag}, ready to serve ${client.users.size} users in ${client.guilds.size} servers.`)
-		
-		// Log that the bot is online.
-		client.logger.info(`${client.user.tag}, ready to serve ${client.users.size} users in ${client.guilds.size} servers.`, 'ready');
-		// Set the bot status
-		
-		client.user.setActivity(process.env.ACTIVITY||' @'+(client.user.username||client.user.tag)+' help to get started', { type: 'LISTENING' });
-		
-
-
 	} //end exec
 
 }

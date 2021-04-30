@@ -18,6 +18,10 @@ const commandVars = require.main.require("./common").commandVars(__filename);
 const util = require.main.require("./util");
 const _ = require("lodash");
 
+const filterApps = {
+	'Google Chrome',1
+};
+
 class CustomListener extends Listener {
 	constructor() {
 		super(commandVars.id, {
@@ -73,6 +77,12 @@ class CustomListener extends Listener {
 		if (!game) {
 			return;
 		}
+		
+		//filter out non-games
+		if(filterApps[game]){
+		   return
+		}
+		
 		let roleName = `🎮${game}`;
 
 		//if the role doesn't exist make it

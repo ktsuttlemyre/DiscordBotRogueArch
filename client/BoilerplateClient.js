@@ -174,6 +174,7 @@ class BoilerplateClient extends AkairoClient {
 			this.listenerHandler.loadAll();
 		} catch (err) {
 			console.error("Error loading handlers. Current handler profile " + JSON.stringify(currentHandler,null,2));
+			console.trace()
 			process.exit(1);
 		}
 	}

@@ -122,7 +122,7 @@ class CustomListener extends Listener {
 				}else{
 					console.log(`${guild.me} does not have permissions to set mute state to ${thisMember} in ${newstate.channel.name}`)
 				}
-				if(permissions.has('DEAFEN_MEMBERS'])){
+				if(permissions.has('DEAFEN_MEMBERS'))){
 					!thisMember.roles.cache.some(role => role.name === config.roles.VoiceDeaf) && newstate.setDeaf(false);
 				}else{
 					console.log(`${guild.me} does not have permissions to set deafen state to ${thisMember} in ${newstate.channel.name}`)
@@ -135,7 +135,7 @@ class CustomListener extends Listener {
 				}else{
 					console.log(`${guild.me} does not have permissions to mute ${thisMember} in ${newstate.channel.name}`)
 				}
-				if(permissions.has(['DEAFEN_MEMBERS'])){
+				if(permissions.has(['DEAFEN_MEMBERS'))){
 					newstate.setDeaf(true);
 				}else{
 					console.log(`${guild.me} does not have permissions to deafen ${thisMember} in ${newstate.channel.name}`)

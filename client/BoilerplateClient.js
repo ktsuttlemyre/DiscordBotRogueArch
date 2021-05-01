@@ -35,7 +35,7 @@ function loadFilter(botPath, folderName, dir) {
 	if (dir.indexOf("VoiceConnection") > -1) {
 		load = false;
 	}
-	currentHandler = `botPath=${botPath} folderName=${folderName} dir=${dir} load=${load}`;
+	currentHandler = {botPath, folderName, dir, load};
 	debug && console.info(currenthandler);
 	return load;
 }
@@ -173,7 +173,8 @@ class BoilerplateClient extends AkairoClient {
 			this.inhibitorHandler.loadAll();
 			this.listenerHandler.loadAll();
 		} catch (err) {
-			console.error("error with handler" + currentHandler);
+			console.error("Error loading handlers. Current handler profile " + JSON.stringify(currentHandler,null,2));
+			process.exit(1);
 		}
 	}
 	// Start The Bot

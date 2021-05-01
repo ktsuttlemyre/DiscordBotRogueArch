@@ -19,7 +19,7 @@ const util = require.main.require("./util");
 const _ = require("lodash");
 
 const filterApps = {
-	'Google Chrome',1
+	'Google Chrome':1
 };
 
 class CustomListener extends Listener {

@@ -66,7 +66,7 @@ function init(client) {
 			console.log("got error on client:");
 			client.logger.error(err)
 		})
-		.on("debug", console.log)
+		//.on("debug", console.log)
 		.on("warn", (info) => client.logger.warn(info));
 
 	//wakup ping for any activity

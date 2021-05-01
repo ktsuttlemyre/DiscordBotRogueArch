@@ -62,7 +62,10 @@ function init(client) {
 	client
 		.on("disconnect", () => client.logger.warn("Connection lost..."))
 		.on("reconnect", () => client.logger.info("Attempting to reconnect..."))
-		.on("error", (err) => client.logger.error(err))
+		.on("error", (err) => {
+			console.log("got error on client:");
+			client.logger.error(err)
+		})
 		.on("debug", console.log)
 		.on("warn", (info) => client.logger.warn(info));
 

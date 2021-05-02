@@ -114,7 +114,7 @@ class CustomListener extends Listener {
 
 		//log
 		let logChannel = guild.channels.resolve(config.actionLogChannel);
-		if (logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES")) {
+		if (actions.length && logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES")) {
 			logChannel.send(actions.join(' and '));
 		}
 	}

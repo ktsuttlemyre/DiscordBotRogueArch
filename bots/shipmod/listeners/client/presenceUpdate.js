@@ -85,6 +85,12 @@ class CustomListener extends Listener {
 		//if it is a sequal or spin off of a franchise just get the franchise
 		game = game.split(':')[0]
 		
+		if(!game){
+			return
+		}
+		game = game.trim();
+			
+		
 		//filter out non-games
 		if(filterApps[game]){
 		   return

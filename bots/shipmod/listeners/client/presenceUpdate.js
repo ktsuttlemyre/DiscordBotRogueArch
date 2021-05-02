@@ -78,6 +78,9 @@ class CustomListener extends Listener {
 			return;
 		}
 		
+		//remove tm and other weird characters because they don't work right as roles
+		game = game.replace(/[^\w\s]/gi,'');
+		
 		//filter out non-games
 		if(filterApps[game]){
 		   return

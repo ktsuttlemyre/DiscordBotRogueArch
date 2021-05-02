@@ -84,6 +84,8 @@ class CustomListener extends Listener {
 		}
 		
 		let roleName = `🎮${game}`;
+		
+		let actions = []
 
 		//if the role doesn't exist make it
 		let role = guild.roles.cache.find((x) => x.name === roleName);
@@ -93,6 +95,7 @@ class CustomListener extends Listener {
 				consol.log(`${guild.me.displayName} does not have permissions to create roles`);
 				return;
 			}
+			actions.push('created role ${roleName}')
 			role = await guild.roles.create({
 				data: {
 					name: roleName,
@@ -106,12 +109,13 @@ class CustomListener extends Listener {
 		//if the user doesn't have the role then add it
 		if (!member.roles.cache.some((role) => role.name === roleName)) {
 			member.roles.add(role);
+			actions.push('assigned role ${roleName} to ${member.displayName}')
 		}
 
 		//log
 		let logChannel = guild.channels.resolve(config.actionLogChannel);
 		if (logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES")) {
-			logChannel.send(`${client.user.tag} woke up`);
+			logChannel.send(actions.join(' and '));
 		}
 	}
 }

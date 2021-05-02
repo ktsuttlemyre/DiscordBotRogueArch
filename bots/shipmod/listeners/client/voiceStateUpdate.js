@@ -14,19 +14,19 @@ class CustomListener extends Listener {
 	}
 
 	async exec( oldstate, newstate, startupTriggered ) {
-		console.log('Event[voiceStateUpdate] => started')
+		debug && console.log('Event[voiceStateUpdate] => started')
 		if(oldstate.partial || newstate.partial){
 			console.log('Event[voiceStateUpdate] => isPartial')
 			return
 		}
 		var env = process.env.ENVIRONMENT
         	if(env != 'production'){
-			console.log('Event[voiceStateUpdate] => env not production')
+			debug && console.log('Event[voiceStateUpdate] => env not production')
 			return;
 		}
 		let thisMember = newstate.member;
 		if(thisMember.user.bot){
-			console.log('Event[voiceStateUpdate] => member is bot')
+			debug && console.log('Event[voiceStateUpdate] => member is bot')
 			return
 		}
 		let guild = newstate.guild;

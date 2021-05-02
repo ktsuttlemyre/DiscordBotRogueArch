@@ -1,57 +1,55 @@
-const GUIMessages = require.main.require('./templates/messages');
-const { Command } = require('discord-akairo');
-const { Player } = require("discord-player");
-const emotes={error:":error:"}
-const {reactions,defaultAvatar} = require.main.require('./common');
-const common = require.main.require('./common');
+const GUIMessages = require.main.require("./templates/messages");
+const {Command} = require("discord-akairo");
+const {Player} = require("discord-player");
+const emotes = {error: ":error:"};
+const {reactions, defaultAvatar} = require.main.require("./common");
+const common = require.main.require("./common");
 const commandVars = common.commandVars(__filename);
-const _ = require('lodash');
-
+const _ = require("lodash");
 
 class CustomCommand extends Command {
 	constructor() {
 		super(commandVars.name, {
-		description: { content: 'sets amongus muting'},
-		//aliases: [''],
-		category: commandVars.category,
-		clientPermissions: ['SEND_MESSAGES'],
-		args: [
-			 {
-			 	id: 'bool',
-			 	default: '',
-			 	match: '/^(yes|no|true|false|\d+|on|off|null|undefined|nan|toggle|switch|flip|!+)$/',
-			 },
+			description: {content: "sets amongus muting"},
+			//aliases: [''],
+			category: commandVars.category,
+			clientPermissions: ["SEND_MESSAGES"],
+			args: [
+				{
+					id: "bool",
+					default: "",
+					match: "/^(yes|no|true|false|d+|on|off|null|undefined|nan|toggle|switch|flip|!+)$/",
+				},
 			],
-		channelRestriction: 'guild', 
+			channelRestriction: "guild",
 		});
 	}
-	
+
 	userPermissions(message) {
-		if (!message.member.roles.cache.some(role => role.name === 'Admin')) {
-			return 'Admin';
+		if (!message.member.roles.cache.some((role) => role.name === "Admin")) {
+			return "Admin";
 		}
 		return null;
 	}
 
 	async exec(message, bool) {
-	    var varName = 'amongusMode';
+		var varName = "amongusMode";
 
-	    if(!bool.length){ //query current value
-	      return message.send('Current value is: ' + this.client.memory.channelGet(message, varName));
-	    }
+		if (!bool.length) {
+			//query current value
+			return message.send("Current value is: " + this.client.memory.channelGet(message, varName));
+		}
 
-	    var toggle = bool.match(/^(toggle|switch|flip|!+)$/);
-	    if(toggle){
-	      var value = this.client.memory.channelSet(message, varName, !!this.client.memory.channelGet(message, varName) );
-	      return message.send('Toggled value to: ' + value);
-	    }
+		var toggle = bool.match(/^(toggle|switch|flip|!+)$/);
+		if (toggle) {
+			var value = this.client.memory.channelSet(message, varName, !!this.client.memory.channelGet(message, varName));
+			return message.send("Toggled value to: " + value);
+		}
 
-	    var value = (bool.match(/^(no|false|0|off|null|undefined|nan)$/))?false:true;
-			this.client.memory.channelSet(message.guild, message.channel, varName, value );
-	    return message.send('Changed value to:'+ value)
+		var value = bool.match(/^(no|false|0|off|null|undefined|nan)$/) ? false : true;
+		this.client.memory.channelSet(message.guild, message.channel, varName, value);
+		return message.send("Changed value to:" + value);
 	}
 }
 
 module.exports = CustomCommand;
-
-

@@ -13,21 +13,39 @@ class CustomListener extends Listener {
 		});
 	}
 
-	async exec( oldstate, newstate, manuallyTriggered ) {
+	async exec( oldstate, newstate, startupTriggered ) {
+		debug && console.log('Event[voiceStateUpdate] => started')
 		if(oldstate.partial || newstate.partial){
+			console.log('Event[voiceStateUpdate] => isPartial')
 			return
 		}
 		var env = process.env.ENVIRONMENT
         	if(env != 'production'){
+			debug && console.log('Event[voiceStateUpdate] => env not production')
 			return;
 		}
 		let thisMember = newstate.member;
 		if(thisMember.user.bot){
+			debug && console.log('Event[voiceStateUpdate] => member is bot')
 			return
 		}
 		let guild = newstate.guild;
 		let client = this.client;
 		
+		
+		let changed ={	
+			channelID: oldstate.channelID !== newstate.channelID,
+			deaf: oldstate.deaf !== newstate.deaf,
+			mute: oldstate.mute !== newstate.mute,
+			selfDeaf: oldstate.selfDeaf !== newstate.selfDeaf,
+			selfMute: oldstate.selfMute !== newstate.selfMute,
+			selfVideo: oldstate.selfVideo !== newstate.selfVideo,
+			serverDeaf: oldstate.serverDeaf !== newstate.serverDeaf,
+			serverMute: oldstate.serverMute !== newstate.serverMute,
+			speaking: oldstate.speaking !== newstate.speaking,
+			streaming: oldstate.streaming !== newstate.streaming
+		}
+		debug && console.log(`voiceStateUpdate Triggered for user ${thisMember.tag} with state`,changed)
 		
 		// voice-text-channel-link
 		let roomChanged = ((oldstate.channelID || newstate.channelID) && oldstate.channelID !== newstate.channelID);
@@ -75,47 +93,56 @@ class CustomListener extends Listener {
 			}
 		}
 		
-		
+		/************************ End startup Trigger **************/
+		if(startupTriggered){
+			return
+		}
 		//handle amongus mute mode
-		let changed ={	
-			channelID: oldstate.channelID !== newstate.channelID,
-			deaf: oldstate.deaf !== newstate.deaf,
-			mute: oldstate.mute !== newstate.mute,
-			selfDeaf: oldstate.selfDeaf !== newstate.selfDeaf,
-			selfMute: oldstate.selfMute !== newstate.selfMute,
-			selfVideo: oldstate.selfVideo !== newstate.selfVideo,
-			serverDeaf: oldstate.serverDeaf !== newstate.serverDeaf,
-			serverMute: oldstate.serverMute !== newstate.serverMute,
-			speaking: oldstate.speaking !== newstate.speaking,
-			streaming: oldstate.streaming !== newstate.streaming
-		}
+// 		if(newstate.channelID && changed.selfMute){ //if in a channel and mute state changed
+// 			let amongusMode = this.client.memory.channelGet(newstate, 'amongusMode');
+// 			//mute handler
+// 			if(amongusMode){
+// 				newstate.channel.members.forEach(function(member){
+// 					if(member.id == thisMember.id){return}
+//					if(member.user.bot){return}
+// 					member.voice.setMute(newstate.mute);
+// 				}); //end members
 
-		if(newstate.channelID && changed.selfMute){ //if in a channel and mute state changed
-			let amongusMode = this.client.memory.channelGet(newstate, 'amongusMode');
-			//mute handler
-			if(amongusMode){
-				newstate.channel.members.forEach(function(member){
-					if(member.id == thisMember.id){return}
-					member.voice.setMute(newstate.mute);
-				}); //end members
-
-			}
-		}
+// 			}
+// 		}
 				
 		let joinLeaveConfig=config.voiceJoinLeave
 		
+		
+		
 		//only work if this is a real event and the channel has changed
-		if(!manuallyTriggered && newstate.channelID !== oldstate.channelID){ //channel changed
-			
+		if(changed.channelID){ //channel changed
+			permissions = newstate.channel.permissionsFor(guild.me);
 			//reset the users status removing serverMute and serverDeafen if they do not have the voicemute or voicedeaf role
 			if(!newstate.member.user.bot && (joinLeaveConfig.resetUserState || oldstate.channelID == oldstate.guild.afkChannelID)){
-				!thisMember.roles.cache.some(role => role.name === config.roles.VoiceMute) && newstate.setMute(false);
-				!thisMember.roles.cache.some(role => role.name === config.roles.VoiceDeaf) && newstate.setDeaf(false);
+				if(permissions.has('MUTE_MEMBERS')){
+					!thisMember.roles.cache.some(role => role.name === config.roles.VoiceMute) && newstate.setMute(false);
+				}else{
+					console.log(`${guild.me} does not have permissions to set mute state to ${thisMember} in ${newstate.channel.name}`)
+				}
+				if(permissions.has('DEAFEN_MEMBERS')){
+					!thisMember.roles.cache.some(role => role.name === config.roles.VoiceDeaf) && newstate.setDeaf(false);
+				}else{
+					console.log(`${guild.me} does not have permissions to set deafen state to ${thisMember} in ${newstate.channel.name}`)
+				}
 			}
 			//mute if entering afkChannel
 			if(newstate.channelID == newstate.guild.afkChannelID){
-				newstate.setMute(true)
-				newstate.setDeaf(true)
+				if(permissions.has('MUTE_MEMBERS')){
+				   newstate.setMute(true);
+				}else{
+					console.log(`${guild.me} does not have permissions to mute ${thisMember} in ${newstate.channel.name}`)
+				}
+				if(permissions.has(['DEAFEN_MEMBERS'])){
+					newstate.setDeaf(true);
+				}else{
+					console.log(`${guild.me} does not have permissions to deafen ${thisMember} in ${newstate.channel.name}`)
+				}
 			}
 			
 			// play themetones

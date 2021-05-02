@@ -35,24 +35,24 @@ class CustomListener extends Listener {
 				return
 			}
 			let voiceChannels = Guild.channels.cache.filter(c => c.type == 'voice').array();
-			voiceChannels.forEach(function(channel){
-				if(channel.id === Guild.afkChannelID){
+			Guild.members.cache.forEach(function(member){
+				if(member.user.bot){
 					return false;
 				}
-				Guild.members.cache.forEach(function(member){
-				//channel.members.forEach(function(member){
-					if(member.user.bot){
-						return false;
-					}
-					// The member is connected to a voice channel.
-					//console.log('user in voice, triggering voicestateupdate for ',member);
-							
+				//Emit voiceUpdate for each member and channel
+				//console.log('user in voice, triggering voicestateupdate for ',member);
+				voiceChannels.forEach(function(channel){
+					if(channel.id === Guild.afkChannelID){return;}
 					for (const [voice, text] of Object.entries(config.voiceTextLinkMap)) {
+						//oldVoiceState, newVoiceState, startupFlag
 						client.emit('voiceStateUpdate',{channelID:voice},member.voice,true); //true for manually triggered
 					}
-					
-				}) //end members
-			}); //end voicechannels
+				}); //end voicechannels
+				
+				//oldPresence, newPresencem, startupFlag
+				client.emit('presenceUpdate',null,member.user.presence,true); //true for manually triggered
+				
+			}) //end members
 			
 
 			//read all previous commands

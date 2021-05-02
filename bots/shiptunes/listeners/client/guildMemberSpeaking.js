@@ -23,7 +23,7 @@ class CustomListener extends Listener {
 		if(member.bot){
 			return
 		}
-		const queue = member.guild.client.memory.get(member.guild,'musicPlayer');
+		const queue = member.guild.client.memory.get(member.guild,'musicPlayer);
 							     
 		const attention = queue.attention;
 		if (!queue) return message.reply(i18n.__("volume.errorNotQueue")).catch(console.error);  

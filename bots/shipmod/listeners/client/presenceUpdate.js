@@ -19,7 +19,8 @@ const util = require.main.require("./util");
 const _ = require("lodash");
 
 const filterApps = {
-	'Google Chrome':1
+	'Google Chrome':1,
+	'SteamVR':1
 };
 
 class CustomListener extends Listener {
@@ -80,6 +81,9 @@ class CustomListener extends Listener {
 		
 		//remove tm and other weird characters because they don't work right as roles
 		game = game.replace(/[^\w\s]/gi,'');
+		
+		//if it is a sequal or spin off of a franchise just get the franchise
+		game = game.split(':')[0]
 		
 		//filter out non-games
 		if(filterApps[game]){

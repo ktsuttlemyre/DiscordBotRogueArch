@@ -129,7 +129,7 @@ class BoilerplateClient extends AkairoClient {
 				let user = message.member || message.author;
 				let name = user.displayName || user.tag;
 				let commandName = util.commandFormat(message, command);
-				let search = (missing || "").toLowerCase();
+				//let search = (missing || "").toLowerCase();
 				let isRole = message.guild.roles.cache.find((role) => missing == role.name.toLowerCase());
 				if (isRole) {
 					return message.channel.send(`${type} must have permission ${missing} role in order to execute \`${commandName}\``);

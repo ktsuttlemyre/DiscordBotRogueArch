@@ -104,12 +104,12 @@ class CustomListener extends Listener {
 			commandMessagesQueue
 				.sort(function (a, b) {
 					return a.createdTimestamp - b.createdTimestamp;
-				})
+				})/*
 				.forEach(function (message) {
 					//execute
 					debug && console.log("executing message with command", message.content);
 					client.commandHandler.handle(message);
-				});
+				});*/
 
 			// 			var memory=client.memory
 			// 			if(!memory){return}

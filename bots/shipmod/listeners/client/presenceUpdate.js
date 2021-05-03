@@ -108,7 +108,7 @@ class CustomListener extends Listener {
 				consol.log(`${guild.me.displayName} does not have permissions to create roles`);
 				return;
 			}
-			actions.push('created role ${roleName}')
+			actions.push(`created role ${roleName}`)
 			role = await guild.roles.create({
 				data: {
 					name: roleName,
@@ -122,7 +122,7 @@ class CustomListener extends Listener {
 		//if the user doesn't have the role then add it
 		if (!member.roles.cache.some((role) => role.name === roleName)) {
 			member.roles.add(role);
-			actions.push('assigned role ${roleName} to ${member.displayName}')
+			actions.push(`assigned role ${roleName} to ${member.displayName}`)
 		}
 
 		//log

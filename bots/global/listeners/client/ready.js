@@ -105,22 +105,6 @@ class CustomListener extends Listener {
 				.sort(function (a, b) { //sort the commands by time
 					return a.createdTimestamp - b.createdTimestamp;
 				})
-// 				.filter(async function(message){ //filter out commands that have this bot using the shipwash reaction
-// 				    let reaction = await message.reactions.cache.get(reactions.shipwash)
-// 				    if(!reaction){
-// 					return false;
-// 				    }
-// 				    reaction.fetch() //TODO only gets 100
-// 				    let users = reaction.users.fetch(); //TODO only gets 100
-
-// 				    for (const user of users) {
-// 				      const id = user.id;
-// 				      if(id == client.user.id){
-// 					return false
-// 				      }
-// 						return true;
-// 					}
-// 				})
 				.forEach(function (message) { //execute
 					debug && console.log("executing message with command", message.content);
 					client.commandHandler.handle(message);

@@ -10,6 +10,17 @@ const _ = require("lodash");
 const web = require.main.require("./web");
 const yaml = require("js-yaml");
 
+
+module.exports.getReactedUsers = async function(msg, emoji) {
+	let reactions = msg.reactions.resolve(emoji);
+	if (!reactions) {
+		return new Discord.Collection();
+	}
+	let userList = await reactions.users.fetch();
+	return userList; //(userList.map((user) => user.id));
+}
+
+
 module.exports.retrieveTrackMessage = function (message, track) {
 	var id = message.client.memory.channelGet(message, web.getYoutubeHash(track.url) + "_" + track.requestedBy.id + "_" + message); // || this.client.memory.channelSet(message, 'player', util.player.create(message,this.client));
 	return message.channel.messages.fetch(id);

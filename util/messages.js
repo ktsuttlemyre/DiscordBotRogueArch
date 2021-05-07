@@ -19,6 +19,22 @@ module.exports.getReactedUsers = async function(msg, emoji) {
 	let userList = await reactions.users.fetch();
 	return userList; //(userList.map((user) => user.id));
 }
+// 				.filter(async function(message){ //filter out commands that have this bot using the shipwash reaction
+// 				    let reaction = await message.reactions.cache.get(reactions.shipwash)
+// 				    if(!reaction){
+// 					return false;
+// 				    }
+// 				    reaction.fetch() //TODO only gets 100
+// 				    let users = reaction.users.fetch(); //TODO only gets 100
+
+// 				    for (const user of users) {
+// 				      const id = user.id;
+// 				      if(id == client.user.id){
+// 					return false
+// 				      }
+// 						return true;
+// 					}
+// 				})
 
 
 module.exports.retrieveTrackMessage = function (message, track) {

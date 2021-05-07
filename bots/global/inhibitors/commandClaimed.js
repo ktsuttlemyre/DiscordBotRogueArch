@@ -30,6 +30,7 @@ class CustomInhibitor extends Inhibitor {
       }
 		return false;
 	}
+	}
 }
 
 module.exports = CustomInhibitor;

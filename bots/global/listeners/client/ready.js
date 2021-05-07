@@ -106,7 +106,11 @@ class CustomListener extends Listener {
 					return a.createdTimestamp - b.createdTimestamp;
 				})
 				.filter(async function(message){ //filter out commands that have this bot using the shipwash reaction
-				    let reaction = await message.reactions.cache.get(reactions.shipwash).fetch() //TODO only gets 100
+				    let reaction = await message.reactions.cache.get(reactions.shipwash)
+				    if(!reaction){
+					return false;
+				    }
+				    reaction.fetch() //TODO only gets 100
 				    let users = reaction.users.fetch(); //TODO only gets 100
 
 				    for (const user of users) {

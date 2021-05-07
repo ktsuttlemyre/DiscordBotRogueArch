@@ -13,6 +13,7 @@ class CustomInhibitor extends Inhibitor {
 	}
 
 	async exec(message) {
+		let client = this.client;
     //https://stackoverflow.com/questions/59988625/discord-js-fetchmessage-reactions-get-cannot-get-users
     
 //    let users = await message.reactions.cache.users.fetch()
@@ -25,7 +26,7 @@ class CustomInhibitor extends Inhibitor {
 
     for (const user of reaction.users.values()) {
       const id = user.id;
-      if(id == this.client.user.id){
+      if(id == client.user.id){
         return true
       }
 		return false;

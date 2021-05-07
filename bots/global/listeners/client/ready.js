@@ -6,8 +6,6 @@ const {reactions, defaultAvatar} = require.main.require("./common");
 const util = require.main.require("./util");
 const config = util.config;
 const commandVars = util.commandVars(__filename);
-const common = require.main.require('./common');
-const reactions = common.reactions;
 
 class CustomListener extends Listener {
 	constructor() {
@@ -106,7 +104,7 @@ class CustomListener extends Listener {
 			commandMessagesQueue
 				.sort(function (a, b) { //sort the commands by time
 					return a.createdTimestamp - b.createdTimestamp;
-				})/*
+				})
 				.filter(async function(message){ //filter out commands that have this bot using the shipwash reaction
 				    var reaction = message.reactions.get(reactions.shipwash)
 				    reaction.fetchUsers();
@@ -114,15 +112,15 @@ class CustomListener extends Listener {
 				    for (const user of reaction.users.values()) {
 				      const id = user.id;
 				      if(id == client.user.id){
-					return true
+					return false
 				      }
-						return false;
+						return true;
 					}
 				})
 				.forEach(function (message) { //execute
 					debug && console.log("executing message with command", message.content);
 					client.commandHandler.handle(message);
-				});*/
+				});
 
 			// 			var memory=client.memory
 			// 			if(!memory){return}

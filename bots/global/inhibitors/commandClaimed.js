@@ -21,16 +21,19 @@ class CustomInhibitor extends Inhibitor {
 //   reaction.cache.map((item) => item.users.cache.array())
     
     
-    var reaction = message.reactions.get(reactions.shipwash)
-    reaction.fetchUsers();
+//     var reaction = message.reactions.get(reactions.shipwash)
+//     reaction.fetchUsers();
 
-    for (const user of reaction.users.values()) {
-      const id = user.id;
-      if(id == client.user.id){
-        return true
-      }
-		return false;
-	}
+//     for (const user of reaction.users.values()) {
+//       const id = user.id;
+//       if(id == client.user.id){
+//         return true
+//       }
+// 		return false;
+// 	}
+	let users = getReactedUsers(message,reactions.shipwash);
+	console.log('got users for message/command about to be processed ',users)
+		
 	}
 }
 

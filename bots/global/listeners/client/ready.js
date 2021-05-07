@@ -106,10 +106,10 @@ class CustomListener extends Listener {
 					return a.createdTimestamp - b.createdTimestamp;
 				})
 				.filter(async function(message){ //filter out commands that have this bot using the shipwash reaction
-				    var reaction = message.reactions.get(reactions.shipwash)
-				    reaction.fetchUsers();
+				    let reaction = await message.reactions.cache.get(reactions.shipwash).fetch()
+				    let users = reaction.users.fetch();
 
-				    for (const user of reaction.users.values()) {
+				    for (const user of users) {
 				      const id = user.id;
 				      if(id == client.user.id){
 					return false

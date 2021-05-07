@@ -90,7 +90,7 @@ class CustomListener extends Listener {
 					if (message.author.bot) {
 						continue;
 					}
-					let users = await getReactedUsers(message, reactions.shipwash);
+					let users = await util.messages.getReactedUsers(message, reactions.shipwash);
 					if (!users.get(Guild.me.id)) {
 						//console.log('processing this message v')
 						commandMessagesQueue.push(message);
@@ -105,22 +105,22 @@ class CustomListener extends Listener {
 				.sort(function (a, b) { //sort the commands by time
 					return a.createdTimestamp - b.createdTimestamp;
 				})
-				.filter(async function(message){ //filter out commands that have this bot using the shipwash reaction
-				    let reaction = await message.reactions.cache.get(reactions.shipwash)
-				    if(!reaction){
-					return false;
-				    }
-				    reaction.fetch() //TODO only gets 100
-				    let users = reaction.users.fetch(); //TODO only gets 100
+// 				.filter(async function(message){ //filter out commands that have this bot using the shipwash reaction
+// 				    let reaction = await message.reactions.cache.get(reactions.shipwash)
+// 				    if(!reaction){
+// 					return false;
+// 				    }
+// 				    reaction.fetch() //TODO only gets 100
+// 				    let users = reaction.users.fetch(); //TODO only gets 100
 
-				    for (const user of users) {
-				      const id = user.id;
-				      if(id == client.user.id){
-					return false
-				      }
-						return true;
-					}
-				})
+// 				    for (const user of users) {
+// 				      const id = user.id;
+// 				      if(id == client.user.id){
+// 					return false
+// 				      }
+// 						return true;
+// 					}
+// 				})
 				.forEach(function (message) { //execute
 					debug && console.log("executing message with command", message.content);
 					client.commandHandler.handle(message);
@@ -147,13 +147,5 @@ class CustomListener extends Listener {
 	} //end exec
 }
 
-async function getReactedUsers(msg, emoji, callback) {
-	let reactions = msg.reactions.resolve(emoji);
-	if (!reactions) {
-		return new Discord.Collection();
-	}
-	let userList = await reactions.users.fetch();
-	return userList; //(userList.map((user) => user.id));
-}
 
 module.exports = CustomListener;

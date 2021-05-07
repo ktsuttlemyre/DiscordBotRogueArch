@@ -109,8 +109,8 @@ class BoilerplateClient extends AkairoClient {
 				//TODO add time remaining for long running cooldowns
 			})
 			.on("error", function (error, message, command) {
-				let commandName = util.commandFormat(message, command);
 				if (command) {
+					let commandName = util.commandFormat(message, command);
 					message.channel.send(`\`${commandName}\` got error ${error.name}: ${error.message}`);
 				} else {
 					message.channel.send(`Got error ${error.name}: ${error.message}`);

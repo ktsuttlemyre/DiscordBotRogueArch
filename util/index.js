@@ -74,7 +74,7 @@ module.exports.commandFormat = function (message, name) {
 		command = client.commandHandler.findCommand(name.id.split("/").pop());
 	} else {
 		command = name;
-		name = command.id.split("/").pop();
+		name = (command.id || command.filepath).split("/").pop();
 	}
 
 	let prefix = command.prefix;

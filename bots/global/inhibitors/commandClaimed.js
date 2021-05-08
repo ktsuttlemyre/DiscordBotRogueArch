@@ -31,7 +31,7 @@ class CustomInhibitor extends Inhibitor {
 //       }
 // 		return false;
 // 	}
-	let users = util.getReactedUsers(message,reactions.shipwash);
+	let users = util.messages.getReactedUsers(message,reactions.shipwash);
 	console.log('got users for message/command about to be processed ',users)
 		
 	}

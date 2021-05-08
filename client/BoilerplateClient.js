@@ -109,12 +109,13 @@ class BoilerplateClient extends AkairoClient {
 				//TODO add time remaining for long running cooldowns
 			})
 			.on("error", function (error, message, command) {
-				if (command) {
-					let commandName = util.commandFormat(message, command);
-					message.channel.send(`\`${commandName}\` got error ${error.name}: ${error.message}`);
-				} else {
-					message.channel.send(`Got error ${error.name}: ${error.message}`);
-				}
+			//TODO turn this back on later
+// 				if (command) {
+// 					let commandName = util.commandFormat(message, command);
+// 					message.channel.send(`Error: Command: \`${commandName}\` threw error ${error.name}: ${error.message}`);
+// 				} else {
+// 					message.channel.send(`Error: ${error.name}: ${error.message}`);
+// 				}
 				console.error(error);
 			})
 			.on("inPrompt", function (message) {

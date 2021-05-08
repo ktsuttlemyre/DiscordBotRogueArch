@@ -32,7 +32,7 @@ class CustomInhibitor extends Inhibitor {
 	// 		return false;
 	// 	}
 		let users = await util.messages.getReactedUsers(message,reactions.shipwash);
-		console.log('got users for message/command about to be processed ',users)
+		console.log('got users for message/command about to be processed ',users,users.size)
 		if(users.size){
 			return true
 		}

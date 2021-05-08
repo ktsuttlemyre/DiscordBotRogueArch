@@ -18,6 +18,7 @@ module.exports.getReactedUsers = async function(msg, emoji) {
 	if (!reactions) {
 		return new Discord.Collection();
 	}
+	console.log('reactions',reactions)
 	let userList = await reactions.users.fetch();
 	return userList; //(userList.map((user) => user.id));
 }

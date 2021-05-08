@@ -9,6 +9,8 @@ const config = require.main.require("./config");
 const _ = require("lodash");
 const web = require.main.require("./web");
 const yaml = require("js-yaml");
+const Discord = require('discord.js');
+
 
 
 module.exports.getReactedUsers = async function(msg, emoji) {

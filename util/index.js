@@ -69,12 +69,13 @@ module.exports.commandPrefix = function (client, name) {};
 module.exports.commandFormat = function (message, name) {
 	let client = message.client;
 
-	let command;
-	if (!name instanceof Command) {
-		command = client.commandHandler.findCommand(name.id.split("/").pop());
-	} else {
-		command = name;
+	let command = name;
+	if (name instanceof Command) {
 		name = (command.id || command.filepath).split("/").pop();
+	} else if(name.split){
+		command = client.commandHandler.findCommand(name.split("/").pop());
+	}else{
+		return null
 	}
 
 	let prefix = command.prefix;

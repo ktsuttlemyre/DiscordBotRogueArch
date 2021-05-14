@@ -53,10 +53,15 @@ class CustomCommand extends Command {
 		//good we found a message. Lets parse out the names
 		if(lastPost){
 			queue = new Collection();
+			let userIDs=[]
 			lastPost.embed.description.replace(/https:\/\/discordapp\.com\/users\/(\d*)/g,(element,userID) => {
-			   let users = await client.users.fetch(userID, { cache: true });
-			   queue.set(userID,users)
+			   userIDs.push(userID);
 			});
+			for(let i=0,l=userIDs;i<l;i++){
+				let userID = userIDs[i]
+				let users = await client.users.fetch(userID, { cache: true });
+				queue.set(userID,users)
+			}
 			
 		}
 		

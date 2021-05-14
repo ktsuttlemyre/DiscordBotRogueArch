@@ -30,17 +30,42 @@ class CustomCommand extends Command {
 	parseInput(message) {}
 
 	async exec(message) {
-		let queue = roomMap[message.channel.id] || message.channel.name;
-		queue = queue.trim().toUpperCase();
+		let client = this.client;
+		let queueTitle = roomMap[message.channel.id] || message.channel.name;
+		queueTitle = queueTitle.trim().toUpperCase();
 
 		let randomEmoji = [];
-		let title = `${queue} Event Queue `;
-		let varName = queue + "_queue";
-		let q = this.client.memory.get(message, varName) || new Collection();
+		let title = `${queueTitle} Event Queue `;
+		
+		let messages = await message.channel.fetchMessages();
+		let today = Date.now();
+		let lastPost = messages.find(function(post){
+			if(post.embed && post.embed.title.indexOf('Event Queue') >= 0){
+				let date = post.createdAt;
+				let isSameDay = (date.getDate() === today.getDate() 
+					&& date.getMonth() === today.getMonth()
+					&& date.getFullYear() === today.getFullYear());
+				return isSameDay;
+			}
+		})
+		
+		let queue;
+		//good we found a message. Lets parse out the names
+		if(lastPost){
+			queue = new Collection();
+			lastPost.embed.description.replace(/https:\/\/discordapp\.com\/users\/(\d*)/g,(element,userID) => {
+			   queue.set(userID,await client.users.fetch(userID, { cache: true });)
+			});
+			
+		}
+		
+		
+		let varName = queueTitle + "_queue";
+		//let queue = this.client.memory.get(message, varName) || new Collection();
 		let lastMessageID = varName + "LastMessage";
 		let lastMessage = this.client.memory.get(message, lastMessageID);
 		let user = message.member || message.author;
-		switch (queue) {
+		switch (queueTitle) {
 			case "AMONGUS":
 				randomEmoji = [
 					"<:AmongUsDeadOrange:800120891857829919>",
@@ -52,10 +77,10 @@ class CustomCommand extends Command {
 				break;
 			default:
 
-			//message.channel.send('No queue associated with '+queue);
+			//message.channel.send('No queue associated with '+queueTitle);
 		}
-		if (!q.get(user)) {
-			q.set(user.id, user);
+		if (!queue.get(user)) {
+			queue.set(user.id, user);
 		}
 
 		lastMessage && lastMessage.delete();
@@ -64,7 +89,7 @@ class CustomCommand extends Command {
 
 		//Render
 		let qDisplay = [];
-		q.each(function (user) {
+		queue.each(function (user) {
 			//let inGame = (message.author||message.member).voice.channel.members.
 			let name = user.displayName || user.tag;
 			let voiceChannel = user.voice.channel;
@@ -82,14 +107,14 @@ class CustomCommand extends Command {
 			);
 		});
 
-		let suffix = ""; //((roomMap[message.channel.id]||'').toLowerCase()==queue.toLowerCase())? '' : ' '+queue.toLowerCase();
+		let suffix = ""; //((roomMap[message.channel.id]||'').toLowerCase()==queueTitle.toLowerCase())? '' : ' '+queueTitle.toLowerCase();
 		//Send
 		lastMessage = await message.channel.send({
 			embed: {
 				title: title,
 				description: qDisplay.join("\n"),
 				//footer: {
-				//	text: `type \`!rsvp ${queue.toLowerCase()}\` to be added to the queue!`,
+				//	text: `type \`!rsvp ${queueTitle.toLowerCase()}\` to be added to the queue!`,
 				//	//icon_url: 'https://i.imgur.com/wSTFkRM.png',
 				//},
 				fields: [

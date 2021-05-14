@@ -54,7 +54,8 @@ class CustomCommand extends Command {
 		if(lastPost){
 			queue = new Collection();
 			lastPost.embed.description.replace(/https:\/\/discordapp\.com\/users\/(\d*)/g,(element,userID) => {
-			   queue.set(userID,await client.users.fetch(userID, { cache: true });)
+			   let users = await client.users.fetch(userID, { cache: true });
+			   queue.set(userID,users)
 			});
 			
 		}

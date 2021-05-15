@@ -37,7 +37,7 @@ class CustomCommand extends Command {
 		let randomEmoji = [];
 		let title = `${queueTitle} Event Queue `;
 		
-		let messages = await message.channel.fetchMessages();
+		let messages = await message.channel.messages.fetch({ limit: 100 });
 		let today = Date.now();
 		let lastPost = messages.find(function(post){
 			if(post.embed && post.embed.title.indexOf('Event Queue') >= 0){

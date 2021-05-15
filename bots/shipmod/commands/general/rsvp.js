@@ -42,6 +42,9 @@ class CustomCommand extends Command {
 		debug && console.log('got messages',messages.size)
 		let today = new Date();
 		let lastPost = messages.find(function(post){
+			if(post.author.id != message.guild.me.id){ //make sure it is from me
+				return
+			}
 			let embed = post.embeds && post.embeds.length && post.embeds[0];
 			debug && console.log('post',embed,post.createdAt)
 			if(embed && embed.title.indexOf('Event Queue') >= 0){

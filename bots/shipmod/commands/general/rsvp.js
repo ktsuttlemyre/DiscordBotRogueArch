@@ -42,7 +42,7 @@ class CustomCommand extends Command {
 		
 		let messages = await message.channel.messages.fetch({ limit: 100 });
 		debug && console.log('got messages',messages.size)
-		let today = new Date.getTime();
+		let today = new Date().getTime();
 		let lastPost = messages.find(function(post){
 			if(post.author.id != message.guild.me.id){ //make sure it is from me
 				return

@@ -42,7 +42,7 @@ class CustomCommand extends Command {
 		
 		let messages = await message.channel.messages.fetch({ limit: 100 });
 		debug && console.log('got messages',messages.size)
-		let today = new Date();
+		let today = new Date.getTime();
 		let lastPost = messages.find(function(post){
 			if(post.author.id != message.guild.me.id){ //make sure it is from me
 				return
@@ -50,12 +50,17 @@ class CustomCommand extends Command {
 			let embed = post.embeds && post.embeds.length && post.embeds[0];
 			debug && console.log('post',embed,post.createdAt)
 			if(embed && embed.title && embed.title.indexOf('Event Queue') >= 0){
-				let date = post.createdAt;
-				let isSameDay = (date.getDate() === today.getDate() 
-					&& date.getMonth() === today.getMonth()
-					&& date.getFullYear() === today.getFullYear());
-				debug && console.log('checking post date',post.createdAt,isSameDay)
-				return isSameDay;
+				let date = post.createdAt.getTime();
+// 				let isSameDay = (date.getDate() === today.getDate() 
+// 					&& date.getMonth() === today.getMonth()
+// 					&& date.getFullYear() === today.getFullYear());
+				let diff = Math.abs(date - today);
+				let diffInHours = diff/1000/60/60;
+				if(diffInHours <24){
+					return true
+				}
+				debug && console.log('checking post date',post.createdAt)
+				return false //isSameDay;
 			}
 		})
 		

@@ -67,7 +67,7 @@ class CustomCommand extends Command {
 			debug && console.log('got userIDs',userIDs)
 			for(let i=0,l=userIDs.length;i<l;i++){
 				let userID = userIDs[i]
-				let users = await client.users.fetch(userID, { cache: true });
+				let users = await message.guild.members.fetch(userID, { cache: true });
 				queue.set(userID,users)
 			}
 		}else{

@@ -47,7 +47,7 @@ class CustomCommand extends Command {
 			}
 			let embed = post.embeds && post.embeds.length && post.embeds[0];
 			debug && console.log('post',embed,post.createdAt)
-			if(embed && embed.title.indexOf('Event Queue') >= 0){
+			if(embed && embed.title && embed.title.indexOf('Event Queue') >= 0){
 				let date = post.createdAt;
 				let isSameDay = (date.getDate() === today.getDate() 
 					&& date.getMonth() === today.getMonth()

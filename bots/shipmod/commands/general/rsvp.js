@@ -56,7 +56,7 @@ class CustomCommand extends Command {
 // 					&& date.getFullYear() === today.getFullYear());
 				let diff = Math.abs(date - today);
 				let diffInHours = diff/1000/60/60;
-				if(diffInHours < 24 ){
+				if(diffInHours < 16 ){
 					return true
 				}
 				debug && console.log('checking post date',post.createdAt)

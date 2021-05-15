@@ -90,7 +90,7 @@ class CustomCommand extends Command {
 
 		lastMessage && lastMessage.delete();
 		message.delete();
-		this.client.memory.set(message, varName, q);
+		//this.client.memory.set(message, varName, queue);
 
 		//Render
 		let qDisplay = [];
@@ -133,7 +133,7 @@ class CustomCommand extends Command {
 			},
 		});
 		//save old message to delete leater
-		this.client.memory.set(message, lastMessageID, lastMessage);
+		//this.client.memory.set(message, lastMessageID, lastMessage);
 	}
 }
 

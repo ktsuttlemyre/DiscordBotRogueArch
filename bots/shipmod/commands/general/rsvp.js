@@ -41,9 +41,10 @@ class CustomCommand extends Command {
 		let messages = await message.channel.messages.fetch({ limit: 100 });
 		debug && console.log('got messages',messages.size)
 		let today = Date.now();
-		let lastPost = messages.find(function(post){
-			debug && console.log('post',post.embed,post.createdAt)
-			if(post.embed && post.embed.title.indexOf('Event Queue') >= 0){
+		let post = messages.find(function(post){
+			let embed = post.embeds && post.embeds.length && post.embeds[0];
+			debug && console.log('post',embed,post.createdAt)
+			if(embed && embed.title.indexOf('Event Queue') >= 0){
 				let date = post.createdAt;
 				let isSameDay = (date.getDate() === today.getDate() 
 					&& date.getMonth() === today.getMonth()
@@ -53,12 +54,14 @@ class CustomCommand extends Command {
 			}
 		})
 		
+		let lastEmbed = post.embeds && post.embeds.length && post.embeds[0];
+		
 		let queue = new Collection();
 		//good we found a message. Lets parse out the names
-		if(lastPost){
-			debug && console.log('got lastpost',lastPost.embed)
+		if(lastEmbed){
+			debug && console.log('got lastEmbed',lastEmbed)
 			let userIDs=[]
-			lastPost.embed.description.replace(/https:\/\/discordapp\.com\/users\/(\d*)/g,(element,userID) => {
+			lastEmbed.description.replace(/https:\/\/discordapp\.com\/users\/(\d*)/g,(element,userID) => {
 			   userIDs.push(userID);
 			});
 			debug && console.log('got userIDs',userIDs)

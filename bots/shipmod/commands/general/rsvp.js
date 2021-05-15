@@ -39,9 +39,10 @@ class CustomCommand extends Command {
 		let title = `${queueTitle} Event Queue `;
 		
 		let messages = await message.channel.messages.fetch({ limit: 100 });
-		debug && console.log('got messages',messages.size,messages.length)
+		debug && console.log('got messages',messages.size)
 		let today = Date.now();
 		let lastPost = messages.find(function(post){
+			debug && console.log('post',post)
 			if(post.embed && post.embed.title.indexOf('Event Queue') >= 0){
 				let date = post.createdAt;
 				let isSameDay = (date.getDate() === today.getDate() 

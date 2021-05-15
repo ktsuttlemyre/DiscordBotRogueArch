@@ -100,9 +100,7 @@ class CustomCommand extends Command {
 			queue.set(user.id, user);
 		}
 
-		lastPost && lastPost.delete();
-		message.delete();
-		//this.client.memory.set(message, varName, queue);
+
 
 		//Render
 		let qDisplay = [];
@@ -144,6 +142,11 @@ class CustomCommand extends Command {
 				],
 			},
 		});
+		
+		lastPost && lastPost.delete();
+		message.delete();
+		//this.client.memory.set(message, varName, queue);
+		
 		//save old message to delete leater
 		//this.client.memory.set(message, lastMessageID, lastMessage);
 	}

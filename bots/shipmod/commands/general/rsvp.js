@@ -49,10 +49,9 @@ class CustomCommand extends Command {
 			}
 		})
 		
-		let queue;
+		let queue = new Collection();
 		//good we found a message. Lets parse out the names
 		if(lastPost){
-			queue = new Collection();
 			let userIDs=[]
 			lastPost.embed.description.replace(/https:\/\/discordapp\.com\/users\/(\d*)/g,(element,userID) => {
 			   userIDs.push(userID);

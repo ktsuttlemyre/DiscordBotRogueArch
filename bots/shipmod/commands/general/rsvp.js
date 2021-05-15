@@ -40,7 +40,7 @@ class CustomCommand extends Command {
 		
 		let messages = await message.channel.messages.fetch({ limit: 100 });
 		debug && console.log('got messages',messages.size)
-		let today = Date.now();
+		let today = new Date();
 		let post = messages.find(function(post){
 			let embed = post.embeds && post.embeds.length && post.embeds[0];
 			debug && console.log('post',embed,post.createdAt)

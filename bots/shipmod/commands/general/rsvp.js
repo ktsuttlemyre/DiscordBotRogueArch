@@ -48,14 +48,15 @@ class CustomCommand extends Command {
 				let isSameDay = (date.getDate() === today.getDate() 
 					&& date.getMonth() === today.getMonth()
 					&& date.getFullYear() === today.getFullYear());
+				debug && console.log('checking post date',post.createdAt,isSameDay)
 				return isSameDay;
 			}
 		})
-		debug && console.log('got lastpost',lastPost.embed)
 		
 		let queue = new Collection();
 		//good we found a message. Lets parse out the names
 		if(lastPost){
+			debug && console.log('got lastpost',lastPost.embed)
 			let userIDs=[]
 			lastPost.embed.description.replace(/https:\/\/discordapp\.com\/users\/(\d*)/g,(element,userID) => {
 			   userIDs.push(userID);
@@ -66,6 +67,8 @@ class CustomCommand extends Command {
 				let users = await client.users.fetch(userID, { cache: true });
 				queue.set(userID,users)
 			}
+		}else{
+			console.log('no last post. Creating empty rsvp queue')
 		}
 		debug && console.log('got queue',queue)
 		

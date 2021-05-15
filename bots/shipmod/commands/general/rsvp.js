@@ -35,6 +35,8 @@ class CustomCommand extends Command {
 		let queueTitle = roomMap[message.channel.id] || message.channel.name;
 		queueTitle = queueTitle.trim().toUpperCase();
 
+		let queue = new Collection();
+		
 		let randomEmoji = [];
 		let title = `${queueTitle} Event Queue `;
 		
@@ -57,11 +59,9 @@ class CustomCommand extends Command {
 			}
 		})
 		
-		let lastEmbed = lastPost.embeds && lastPost.embeds.length && lastPost.embeds[0];
-		
-		let queue = new Collection();
 		//good we found a message. Lets parse out the names
-		if(lastEmbed){
+		if(lastPost){
+			let lastEmbed = lastPost.embeds && lastPost.embeds.length && lastPost.embeds[0];
 			debug && console.log('got lastEmbed',lastEmbed)
 			let userIDs=[]
 			lastEmbed.description.replace(/https:\/\/discordapp\.com\/users\/(\d*)/g,(element,userID) => {
@@ -74,7 +74,7 @@ class CustomCommand extends Command {
 				queue.set(userID,users)
 			}
 		}else{
-			console.log('no last embed. Creating empty rsvp queue')
+			console.log('no last embed. Using empty rsvp queue')
 		}
 		debug && console.log('got queue',queue)
 		

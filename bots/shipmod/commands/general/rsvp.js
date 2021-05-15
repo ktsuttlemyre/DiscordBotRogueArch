@@ -1,3 +1,4 @@
+let debug = true;
 const {Client, Collection} = require("discord.js");
 const GUIMessages = require.main.require("./templates/messages");
 const {Command} = require("discord-akairo");
@@ -38,6 +39,7 @@ class CustomCommand extends Command {
 		let title = `${queueTitle} Event Queue `;
 		
 		let messages = await message.channel.messages.fetch({ limit: 100 });
+		debug && console.log('got messages',messages.size,messages.length)
 		let today = Date.now();
 		let lastPost = messages.find(function(post){
 			if(post.embed && post.embed.title.indexOf('Event Queue') >= 0){
@@ -48,6 +50,7 @@ class CustomCommand extends Command {
 				return isSameDay;
 			}
 		})
+		debug && console.log('got lastpost',lastPost.embed)
 		
 		let queue = new Collection();
 		//good we found a message. Lets parse out the names
@@ -56,13 +59,15 @@ class CustomCommand extends Command {
 			lastPost.embed.description.replace(/https:\/\/discordapp\.com\/users\/(\d*)/g,(element,userID) => {
 			   userIDs.push(userID);
 			});
+			debug && console.log('got userIDs',userIDs)
 			for(let i=0,l=userIDs;i<l;i++){
 				let userID = userIDs[i]
 				let users = await client.users.fetch(userID, { cache: true });
 				queue.set(userID,users)
 			}
-			
 		}
+		debug && console.log('got queue',queue)
+		
 		
 		
 		let varName = queueTitle + "_queue";

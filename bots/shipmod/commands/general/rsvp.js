@@ -41,7 +41,7 @@ class CustomCommand extends Command {
 		let messages = await message.channel.messages.fetch({ limit: 100 });
 		debug && console.log('got messages',messages.size)
 		let today = new Date();
-		let post = messages.find(function(post){
+		let lastPost = messages.find(function(post){
 			let embed = post.embeds && post.embeds.length && post.embeds[0];
 			debug && console.log('post',embed,post.createdAt)
 			if(embed && embed.title.indexOf('Event Queue') >= 0){
@@ -54,7 +54,7 @@ class CustomCommand extends Command {
 			}
 		})
 		
-		let lastEmbed = post.embeds && post.embeds.length && post.embeds[0];
+		let lastEmbed = lastPost.embeds && lastPost.embeds.length && lastPost.embeds[0];
 		
 		let queue = new Collection();
 		//good we found a message. Lets parse out the names
@@ -71,7 +71,7 @@ class CustomCommand extends Command {
 				queue.set(userID,users)
 			}
 		}else{
-			console.log('no last post. Creating empty rsvp queue')
+			console.log('no last embed. Creating empty rsvp queue')
 		}
 		debug && console.log('got queue',queue)
 		
@@ -79,8 +79,8 @@ class CustomCommand extends Command {
 		
 		let varName = queueTitle + "_queue";
 		//let queue = this.client.memory.get(message, varName) || new Collection();
-		let lastMessageID = varName + "LastMessage";
-		let lastMessage = this.client.memory.get(message, lastMessageID);
+		//let lastMessageID = varName + "LastMessage";
+		//let lastMessage = this.client.memory.get(message, lastMessageID);
 		let user = message.member || message.author;
 		switch (queueTitle) {
 			case "AMONGUS":
@@ -100,7 +100,7 @@ class CustomCommand extends Command {
 			queue.set(user.id, user);
 		}
 
-		lastMessage && lastMessage.delete();
+		lastPost && lastPost.delete();
 		message.delete();
 		//this.client.memory.set(message, varName, queue);
 
@@ -126,7 +126,7 @@ class CustomCommand extends Command {
 
 		let suffix = ""; //((roomMap[message.channel.id]||'').toLowerCase()==queueTitle.toLowerCase())? '' : ' '+queueTitle.toLowerCase();
 		//Send
-		lastMessage = await message.channel.send({
+		let response = await message.channel.send({
 			embed: {
 				title: title,
 				description: qDisplay.join("\n"),

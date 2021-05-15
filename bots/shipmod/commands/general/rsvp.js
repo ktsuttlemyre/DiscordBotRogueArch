@@ -107,7 +107,7 @@ class CustomCommand extends Command {
 		queue.each(function (user) {
 			//let inGame = (message.author||message.member).voice.channel.members.
 			let name = user.displayName || user.tag;
-			let voiceChannel = user.voice.channel;
+			let voiceChannel = user.voice && user.voice.channel;
 			let notAFK = null;
 			let inGuildChannel = null;
 			if (voiceChannel) {

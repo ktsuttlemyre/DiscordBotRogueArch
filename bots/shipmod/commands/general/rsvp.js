@@ -65,7 +65,7 @@ class CustomCommand extends Command {
 			   userIDs.push(userID);
 			});
 			debug && console.log('got userIDs',userIDs)
-			for(let i=0,l=userIDs;i<l;i++){
+			for(let i=0,l=userIDs.length;i<l;i++){
 				let userID = userIDs[i]
 				let users = await client.users.fetch(userID, { cache: true });
 				queue.set(userID,users)

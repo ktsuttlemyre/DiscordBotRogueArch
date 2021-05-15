@@ -42,7 +42,7 @@ class CustomCommand extends Command {
 		debug && console.log('got messages',messages.size)
 		let today = Date.now();
 		let lastPost = messages.find(function(post){
-			debug && console.log('post',post.embed)
+			debug && console.log('post',post.embed,post.createdAt)
 			if(post.embed && post.embed.title.indexOf('Event Queue') >= 0){
 				let date = post.createdAt;
 				let isSameDay = (date.getDate() === today.getDate() 

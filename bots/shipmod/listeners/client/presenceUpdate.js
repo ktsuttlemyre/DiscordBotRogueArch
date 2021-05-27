@@ -26,7 +26,7 @@ const filterApps = {
 const routerMap = {
 	"Fall Guys":/Fall Guys.*/i,
 	"Resident Evil [Franchise]": /resident evil.*/i,
-	"Jackbox Party Pack":/.*Jackbox Party Pack.*/i
+	"Jackbox Party Pack":/.*Jackbox Party Pack.*/i,
 	"Call of Duty [Franchise]": /Call of Duty.*/i
 }
 //"You don't know jack":/.*Jackbox Party Pack.*/i

@@ -335,7 +335,21 @@ const playSound = (module.exports.playSound = async function (channel, location,
 
 		let dispatcher;
 		try {
+			//check to see if anyone is in the channel
+			if(!channel.members.find(member => !member.user.bot)){
+				resolve("resolved: noone in chat to hear sound");
+				return
+			}
+			
+			//connect to channel
 			var connection = await channel.join();
+			
+			//after connecting check to see if anyone is here to listen
+			if(!channel.members.find(member => !member.user.bot)){
+				resolve("resolved: noone in chat to hear sound");
+				return
+			}
+			
 			dispatcher = connection.play(location, {volume: opts.volume});
 			dispatcher
 				.on("start", () => {

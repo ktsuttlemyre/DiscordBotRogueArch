@@ -23,6 +23,15 @@ const filterApps = {
 	'SteamVR':1
 };
 
+const routerMap = {
+	"Fall Guys":/Fall Guys.*/i,
+	"Resident Evil [Franchise]": /resident evil.*/i,
+	"Jackbox Party Pack":/.*Jackbox Party Pack.*/i
+	"Call of Duty [Franchise]": /Call of Duty.*/i
+}
+//"You don't know jack":/.*Jackbox Party Pack.*/i
+const routerKeys = Object.keys(routerMap)
+
 class CustomListener extends Listener {
 	constructor() {
 		super(commandVars.id, {
@@ -95,6 +104,14 @@ class CustomListener extends Listener {
 		if(filterApps[game]){
 		   return
 		}
+		//condense games together via pattern matching
+		game = routerKeys.find(function(key){
+			let pattern = routerMap[key]
+			if(game.match(pattern)){
+				return key
+			}
+		}) || game;
+		
 		
 		let roleName = `🎮${game}`;
 		
@@ -110,8 +127,7 @@ class CustomListener extends Listener {
 				return;
 			}
 			
-			logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send(`Created role @${roleName}`)
-				
+			
 			role = await guild.roles.create({
 				data: {
 					name: roleName,
@@ -120,12 +136,14 @@ class CustomListener extends Listener {
 				},
 				reason: "Game Activity",
 			});
+			
+			logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send(`Created role ${role}`)
 		}
 
 		//if the user doesn't have the role then add it
 		if (!member.roles.cache.some((role) => role.name === roleName)) {
 			member.roles.add(role);
-			logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send(`Assigned role @${roleName} to @${member.displayName}`)
+			logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send(`Assigned role ${role} to ${member}`)
 		}
 
 

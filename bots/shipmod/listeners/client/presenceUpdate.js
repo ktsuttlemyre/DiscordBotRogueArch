@@ -24,6 +24,8 @@ const filterApps = {
 	'Drawful 2':1
 };
 
+const gamingLogChannelID = "858459656058044426"
+
 const routerMap = {
 	"Fall Guys":/Fall Guys.*/i,
 	"Resident Evil [Franchise]": /resident evil.*/i,
@@ -165,6 +167,11 @@ class CustomListener extends Listener {
 		if (!member.roles.cache.some((role) => role.name === roleName)) {
 			member.roles.add(role);
 			logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send(`Assigned role ${role} to ${member}`)
+		}
+		
+		if(gamingLogChannelID && gamingLogChannelID.permissionsFor(guild.me).has("SEND_MESSAGES")){
+		   let displayName = member.displayName
+		   guild.channels.resolve(gamingLogChannelID).send(`\`${displayName}\` is playing \`${game}\` `)
 		}
 
 

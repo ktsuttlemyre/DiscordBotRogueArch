@@ -40,14 +40,14 @@ const routerMap = {
 	"Assassin's Creed [Franchise]":/Assassin\'s Creed.*/i,
 	"FINAL FANTASY [Franchise]":/FINAL FANTASY.*/i,
 	"Mass Effect [Franchise]":/Mass Effect.*/i,
-	"Tekken [Franchise]":/Tekken.*/i,
-	"Tekken [Franchise]":/Tekken.*/i,
-	"Tekken [Franchise]":/Tekken.*/i,
-	"Tekken [Franchise]":/Tekken.*/i,
-	"Tekken [Franchise]":/Tekken.*/i,
-	"Tekken [Franchise]":/Tekken.*/i,
-	"Tekken [Franchise]":/Tekken.*/i,
-	"Tekken [Franchise]":/Tekken.*/i,
+	//"Tekken [Franchise]":/Tekken.*/i,
+	//"Tekken [Franchise]":/Tekken.*/i,
+	//"Tekken [Franchise]":/Tekken.*/i,
+	//"Tekken [Franchise]":/Tekken.*/i,
+	//"Tekken [Franchise]":/Tekken.*/i,
+	//"Tekken [Franchise]":/Tekken.*/i,
+	//"Tekken [Franchise]":/Tekken.*/i,
+	//"Tekken [Franchise]":/Tekken.*/i,
 	"Call of Duty [Franchise]": /Call of Duty.*/i
 }
 //"You don't know jack":/.*Jackbox Party Pack.*/i

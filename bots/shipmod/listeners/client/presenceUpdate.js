@@ -20,13 +20,34 @@ const _ = require("lodash");
 
 const filterApps = {
 	'Google Chrome':1,
-	'SteamVR':1
+	'SteamVR':1,
+	'Drawful 2':1
 };
 
 const routerMap = {
 	"Fall Guys":/Fall Guys.*/i,
 	"Resident Evil [Franchise]": /resident evil.*/i,
-	"Jackbox Party Pack":/.*Jackbox Party Pack.*/i,
+	"Jackbox Party Pack":/Jackbox Party Pack.*/i,
+	"Grand Theft Auto [Franchise]":/Grand Theft Auto.*/i,
+	"Age of Empires [Franchise]":/Age of Empires.*/i,
+	"Tekken [Franchise]":/Tekken.*/i,
+	"Far Cry [Franchise]":/Far Cry.*/i,
+	"Halo [Franchise]":/Halo.*/i,
+	"Arma [Franchise]":/Arma.*/i,
+	"Star Wars [Franchise]":/Star Wars.*/i,
+	"The Sims [Franchise]":/The Sims.*/i,
+	"Football Manager [Franchise]":/Football Manager.*/i,
+	"Assassin's Creed [Franchise]":/Assassin\'s Creed.*/i,
+	"FINAL FANTASY [Franchise]":/FINAL FANTASY.*/i,
+	"Mass Effect [Franchise]":/Mass Effect.*/i,
+	"Tekken [Franchise]":/Tekken.*/i,
+	"Tekken [Franchise]":/Tekken.*/i,
+	"Tekken [Franchise]":/Tekken.*/i,
+	"Tekken [Franchise]":/Tekken.*/i,
+	"Tekken [Franchise]":/Tekken.*/i,
+	"Tekken [Franchise]":/Tekken.*/i,
+	"Tekken [Franchise]":/Tekken.*/i,
+	"Tekken [Franchise]":/Tekken.*/i,
 	"Call of Duty [Franchise]": /Call of Duty.*/i
 }
 //"You don't know jack":/.*Jackbox Party Pack.*/i

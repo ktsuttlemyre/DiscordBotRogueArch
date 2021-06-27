@@ -169,9 +169,10 @@ class CustomListener extends Listener {
 			logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send(`Assigned role ${role} to ${member}`)
 		}
 		
-		if(gamingLogChannelID && gamingLogChannelID.permissionsFor(guild.me).has("SEND_MESSAGES")){
+		let channel = guild.channels.resolve(gamingLogChannelID);
+		if(channel && channel.permissionsFor(guild.me).has("SEND_MESSAGES")){
 		   let displayName = member.displayName
-		   guild.channels.resolve(gamingLogChannelID).send(`\`${displayName}\` is playing \`${game}\` `)
+		   channel.send(`\`${displayName}\` is playing \`${game}\` `)
 		}
 
 

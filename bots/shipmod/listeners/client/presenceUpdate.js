@@ -10,7 +10,8 @@ The presence before the update, if one at all
 newPresence	Presence	
 The presence after the update
 */
-
+const yaml = require("js-yaml");
+const debug = true;
 const {MessageEmbed} = require("discord.js");
 const {Listener} = require("discord-akairo");
 const config = require.main.require("./config");
@@ -146,7 +147,7 @@ class CustomListener extends Listener {
 		if (!role) {
 			// Role doesn't exist, safe to create
 			if (!guild.me.hasPermission("MANAGE_ROLES")) {
-				consol.log(`${guild.me.displayName} does not have permissions to create roles`);
+				console.log(`${guild.me.displayName} does not have permissions to create roles`);
 				return;
 			}
 			
@@ -168,6 +169,35 @@ class CustomListener extends Listener {
 			member.roles.add(role);
 			logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send(`Assigned role ${role} to ${member}`)
 		}
+		
+		//look for last message and see if it was posted already today
+		
+		//parse json = yaml.load(body);
+// 		let messages = await message.channel.messages.fetch({ limit: 100 });
+// 		debug && console.log('got messages',messages.size)
+// 		let today = new Date().getTime();
+// 		let lastPost = messages.find(function(post){
+// 			//filter
+// 			if(post.author.id != message.guild.me.id){ //make sure it is from me
+// 				return
+// 			}
+// 			let embed = post.embeds && post.embeds.length && post.embeds[0];
+// 			debug && console.log('post',embed,post.createdAt)
+// 			if(embed && embed.title && embed.title.indexOf('Event Queue') >= 0){
+// 				let date = post.createdAt.getTime();
+// // 				let isSameDay = (date.getDate() === today.getDate() 
+// // 					&& date.getMonth() === today.getMonth()
+// // 					&& date.getFullYear() === today.getFullYear());
+// 				let diff = Math.abs(date - today);
+// 				let diffInHours = diff/1000/60/60;
+// 				if(diffInHours < 16 ){
+// 					return true
+// 				}
+// 				debug && console.log('checking post date',post.createdAt)
+// 				return false //isSameDay;
+// 			}
+// 		})
+		
 		
 		let channel = guild.channels.resolve(gamingLogChannelID);
 		if(channel && channel.permissionsFor(guild.me).has("SEND_MESSAGES")){

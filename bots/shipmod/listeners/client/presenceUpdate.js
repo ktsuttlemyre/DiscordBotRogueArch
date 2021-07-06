@@ -172,38 +172,40 @@ class CustomListener extends Listener {
 		
 		//look for last message and see if it was posted already today
 		
-		//parse json = yaml.load(body);
-// 		let messages = await message.channel.messages.fetch({ limit: 100 });
-// 		debug && console.log('got messages',messages.size)
-// 		let today = new Date().getTime();
-// 		let lastPost = messages.find(function(post){
+		/*
+		let messages = await message.channel.messages.fetch({ limit: 100 });
+		debug && console.log('got messages',messages.size)
+		let today = new Date().getTime();
+		let lastPost = messages.find(function(post){
 // 			//filter
-// 			if(post.author.id != message.guild.me.id){ //make sure it is from me
-// 				return
-// 			}
+			if(post.author.id != message.guild.me.id){ //make sure it is from me
+				return
+			}
 // 			let embed = post.embeds && post.embeds.length && post.embeds[0];
 // 			debug && console.log('post',embed,post.createdAt)
 // 			if(embed && embed.title && embed.title.indexOf('Event Queue') >= 0){
-// 				let date = post.createdAt.getTime();
+				let date = post.createdAt.getTime();
 // // 				let isSameDay = (date.getDate() === today.getDate() 
 // // 					&& date.getMonth() === today.getMonth()
 // // 					&& date.getFullYear() === today.getFullYear());
-// 				let diff = Math.abs(date - today);
-// 				let diffInHours = diff/1000/60/60;
-// 				if(diffInHours < 16 ){
-// 					return true
-// 				}
+				let diff = Math.abs(date - today);
+				let diffInHours = diff/1000/60/60;
+				if(diffInHours < 16 ){
+					return true
+				}
 // 				debug && console.log('checking post date',post.createdAt)
-// 				return false //isSameDay;
+ 				return false //isSameDay;
 // 			}
-// 		})
-		
-		
+		})
+		//parse
+		json = yaml.load(body);
+		*/
+		/*
 		let channel = guild.channels.resolve(gamingLogChannelID);
 		if(channel && channel.permissionsFor(guild.me).has("SEND_MESSAGES")){
 		   let displayName = member.displayName
 		   channel.send(`\`${displayName}\` is playing \`${game}\` `)
-		}
+		}*/
 
 
 	}

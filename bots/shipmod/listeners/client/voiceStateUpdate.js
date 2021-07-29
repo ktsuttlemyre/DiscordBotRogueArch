@@ -117,44 +117,47 @@ class CustomListener extends Listener {
 		
 		//only work if this is a real event and the channel has changed
 		if(changed.channelID){ //channel changed
-			permissions = newstate.channel.permissionsFor(guild.me);
-			//reset the users status removing serverMute and serverDeafen if they do not have the voicemute or voicedeaf role
-			if(!newstate.member.user.bot && (joinLeaveConfig.resetUserState || oldstate.channelID == oldstate.guild.afkChannelID)){
-				if(permissions.has('MUTE_MEMBERS')){
-					!thisMember.roles.cache.some(role => role.name === config.roles.VoiceMute) && newstate.setMute(false);
-				}else{
-					console.log(`${guild.me} does not have permissions to set mute state to ${thisMember} in ${newstate.channel.name}`)
-				}
-				if(permissions.has('DEAFEN_MEMBERS')){
-					!thisMember.roles.cache.some(role => role.name === config.roles.VoiceDeaf) && newstate.setDeaf(false);
-				}else{
-					console.log(`${guild.me} does not have permissions to set deafen state to ${thisMember} in ${newstate.channel.name}`)
-				}
-			}
-			//mute if entering afkChannel
-			if(newstate.channelID == newstate.guild.afkChannelID){
-				if(permissions.has('MUTE_MEMBERS')){
-				   newstate.setMute(true);
-				}else{
-					console.log(`${guild.me} does not have permissions to mute ${thisMember} in ${newstate.channel.name}`)
-				}
-				if(permissions.has(['DEAFEN_MEMBERS'])){
-					newstate.setDeaf(true);
-				}else{
-					console.log(`${guild.me} does not have permissions to deafen ${thisMember} in ${newstate.channel.name}`)
-				}
-			}
+			if(newstate.channel){
 			
-			// play themetones
-			if(joinLeaveConfig.tones && joinLeaveConfig.tones.on){
-				if(oldstate.channelID != oldstate.guild.afkChannelID){
-					await util.playThemeTone(oldstate.channel,joinLeaveConfig.tones.defaultLeaveTone);
+				permissions = newstate.channel.permissionsFor(guild.me);
+				//reset the users status removing serverMute and serverDeafen if they do not have the voicemute or voicedeaf role
+				if(!newstate.member.user.bot && (joinLeaveConfig.resetUserState || oldstate.channelID == oldstate.guild.afkChannelID)){
+					if(permissions.has('MUTE_MEMBERS')){
+						!thisMember.roles.cache.some(role => role.name === config.roles.VoiceMute) && newstate.setMute(false);
+					}else{
+						console.log(`${guild.me} does not have permissions to set mute state to ${thisMember} in ${newstate.channel.name}`)
+					}
+					if(permissions.has('DEAFEN_MEMBERS')){
+						!thisMember.roles.cache.some(role => role.name === config.roles.VoiceDeaf) && newstate.setDeaf(false);
+					}else{
+						console.log(`${guild.me} does not have permissions to set deafen state to ${thisMember} in ${newstate.channel.name}`)
+					}
 				}
-				if(newstate.channelID != newstate.guild.afkChannelID){
-					await util.playThemeTone(newstate.channel,thisMember.id);
+				//mute if entering afkChannel
+				if(newstate.channelID == newstate.guild.afkChannelID){
+					if(permissions.has('MUTE_MEMBERS')){
+					   newstate.setMute(true);
+					}else{
+						console.log(`${guild.me} does not have permissions to mute ${thisMember} in ${newstate.channel.name}`)
+					}
+					if(permissions.has(['DEAFEN_MEMBERS'])){
+						newstate.setDeaf(true);
+					}else{
+						console.log(`${guild.me} does not have permissions to deafen ${thisMember} in ${newstate.channel.name}`)
+					}
 				}
+
+				// play themetones
+				if(joinLeaveConfig.tones && joinLeaveConfig.tones.on){
+					if(oldstate.channelID != oldstate.guild.afkChannelID){
+						await util.playThemeTone(oldstate.channel,joinLeaveConfig.tones.defaultLeaveTone);
+					}
+					if(newstate.channelID != newstate.guild.afkChannelID){
+						await util.playThemeTone(newstate.channel,thisMember.id);
+					}
+				}
+				//client.commandHandler.runCommand(message,client.commandHandler.findCommand('clip'),thisMember.id);
 			}
-			//client.commandHandler.runCommand(message,client.commandHandler.findCommand('clip'),thisMember.id);
 		}
 		
 		

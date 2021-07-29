@@ -31,8 +31,8 @@ class CustomCommand extends Command {
 	parseInput(message) {}
 
 	async exec(message, {arg} ) {
-		let isAdmin = message.member.roles.cache.find((role) => (role.name||'').toLower() === 'admin');
-		let isMod = message.member.roles.cache.find((role) => (role.name||'').toLower() === 'mod');
+		let isAdmin = message.member.roles.cache.find((role) => (role.name||'').toLowerCase() === 'admin');
+		let isMod = message.member.roles.cache.find((role) => (role.name||'').toLowerCase() === 'mod');
 		
 		let client = this.client;
 		let queueTitle = roomMap[message.channel.id] || message.channel.name;

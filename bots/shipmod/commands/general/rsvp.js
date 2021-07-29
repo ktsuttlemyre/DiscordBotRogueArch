@@ -17,20 +17,23 @@ class CustomCommand extends Command {
 			aliases: [commandVars.name, "eventq", "eventqueue", "eventadd", "event"],
 			category: commandVars.category,
 			clientPermissions: ["SEND_MESSAGES", "MANAGE_MESSAGES"],
-			// 		args: [
-			// 			 {
-			// 			 	id: 'queue',
-			// 			 	default: '',
-			// 			 	match: 'content',
-			// 			 },
-			// 			],
+				args: [
+					 {
+						id: 'arg',
+						default: '',
+						match: 'content',
+					 },
+					],
 			channelRestriction: "guild",
 		});
 	}
 
 	parseInput(message) {}
 
-	async exec(message) {
+	async exec(message, {arg} ) {
+		let isAdmin = message.member.roles.cache.find((role) => (role.name||'').toLower() === 'admin');
+		let isMod = message.member.roles.cache.find((role) => (role.name||'').toLower() === 'mod');
+		
 		let client = this.client;
 		let queueTitle = roomMap[message.channel.id] || message.channel.name;
 		queueTitle = queueTitle.trim().toUpperCase();
@@ -50,6 +53,9 @@ class CustomCommand extends Command {
 			let embed = post.embeds && post.embeds.length && post.embeds[0];
 			debug && console.log('post',embed,post.createdAt)
 			if(embed && embed.title && embed.title.indexOf('Event Queue') >= 0){
+				if((isAdmin || isMod) && arg && arg =="glob"){
+					return true
+				}
 				let date = post.createdAt.getTime();
 // 				let isSameDay = (date.getDate() === today.getDate() 
 // 					&& date.getMonth() === today.getMonth()

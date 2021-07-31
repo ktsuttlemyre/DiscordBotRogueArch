@@ -211,8 +211,8 @@ const exportedYTDLPlaylists = {
 {"url": "cxwgBLBTSBY", "view_count": null, "duration": 248.0, "title": "Polka Dot Positive", "id": "cxwgBLBTSBY", "uploader": "Pogo", "_type": "url", "ie_key": "Youtube", "description": null}]
 }
 
-list['pogo']=[]
-exportedYTDLPlaylists["pogo"].forEach(function(e){list['pogo'].push(e.url)})
+library['pogo']=[]
+exportedYTDLPlaylists["pogo"].forEach(function(e){library['pogo'].push(e.url)})
 
 const defaultFetcher = function () {
 	let playlist = library[playlistName];

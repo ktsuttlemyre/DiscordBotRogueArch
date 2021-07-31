@@ -40,7 +40,7 @@ module.exports.commandPermissions = function (message, requireDJ) {
 	return undefined;
 };
 
-let playlistName = "chill nintendo beats";
+let playlistName = "pogo";
 
 let library = {
 	"chill nintendo beats": [
@@ -220,7 +220,7 @@ const defaultFetcher = function () {
 	//	playlist = await util.playlists.subredditArray(playlistName,'top');
 	//}
 	if (!playlist) {
-		playlist = library['pogo'];
+		playlist = library['chill nintendo beats'];
 	}
 	return _.sample(playlist);
 };

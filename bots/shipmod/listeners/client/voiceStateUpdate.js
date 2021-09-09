@@ -134,18 +134,18 @@ class CustomListener extends Listener {
 					}
 				}
 				//mute if entering afkChannel
-				if(newstate.channelID == newstate.guild.afkChannelID){
-					if(permissions.has('MUTE_MEMBERS')){
-					   newstate.setMute(true);
-					}else{
-						console.log(`${guild.me} does not have permissions to mute ${thisMember} in ${newstate.channel.name}`)
-					}
-					if(permissions.has(['DEAFEN_MEMBERS'])){
-						newstate.setDeaf(true);
-					}else{
-						console.log(`${guild.me} does not have permissions to deafen ${thisMember} in ${newstate.channel.name}`)
-					}
-				}
+// 				if(newstate.channelID == newstate.guild.afkChannelID){
+// 					if(permissions.has('MUTE_MEMBERS')){
+// 					   newstate.setMute(true);
+// 					}else{
+// 						console.log(`${guild.me} does not have permissions to mute ${thisMember} in ${newstate.channel.name}`)
+// 					}
+// 					if(permissions.has(['DEAFEN_MEMBERS'])){
+// 						newstate.setDeaf(true);
+// 					}else{
+// 						console.log(`${guild.me} does not have permissions to deafen ${thisMember} in ${newstate.channel.name}`)
+// 					}
+//				}
 
 				// play themetones
 				if(joinLeaveConfig.tones && joinLeaveConfig.tones.on){

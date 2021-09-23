@@ -360,7 +360,8 @@ const playSound = (module.exports.playSound = async function (channel, location,
 				resolve("resolved: noone in chat to hear sound");
 				return
 			}
-			let endTime = getParameterByName('end')+0
+			let endTime = getParameterByName('end',location)+0
+			let startTime = (getParameterByName('t',location) || getParameterByName('start',location) )+0 //not used
 			
 			dispatcher = connection.play(location, {volume: opts.volume});
 			let intervalID = 0;

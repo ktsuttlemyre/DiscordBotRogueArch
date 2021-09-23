@@ -363,6 +363,8 @@ const playSound = (module.exports.playSound = async function (channel, location,
 				return
 			}
 			
+			
+			dispatcher = connection.play(location, {volume: opts.volume});	
 			let intervalID = 0;
 			if(endTime){
 				intervalID = setInterval(function(){
@@ -374,7 +376,7 @@ const playSound = (module.exports.playSound = async function (channel, location,
 				},500);
 			}
 			
-			dispatcher = connection.play(location, {volume: opts.volume});		
+			
 			dispatcher
 				.on("start", () => {
 					//channel.leave();

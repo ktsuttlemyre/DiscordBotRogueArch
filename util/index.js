@@ -360,11 +360,10 @@ const playSound = (module.exports.playSound = async function (channel, location,
 				resolve("resolved: noone in chat to hear sound");
 				return
 			}
-			let endTime = getParameterByName('end',location)+0
-			let startTime = (getParameterByName('t',location) || getParameterByName('start',location) )+0 //not used
+			let endTime = getParameterByName('end',location)*1
+			let startTime = (getParameterByName('t',location) || getParameterByName('start',location) )+1 //not used
 			
-			dispatcher = connection.play(location, {volume: opts.volume});
-			let intervalID = 0;
+						let intervalID = 0;
 			if(endTime){
 				intervalID = setInterval(function(){
 					console.log('checking dispatcher.time=',dispatcher.time)
@@ -375,6 +374,7 @@ const playSound = (module.exports.playSound = async function (channel, location,
 				},500);
 			}
 			
+			dispatcher = connection.play(location, {volume: opts.volume});		
 			dispatcher
 				.on("start", () => {
 					//channel.leave();

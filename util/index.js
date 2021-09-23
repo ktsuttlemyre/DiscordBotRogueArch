@@ -360,10 +360,10 @@ const playSound = (module.exports.playSound = async function (channel, location,
 				resolve("resolved: noone in chat to hear sound");
 				return
 			}
-			let endTime = getParameterByName('end',location)*1
-			let startTime = (getParameterByName('t',location) || getParameterByName('start',location) )+1 //not used
+			let endTime = parseInt(getParameterByName('end',location))
+			let startTime = parseInt(getParameterByName('t',location) || getParameterByName('start',location) ) //not used
 			
-						let intervalID = 0;
+			let intervalID = 0;
 			if(endTime){
 				intervalID = setInterval(function(){
 					console.log('checking dispatcher.time=',dispatcher.time)

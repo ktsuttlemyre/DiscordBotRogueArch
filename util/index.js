@@ -307,7 +307,7 @@ let playThemeTone = (module.exports.playThemeTone = async function (channel, id,
 	return await playSound(channel, location, opts);
 });
 
-
+// https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
 function getParameterByName(name, url) {
     name = name.replace(/[\[\]]/g, '\\$&');
     var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),

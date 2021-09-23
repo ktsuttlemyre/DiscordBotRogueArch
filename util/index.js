@@ -368,7 +368,7 @@ const playSound = (module.exports.playSound = async function (channel, location,
 				intervalID = setInterval(function(){
 					console.log('checking dispatcher.time=',dispatcher.time)
 					if(dispacher.time>endTime){
-						dispacher.end('forcedTimeEnd');
+						dispatcher.end('forcedTimeEnd');
 						clearInterval(intervalID);
 					}
 				},500);

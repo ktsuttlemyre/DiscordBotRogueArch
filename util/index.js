@@ -328,6 +328,8 @@ const playSound = (module.exports.playSound = async function (channel, location,
 		}
 
 		let hash = getYoutubeHash(location);
+		let endTime = parseInt(getParameterByName('end',location))
+		let startTime = parseInt(getParameterByName('t',location) || getParameterByName('start',location) ) //not used
 		console.log("Queing Sound", location, "with hash", hash);
 		if (hash) {
 			//is youtube link
@@ -360,8 +362,6 @@ const playSound = (module.exports.playSound = async function (channel, location,
 				resolve("resolved: noone in chat to hear sound");
 				return
 			}
-			let endTime = parseInt(getParameterByName('end',location))
-			let startTime = parseInt(getParameterByName('t',location) || getParameterByName('start',location) ) //not used
 			
 			let intervalID = 0;
 			if(endTime){

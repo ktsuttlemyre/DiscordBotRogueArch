@@ -307,6 +307,17 @@ let playThemeTone = (module.exports.playThemeTone = async function (channel, id,
 	return await playSound(channel, location, opts);
 });
 
+
+function getParameterByName(name, url) {
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
+
 const playQueue = new PromiseQueue();
 const playSound = (module.exports.playSound = async function (channel, location, opts) {
 	playQueue.enqueue(async function (resolve, error) {
@@ -349,8 +360,19 @@ const playSound = (module.exports.playSound = async function (channel, location,
 				resolve("resolved: noone in chat to hear sound");
 				return
 			}
+			let endTime = getParameterByName('end')+0
 			
 			dispatcher = connection.play(location, {volume: opts.volume});
+			let intervalID = 0;
+			if(endTime){
+				intervalID = setInterval(function(){
+					if(dispacher.time>endTime){
+						dispacher.end('forcedTimeEnd');
+						clearInterval(intervalID);
+					}
+				},500);
+			}
+			
 			dispatcher
 				.on("start", () => {
 					//channel.leave();
@@ -358,11 +380,13 @@ const playSound = (module.exports.playSound = async function (channel, location,
 				})
 				.on("finish", () => {
 					resolve("resolved");
+					endTime && clearInterval(intervalID);
 					//channel.leave();
 				})
 				.on("error", (err) => {
 					console.error(err);
 					error(err);
+					endTime && clearInterval(intervalID);
 					//channel.leave();
 				});
 		} catch (err) {

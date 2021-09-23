@@ -368,8 +368,9 @@ const playSound = (module.exports.playSound = async function (channel, location,
 			let intervalID = 0;
 			if(endTime){
 				intervalID = setInterval(function(){
-					console.log('checking dispatcher.time=',dispatcher.time)
-					if(dispatcher.time>endTime){
+					let time = dispatcher.time||dispatcher..totalStreamTime
+					console.log('checking dispatcher.time=',time)
+					if(time>endTime){
 						dispatcher.end('forcedTimeEnd');
 						clearInterval(intervalID);
 					}

@@ -380,7 +380,7 @@ const playSound = (module.exports.playSound = async function (channel, location,
 						dispatcher.end('forcedTimeEnd');
 						clearInterval(intervalID);
 					}
-				},500);
+				},100);
 			}
 			
 			

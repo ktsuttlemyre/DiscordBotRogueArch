@@ -328,8 +328,10 @@ const playSound = (module.exports.playSound = async function (channel, location,
 		}
 
 		let hash = getYoutubeHash(location);
-		let endTime = parseInt(getParameterByName('end',location))
+		let endTime = parseInt(getParameterByName('end',location));
+		endTime = (endTime)?endTime*1000:null; //convert milliseconds to seconds
 		let startTime = parseInt(getParameterByName('t',location) || getParameterByName('start',location) ) //not used
+		startTime = (startTime)?startTime*1000:null; //convert millseconds to seconds
 		console.log("Queing Sound", location, "with hash", hash);
 		if (hash) {
 			//is youtube link
@@ -355,6 +357,10 @@ const playSound = (module.exports.playSound = async function (channel, location,
 			}
 			
 			//connect to channel
+			if (!channel.joinable) {
+				resolve("resolved: "+channel.guild.me.displayName+" not allowed in "+channel.name);
+				return
+			}
 			var connection = await channel.join();
 			
 			//after connecting check to see if anyone is here to listen
@@ -366,7 +372,7 @@ const playSound = (module.exports.playSound = async function (channel, location,
 			
 			dispatcher = connection.play(location, {volume: opts.volume});	
 			let intervalID = 0;
-			if(endTime){
+			if(endTime!=null){
 				intervalID = setInterval(function(){
 					let time = dispatcher.time||dispatcher.totalStreamTime
 					console.log('checking dispatcher.time=',time)

@@ -122,7 +122,7 @@ class CustomListener extends Listener {
 		game = game.trim();
 		
 		//if it is a sequential release remove the number from the end
-		game=game.replace(/\d+$/, "")
+		game=game.replace(/\s\d+$/, "")
 		game = game.trim();
 		if(!game){
 			return

@@ -24,13 +24,14 @@ class CustomListener extends Listener {
 			debug && console.log('Event[voiceStateUpdate] => env not production')
 			return;
 		}
-		let thisMember = newstate.member;
-		if(thisMember.user.bot){
+		let member = newstate.member;
+		if(member.user.bot){
 			debug && console.log('Event[voiceStateUpdate] => member is bot')
 			return
 		}
 		let guild = newstate.guild;
 		let client = this.client;
+		let logChannel = guild.channels.resolve(config.actionLogChannel);
 		
 		
 		let changed ={	
@@ -45,7 +46,7 @@ class CustomListener extends Listener {
 			speaking: oldstate.speaking !== newstate.speaking,
 			streaming: oldstate.streaming !== newstate.streaming
 		}
-		debug && console.log(`voiceStateUpdate Triggered for user ${thisMember.tag} with state`,changed)
+		debug && console.log(`voiceStateUpdate Triggered for user ${member.tag} with state`,changed)
 		
 		// voice-text-channel-link
 		let roomChanged = ((oldstate.channelID || newstate.channelID) && oldstate.channelID !== newstate.channelID);
@@ -53,7 +54,7 @@ class CustomListener extends Listener {
 		
 		let permissionsNeeded = ['VIEW_CHANNEL','MANAGE_CHANNELS'];
 		
-		debug && console.info('voiceStateUpdate',oldstate.channelID,newstate.channelID,roomChanged,thisMember.displayName);
+		debug && console.info('voiceStateUpdate',oldstate.channelID,newstate.channelID,roomChanged,member.displayName);
 		    
 		//enter new chatroom
 		let textChannelID = channelMap[newstate.channelID];
@@ -63,7 +64,7 @@ class CustomListener extends Listener {
 			debug && console.log('entering a hidden channel',textChannelID)
 			permissions = textChannel.permissionsFor(guild.me)
 			if(permissions.has(permissionsNeeded)){
-				textChannel.updateOverwrite(thisMember, {
+				textChannel.updateOverwrite(member, {
 				    //SEND_MESSAGES: false,
 				    VIEW_CHANNEL: true
 				});
@@ -83,7 +84,7 @@ class CustomListener extends Listener {
 			//console.log(permissions.toArray())
 			if(permissions.has(permissionsNeeded)){
 				//leave private rooms
-				textChannel.updateOverwrite(thisMember, {
+				textChannel.updateOverwrite(member, {
 				    //SEND_MESSAGES: false,
 				    VIEW_CHANNEL: false
 				});
@@ -103,7 +104,7 @@ class CustomListener extends Listener {
 // 			//mute handler
 // 			if(amongusMode){
 // 				newstate.channel.members.forEach(function(member){
-// 					if(member.id == thisMember.id){return}
+// 					if(member.id == member.id){return}
 //					if(member.user.bot){return}
 // 					member.voice.setMute(newstate.mute);
 // 				}); //end members
@@ -118,19 +119,32 @@ class CustomListener extends Listener {
 		//only work if this is a real event and the channel has changed
 		if(changed.channelID){ //channel changed
 			if(newstate.channel){
+				
+				let roleName = `🗣️`;
+				let role = guild.roles.cache.find((x) => x.name === roleName);
+
+				//can this bot manage roles?
+				if (guild.me.hasPermission("MANAGE_ROLES")) {
+					//now add the role to the user if they arent already a part
+					if (!member.roles.cache.some((role) => role.name === roleName)) {
+						member.roles.add(role);
+						logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send(`Assigned role ${role} to ${member}`)
+					}
+				}
+				
 			
 				permissions = newstate.channel.permissionsFor(guild.me);
 				//reset the users status removing serverMute and serverDeafen if they do not have the voicemute or voicedeaf role
 				if(!newstate.member.user.bot && (joinLeaveConfig.resetUserState || oldstate.channelID == oldstate.guild.afkChannelID)){
 					if(permissions.has('MUTE_MEMBERS')){
-						!thisMember.roles.cache.some(role => role.name === config.roles.VoiceMute) && newstate.setMute(false);
+						!member.roles.cache.some(role => role.name === config.roles.VoiceMute) && newstate.setMute(false);
 					}else{
-						console.log(`${guild.me} does not have permissions to set mute state to ${thisMember} in ${newstate.channel.name}`)
+						console.log(`${guild.me} does not have permissions to set mute state to ${member} in ${newstate.channel.name}`)
 					}
 					if(permissions.has('DEAFEN_MEMBERS')){
-						!thisMember.roles.cache.some(role => role.name === config.roles.VoiceDeaf) && newstate.setDeaf(false);
+						!member.roles.cache.some(role => role.name === config.roles.VoiceDeaf) && newstate.setDeaf(false);
 					}else{
-						console.log(`${guild.me} does not have permissions to set deafen state to ${thisMember} in ${newstate.channel.name}`)
+						console.log(`${guild.me} does not have permissions to set deafen state to ${member} in ${newstate.channel.name}`)
 					}
 				}
 				//mute if entering afkChannel
@@ -138,12 +152,12 @@ class CustomListener extends Listener {
 // 					if(permissions.has('MUTE_MEMBERS')){
 // 					   newstate.setMute(true);
 // 					}else{
-// 						console.log(`${guild.me} does not have permissions to mute ${thisMember} in ${newstate.channel.name}`)
+// 						console.log(`${guild.me} does not have permissions to mute ${member} in ${newstate.channel.name}`)
 // 					}
 // 					if(permissions.has(['DEAFEN_MEMBERS'])){
 // 						newstate.setDeaf(true);
 // 					}else{
-// 						console.log(`${guild.me} does not have permissions to deafen ${thisMember} in ${newstate.channel.name}`)
+// 						console.log(`${guild.me} does not have permissions to deafen ${member} in ${newstate.channel.name}`)
 // 					}
 //				}
 
@@ -153,10 +167,10 @@ class CustomListener extends Listener {
 						await util.playThemeTone(oldstate.channel,joinLeaveConfig.tones.defaultLeaveTone);
 					}
 					if(newstate.channelID != newstate.guild.afkChannelID){
-						await util.playThemeTone(newstate.channel,thisMember.id);
+						await util.playThemeTone(newstate.channel,member.id);
 					}
 				}
-				//client.commandHandler.runCommand(message,client.commandHandler.findCommand('clip'),thisMember.id);
+				//client.commandHandler.runCommand(message,client.commandHandler.findCommand('clip'),member.id);
 			}
 		}
 		

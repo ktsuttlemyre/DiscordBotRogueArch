@@ -87,7 +87,7 @@ class CustomListener extends Listener {
 				let permalink = util.messages.permalink(message);
 				let string = `channel: [${message.channel.name}](${permalink})\nmessage: [${messagePreview}](${permalink})`
 				if(!_.random(0,5)){
-					string += 'to unsubscribe from alerts type `!unsubscribe`'
+					string += '\nto unsubscribe from alerts type `!unsubscribe`'
 				}
 				embed
 					.setDescription(string)

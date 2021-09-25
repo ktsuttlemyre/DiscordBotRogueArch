@@ -22,7 +22,7 @@ const _ = require("lodash");
 const filterApps = {
 	'Google Chrome':1,
 	'SteamVR':1,
-	'Drawful 2':1
+	'Drawful':1
 };
 
 const gamingLogChannelID = "858459656058044426"
@@ -108,21 +108,25 @@ class CustomListener extends Listener {
 			return;
 		}
 		let game = (presence[0] || presence).name; // will give the name of the game
-		if (!game) {
-			return;
-		}
-		
-		//remove tm and other weird characters because they don't work right as roles
-		game = game.replace(/[^\w\s]/gi,'');
-		
-		//if it is a sequal or spin off of a franchise just get the franchise
-		game = game.split(':')[0]
-		
 		if(!game){
 			return
 		}
 		game = game.trim();
-			
+		
+		//remove tm and other weird characters because they don't work right as roles
+		game = game.replace(/[^\w\s]/gi,'');
+		game = game.trim();
+		
+		//if it is a sequal or spin off of a franchise just get the franchise
+		game = game.split(':')[0]
+		game = game.trim();
+		
+		//if it is a sequential release remove the number from the end
+		game=game.replace(/\d+$/, "")
+		game = game.trim();
+		if(!game){
+			return
+		}
 		
 		//filter out non-games
 		if(filterApps[game]){

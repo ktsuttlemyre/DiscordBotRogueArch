@@ -91,8 +91,10 @@ class CustomListener extends Listener {
 		}
 
 		//see if user wants notificaiton
-		let notify = sendToUser.roles.cache.find((r) => r.name === "ReceiveReactAlert");
-		notify && sendToUser.user.send(embed);
+		let notify = sendToUser.roles.cache.find((r) => r.name === "🔣📥");
+		if(notify && !sendToUser.roles.cache.find((r) => r.name === "⛔🤖📥")){ //make sure not to bother people explicitly asking for no inbox
+			sendToUser.user.send(embed);
+		}
 
 		/** Reaction router **/
 		//util.messages.ractionRouter(reaction,message,member);

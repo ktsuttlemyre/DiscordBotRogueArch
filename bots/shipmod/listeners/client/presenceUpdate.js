@@ -136,22 +136,35 @@ class CustomListener extends Listener {
 			}
 		}) || game;
 		
-		
-		let roleName = `🎮${game}`;
+		let gamePrefix="🎮"
+		let roleName = `${gamePrefix}${game}`;
 		
 		let logChannel = guild.channels.resolve(config.actionLogChannel);
 
-
-		//if the role doesn't exist make it
 		let role = guild.roles.cache.find((x) => x.name === roleName);
-		if (!role) {
-			// Role doesn't exist, safe to create
-			if (!guild.me.hasPermission("MANAGE_ROLES")) {
-				console.log(`${guild.me.displayName} does not have permissions to create roles`);
-				return;
+		
+		//can this bot manage roles?
+		if (!guild.me.hasPermission("MANAGE_ROLES")) {
+			console.log(`${guild.me.displayName} does not have permissions to create roles`);
+			return
+		}
+		if (!role) { // Role doesn't exist, safe to create
+			//if too many roles. Find the oldest one with the fewest members and delete
+			if(guild.roles.cache.size >= 249){ 
+				let roles = guild.roles.cache.sorted(function(a, b) {          
+					if (a.members.size === b.members.size) {
+						// time is only important when members are the same
+						return a.createdTimestamp - b.createdTimestamp;
+					}
+					return a.members.size-b.members.size;
+				}); //sort lowest number of members and oldest date created
+
+				let oldestGameRole = roles.find((x) => x.name.indexOf(gamePrefix)===0); //find a role with game prefix
+				if(oldestGameRole){
+					logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send("removing old role "+oldestGameRole.name+ " with only "+ oldestGameRole.members.size+ "members")
+					roles.delete(oldestGameRole.id);
+				}
 			}
-			
-			
 			role = await guild.roles.create({
 				data: {
 					name: roleName,
@@ -160,11 +173,12 @@ class CustomListener extends Listener {
 				},
 				reason: "Game Activity",
 			});
-			
+
 			logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send(`Created role ${role}`)
 		}
-
-		//if the user doesn't have the role then add it
+		
+		
+		//now add the role to the user if they arent already a part
 		if (!member.roles.cache.some((role) => role.name === roleName)) {
 			member.roles.add(role);
 			logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send(`Assigned role ${role} to ${member}`)

@@ -78,8 +78,12 @@ class CustomListener extends Listener {
 			`https://discordapp.com/users/${user.id}`
 		);
 		let permalink = util.messages.permalink(message);
+		let string = `channel: [${message.channel.name}](${permalink})\nmessage: [${messagePreview}](${permalink})`
+		if(!_.random(0,5)){
+			string += '\nto unsubscribe from alerts type `!unsubscribe`'
+		}
 		embed
-			.setDescription(`channel: [${message.channel.name}](${permalink})\nmessage: [${messagePreview}](${permalink})`)
+			.setDescription(string)
 			.setFooter(`ID: ${message.id}`)
 			.setTimestamp();
 

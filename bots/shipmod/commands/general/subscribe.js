@@ -42,7 +42,7 @@ class CustomCommand extends Command {
     var guilds = await Promise.all(
       client.guilds.cache.map(async guild => [
           guild.id,
-          await guild.members.fetch(message.author).catch(() => null))
+          await guild.members.fetch(message.author).catch(() => null)
       ])
     )
     guilds = guilds.filter(g => g[1]).map(guild => client.guilds.resolve(guild[0]);

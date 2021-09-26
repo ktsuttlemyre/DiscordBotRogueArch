@@ -63,7 +63,8 @@ class CustomCommand extends Command {
             logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send(`Removed role ${role} from ${member}`)
           }
         }
-    }
+    })
+	}
 }
 
 module.exports = CustomCommand;

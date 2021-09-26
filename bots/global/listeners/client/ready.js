@@ -39,21 +39,21 @@ class CustomListener extends Listener {
 		 * emit voice channel changes for voice-to-text channel linking
 		 * check if there are any commands that were not executed
 		 */
-		client.guilds.cache.forEach(async function (Guild) {
+		client.guilds.cache.forEach(async function (guild) {
 			//.get("690661623831986266"); // Getting the guild.
-			console.log("checking guild", Guild.name, Guild.id);
-			if (!Guild.channels) {
+			console.log("checking guild", guild.name, guild.id);
+			if (!guild.channels) {
 				return;
 			}
-			let voiceChannels = Guild.channels.cache.filter((c) => c.type == "voice").array();
-			Guild.members.cache.forEach(function (member) {
+			let voiceChannels = guild.channels.cache.filter((c) => c.type == "voice").array();
+			guild.members.cache.forEach(function (member) {
 				if (member.user.bot) {
 					return false;
 				}
 				//Emit voiceUpdate for each member and channel
 				//console.log('user in voice, triggering voicestateupdate for ',member);
 				voiceChannels.forEach(function (channel) {
-					if (channel.id === Guild.afkChannelID) {
+					if (channel.id === guild.afkChannelID) {
 						return;
 					}
 					for (const [voice, text] of Object.entries(config.voiceTextLinkMap)) {
@@ -67,11 +67,11 @@ class CustomListener extends Listener {
 			}); //end members
 
 			//read all previous commands
-			let textChannels = Guild.channels.cache.filter((c) => c.type == "text").array();
+			let textChannels = guild.channels.cache.filter((c) => c.type == "text").array();
 			debug && console.log("checking old commands");
 			let commandMessagesQueue = [];
 			for (const channel of textChannels) {
-				if (!channel.permissionsFor(Guild.me).has("VIEW_CHANNEL")) {
+				if (!channel.permissionsFor(guild.me).has("VIEW_CHANNEL")) {
 					continue;
 				}
 				if (util.devChannelGate({channel})) {
@@ -83,8 +83,8 @@ class CustomListener extends Listener {
 				messages = Array.from(messages.values());
 				for (const message of messages) {
 					//stop once you find a message that this bot has sent
-					debug && console.log("id check", Guild.me.id, (message.member || message.author).id);
-					if (Guild.me.id == (message.member || message.author).id) {
+					debug && console.log("id check", guild.me.id, (message.member || message.author).id);
+					if (guild.me.id == (message.member || message.author).id) {
 						break; //end loop
 					}
 					if (message.author.bot) {
@@ -121,11 +121,27 @@ class CustomListener extends Listener {
 			// 				  common.nowPlaying(message,null,'I have crashed or gone to sleep!')
 			// 				}
 
-			let logChannel = Guild.channels.resolve(config.actionLogChannel);
-			if (logChannel && logChannel.permissionsFor(Guild.me).has("SEND_MESSAGES")) {
+			let logChannel = guild.channels.resolve(config.actionLogChannel);
+			if (logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES")) {
 				logChannel.send(`${client.user.tag} woke up`);
 			}
+			
+			let gamePrefix="🎮";
+			if(client.user.tag =="ShipMod"){
+
+				let gameRoles = guild.roles.cache.filter((x) => x.name.indexOf(gamePrefix)===0); //find a role with game prefix
+				if(gameRoles){
+					const sortAlphaNum = (a, b) => a.name.localeCompare(b.name, 'en', { numeric: true })
+					gameRoles = gameRoles.sorted(sortAlphaNum)
+				
+					logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send("@@@@@@@")
+					//TODO print the games
+				}
+			}
+			
 		}); //end guilds
+		
+
 
 		console.log(`ready rutine is complete for ${client.user.tag}`);
 	} //end exec

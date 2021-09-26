@@ -166,7 +166,7 @@ class CustomListener extends Listener {
 				let oldestGameRole = roles.find((x) => x.name.indexOf(gamePrefix)===0); //find a role with game prefix
 				if(oldestGameRole){
 					logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send("removing old role "+oldestGameRole.name+ " with only "+ oldestGameRole.members.size+ "members")
-					roles.delete(oldestGameRole.id);
+					oldestGameRole.delete();
 				}
 			}
 			role = await guild.roles.create({
@@ -178,14 +178,14 @@ class CustomListener extends Listener {
 				reason: "Game Activity",
 			});
 
-			logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send(`Created role ${role}`)
+			logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send(`Created role \`${role.name}\``)
 		}
 		
 		
 		//now add the role to the user if they arent already a part
 		if (!member.roles.cache.some((role) => role.name === roleName)) {
 			member.roles.add(role);
-			logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send(`Assigned role ${role} to ${member}`)
+			logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send(`Assigned role \`${role.name}\` to ${member}`)
 		}
 		
 		//look for last message and see if it was posted already today

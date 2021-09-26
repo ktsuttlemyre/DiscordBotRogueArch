@@ -45,7 +45,7 @@ class CustomCommand extends Command {
           await guild.members.fetch(message.author).catch(() => null)
       ])
     )
-    guilds = guilds.filter(g => g[1]).map(guild => client.guilds.resolve(guild[0]);
+    guilds = guilds.filter(g => g[1]).map(guild => client.guilds.resolve(guild[0]));
     
                                           
     guilds.forEach(function(guild){

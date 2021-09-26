@@ -14,7 +14,7 @@ const escapeMD = require("markdown-escape");
 class CustomCommand extends Command {
 	constructor() {
 		super(commandVars.id, {
-			description: {content: "Unsubscribes you from specific alerts"},
+			description: {content: "Subscribes you to specific alerts"},
 			aliases: [commandVars.name],
 			category: commandVars.category,
 			clientPermissions: ["SEND_MESSAGES", "MANAGE_MESSAGES"],

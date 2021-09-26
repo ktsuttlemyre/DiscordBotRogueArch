@@ -63,9 +63,7 @@ class CustomCommand extends Command {
             logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send(`Assigned role ${role} to ${member}`)
           }
         }
-      }
-    
-	}
+    }
 }
 
 module.exports = CustomCommand;

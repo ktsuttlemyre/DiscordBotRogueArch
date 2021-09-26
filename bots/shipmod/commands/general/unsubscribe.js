@@ -52,7 +52,7 @@ class CustomCommand extends Command {
       let member = guild.members.resolve(message.author);
       let logChannel = guild.channels.resolve(config.actionLogChannel);
       
-      let roleName = ⛔🤖📥`;
+      let roleName = "⛔🤖📥";
       let role = guild.roles.cache.find((x) => x.name === roleName);
 
         //can this bot manage roles?

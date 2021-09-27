@@ -21,7 +21,7 @@ module.exports.getReactedUsers = async function(msg, emoji) {
 	console.log('reactions',reactions)
 	let userListPromise = reactions.users.fetch();
 	userListPromise.catch((error) => {
-	  console.error(error);
+	  console.error('caught a userListPromise error:',error);
 	});
 	let userList = await userListPromise
 	return userList; //(userList.map((user) => user.id));

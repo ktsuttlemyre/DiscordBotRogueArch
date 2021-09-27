@@ -1,3 +1,4 @@
+let debug = false;
 const {Inhibitor} = require("discord-akairo");
 const util = require.main.require('./util');
 const commandVars = util.commandVars(__filename);
@@ -32,8 +33,10 @@ class CustomInhibitor extends Inhibitor {
 	// 		return false;
 	// 	}
 		let users = await util.messages.getReactedUsers(message,reactions.shipwash);
-		console.log('got users for message/command about to be processed ',users,users.size)
+		
 		if(users.size){
+			let channel = message.channel
+			console.log("Inhibited command:",message.content,'in channel:',channel.name,"Reason: Claimed by:',Array.from(users, ([name, value]) => (value.username)))
 			return true
 		}
 		return false

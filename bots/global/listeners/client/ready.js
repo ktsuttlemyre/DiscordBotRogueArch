@@ -101,7 +101,7 @@ class CustomListener extends Listener {
 						continue;
 					}
 					let users = await util.messages.getReactedUsers(message, reactions.shipwash);
-					if (!users.get(Guild.me.id)) {
+					if (!users.get(guild.me.id)) {
 						//console.log('processing this message v')
 						commandMessagesQueue.push(message);
 					}

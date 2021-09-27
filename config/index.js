@@ -14,6 +14,7 @@ let config = {
 		dialect: "sqlite",
 		storage: "./database.sqlite3",
 		actionLogChannel: "800748408741953576",
+		gameChannel:"891840295501721642",
 	},
 };
 let defaults = {

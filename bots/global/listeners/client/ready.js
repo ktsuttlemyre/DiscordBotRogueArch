@@ -7,6 +7,12 @@ const util = require.main.require("./util");
 const config = util.config;
 const commandVars = util.commandVars(__filename);
 
+
+const sortAlphaNum = (a, b) => a.name.localeCompare(b.name, 'en', { numeric: true });
+let mapToArray = function(map){
+	return Array.from(map, ([name, value]) => (value.displayName));
+}
+
 class CustomListener extends Listener {
 	constructor() {
 		super("global/" + commandVars.id, {
@@ -15,6 +21,10 @@ class CustomListener extends Listener {
 			category: commandVars.category,
 		});
 	}
+	
+	
+	
+	
 
 	async exec() {
 		let client = this.client;
@@ -122,6 +132,7 @@ class CustomListener extends Listener {
 			// 				}
 
 			let logChannel = guild.channels.resolve(config.actionLogChannel);
+			let gameChannel = guild.channels.resolve(config.gameChannel);
 			if (logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES")) {
 				logChannel.send(`${client.user.tag} woke up`);
 			}
@@ -131,10 +142,12 @@ class CustomListener extends Listener {
 
 				let gameRoles = guild.roles.cache.filter((x) => x.name.indexOf(gamePrefix)===0); //find a role with game prefix
 				if(gameRoles){
-					const sortAlphaNum = (a, b) => a.name.localeCompare(b.name, 'en', { numeric: true })
 					gameRoles = gameRoles.sorted(sortAlphaNum)
+					
+					
+					let games = Array.from(gameRoles, ([name, value]) => ({ game:value.name, members:mapToArray(value.members) }));
 				
-					logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send("@@@@@@@")
+					gameChannel && gameChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && gameChannel.send(gameRoles)
 					//TODO print the games
 				}
 			}

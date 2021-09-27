@@ -19,7 +19,11 @@ module.exports.getReactedUsers = async function(msg, emoji) {
 		return new Discord.Collection();
 	}
 	console.log('reactions',reactions)
-	let userList = await reactions.users.fetch();
+	let userListPromise = reactions.users.fetch();
+	userListPromise.catch((error) => {
+	  console.error(error);
+	});
+	let userList = await userListPromise
 	return userList; //(userList.map((user) => user.id));
 }
 // 				.filter(async function(message){ //filter out commands that have this bot using the shipwash reaction

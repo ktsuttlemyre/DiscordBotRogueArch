@@ -34,11 +34,18 @@ class CustomInhibitor extends Inhibitor {
 	// 	}
 		let users = await util.messages.getReactedUsers(message,reactions.shipwash);
 		
-		if(users.size){
+		if(!users.size){
+			return false
+		}
+		let isMe = users.find(function(user){
+			return client.user.tag == user.tag
+		})
+		if(isMe){
 			let channel = message.channel
-			console.log('Inhibited command:',message.content,'in channel:',channel.name,'Reason: Claimed by:',Array.from(users, ([name, value]) => (value.username)))
+			console.log('Inhibited command:',message.content,'in channel:',channel.name,'Reason: Claimed by:',client.user.tag,'and',Array.from(users, ([name, value]) => (value.username)))
 			return true
 		}
+		
 		return false
 		
 		

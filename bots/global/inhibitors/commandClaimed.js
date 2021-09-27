@@ -42,7 +42,7 @@ class CustomInhibitor extends Inhibitor {
 		})
 		if(isMe){
 			let channel = message.channel
-			console.log('Inhibited command:',message.content,'in channel:',channel.name,'Reason: Claimed by:',client.user.tag,'and',Array.from(users, ([name, value]) => (value.username)))
+			console.log('Inhibited command:',message.content,'in channel:',channel.name,'Reason: Claimed by:',isMe.tag,'and',Array.from(users, ([name, value]) => (value.username)))
 			return true
 		}
 		

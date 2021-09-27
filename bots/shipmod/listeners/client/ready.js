@@ -15,7 +15,7 @@ let mapToArray = function(map){
 
 class CustomListener extends Listener {
 	constructor() {
-		super("global/" + commandVars.id, {
+		super("shipmod/" + commandVars.id, {
 			emitter: commandVars.category,
 			event: commandVars.name,
 			category: commandVars.category,

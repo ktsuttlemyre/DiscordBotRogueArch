@@ -50,19 +50,18 @@ class CustomListener extends Listener {
 			}
 			
 			let gamePrefix="🎮";
-			if(client.user.tag =="ShipMod"){
 
-				let gameRoles = guild.roles.cache.filter((x) => x.name.indexOf(gamePrefix)===0); //find a role with game prefix
-				if(gameRoles){
-					gameRoles = gameRoles.sorted(sortAlphaNum)
-					
-					
-					let games = Array.from(gameRoles, ([name, value]) => ({ game:value.name, members:mapToArray(value.members) }));
-				
-					gameChannel && gameChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && gameChannel.send(gameRoles)
-					//TODO print the games
-				}
+			let gameRoles = guild.roles.cache.filter((x) => x.name.indexOf(gamePrefix)===0); //find a role with game prefix
+			if(gameRoles){
+				gameRoles = gameRoles.sorted(sortAlphaNum)
+
+
+				let games = Array.from(gameRoles, ([name, value]) => ({ game:value.name, members:mapToArray(value.members) }));
+
+				gameChannel && gameChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && gameChannel.send(gameRoles)
+				//TODO print the games
 			}
+			
 			
 		}); //end guilds
 		

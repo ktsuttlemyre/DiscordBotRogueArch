@@ -1,6 +1,7 @@
 const {Command} = require("discord-akairo");
 const emotes = {error: ":error:"};
 const util = require.main.require("./util");
+const config = util.config;
 const commandVars = util.commandVars(__filename);
 
 class CustomCommand extends Command {
@@ -22,7 +23,7 @@ class CustomCommand extends Command {
 	}
 
 	userPermissions(message) {
-		if (!message.member.roles.cache.some((role) => role.name === "Admin")) {
+		if (!message.member.roles.cache.some((role) => role.name === config.systemRoles.admin)) {
 			return "Admin";
 		}
 		return null;

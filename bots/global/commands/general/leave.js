@@ -44,8 +44,8 @@ class CustomCommand extends Command {
 		// 		}
 		// 		player.skip(message);
 		// process.exit(0);
-		if (message.guild.me.voiceChannel !== undefined) {
-			message.guild.me.voiceChannel.leave();
+		if (message.guild.me.voice.channel; !== undefined) {
+			message.guild.me.voice.channel.leave();
 		}
 	}
 }

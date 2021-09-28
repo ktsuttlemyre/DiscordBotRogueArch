@@ -62,7 +62,7 @@ class CustomListener extends Listener {
 				//let json = JSON.stringify(games,null,2)
 				let data = YAML.dump(games,{noArrayIndent :true,flowLevel:1,sortKeys:true,forceQuotes:true,quotingType:'"'}) //https://www.npmjs.com/package/js-yaml
 				console.log(data)
-				data=data.replace(/"/g,'`').replace(/🎮/g,"")
+				data=data.replace(/-\s{"game":"/,"```").replace(/,\s"members":\s/,'').replace(/🎮/g,"") //.replace(/"/g,'`')
 
 				if(gameChannel && gameChannel.permissionsFor(guild.me).has("SEND_MESSAGES")){
 					Discord.Util.splitMessage(data,{maxLength:1900}).forEach(function(mess){

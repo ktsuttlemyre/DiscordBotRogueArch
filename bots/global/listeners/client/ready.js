@@ -6,6 +6,7 @@ const {reactions, defaultAvatar} = require.main.require("./common");
 const util = require.main.require("./util");
 const config = util.config;
 const commandVars = util.commandVars(__filename);
+const Discord = require('discord.js');
 
 
 const sortAlphaNum = (a, b) => a.name.localeCompare(b.name, 'en', { numeric: true });
@@ -89,7 +90,16 @@ class CustomListener extends Listener {
 				}
 				debug && console.log("testing", channel.name);
 
-				let messages = await channel.messages.fetch(); //TODO make this use the util.messages.fetch function so it reads further into the history
+				let messages = null
+				try{
+				    messages = await channel.messages.fetch().catch((err) => { //TODO make this use the util.messages.fetch function so it reads further into the history
+						throw err;
+					});
+				} catch (err) {
+					console.error('caught an error in',commandVars.id+' exec','error:',err);
+				}
+				messages=messages || new Discord.Collection();
+				
 				messages = Array.from(messages.values());
 				for (const message of messages) {
 					//stop once you find a message that this bot has sent

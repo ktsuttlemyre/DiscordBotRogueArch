@@ -13,8 +13,15 @@ let config = {
 	production: {
 		dialect: "sqlite",
 		storage: "./database.sqlite3",
-		actionLogChannel: "800748408741953576",
-		gameChannel:"891840295501721642",
+		actionLogChannel: "800748408741953576", //depricated
+		gameChannel:"891840295501721642", //depricated
+		channels:{
+			gameActivity:"891840295501721642",
+			actionLogs:"800748408741953576"
+		},
+		systemRoles:{
+			admin:"Admin"
+		},
 	},
 };
 let defaults = {

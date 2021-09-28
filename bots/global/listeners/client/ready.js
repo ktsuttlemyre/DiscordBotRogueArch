@@ -109,7 +109,16 @@ class CustomListener extends Listener {
 					if (message.author.bot) {
 						continue;
 					}
-					let users = await util.messages.getReactedUsers(message, reactions.shipwash);
+					let users = null;
+					try{
+						users = await util.messages.getReactedUsers(message, reactions.shipwash).catch((err) => {
+							throw err;
+						});
+					} catch (err) {
+						console.error('caught an error in',commandVars.id+' exec getReactedUsers','error:',err);
+					}
+					users = users || new Discord.Collection();
+					
 					if (!users.get(guild.me.id)) {
 						//console.log('processing this message v')
 						commandMessagesQueue.push(message);

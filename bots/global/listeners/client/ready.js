@@ -6,7 +6,6 @@ const {reactions, defaultAvatar} = require.main.require("./common");
 const util = require.main.require("./util");
 const config = util.config;
 const commandVars = util.commandVars(__filename);
-const Discord = require('discord.js');
 
 
 const sortAlphaNum = (a, b) => a.name.localeCompare(b.name, 'en', { numeric: true });

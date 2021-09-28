@@ -6,6 +6,7 @@ const {reactions, defaultAvatar} = require.main.require("./common");
 const util = require.main.require("./util");
 const config = util.config;
 const commandVars = util.commandVars(__filename);
+const YAML = require('js-yaml');
 
 
 const sortAlphaNum = (a, b) => a.name.localeCompare(b.name, 'en', { numeric: true });
@@ -58,11 +59,12 @@ class CustomListener extends Listener {
 
 
 				let games = Array.from(gameRoles, ([name, value]) => ({ game:value.name, members:mapToArray(value.members) }));
-				let json = JSON.stringify(games,null,2)
-				console.log(json)
+				//let json = JSON.stringify(games,null,2)
+				let data = YAML.dump(games)
+				console.log(data)
 
 				if(gameChannel && gameChannel.permissionsFor(guild.me).has("SEND_MESSAGES")){
-					Discord.Util.splitMessage(json,{maxLength:1900}).forEach(function(mess){
+					Discord.Util.splitMessage(data,{maxLength:1900}).forEach(function(mess){
 						gameChannel.send(mess);
 					})
 				}

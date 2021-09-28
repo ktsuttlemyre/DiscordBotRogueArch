@@ -1,3 +1,4 @@
+const debug = false;
 const GUIMessages = require.main.require("./templates/messages");
 const {Command} = require("discord-akairo");
 const {Player} = require("discord-player");
@@ -18,13 +19,17 @@ module.exports.getReactedUsers = async function(msg, emoji) {
 	if (!reactions) {
 		return new Discord.Collection();
 	}
-	console.log('reactions',reactions)
-	let userListPromise = reactions.users.fetch();
-	userListPromise.catch((error) => {
-	  console.error('caught a userListPromise error:',error);
-	});
-	let userList = await userListPromise
-	return userList; //(userList.map((user) => user.id));
+	debug && console.log('reactions',reactions)
+	let userList = null;
+	try{
+		userList = await reactions.users.fetch().catch((err) => {
+			throw err;
+		});
+	} catch (err) {
+		console.error('caught a error in util.messages.getReactedusers:',err);
+	}
+
+	return userList || new Discord.Collection(); //(userList.map((user) => user.id));
 }
 // 				.filter(async function(message){ //filter out commands that have this bot using the shipwash reaction
 // 				    let reaction = await message.reactions.cache.get(reactions.shipwash)
@@ -70,7 +75,14 @@ module.exports.embedParser = async function (message) {
 		}
 		//https://stackoverflow.com/questions/60676210/how-to-find-user-by-his-id-in-discord-js
 		//https://stackoverflow.com/questions/63107193/discord-js-how-do-i-convert-user-id-to-member
-		let user = await message.client.users.fetch(id);
+		let user = null
+		try{
+			user = await message.client.users.fetch(id).catch((err) => {
+				throw err;
+			});
+		} catch (err) {
+			console.error('caught an error in util.messages.embedParser:',err);
+		}
 		let member = message.guild(user);
 		return {member: member};
 	}

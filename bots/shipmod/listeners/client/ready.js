@@ -58,7 +58,7 @@ class CustomListener extends Listener {
 
 
 				let games = Array.from(gameRoles, ([name, value]) => ({ game:value.name, members:mapToArray(value.members) }));
-				let json = JSON.stringify(games)
+				let json = JSON.stringify(games,null,2)
 				console.log(json)
 
 				if(gameChannel && gameChannel.permissionsFor(guild.me).has("SEND_MESSAGES")){

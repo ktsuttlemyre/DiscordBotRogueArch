@@ -61,8 +61,13 @@ class CustomListener extends Listener {
 				let json = JSON.stringify(games)
 				console.log(json)
 
-				gameChannel && gameChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && gameChannel.send(json)
-				//TODO print the games
+				if(gameChannel && gameChannel.permissionsFor(guild.me).has("SEND_MESSAGES")){
+					let messages = Discord.Util.splitMessage(json)
+					messages.forEach(function(mess){
+						gameChannel.send(mess)
+					}
+				}
+				
 			}
 			
 			

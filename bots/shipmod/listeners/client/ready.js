@@ -41,7 +41,7 @@ class CustomListener extends Listener {
 		 */
 		client.guilds.cache.forEach(async function (guild) {
 			//.get("690661623831986266"); // Getting the guild.
-			console.log("checking guild", guild.name, guild.id);
+			console.log("Custom Ready rutine running for ",client.user.tag," checking guild ", guild.name, guild.id);
 
 			let logChannel = guild.channels.resolve(config.actionLogChannel);
 			let gameChannel = guild.channels.resolve(config.gameChannel);
@@ -52,7 +52,8 @@ class CustomListener extends Listener {
 			let gamePrefix="🎮";
 
 			let gameRoles = guild.roles.cache.filter((x) => x.name.indexOf(gamePrefix)===0); //find a role with game prefix
-			if(gameRoles){
+			console.log('gameRoles found =',gameRoles.size)
+			if(gameRoles.size){
 				gameRoles = gameRoles.sorted(sortAlphaNum)
 
 
@@ -67,7 +68,7 @@ class CustomListener extends Listener {
 		
 
 
-		console.log(`ready rutine is complete for ${client.user.tag}`);
+		console.log(`Custom Ready rutine is complete for ${client.user.tag}`);
 	} //end exec
 }
 

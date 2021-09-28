@@ -12,11 +12,11 @@ class CustomCommand extends Command {
 			category: commandVars.category,
 			clientPermissions: ["SEND_MESSAGES"],
 			args: [
-				// {
-				// 	id: 'search',
-				// 	default: '',
-				// 	match: 'content',
-				// },
+				{
+					id: 'keyword',
+					default: '',
+					match: 'content',
+				},
 			],
 			channelRestriction: "guild",
 		});
@@ -29,7 +29,7 @@ class CustomCommand extends Command {
 		return null;
 	}
 
-	async exec(message) {
+	async exec({message,keyword}) {
 		let client = this.client; 
 		let guild = message.guild;
 
@@ -50,30 +50,35 @@ class CustomCommand extends Command {
 
 		let logChannel = guild.channels.resolve(config.actionLogChannel);
 		let gameChannel = guild.channels.resolve(config.gameChannel);
-		if (logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES")) {
-			logChannel.send(`${client.user.tag} woke up`);
-		}
+// 		if (logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES")) {
+// 			logChannel.send(`${client.user.tag} woke up`);
+// 		}
 
 		let gamePrefix="🎮";
 
-		let gameRoles = guild.roles.cache.filter((x) => x.name.indexOf(gamePrefix)===0); //find a role with game prefix
-		console.log('gameRoles found =',gameRoles.size)
-		if(gameRoles.size){
-			gameRoles = gameRoles.sorted(sortAlphaNum)
+		let gameRoles = guild.roles.cache.filter((x) => x.name.indexOf(gamePrefix)===0); //find all roles with game prefix
+			
+		if(keyword == 'all'){
+			console.log('gameRoles found =',gameRoles.size)
+			if(gameRoles.size){
+				gameRoles = gameRoles.sorted(sortAlphaNum)
 
 
-			let games = Array.from(gameRoles, ([name, value]) => ({ game:value.name, members:mapToArray(value.members) }));
-			//let json = JSON.stringify(games,null,2)
-			let data = YAML.dump(games,{noArrayIndent :true,flowLevel:1,sortKeys:true,forceQuotes:true,quotingType:'"'}) //https://www.npmjs.com/package/js-yaml
-			console.log(data)
-			data=data.replace(/\-\s\{\"game\":\s/g,"```").replace(/,\s\"members\":\s\[/g,'\n Players: ').replace(/\]\}/g,'```') .replace(/"/g,'')
+				let games = Array.from(gameRoles, ([name, value]) => ({ game:value.name, members:mapToArray(value.members) }));
+				//let json = JSON.stringify(games,null,2)
+				let data = YAML.dump(games,{noArrayIndent :true,flowLevel:1,sortKeys:true,forceQuotes:true,quotingType:'"'}) //https://www.npmjs.com/package/js-yaml
+				console.log(data)
+				data=data.replace(/\-\s\{\"game\":\s/g,"```").replace(/,\s\"members\":\s\[/g,'\n Players: ').replace(/\]\}/g,'```') .replace(/"/g,'')
 
-			if(gameChannel && gameChannel.permissionsFor(guild.me).has("SEND_MESSAGES")){
-				Discord.Util.splitMessage(data,{maxLength:1900}).forEach(function(mess){
-					gameChannel.send(mess);
-				})
+				if(gameChannel && gameChannel.permissionsFor(guild.me).has("SEND_MESSAGES")){
+					Discord.Util.splitMessage(data,{maxLength:1900}).forEach(function(mess){
+						gameChannel.send(mess);
+					})
+				}
+
 			}
-
+		}else{
+			message.send('Invalid keyword')
 		}
 	}
 }

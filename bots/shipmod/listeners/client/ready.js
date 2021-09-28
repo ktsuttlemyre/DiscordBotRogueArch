@@ -65,7 +65,7 @@ class CustomListener extends Listener {
 					let messages = Discord.Util.splitMessage(json)
 					messages.forEach(function(mess){
 						gameChannel.send(mess)
-					}
+					})
 				}
 				
 			}

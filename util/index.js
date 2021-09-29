@@ -278,7 +278,7 @@ let promiseResolve = async function(array,fn){
 	let promises = []
 	array.forEach(function(item){
 		promises.push(fn(item))
-	}
+	})
 	return await Promise.all(promises);
 
 }

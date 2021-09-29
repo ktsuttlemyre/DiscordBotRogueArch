@@ -1,4 +1,5 @@
 var debug = false;
+const Discord = require("discord.js");
 const {Command} = require("discord-akairo");
 
 const path = require("path");

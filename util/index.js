@@ -274,7 +274,15 @@ module.exports.zodiac = function (birthday) {
 		) - 1;
 	return zodiacSigns[sign];
 };
-
+let resolveDiscordID = module.exports.resolveDiscordID = function(message,id){
+	let guild = message.guild || message;
+	return Promise.any([
+		guild.members.fetch(id),
+	    	message.client.users.fetch(id),
+	    	guild.roles.fetch(id),
+	    	guild.channels.fetch(id)
+	]
+}
 let promiseResolve = async function(array,fn){
 	let promises = []
 	array.forEach(function(item){
@@ -325,7 +333,7 @@ module.exports.resolveMentions = async function(message,string){
 			}else if(prefix == '#'){ //channelID
 				parsedArray.push(guild.channels.fetch(tagID))
 			}else if(rawID){
-				parsedArray.push(rawID) //TODO resolve the id properly
+				parsedArray.push(resolveDiscordID(tagID)) //TODO resolve the id properly
 			}
 		});
 		(lastIndex != string.length) && parsedArray.push(string.substring(lastIndex)); //till the end

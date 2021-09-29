@@ -273,63 +273,85 @@ module.exports.zodiac = function (birthday) {
 		) - 1;
 	return zodiacSigns[sign];
 };
+
+let promiseResolve = async function(array,fn){
+	let promises = []
+	array.forEach(function(item){
+		promises.push(fn(item))
+	}
+	return await Promise.all(promises);
+
+}
 module.exports.resolveMentions = async function(message,string){
 		let guild = message.guild
 		//test string
-		//"I think we should add <@86890631690977280> to the <@&134362454976102401> role for the channel <#222197033908436994> and here is a random nickname <@!86890631690977280>"
+		//"I think we should add <@86890631690977280> to the <@&134362454976102401> role for the channel <#222197033908436994> and here is a random nickname <@!86890631690977280>".replace(/<(@|@!|#|@&)(\d+)>|(\d+)/,function(match,g1,g2,g3){
+			console.log(match,g1,g2,g3)
+		})
 		
-		let mentionObj={users:[],roles:[],channels:[],content:string,context:[]}
+		let mentionObj={users:[],roles:[],channels:[],content:string,context:[]}		
 		
-		const regexUser = (/<@!?(\d+)>/g); //<@username> mention (or <@!nickname> mention)
-		const regexRole = (/<@&(\d+)>/g); //<@&rolename mention>
-		const regexChannel = (/<#(\d+)>/g); //<#channelname> mention
+		let userIDs=[]
+		let roleIDs=[]
+		let channelIDs=[]
+		let rawIDs=[]
+		
+		let parsedArray=[]
+		
+		let lastIndex=0
 	
-		
-		let promises = null;
+		string.replace(/<(@|@!|#|@&)(\d+)>|(\d+)/,function(match,prefix,tagID,rawID,index){
+			if(prefix == '@' || prefix =="@!"){ //userID nickID
+				userIDs.push(tagID)
+			}else if(prefix == '@&'){ //roleID
+				roleIDs.push(tagID)
+			}else if(prefix == '#'){ //channelID
+				channelIDs.push(tagID)
+			}else if(rawID){
+				rawIDs.push(rawID)
+			}
+			//console.log(match,g1,g2,g3)
+		})
+	
 		let response = null;
+		response = await promiseResolve(userIDs,function(id){
+		    if(guild){ 
+			return (guild.members.fetch(id))
+		    }else{
+			return (message.client.users.fetch(id))
+		    }
+		})
+		mentionObj['user']=response[0];
+		mentionObj['users']=response
+
+		response = null;
+		response = await promiseResolve(roleIDs,function(id){
+		    return guild.roles.fetch(id)
+		})
+		mentionObj['role']=response[0];
+		mentionObj['roles']=response
 		
-		//users
-		let userMentions = regexUser.exec(string)
-		if(userMentions){
-			promises = [];
-			while(userMentions !== null) {
-			    if(guild){ 
-			    	promises.push(guild.members.fetch(userMentions[1]))
-			    }else{
-				promises.push(message.client.users.fetch(userMentions[1]))
-			    }
-			    userMentions = regexUser.exec(string);
-			}
-			response = await Promise.all(promises);
-			mentionObj['user']=response[0];
-			mentionObj['usernames']=response
+		response = null;
+		response = await promiseResolve(channelIDs,function(id){
+		    return guild.channels.fetch(id)
+		})
+		mentionObj['channel']=response[0];
+		mentionObj['channels']=response
+
+		if(rawIDs.length){
+			throw 'need to implement rawID rutine'
 		}
-	
-		//roles
-		let roleMentions = regexRole.exec(string)
-		if(roleMentions){
-			promises = [];
-			while(roleMentions !== null) {
-			    promises.push(guild.roles.fetch(roleMentions[1]))
-			    roleMentions = regexRole.exec(string);
-			}
-			response = await Promise.all(promises);
-			mentionObj['role']=response[0];
-			mentionObj['roles']=response
-		}
-		//channels
-		let channelMentions = regexChannel.exec(string)
-		if(channelMentions){
-			promises = [];
-			while(channelMentions !== null) {
-			    promises.push(guild.channels.fetch(channelMentions[1]))
-			    channelMentions = regexChannel.exec(string);
-			}
-			response = await Promise.all(promises);
-			mentionObj['channel']=response[0];
-			mentionObj['channels']=response;
-		}
-	
+// 		response = null;
+// 		response = await promiseResolve(rawIDs,function(id){
+// 		    if(guild){ 
+// 			return (guild.members.fetch(id))
+// 		    }else{
+// 			return (message.client.users.fetch(id))
+// 		    }
+// 		})
+// 		mentionObj['user']=response[0];
+// 		mentionObj['usernames']=response
+
 		return mentionObj;
 	}
 	

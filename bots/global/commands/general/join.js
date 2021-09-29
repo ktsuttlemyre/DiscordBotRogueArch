@@ -24,7 +24,7 @@ class CustomCommand extends Command {
 
 	userPermissions(message) {
 		if (!message.member.roles.cache.some((role) => role.name === config.systemRoles.admin)) {
-			return config.sytemRoles.admin;
+			return config.systemRoles.admin;
 		}
 		return null;
 	}

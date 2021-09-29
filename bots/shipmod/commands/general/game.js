@@ -117,7 +117,7 @@ class CustomCommand extends Command {
 			}
 			
 		}else{
-			return 'Invalid keyword')
+			return 'Invalid keyword'
 		}
 	}
 }

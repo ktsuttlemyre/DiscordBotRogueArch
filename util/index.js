@@ -281,7 +281,7 @@ let resolveDiscordID = module.exports.resolveDiscordID = function(message,id){
 	    	message.client.users.fetch(id),
 	    	guild.roles.fetch(id),
 	    	guild.channels.fetch(id)
-	]
+	])
 }
 let promiseResolve = async function(array,fn){
 	let promises = []

@@ -52,7 +52,7 @@ class CustomCommand extends Command {
 // 		    //arg = map[arg]||arg;
 // 	            //console.log('arg after map',arg)
 // 		    arg = (arg || '').trim() || null
-		    let mentions = util.resolveMentions(message,arg)
+		    let mentions = await util.resolveMentions(message,arg)
 		    await util.playThemeTone(message.member.voice.channel,mentions.user||arg);
 		}
 }

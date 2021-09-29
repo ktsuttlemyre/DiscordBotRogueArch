@@ -291,7 +291,7 @@ module.exports.resolveMentions = async function(message,string){
 		if(usernames){
 			promises = [];
 			usernames.forEach(function(id){
-				promises.push(guild.client.users.fetch(id));
+				promises.push(guild.client.users.fetch(id[0]));
 			})
 			response = await Promise.all(promises);
 			mentionObj['user']=response[0];
@@ -302,7 +302,7 @@ module.exports.resolveMentions = async function(message,string){
 		if(rolenames){
 			promises = [];
 			rolenames.forEach(function(id){
-				promises.push(guild.roles.fetch(id));
+				promises.push(guild.roles.fetch(id[0]));
 			})
 			response = await Promise.all(promises);
 			mentionObj['role']=response[0];
@@ -312,7 +312,7 @@ module.exports.resolveMentions = async function(message,string){
 		if(channelnames){
 			promises = [];
 			channelnames.forEach(function(id){
-				promises.push(guild.channels.fetch(id));
+				promises.push(guild.channels.fetch(id[0]));
 			})
 			response = await Promise.all(promises);
 			mentionObj['channel']=response[0];

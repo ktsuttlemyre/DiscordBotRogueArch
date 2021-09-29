@@ -299,7 +299,58 @@ module.exports.resolveMentions = async function(message,string){
 		let parsedArray=[]
 		
 		let lastIndex=0
+		
+		
+		string.replace(/<(@|@!|#|@&)(\d+)>|(\d+)/g,function(match,prefix,tagID,rawID,index){
+			parsedArray.push(string.substring(lastIndex,index)
+			lastIndex = index+match.length;
+			if(prefix == '@' || prefix =="@!"){ //userID nickID
+			    if(guild){ 
+				parsedArray.push(guild.members.fetch(tagID))
+			    }else{
+				parsedArray.push(message.client.users.fetch(tagID))
+			    }
+			}else if(prefix == '@&'){ //roleID
+				parsedArray.push(guild.roles.fetch(tagID))
+			}else if(prefix == '#'){ //channelID
+				parsedArray.push(guild.channels.fetch(tagID))
+			}else if(rawID){
+				parsedArray.push(rawID) //TODO resolve the id properly
+			}
+		})
+		parsedArray.push(string.substring(lastIndex); //till the end
 	
+		parsedArray = await Promise.all(parsedArray);
+		mentionObj['context']=parsedArray;
+		
+		parsedArray.forEach(function(item){
+			if(typeof item == 'string'){
+				mentionObj['texts'].push(item)
+			}else if(item instanceof Discord.User){
+				mentionObj['users'].push(item)
+			}else if(item instanceof Discord.GuildMember){
+				mentionObj['members'].push(item)
+			}else if(item instanceof Discord.Role){
+				mentionObj['roles'].push(item)
+			}else if(item instanceof Discord.GuildChannel || item instanceof Discord.Channel){
+				mentionObj['channel'].push(item)
+			}else{
+				throw 'Unknown item in mentions'+item
+			}
+		})
+		
+		mentionObj['text']=mentionObj['texts'][0]		
+		mentionObj['user']=mentionObj['users'][0]
+		mentionObj['member']=mentionObj['members'][0]
+		mentionObj['role']=mentionObj['roles'][0]
+		mentionObj['channel']=mentionObj['channels'][0]
+		
+
+		return mentionObj;
+	
+	
+	
+	/*
 		string.replace(/<(@|@!|#|@&)(\d+)>|(\d+)/g,function(match,prefix,tagID,rawID,index){
 			if(prefix == '@' || prefix =="@!"){ //userID nickID
 				userIDs.push(tagID)
@@ -378,7 +429,7 @@ module.exports.resolveMentions = async function(message,string){
 // 		mentionObj['user']=response[0];
 // 		mentionObj['usernames']=response
 
-		return mentionObj;
+		return mentionObj;*/
 	}
 	
 

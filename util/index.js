@@ -333,7 +333,7 @@ module.exports.resolveMentions = async function(message,string){
 			}else if(prefix == '#'){ //channelID
 				parsedArray.push(guild.channels.fetch(tagID))
 			}else if(rawID){
-				parsedArray.push(resolveDiscordID(tagID)) //TODO resolve the id properly
+				parsedArray.push(resolveDiscordID(message,tagID)) //TODO resolve the id properly
 			}
 		});
 		(lastIndex != string.length) && parsedArray.push(string.substring(lastIndex)); //till the end

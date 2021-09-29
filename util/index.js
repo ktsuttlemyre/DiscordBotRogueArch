@@ -321,8 +321,21 @@ module.exports.resolveMentions = async function(message,string){
 			return (message.client.users.fetch(id))
 		    }
 		})
-		mentionObj['user']=response[0];
-		mentionObj['users']=response
+		if(!guild){
+			mentionObj['user']=response[0];
+			mentionObj['users']=response
+		}else{
+			mentionObj['member']=response[0];
+			mentionObj['members']=response
+			
+			if(response[0]){
+				mentionObj['user']=response[0].user;
+			}
+			mentionObj['users']=[]
+			response.forEach(function(member){
+				mentionObj['users'].push(member.user);
+			})
+		}
 
 		response = null;
 		response = await promiseResolve(roleIDs,function(id){

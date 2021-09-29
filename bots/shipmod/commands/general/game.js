@@ -31,12 +31,12 @@ class CustomCommand extends Command {
 		});
 	}
 
-	userPermissions(message) {
-		if (!message.member.roles.cache.some((role) => role.name === config.systemRoles.admin)) {
-			return config.sytemRoles.admin;
-		}
-		return null;
-	}
+// 	userPermissions(message) {
+// 		if (!message.member.roles.cache.some((role) => role.name === config.systemRoles.admin)) {
+// 			return config.sytemRoles.admin;
+// 		}
+// 		return null;
+// 	}
 	
 // 	async getUserFromMention(mention) {
 // 		// The id is the first and only match found by the RegEx.
@@ -106,7 +106,7 @@ class CustomCommand extends Command {
 		}else if(keyword){
 			let mentions = await util.resolveMentions(message,keyword);
 			message.channel.send('got user:'+mentions.role)
-			if(mentions.role){
+			if(mentions.role && mentions.role.name.indexOf(gamePrefix)==0){
 				var array = mentions.role.members.map(m=>m.user.id);
 				return 'Game `'+mentions.role.name+'` is played by \n`'+array.join('``')+'`'
 			}

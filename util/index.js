@@ -338,7 +338,14 @@ module.exports.resolveMentions = async function(message,string){
 			}else if(prefix == '@&'){ //roleID
 				parsedArray.push(guild.roles.fetch(tagID))
 			}else if(prefix == '#'){ //channelID
-				parsedArray.push(guild.channels.fetch(tagID))
+					if(guild.channels.fetch){
+						parsedArray.push(guild.channels.fetch(tagID))
+					}else{
+						let channel = guild.channels.cache.get(tagID)
+						if(channel){
+							parsedArray.push(channel);
+						}
+					}
 			}else if(rawID){
 				parsedArray.push(resolveDiscordID(message,tagID)) //TODO resolve the id properly
 			}

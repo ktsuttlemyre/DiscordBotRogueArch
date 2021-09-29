@@ -111,11 +111,13 @@ class CustomCommand extends Command {
 					return 'The requested role `'+mentions.role.name+'` is not a game role'
 				}
 				var array = mentions.role.members.map(m=>m.displayName||m.name||m.tag);
-				return 'Game `'+mentions.role.name+'` is played by \n `'+array.join('` `')+'` \n\n type `!game @<GameRole>` to query a game'
+				return 'Game `'+mentions.role.name+'` is played by \n `'+array.join('` `')+'` \n\n type `!game @<GameRoleMention>` to query a game'
+			}else{
+				return 'Invalid mention'
 			}
 			
 		}else{
-			message.channel.send('Invalid keyword')
+			return 'Invalid keyword')
 		}
 	}
 }

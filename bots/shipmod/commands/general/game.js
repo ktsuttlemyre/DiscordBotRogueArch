@@ -87,6 +87,7 @@ class CustomCommand extends Command {
 		let data = null;
 		channel = channel || gameChannel;
 		if(keyword == 'all'){
+			return "!game keyword all is currently disabled for all users"
 			console.log('gameRoles found =',gameRoles.size)
 			gameRoles = gameRoles.sorted(sortAlphaNum)
 
@@ -110,7 +111,7 @@ class CustomCommand extends Command {
 					return 'The requested role `'+mentions.role.name+'` is not a game role'
 				}
 				var array = mentions.role.members.map(m=>m.user.displayName||m.user.name||m.user.tag);
-				return 'Game `'+mentions.role.name+'` is played by \n `'+array.join('` `')+'`'
+				return {description:'Game `'+mentions.role.name+'` is played by \n `'+array.join('` `')+'`',footer:{text:'type `!game @Gamerole` to query a game'}}
 			}
 			
 		}else{

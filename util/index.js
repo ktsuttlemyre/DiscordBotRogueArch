@@ -291,7 +291,7 @@ module.exports.resolveMentions = async function(message,string){
 		if(usernames){
 			promises = [];
 			usernames.forEach(function(id){
-				promises.push(guild.users.fetch(id));
+				promises.push(guild.client.users.fetch(id));
 			})
 			response = await Promise.all(promises);
 			mentionObj['user']=response[0];

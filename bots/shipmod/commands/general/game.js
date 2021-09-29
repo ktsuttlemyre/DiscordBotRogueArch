@@ -3,6 +3,7 @@ const emotes = {error: ":error:"};
 const util = require.main.require("./util");
 const config = util.config;
 const commandVars = util.commandVars(__filename);
+const YAML = require('js-yaml');
 
 const sortAlphaNum = (a, b) => a.name.localeCompare(b.name, 'en', { numeric: true });
 let mapToArray = function(map){

@@ -287,32 +287,37 @@ module.exports.resolveMentions = async function(string){
 		let response = null;
 		
 		//users
-		promises = [];
-		usernames.forEach(function(id){
-			promises.push(this.client.users.fetch(id));
-		})
-		response = await Promise.all(promises);
-		mentionObj['user']=response[0];
-		mentionObj['usernames']=response
-		
+		if(usernames){
+			promises = [];
+			usernames.forEach(function(id){
+				promises.push(this.client.users.fetch(id));
+			})
+			response = await Promise.all(promises);
+			mentionObj['user']=response[0];
+			mentionObj['usernames']=response
+		}
+	
 		//roles
-		promises = [];
-		rolenames.forEach(function(id){
-			promises.push(this.client.roles.fetch(id));
-		})
-		response = await Promise.all(promises);
-		mentionObj['role']=response[0];
-		mentionObj['roles']=response
-		
+		if(rolenames){
+			promises = [];
+			rolenames.forEach(function(id){
+				promises.push(this.client.roles.fetch(id));
+			})
+			response = await Promise.all(promises);
+			mentionObj['role']=response[0];
+			mentionObj['roles']=response
+		}
 		//channels
-		promises = [];
-		channelnames.forEach(function(id){
-			promises.push(this.client.channels.fetch(id));
-		})
-		response = await Promise.all(promises);
-		mentionObj['channel']=response[0];
-		mentionObj['channels']=response;
-		
+		if(channelnames){
+			promises = [];
+			channelnames.forEach(function(id){
+				promises.push(this.client.channels.fetch(id));
+			})
+			response = await Promise.all(promises);
+			mentionObj['channel']=response[0];
+			mentionObj['channels']=response;
+		}
+	
 		return mentionObj;
 	}
 	

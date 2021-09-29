@@ -87,7 +87,7 @@ class CustomCommand extends Command {
 	}
 	
 	
-	async exec({message,keyword}) {
+	async exec(message,{keyword}) {
 		let client = this.client; 
 		let guild = message.guild;
 

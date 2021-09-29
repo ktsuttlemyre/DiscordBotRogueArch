@@ -291,6 +291,7 @@ module.exports.resolveMentions = async function(message,string){
 		//})
 		
 		let mentionObj={
+			args:[],
 			texts:[],
 			users:[],
 			members:[],
@@ -335,7 +336,10 @@ module.exports.resolveMentions = async function(message,string){
 		parsedArray.forEach(function(item){
 			if(typeof item == 'string'){
 				mentionObj['texts'].push(item)
-			}else if(item instanceof Discord.User){
+				return
+			}
+			
+			if(item instanceof Discord.User){
 				mentionObj['users'].push(item)
 			}else if(item instanceof Discord.GuildMember){
 				mentionObj['members'].push(item)
@@ -345,7 +349,9 @@ module.exports.resolveMentions = async function(message,string){
 				mentionObj['channel'].push(item)
 			}else{
 				throw 'Unknown item in mentions'+item
+				return
 			}
+			mentionObj.args.push(item)
 		})
 		
 		mentionObj['text']=mentionObj['texts'][0]		

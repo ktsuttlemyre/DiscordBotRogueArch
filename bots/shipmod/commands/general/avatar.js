@@ -35,8 +35,13 @@ class CustomCommand extends Command {
 		let isMod = message.member.roles.cache.find((role) => (role.name||'').toLowerCase() === 'mod');
 		
 		let client = this.client;
-    const user = await client.users.fetch(arg, { cache: true });
-		return user.displayAvatarURL
+		let mentions = await util.resolveMentions(message,arg);
+    		const user = await client.users.fetch(arg, { cache: true });
+		if(mentions.user){
+			return mentions.user.displayAvatarURL
+		}else{
+			return 'Could not find user '+arg
+		}
 	}
 }
 

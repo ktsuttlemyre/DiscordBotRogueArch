@@ -318,7 +318,7 @@ module.exports.resolveMentions = async function(message,string){
 				parsedArray.push(rawID) //TODO resolve the id properly
 			}
 		})
-		parsedArray.push(string.substring(lastIndex); //till the end
+		parsedArray.push(string.substring(lastIndex)); //till the end
 	
 		parsedArray = await Promise.all(parsedArray);
 		mentionObj['context']=parsedArray;

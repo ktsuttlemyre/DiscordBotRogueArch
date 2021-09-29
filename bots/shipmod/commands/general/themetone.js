@@ -45,14 +45,15 @@ class CustomCommand extends Command {
 // 			return message.channel.send('No player playing to act on')
 // 		}
 				
- 	 	    const { channel } = message.member.voice;
-		    console.log('arg',arg)
-		    arg = (arg||'').match(/(\<\@\!)?(\d+)(>)?/)[2]||arg;
-		    console.log('arg after match',arg);
-		    //arg = map[arg]||arg;
-	            //console.log('arg after map',arg)
-		    arg = (arg || '').trim() || null
-		    await util.playThemeTone(message.member.voice.channel,arg);
+//  	 	    const { channel } = message.member.voice;
+// 		    console.log('arg',arg)
+// 		    arg = (arg||'').match(/(\<\@\!)?(\d+)(>)?/)[2]||arg;
+// 		    console.log('arg after match',arg);
+// 		    //arg = map[arg]||arg;
+// 	            //console.log('arg after map',arg)
+// 		    arg = (arg || '').trim() || null
+		    let mentions = util.resolveMentions(message,arg)||arg
+		    await util.playThemeTone(message.member.voice.channel,mentions.user);
 		}
 }
 

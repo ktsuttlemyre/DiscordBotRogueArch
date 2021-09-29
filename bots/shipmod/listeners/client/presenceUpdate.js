@@ -28,6 +28,7 @@ const filterApps = {
 const gamingLogChannelID = "858459656058044426"
 
 const routerMap = {
+	"New World":/New World Open Beta/i,
 	"Fall Guys":/Fall Guys.*/i,
 	"Resident Evil [Franchise]": /resident evil.*/i,
 	"Jackbox Party Pack":/Jackbox Party Pack.*/i,

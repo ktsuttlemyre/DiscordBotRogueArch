@@ -110,7 +110,7 @@ class CustomCommand extends Command {
 				if(mentions.role.name.indexOf(gamePrefix)!=0){
 					return 'The requested role `'+mentions.role.name+'` is not a game role'
 				}
-				var array = mentions.role.members.map(m=>m.user.id);
+				var array = mentions.role.members.map(m=>m.user.displayName||m.user.name||m.user.tag);
 				return 'Game `'+mentions.role.name+'` is played by \n`'+array.join('``')+'`'
 			}
 			

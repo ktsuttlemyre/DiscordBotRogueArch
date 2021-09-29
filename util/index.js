@@ -351,8 +351,21 @@ module.exports.resolveMentions = async function(message,string){
 		mentionObj['channel']=response[0];
 		mentionObj['channels']=response
 
+	
+		response = null;
 		if(rawIDs.length){
-			throw 'need to implement rawID rutine'
+			throw 'need to implement raw rutine'
+// 			rawIds.forEach(function(id){
+// 				let promises = []
+// 				if(guild){ 
+// 					promises.push(guild.members.fetch(id))
+// 				}else{
+// 					promises.push(message.client.users.fetch(id))
+// 				}
+// 				promises.push(guild.roles.fetch(id))
+// 				promises.push(guild.channels.fetch(id))
+// 			})
+// 			response = await Promise.all(promises);
 		}
 // 		response = null;
 // 		response = await promiseResolve(rawIDs,function(id){

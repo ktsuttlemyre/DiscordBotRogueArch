@@ -280,40 +280,47 @@ module.exports.resolveMentions = async function(message,string){
 		
 		let mentionObj={users:[],roles:[],channels:[],content:string,context:[]}
 		
-		const usernames = string.match(/<@!?(\d+)>/g); //<@username> mention (or <@!nickname> mention)
-		const rolenames = string.match(/<@&(\d+)>/g); //<@&rolename mention>
-		const channelnames = string.match(/<#(\d+)>/g); //<#channelname> mention
+		const regexUser = (/<@!?(\d+)>/g); //<@username> mention (or <@!nickname> mention)
+		const regexRole = (/<@&(\d+)>/g); //<@&rolename mention>
+		const regexChannel = (/<#(\d+)>/g); //<#channelname> mention
+	
 		
 		let promises = null;
 		let response = null;
 		
 		//users
-		if(usernames){
+		let userMentions = regexUser.exec(string)
+		if(userMentions){
 			promises = [];
-			usernames.forEach(function(id){
-				promises.push(guild.client.users.fetch(id[0]));
-			})
+			while(userMentions !== null) {
+			    promises.push(guild.client.users.fetch(userMentions[1]))
+			    userMentions = regexUser.exec(string);
+			}
 			response = await Promise.all(promises);
 			mentionObj['user']=response[0];
 			mentionObj['usernames']=response
 		}
 	
 		//roles
-		if(rolenames){
+		let roleMentions = regexRole.exec(string)
+		if(roleMentions){
 			promises = [];
-			rolenames.forEach(function(id){
-				promises.push(guild.roles.fetch(id[0]));
-			})
+			while(roleMentions !== null) {
+			    promises.push(guild.roles.fetch(roleMentions[1]))
+			    roleMentions = regexRole.exec(string);
+			}
 			response = await Promise.all(promises);
 			mentionObj['role']=response[0];
 			mentionObj['roles']=response
 		}
 		//channels
-		if(channelnames){
+		let channelMentions = regexChannel.exec(string)
+		if(channelMentions){
 			promises = [];
-			channelnames.forEach(function(id){
-				promises.push(guild.channels.fetch(id[0]));
-			})
+			while(channelMentions !== null) {
+			    promises.push(guild.channels.fetch(channelMentions[1]))
+			    channelMentions = regexChannel.exec(string);
+			}
 			response = await Promise.all(promises);
 			mentionObj['channel']=response[0];
 			mentionObj['channels']=response;

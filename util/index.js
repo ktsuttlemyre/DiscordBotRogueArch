@@ -302,7 +302,7 @@ module.exports.resolveMentions = async function(message,string){
 		
 		
 		string.replace(/<(@|@!|#|@&)(\d+)>|(\d+)/g,function(match,prefix,tagID,rawID,index){
-			parsedArray.push(string.substring(lastIndex,index)
+			parsedArray.push(string.substring(lastIndex,index))
 			lastIndex = index+match.length;
 			if(prefix == '@' || prefix =="@!"){ //userID nickID
 			    if(guild){ 

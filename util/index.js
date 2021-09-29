@@ -273,6 +273,49 @@ module.exports.zodiac = function (birthday) {
 		) - 1;
 	return zodiacSigns[sign];
 };
+module.exports.resolveMentions = async function(string){
+		//test string
+		//"I think we should add <@86890631690977280> to the <@&134362454976102401> role for the channel <#222197033908436994> and here is a random nickname <@!86890631690977280>"
+		
+		let mentionObj={users:[],roles:[],channels:[],content:string,context:[]}
+		
+		const usernames = string.match(/<@!?(\d+)>/g); //<@username> mention (or <@!nickname> mention)
+		const rolenames = string.match(/<@&(\d+)>/g); //<@&rolename mention>
+		const channelnames = string.match(/<#(\d+)>/g); //<#channelname> mention
+		
+		let promises = null;
+		let response = null;
+		
+		//users
+		promises = [];
+		usernames.forEach(function(id){
+			promises.push(this.client.users.fetch(id));
+		})
+		response = await Promise.all(promises);
+		mentionObj['user']=response[0];
+		mentionObj['usernames']=response
+		
+		//roles
+		promises = [];
+		rolenames.forEach(function(id){
+			promises.push(this.client.roles.fetch(id));
+		})
+		response = await Promise.all(promises);
+		mentionObj['role']=response[0];
+		mentionObj['roles']=response
+		
+		//channels
+		promises = [];
+		channelnames.forEach(function(id){
+			promises.push(this.client.channels.fetch(id));
+		})
+		response = await Promise.all(promises);
+		mentionObj['channel']=response[0];
+		mentionObj['channels']=response;
+		
+		return mentionObj;
+	}
+	
 
 let playThemeTone = (module.exports.playThemeTone = async function (channel, id, opts) {
 	let dir = config.voiceJoinLeave.tones.location;

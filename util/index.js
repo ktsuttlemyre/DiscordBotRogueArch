@@ -300,7 +300,7 @@ module.exports.resolveMentions = async function(message,string){
 		
 		let lastIndex=0
 	
-		string.replace(/<(@|@!|#|@&)(\d+)>|(\d+)/,function(match,prefix,tagID,rawID,index){
+		string.replace(/<(@|@!|#|@&)(\d+)>|(\d+)/g,function(match,prefix,tagID,rawID,index){
 			if(prefix == '@' || prefix =="@!"){ //userID nickID
 				userIDs.push(tagID)
 			}else if(prefix == '@&'){ //roleID

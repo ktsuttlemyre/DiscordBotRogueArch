@@ -312,7 +312,7 @@ module.exports.resolveMentions = async function(message,string){
 		
 		
 		string.replace(/<(@|@!|#|@&)(\d+)>|(\d+)/g,function(match,prefix,tagID,rawID,index){
-			(lastIndex-index) && parsedArray.push(string.substring(lastIndex,index))
+			(lastIndex != index) && parsedArray.push(string.substring(lastIndex,index))
 			lastIndex = index+match.length;
 			if(prefix == '@' || prefix =="@!"){ //userID nickID
 			    if(guild){ 
@@ -328,7 +328,7 @@ module.exports.resolveMentions = async function(message,string){
 				parsedArray.push(rawID) //TODO resolve the id properly
 			}
 		})
-		(lastIndex-string.length) && parsedArray.push(string.substring(lastIndex)); //till the end
+		(lastIndex != string.length) && parsedArray.push(string.substring(lastIndex)); //till the end
 	
 		parsedArray = await Promise.all(parsedArray);
 		mentionObj['context']=parsedArray;

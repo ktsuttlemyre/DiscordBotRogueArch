@@ -4,6 +4,9 @@ const util = require.main.require("./util");
 const config = util.config;
 const commandVars = util.commandVars(__filename);
 
+const sortAlphaNum = (a, b) => a.name.localeCompare(b.name, 'en', { numeric: true });
+
+
 class CustomCommand extends Command {
 	constructor() {
 		super(commandVars.name, {

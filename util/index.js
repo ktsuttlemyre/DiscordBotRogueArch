@@ -353,6 +353,7 @@ module.exports.resolveMentions = async function(message,string){
 		mentionObj['role']=mentionObj['roles'][0]
 		mentionObj['channel']=mentionObj['channels'][0]
 		
+		console.log('completed mention resolve',mentionObj)
 
 		return mentionObj;
 	

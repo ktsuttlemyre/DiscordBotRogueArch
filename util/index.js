@@ -273,7 +273,8 @@ module.exports.zodiac = function (birthday) {
 		) - 1;
 	return zodiacSigns[sign];
 };
-module.exports.resolveMentions = async function(string){
+module.exports.resolveMentions = async function(message,string){
+		let guild = message.guild
 		//test string
 		//"I think we should add <@86890631690977280> to the <@&134362454976102401> role for the channel <#222197033908436994> and here is a random nickname <@!86890631690977280>"
 		
@@ -301,7 +302,7 @@ module.exports.resolveMentions = async function(string){
 		if(rolenames){
 			promises = [];
 			rolenames.forEach(function(id){
-				promises.push(this.client.roles.fetch(id));
+				promises.push(guild.roles.fetch(id));
 			})
 			response = await Promise.all(promises);
 			mentionObj['role']=response[0];
@@ -311,7 +312,7 @@ module.exports.resolveMentions = async function(string){
 		if(channelnames){
 			promises = [];
 			channelnames.forEach(function(id){
-				promises.push(this.client.channels.fetch(id));
+				promises.push(guild.channels.fetch(id));
 			})
 			response = await Promise.all(promises);
 			mentionObj['channel']=response[0];

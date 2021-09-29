@@ -5,7 +5,9 @@ const config = util.config;
 const commandVars = util.commandVars(__filename);
 
 const sortAlphaNum = (a, b) => a.name.localeCompare(b.name, 'en', { numeric: true });
-
+let mapToArray = function(map){
+	return Array.from(map, ([name, value]) => (value.displayName));
+}
 
 class CustomCommand extends Command {
 	constructor() {
@@ -50,7 +52,7 @@ class CustomCommand extends Command {
 		//test string
 		//"I think we should add <@86890631690977280> to the <@&134362454976102401> role for the channel <#222197033908436994> and here is a random nickname <@!86890631690977280>"
 		
-		let mentionObj={users:[],roles:[],channels:[]}
+		let mentionObj={users:[],roles:[],channels:[],content:string,context:[]}
 		
 		const usernames = string.match(/<@!?(\d+)>/g); //<@username> mention (or <@!nickname> mention)
 		const rolenames = string.match(/<@&(\d+)>/g); //<@&rolename mention>

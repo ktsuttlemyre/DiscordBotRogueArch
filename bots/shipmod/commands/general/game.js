@@ -78,6 +78,8 @@ class CustomCommand extends Command {
 		let gamePrefix="🎮";
 
 		let gameRoles = guild.roles.cache.filter((x) => x.name.indexOf(gamePrefix)===0); //find all roles with game prefix
+		
+		console.log(keyword);
 			
 		if(keyword == 'all'){
 			console.log('gameRoles found =',gameRoles.size)
@@ -98,9 +100,9 @@ class CustomCommand extends Command {
 
 		}else if(keyword){
 			let mentions = await util.resolveMentions(keyword);
-			message.send('got user:'+mentions.user)
+			message.channel.send('got user:'+mentions.user)
 		}else{
-			message.send('Invalid keyword')
+			message.channel.send('Invalid keyword')
 		}
 	}
 }

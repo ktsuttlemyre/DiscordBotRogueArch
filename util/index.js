@@ -293,7 +293,11 @@ module.exports.resolveMentions = async function(message,string){
 		if(userMentions){
 			promises = [];
 			while(userMentions !== null) {
-			    promises.push(guild.client.users.fetch(userMentions[1]))
+			    if(guild){ 
+			    	promises.push(guild.members.fetch(userMentions[1]))
+			    }else{
+				promises.push(message.client.users.fetch(userMentions[1]))
+			    }
 			    userMentions = regexUser.exec(string);
 			}
 			response = await Promise.all(promises);

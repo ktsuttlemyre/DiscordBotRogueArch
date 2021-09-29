@@ -63,9 +63,7 @@ class CustomCommand extends Command {
 		})
 		response = await Promise.all(promises);
 		mentionObj['user']=response[0];
-		response.forEach(function(user){
-			mentionObj['usernames'].push(user);
-		}
+		mentionObj['usernames']=response
 		
 		//roles
 		promises = [];
@@ -74,19 +72,16 @@ class CustomCommand extends Command {
 		})
 		response = await Promise.all(promises);
 		mentionObj['role']=response[0];
-		response.forEach(function(user){
-			mentionObj['roles'].push(user);
-		}
+		mentionObj['roles']=response
 		
 		//channels
+		promises = [];
 		channelnames.forEach(function(id){
 			promises.push(this.client.channels.fetch(id));
 		})
 		response = await Promise.all(promises);
 		mentionObj['channel']=response[0];
-		response.forEach(function(user){
-			mentionObj['channels'].push(user);
-		}
+		mentionObj['channels']=response;
 		
 		return mentionObj;
 	}

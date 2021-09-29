@@ -53,6 +53,7 @@ class CustomCommand extends Command {
 	async exec(message,{keyword}) {
 		let client = this.client; 
 		let guild = message.guild;
+		let channel = message.channel;
 
 		var env = process.env.ENVIRONMENT;
 		if (env != "production") {
@@ -80,7 +81,8 @@ class CustomCommand extends Command {
 		let gameRoles = guild.roles.cache.filter((x) => x.name.indexOf(gamePrefix)===0); //find all roles with game prefix
 		
 		console.log(keyword);
-			
+		let data = null;
+		channel = channel || gameChannel;
 		if(keyword == 'all'){
 			console.log('gameRoles found =',gameRoles.size)
 			gameRoles = gameRoles.sorted(sortAlphaNum)
@@ -88,13 +90,13 @@ class CustomCommand extends Command {
 
 			let games = Array.from(gameRoles, ([name, value]) => ({ game:value.name, members:mapToArray(value.members) }));
 			//let json = JSON.stringify(games,null,2)
-			let data = YAML.dump(games,{noArrayIndent :true,flowLevel:1,sortKeys:true,forceQuotes:true,quotingType:'"'}) //https://www.npmjs.com/package/js-yaml
+			data = YAML.dump(games,{noArrayIndent :true,flowLevel:1,sortKeys:true,forceQuotes:true,quotingType:'"'}) //https://www.npmjs.com/package/js-yaml
 			//console.log(data)
 			data=data.replace(/\-\s\{\"game\":\s/g,"```").replace(/,\s\"members\":\s\[/g,'\n Players: ').replace(/\]\}/g,'```') .replace(/"/g,'')
 
-			if(gameChannel && gameChannel.permissionsFor(guild.me).has("SEND_MESSAGES")){
+			if(channel && channel.permissionsFor(guild.me).has("SEND_MESSAGES")){
 				Discord.Util.splitMessage(data,{maxLength:1900}).forEach(function(mess){
-					gameChannel.send(mess);
+					channel.send(mess);
 				})
 			}
 

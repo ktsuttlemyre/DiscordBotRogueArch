@@ -104,7 +104,7 @@ class CustomCommand extends Command {
 			}
 
 		}else if(keyword){
-			let mentions = await util.resolveMentions(keyword);
+			let mentions = await util.resolveMentions(message,keyword);
 			message.channel.send('got user:'+mentions.user)
 		}else{
 			message.channel.send('Invalid keyword')

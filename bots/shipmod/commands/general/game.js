@@ -105,7 +105,12 @@ class CustomCommand extends Command {
 
 		}else if(keyword){
 			let mentions = await util.resolveMentions(message,keyword);
-			message.channel.send('got user:'+mentions.user)
+			message.channel.send('got user:'+mentions.role)
+			if(mentions.role){
+				var array = mentions.role.members.map(m=>m.user.id);
+				return 'Game `'+mentions.role.name+'` is played by \n`'+array.join('``')+'`'
+			}
+			
 		}else{
 			message.channel.send('Invalid keyword')
 		}

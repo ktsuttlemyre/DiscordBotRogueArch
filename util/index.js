@@ -327,7 +327,7 @@ module.exports.resolveMentions = async function(message,string){
 			}else if(rawID){
 				parsedArray.push(rawID) //TODO resolve the id properly
 			}
-		})
+		});
 		(lastIndex != string.length) && parsedArray.push(string.substring(lastIndex)); //till the end
 	
 		parsedArray = await Promise.all(parsedArray);

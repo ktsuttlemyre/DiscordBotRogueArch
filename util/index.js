@@ -289,7 +289,14 @@ module.exports.resolveMentions = async function(message,string){
 		//	console.log(match,g1,g2,g3)
 		//})
 		
-		let mentionObj={users:[],roles:[],channels:[],content:string,context:[]}		
+		let mentionObj={
+			texts:[],
+			users:[],
+			roles:[],
+			channels:[],
+			content:string,
+			context:[]
+		}		
 		
 		let userIDs=[]
 		let roleIDs=[]

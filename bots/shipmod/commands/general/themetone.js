@@ -54,7 +54,7 @@ class CustomCommand extends Command {
 // 		    arg = (arg || '').trim() || null
 		    let mentions = await util.resolveMentions(message,arg)
 		    let member = mentions.user
-		    let response = await util.playThemeTone(message.member.voice.channel,user.id||arg);
+		    let response = await util.playThemeTone(message.member.voice.channel,member.id||arg);
 		    return 'playing '+JSON.stringify(response)
 		}
 }

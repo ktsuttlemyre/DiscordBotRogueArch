@@ -283,7 +283,10 @@ let resolveDiscordID = module.exports.resolveDiscordID = function(message,id){
 	if(guild.channels.fetch){
 		promises.push(guild.channels.fetch(id));
 	}else{
-		promises.push(guild.channels.cache.get(id)); //this might not work
+		let channel = guild.channels.cache.get(id)
+		if(channel){
+			promises.push(channel); //this might not work
+		}
 	}
 	return Promise.any(promises);
 }

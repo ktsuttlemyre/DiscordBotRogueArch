@@ -1,3 +1,6 @@
+let debug = false;
+const Discord = require("discord.js");
+
 const {Command} = require("discord-akairo");
 const emotes = {error: ":error:"};
 const util = require.main.require("./util");

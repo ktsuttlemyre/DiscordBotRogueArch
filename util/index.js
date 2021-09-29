@@ -293,6 +293,7 @@ module.exports.resolveMentions = async function(message,string){
 		let mentionObj={
 			texts:[],
 			users:[],
+			members:[],
 			roles:[],
 			channels:[],
 			content:string,

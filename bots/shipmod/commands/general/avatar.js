@@ -37,8 +37,10 @@ class CustomCommand extends Command {
 		let client = this.client;
 		let mentions = await util.resolveMentions(message,arg);
     		//const user = await client.users.fetch(arg, { cache: true });
-		if(mentions.user){
-			return mentions.user.user.displayAvatarURL
+		let user = mentions.args[0]
+		user=user.user || user
+		if(user){
+			return user.displayAvatarURL();
 		}else{
 			return 'Could not find user '+arg
 		}

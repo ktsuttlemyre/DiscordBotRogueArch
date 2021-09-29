@@ -276,12 +276,16 @@ module.exports.zodiac = function (birthday) {
 };
 let resolveDiscordID = module.exports.resolveDiscordID = function(message,id){
 	let guild = message.guild || message;
-	return Promise.any([
+	let promises = [
 		guild.members.fetch(id),
 	    	message.client.users.fetch(id),
-	    	guild.roles.fetch(id),
-	    	guild.channels.fetch(id)
-	])
+	    	guild.roles.fetch(id)];
+	if(guild.channels.fetch){
+		promises.push(guild.channels.fetch(id));
+	}else{
+		promises.push(guild.channels.cache.get(id)); //this might not work
+	}
+	return Promise.any(promises);
 }
 let promiseResolve = async function(array,fn){
 	let promises = []

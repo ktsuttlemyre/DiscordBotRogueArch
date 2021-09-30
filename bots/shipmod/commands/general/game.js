@@ -57,6 +57,9 @@ class CustomCommand extends Command {
 		let client = this.client; 
 		let guild = message.guild;
 		let channel = message.channel;
+		
+		let isAdmin = message.member.roles.cache.find((role) => (role.name||'') === config.sytemRoles.admin);
+		let isMod = message.member.roles.cache.find((role) => (role.name||'').toLowerCase() === 'mod');
 
 		var env = process.env.ENVIRONMENT;
 		if (env != "production") {
@@ -86,7 +89,7 @@ class CustomCommand extends Command {
 		console.log(keyword);
 		let data = null;
 		channel = channel || gameChannel;
-		if(keyword == 'all'){
+		if(keyword == 'all' && (isAdmin || isMod)){
 			return "!game keyword all is currently disabled for all users"
 			console.log('gameRoles found =',gameRoles.size)
 			gameRoles = gameRoles.sorted(sortAlphaNum)

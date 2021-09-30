@@ -369,7 +369,7 @@ module.exports.resolveMentions = async function(message,string){
 			}else if(item instanceof Discord.Role){
 				mentionObj['roles'].push(item)
 			}else if(item instanceof Discord.GuildChannel || item instanceof Discord.Channel){
-				mentionObj['channel'].push(item)
+				mentionObj['channels'].push(item)
 			}else{
 				throw 'Unknown item in mentions'+require('util').inspect(item, {showHidden: false})
 				return

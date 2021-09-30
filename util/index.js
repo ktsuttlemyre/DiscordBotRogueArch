@@ -347,6 +347,7 @@ module.exports.resolveMentions = async function(message,string){
 						}
 					}
 			}else if(rawID){
+				tagID=rawID
 				parsedArray.push(resolveDiscordID(message,tagID)) //TODO resolve the id properly
 			}
 		});

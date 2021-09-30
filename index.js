@@ -291,10 +291,18 @@ function shutdown(signal) {
 			if(!memory){
 				return res.end('no memory accessable')
 			}
+			
+			//get game data from memory
+			let gameActivity = memory.get({guild: "690661623831986266"},'gameActivity')
+			//if(!gameActivity){
+			//
+			//}
+			
 			let guest = memory.get({guild: "690661623831986266"}, "gueststream");
 			let guestGame = memory.get({guild: "690661623831986266"}, "gueststreamgame");
-			//let shipwash = bots['shipmod'].guilds.cache.get('690661623831986266').members.cache.get('500468522468507648');
-			//let shipwashCurrentGame = memory.get({guild: "690661623831986266"}, "shipwashCurrentGame");
+			let shipwashMember = bots['shipmod'].guilds.cache.get('690661623831986266').members.cache.get('500468522468507648');
+			//use manual value first otherwise use automated one from presence
+			let shipwashCurrentGame = memory.get({guild: "690661623831986266"}, "shipwashCurrentGame") || gameActivity[shipwashMember.id]; 
 			
 			if(!guest){
 				return res.end('no guest set')

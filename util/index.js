@@ -321,7 +321,7 @@ module.exports.resolveMentions = async function(message,string){
 		let channelIDs=[]
 		let rawIDs=[]
 		
-		let parsedArray=mentionObj.parsed;
+		let parsedArray=[];
 		
 		let lastIndex=0
 		
@@ -353,9 +353,9 @@ module.exports.resolveMentions = async function(message,string){
 		});
 		(lastIndex != string.length) && parsedArray.push(string.substring(lastIndex)); //till the end
 	
-		parsedArray = await Promise.all(parsedArray);
+		mentionObj.parsed = await Promise.all(parsedArray);
 		
-		parsedArray.forEach(function(item){
+		mentionObj.parsed.forEach(function(item){
 			if(typeof item == 'string'){
 				mentionObj['texts'].push(item)
 				return

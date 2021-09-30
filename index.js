@@ -304,23 +304,25 @@ function shutdown(signal) {
 			//use manual value first otherwise use automated one from presence
 			let shipwashCurrentGame = memory.get({guild: "690661623831986266"}, "shipwashCurrentGame") || gameActivity[shipwashMember.id]; 
 			
-			if(!guest){
-				return res.end('no guest set')
-			}
+// 			if(!guest){
+// 				return res.end('no guest set')
+// 			}
 
 			let string = '<html><head>'+
 				'<style>html,body{margin:0;border:0;width:100%;height:100%}'+
-				'img{margin:0;padding:0;border-radius: 50%;width:auto;height:50%;float:left;vertical-align: middle;}'+
+				'img{margin:0;padding:0;border-radius: 50%;width:auto;height:100%;float:left;vertical-align: middle;}'+
 				'body{font-family: Arial, Helvetica, sans-serif;font-weight: bold;font-size:3.5em;color: white;-webkit-text-stroke-width: 1px;-webkit-text-stroke-color: black;}'+
-				'</style></head><body><img src="'+(guest.user||guest).displayAvatarURL()+'">'
+			        'div{width:100%;height:50%};'+
+				'</style></head><body><div><img src="'+(guest.user||guest).displayAvatarURL()+'">'
 			if(guestGame){
 				string+='&nbsp;'+(guest.displayName||guest.tag)+' is playing:<br>&nbsp;&nbsp;'+guestGame
 			}
-			//string+='<br><img src="'+(shipwash.user||shipwash).displayAvatarURL()+'">'
-			//if(shipwashCurrentGame){
-			//	string+='&nbsp;'+(shipwash.displayName||shipwash.tag)+' is playing:<br>&nbsp;&nbsp;'+shipwashCurrentGame
-			//}
-			string+='</body></html>'
+			string+='</div>'
+			string+='<div><img src="'+(shipwashMember.user||shipwashMember).displayAvatarURL()+'">'
+			if(shipwashCurrentGame){
+				string+='&nbsp;'+(shipwashMember.displayName||shipwashMember.tag)+' is playing:<br>&nbsp;&nbsp;'+shipwashCurrentGame
+			}
+			string+='</div></body></html>'
 			
 			return res.end(string)
 		}

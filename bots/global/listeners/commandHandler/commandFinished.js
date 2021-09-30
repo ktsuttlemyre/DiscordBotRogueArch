@@ -35,8 +35,7 @@ class CustomListener extends Listener {
 		this.client.memory.channelSet(message, `${message.id}_resolve`, null);
 
 		//respond
-		if (message && !message.deleted) {
-			//if they deleted the message then don't do anything
+		if (message && !message.deleted) { //if they deleted the message then don't do anything
 			let reply = await util.messages.encapsulate(message, returnValue);
 			let callback = returnValue.callback;
 			if (callback) {

@@ -18,6 +18,7 @@ const config = require.main.require("./config");
 const commandVars = require.main.require("./common").commandVars(__filename);
 const util = require.main.require("./util");
 const _ = require("lodash");
+const Discord = require('discord.js');
 
 const filterApps = {
 	'Google Chrome':1,
@@ -108,7 +109,8 @@ class CustomListener extends Listener {
 		if (!presence || !presence.length) {
 			return;
 		}
-		let game = (presence[0] || presence).name; // will give the name of the game
+		let rawGameName;
+		let game = rawGameName = (presence[0] || presence).name; // will give the name of the game
 		if(!game){
 			return
 		}
@@ -148,6 +150,14 @@ class CustomListener extends Listener {
 
 		let role = guild.roles.cache.find((x) => x.name === roleName);
 		
+		///save current game to memory
+		let gameActivity = client.memory.get({guild:guild},'gameActivity')
+		if(!gameActivity){
+			gameActivity = {}
+			client.memory.set({guild:guild},'gameActivity',gameActivity)
+		}
+		gameActivity[member.id]=rawGameName
+		
 		//can this bot manage roles?
 		if (!guild.me.hasPermission("MANAGE_ROLES")) {
 			console.log(`${guild.me.displayName} does not have permissions to create roles`);
@@ -186,7 +196,7 @@ class CustomListener extends Listener {
 		//now add the role to the user if they arent already a part
 		if (!member.roles.cache.some((role) => role.name === roleName)) {
 			member.roles.add(role);
-			logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send(`Assigned role \`${role.name}\` to ${member}`)
+			logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send(`Assigned role \`${role.name}\` to ${member.displayName||member.tag}`)
 		}
 		
 		//look for last message and see if it was posted already today

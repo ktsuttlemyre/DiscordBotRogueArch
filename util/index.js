@@ -2,6 +2,9 @@ var debug = false;
 const Discord = require("discord.js");
 const {Command} = require("discord-akairo");
 
+const getMP3Duration = require('get-mp3-duration')
+
+
 const path = require("path");
 const {access} = require("fs/promises");
 const {constants} = require("fs");
@@ -542,17 +545,23 @@ const playSound = (module.exports.playSound = async function (channel, location,
 		let hash = getYoutubeHash(location);
 		let endTime = parseInt(getParameterByName('end',location));
 		endTime = (endTime)?endTime*1000:null; //convert milliseconds to seconds
-		let startTime = parseInt(getParameterByName('t',location) || getParameterByName('start',location) ) //not used
+		let startTime = parseInt(getParameterByName('t',location) || getParameterByName('start',location) || getParameterByName('begin',location) || 0 ) //not used
 		startTime = (startTime)?startTime*1000:null; //convert millseconds to seconds
+		let duration = null;
 		console.log("Queing Sound", location, "with hash", hash);
 		if (hash) {
 			//is youtube link
-			location = ytdl(location, {filter: "audioonly"});
+			let songInfo = await ytdl.getInfo(location);
+			duration = songInfo.videoDetails.lengthSeconds;
+			location = ytdl(location, {filter: "audioonly", begin:startTime}); //https://github.com/fent/node-ytdl-core
 			//ytdl('https://www.youtube.com/watch?v=ZlAU_w7-Xp8', { quality: 'highestaudio', volume: 0.5})
 		} else if (location.indexOf("http") != 0) {
 			//is local resource
 			try {
 				await access(location, constants.F_OK);
+				
+				location = fs.readFileSync(location);
+				duration = getMP3Duration(location);
 			} catch (err) {
 				console.error(err);
 				error(err);
@@ -582,7 +591,8 @@ const playSound = (module.exports.playSound = async function (channel, location,
 			}
 			
 			
-			dispatcher = connection.play(location, {volume: opts.volume});	
+			dispatcher = connection.play(location);	
+			dispatcher.setVolume(opts.volume)
 			let intervalID = 0;
 			if(endTime!=null){
 				intervalID = setInterval(function(){

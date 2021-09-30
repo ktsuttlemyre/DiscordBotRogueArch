@@ -292,11 +292,22 @@ function shutdown(signal) {
 				return res.end('no memory accessable')
 			}
 			let guest = memory.get({guild: "690661623831986266"}, "gueststream");
+			let game = memory.get({guild: "690661623831986266"}, "gueststreamgame");
 			if(!guest){
 				return res.end('no guest set')
 			}
 			guest=guest.user||guest;
-			return res.end('<html><head><style>html,body,img{margin:0;border:0;width:100%;height:100%}img{border-radius: 50%;width:auto !important;}</style></head><body><img src="'+guest.displayAvatarURL()+'"></body></html>')
+			let string = '<html><head>'+
+				'<style>html,body,img{margin:0;border:0;width:100%;height:100%}'+
+				'img{border-radius: 50%;width:auto !important;}'+
+				'body{font-size:2em;color: white;-webkit-text-stroke-width: 2px;-webkit-text-stroke-color: black;}'+
+				'</style></head><body><img src="'+guest.displayAvatarURL()+'">'
+			if(game){
+				string+=guest.displayName||guest.tag+'is playing:<br>'+game
+			}
+			string+='</body></html>'
+			
+			return res.end(string)
 		}
 		if(req.url='/listen'){
 			let file = fs.readFileSync(path.join(".", "site", "index.html"), "utf-8");

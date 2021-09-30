@@ -36,6 +36,11 @@ class CustomCommand extends Command {
 		
 		let client = this.client;
 		let mentions = await util.resolveMentions(message,arg);
+		let memory = client.memory
+		
+		let user = mentions.args[0]
+		user=user.user || user
+		memory.set(message.guild,'gueststream',user)
     		return {
 			title:arg,
 			description:require('util').inspect(mentions.parsed, {showHidden: false})

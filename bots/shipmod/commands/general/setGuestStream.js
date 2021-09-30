@@ -43,7 +43,7 @@ class CustomCommand extends Command {
 		memory.set(message,'gueststream',user)
 		memory.set(message,'gueststreamgame',mentions.args[1])
     		return {
-			title:arg,
+			title:mentions.content,
 			description:require('util').inspect(mentions.parsed, {showHidden: false})
 		}
 	}

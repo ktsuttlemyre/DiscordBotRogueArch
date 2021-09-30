@@ -306,7 +306,8 @@ let promiseResolve = async function(array,fn){
 	return await Promise.all(promises);
 
 }
-module.exports.resolveMentions = async function(message,string){
+module.exports.resolveMentions = async function(message,string,opts){
+		let allowInnerRawIDs = opts.allowInnerRawIDs || true;
 		let guild = message.guild
 		//test string
 		//"I think we should add <@86890631690977280> to the <@&134362454976102401> role for the channel <#222197033908436994> and here is a random nickname <@!86890631690977280>".replace(/<(@|@!|#|@&)(\d+)>|(\d+)/,function(match,g1,g2,g3){
@@ -333,8 +334,14 @@ module.exports.resolveMentions = async function(message,string){
 		
 		let lastIndex=0
 		
+		let regex;
+		if(allowInnerRawIDs){
+			regex = /<(@|@!|#|@&)(\d+)>|(\d+)/g
+		}else{
+			/<(@|@!|#|@&)(\d+)>|^\s*(\d+)\s*$/g
+		}
 		
-		string.replace(/<(@|@!|#|@&)(\d+)>|^\s*(\d+)\s*$/g,function(match,prefix,tagID,rawID,index){
+		string.replace(regex,function(match,prefix,tagID,rawID,index){
 			(lastIndex != index) && parsedArray.push(string.substring(lastIndex,index))
 			lastIndex = index+match.length;
 			if(prefix == '@' || prefix =="@!"){ //userID nickID

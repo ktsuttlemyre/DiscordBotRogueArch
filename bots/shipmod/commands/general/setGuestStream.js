@@ -41,6 +41,7 @@ class CustomCommand extends Command {
 		let user = mentions.args[0]
 		user=user.user || user
 		memory.set(message,'gueststream',user)
+		memory.set(message,'gueststreamgame',mentions.args[1])
     		return {
 			title:arg,
 			description:require('util').inspect(mentions.parsed, {showHidden: false})

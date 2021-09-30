@@ -289,14 +289,14 @@ function shutdown(signal) {
 		if(req.url='/gueststream'){
 			let memory = bots['shipmod'].memory
 			if(!memory){
-				return res.end('no memory accessable ')
+				return res.end('no memory accessable')
 			}
 			let guest = memory.get({guild: "690661623831986266"}, "gueststream");
 			if(!guest){
 				return res.end('no guest set')
 			}
 			guest=guest.user||guest;
-			res.end('<html><head><style>html,body,img{margin:0,border:0,width:100%;height:100%}</style></head><body><img src="'+guest.displayAvatarURL()+'"></body></html>')
+			res.end('<html><head><style>html,body,img{margin:0,border:0;width:100%;height:100%}</style></head><body><img src="'+guest.displayAvatarURL()+'"></body></html>')
 		}
 		if(req.url='/listen'){
 			let file = fs.readFileSync(path.join(".", "site", "index.html"), "utf-8");

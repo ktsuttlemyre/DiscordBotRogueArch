@@ -292,18 +292,25 @@ function shutdown(signal) {
 				return res.end('no memory accessable')
 			}
 			let guest = memory.get({guild: "690661623831986266"}, "gueststream");
-			let game = memory.get({guild: "690661623831986266"}, "gueststreamgame");
+			let guestGame = memory.get({guild: "690661623831986266"}, "gueststreamgame");
+			let shipwash = bots['shipmod'].guilds.cache.get('690661623831986266').cache.get('500468522468507648');
+			let shipwashCurrentGame = memory.get({guild: "690661623831986266"}, "shipwashCurrentGame");
+			
 			if(!guest){
 				return res.end('no guest set')
 			}
 
 			let string = '<html><head>'+
-				'<style>html,body,img{margin:0;border:0;width:100%;height:100%}'+
-				'img{border-radius: 50%;width:auto !important;float:left;vertical-align: middle;}'+
+				'<style>html,body{margin:0;border:0;width:100%;height:100%}'+
+				'img{margin:0;padding:0;border-radius: 50%;width:auto;height:50%;float:left;vertical-align: middle;}'+
 				'body{font-family: Arial, Helvetica, sans-serif;font-weight: bold;font-size:3.5em;color: white;-webkit-text-stroke-width: 1px;-webkit-text-stroke-color: black;}'+
 				'</style></head><body><img src="'+(guest.user||guest).displayAvatarURL()+'">'
-			if(game){
-				string+='&nbsp;'+(guest.displayName||guest.tag)+' is playing:<br>&nbsp;&nbsp;'+game
+			if(guestGame){
+				string+='&nbsp;'+(guest.displayName||guest.tag)+' is playing:<br>&nbsp;&nbsp;'+guestGame
+			}
+			string+="<br><img src="'+(shipwash.user||shipwash).displayAvatarURL()+'">'"
+			if(shipwashCurrentGame){
+				string+='&nbsp;'+(shipwash.displayName||shipwash.tag)+' is playing:<br>&nbsp;&nbsp;'+shipwashCurrentGame
 			}
 			string+='</body></html>'
 			

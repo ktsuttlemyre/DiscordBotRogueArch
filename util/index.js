@@ -290,6 +290,14 @@ let resolveDiscordID = module.exports.resolveDiscordID = function(message,id){
 	}
 	return Promise.any(promises);
 }
+let resolveDiscordMessageID=function(message,id){ //TODO finish adding this to resolveMentions it is meant to resolve message ids
+	let guild = message.guild || message;
+	let promises = [];
+	guild.channels.cache.forEach((channel)=>{
+		channel.channel.messages.fetch(id)
+	})
+	return Promise.any(promises);
+}
 let promiseResolve = async function(array,fn){
 	let promises = []
 	array.forEach(function(item){
@@ -306,14 +314,14 @@ module.exports.resolveMentions = async function(message,string){
 		//})
 		
 		let mentionObj={
-			args:[],
+			mentions:[],
 			texts:[],
 			users:[],
 			members:[],
 			roles:[],
 			channels:[],
 			content:string,
-			parsed:[]
+			args:[]
 		}		
 		
 		let userIDs=[]
@@ -353,9 +361,9 @@ module.exports.resolveMentions = async function(message,string){
 		});
 		(lastIndex != string.length) && parsedArray.push(string.substring(lastIndex)); //till the end
 	
-		mentionObj.parsed = await Promise.all(parsedArray);
+		mentionObj.args = await Promise.all(parsedArray);
 		
-		mentionObj.parsed.forEach(function(item){
+		mentionObj.args.forEach(function(item){
 			if(typeof item == 'string'){
 				mentionObj['texts'].push(item)
 				return
@@ -373,7 +381,7 @@ module.exports.resolveMentions = async function(message,string){
 				throw 'Unknown item in mentions'+require('util').inspect(item, {showHidden: false})
 				return
 			}
-			mentionObj.args.push(item)
+			mentionObj.mentions.push(item)
 		})
 		
 		mentionObj['text']=mentionObj['texts'][0]		

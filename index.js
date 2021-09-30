@@ -293,7 +293,7 @@ function shutdown(signal) {
 			}
 			let guest = memory.get({guild: "690661623831986266"}, "gueststream");
 			let guestGame = memory.get({guild: "690661623831986266"}, "gueststreamgame");
-			let shipwash = bots['shipmod'].guilds.cache.get('690661623831986266').cache.get('500468522468507648');
+			let shipwash = bots['shipmod'].guilds.cache.get('690661623831986266').members.cache.get('500468522468507648');
 			let shipwashCurrentGame = memory.get({guild: "690661623831986266"}, "shipwashCurrentGame");
 			
 			if(!guest){

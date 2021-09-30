@@ -44,8 +44,7 @@ class CustomCommand extends Command {
 		memory.set(message,'gueststreamgame',mentions.args[1])
     		return {
 			title:mentions.content,
-			description:"set guest to: "+user.displayName||user.tag+'\n'+
-			'set game to:'+mentions.args[1]+'\n',
+			description:"set guest to: "+user.displayName||user.tag+'\nset game to:'+mentions.args[1]+'\n',
 			thumbnail: {
 			      "url": (user.user||user).displayAvatarURL()
 			    }

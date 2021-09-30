@@ -334,7 +334,7 @@ module.exports.resolveMentions = async function(message,string){
 		let lastIndex=0
 		
 		
-		string.replace(/<(@|@!|#|@&)(\d+)>|(\d+)/g,function(match,prefix,tagID,rawID,index){
+		string.replace(/<(@|@!|#|@&)(\d+)>|^\s*(\d+)\s*$/g,function(match,prefix,tagID,rawID,index){
 			(lastIndex != index) && parsedArray.push(string.substring(lastIndex,index))
 			lastIndex = index+match.length;
 			if(prefix == '@' || prefix =="@!"){ //userID nickID

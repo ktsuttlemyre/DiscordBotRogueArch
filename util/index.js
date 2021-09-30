@@ -307,7 +307,7 @@ let promiseResolve = async function(array,fn){
 
 }
 module.exports.resolveMentions = async function(message,string,opts){
-		let allowInnerRawIDs = opts.allowInnerRawIDs || true;
+		let allowInnerRawIDs = (opts.allowInnerRawIDs!==undefined)?opts.allowInnerRawIDs:true;
 		let guild = message.guild
 		//test string
 		//"I think we should add <@86890631690977280> to the <@&134362454976102401> role for the channel <#222197033908436994> and here is a random nickname <@!86890631690977280>".replace(/<(@|@!|#|@&)(\d+)>|(\d+)/,function(match,g1,g2,g3){

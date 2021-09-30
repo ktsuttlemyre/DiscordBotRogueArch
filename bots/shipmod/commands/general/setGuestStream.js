@@ -39,7 +39,7 @@ class CustomCommand extends Command {
 		let memory = client.memory
 		
 		let user = mentions.args[0]
-		user=user.user || user
+		//user=user.user || user
 		memory.set(message,'gueststream',user)
 		memory.set(message,'gueststreamgame',mentions.args[1])
     		return {

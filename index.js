@@ -300,7 +300,7 @@ function shutdown(signal) {
 			let string = '<html><head>'+
 				'<style>html,body,img{margin:0;border:0;width:100%;height:100%}'+
 				'img{border-radius: 50%;width:auto !important;float:left;vertical-align: middle;}'+
-				'body{font-family: Arial, Helvetica, sans-serif;font-weight: bold;font-size:3em;color: white;-webkit-text-stroke-width: 2px;-webkit-text-stroke-color: black;}'+
+				'body{font-family: Arial, Helvetica, sans-serif;font-weight: bold;font-size:3.5em;color: white;-webkit-text-stroke-width: 1px;-webkit-text-stroke-color: black;}'+
 				'</style></head><body><img src="'+(guest.user||guest).displayAvatarURL()+'">'
 			if(game){
 				string+='&nbsp;'+(guest.displayName||guest.tag)+' is playing:<br>&nbsp;&nbsp;'+game

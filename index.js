@@ -308,7 +308,7 @@ function shutdown(signal) {
 			if(guestGame){
 				string+='&nbsp;'+(guest.displayName||guest.tag)+' is playing:<br>&nbsp;&nbsp;'+guestGame
 			}
-			string+="<br><img src="'+(shipwash.user||shipwash).displayAvatarURL()+'">'"
+			string+='<br><img src="'+(shipwash.user||shipwash).displayAvatarURL()+'">'
 			if(shipwashCurrentGame){
 				string+='&nbsp;'+(shipwash.displayName||shipwash.tag)+' is playing:<br>&nbsp;&nbsp;'+shipwashCurrentGame
 			}

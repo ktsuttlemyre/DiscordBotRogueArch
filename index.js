@@ -296,7 +296,7 @@ function shutdown(signal) {
 				return res.end('no guest set')
 			}
 			guest=guest.user||guest;
-			return res.end('<html><head><style>html,body,img{margin:0,border:0;width:100%;height:100%}</style></head><body><img src="'+guest.displayAvatarURL()+'"></body></html>')
+			return res.end('<html><head><style>html,body,img{margin:0;border:0;width:100%;height:100%}</style></head><body><img src="'+guest.displayAvatarURL()+'"></body></html>')
 		}
 		if(req.url='/listen'){
 			let file = fs.readFileSync(path.join(".", "site", "index.html"), "utf-8");

@@ -6,6 +6,7 @@ const {reactions, defaultAvatar} = require.main.require("./common");
 const common = require.main.require("./common");
 const _ = require("lodash");
 const path = require("path");
+const config = require.main.require("./config");
 
 class CustomCommand extends Command {
 	constructor() {
@@ -25,12 +26,12 @@ class CustomCommand extends Command {
 		});
 	}
 
-	userPermissions(message) {
-		if (!message.member.roles.cache.some((role) => role.name === "Admin")) {
-			return "Admin";
-		}
-		return null;
-	}
+ 	userPermissions(message) {
+ 		if (!message.member.roles.cache.some((role) => role.name === config.systemRoles.admin)) {
+ 			return config.sytemRoles.admin;
+ 		}
+ 		return null;
+ 	}
 
 	async exec(message) {
 		// 		if (!message.member.voice.channel) return message.channel.send(`${emotes.error} - You're not in a voice channel !`);
@@ -48,8 +49,10 @@ class CustomCommand extends Command {
 		// 		}
 		// 		player.skip(message);
 		// process.exit(0);
-		message.client.destroy();
-		process.kill(process.pid, "SIGTERM");
+		setTimeout(function(){
+			message.client.destroy();
+			process.kill(process.pid, "SIGTERM");
+		},3000); //give commands a delay so the bot can have a chance to emoji react to the command message
 	}
 }
 

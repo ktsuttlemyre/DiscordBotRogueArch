@@ -144,11 +144,11 @@ class CustomListener extends Listener {
 		}) || game;
 		
 		let gamePrefix="🎮"
-		let roleName = `${gamePrefix}${game}`;
+		let gameRoleName = `${gamePrefix}${game}`;
 		
 		let logChannel = guild.channels.resolve(config.actionLogChannel);
 
-		let role = guild.roles.cache.find((x) => x.name === roleName);
+		let gameRole = guild.roles.cache.find((x) => x.name === gameRoleName);
 		
 		///save current game to memory
 		let gameActivity = client.memory.get({guild:guild},'gameActivity')
@@ -163,9 +163,9 @@ class CustomListener extends Listener {
 			console.log(`${guild.me.displayName} does not have permissions to create roles`);
 			return
 		}
-		if (!role) { // Role doesn't exist, safe to create
+		if (!gameRole) { // Role doesn't exist, safe to create
 			//if too many roles. Find the oldest one with the fewest members and delete
-			if(guild.roles.cache.size >= 249){ 
+			if(guild.roles.cache.size >= 247){ 
 				let roles = guild.roles.cache.sorted(function(a, b) {          
 					if (a.members.size === b.members.size) {
 						// time is only important when members are the same
@@ -180,23 +180,23 @@ class CustomListener extends Listener {
 					oldestGameRole.delete();
 				}
 			}
-			role = await guild.roles.create({
+			gameRole = await guild.roles.create({
 				data: {
-					name: roleName,
+					name: gameRoleName,
 					color: "DEFAULT",
 					mentionable: true,
 				},
 				reason: "Game Activity",
 			});
 
-			logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send(`Created GameRole \`${role.name}\``)
+			logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send(`Created GameRole \`${gameRole.name}\``)
 		}
 		
 		
 		//now add the role to the user if they arent already a part
-		if (!member.roles.cache.some((role) => role.name === roleName)) {
-			member.roles.add(role);
-			logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send(`Assigned GameRrole \`${role.name}\` to \`${member.displayName||member.tag}\``)
+		if (!member.roles.cache.some((role) => role.name === gameRoleName)) {
+			member.roles.add(gameRole);
+			logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send(`Assigned GameRrole \`${gameRole.name}\` to \`${member.displayName||member.tag}\``)
 		}
 		
 		//look for last message and see if it was posted already today

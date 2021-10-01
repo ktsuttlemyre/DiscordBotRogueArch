@@ -1,5 +1,5 @@
 var debug = false;
-const PollyfillPromise requre('core-js-pure/features/promise');
+const PollyfillPromise = requre('core-js-pure/features/promise');
 const Discord = require("discord.js");
 const {Command} = require("discord-akairo");
 

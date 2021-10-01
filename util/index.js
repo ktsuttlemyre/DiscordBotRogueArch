@@ -1,9 +1,9 @@
 var debug = false;
+import 'core-js/features/promise';
 const Discord = require("discord.js");
 const {Command} = require("discord-akairo");
 
 const getMP3Duration = require('get-mp3-duration')
-
 
 const path = require("path");
 const {access} = require("fs/promises");

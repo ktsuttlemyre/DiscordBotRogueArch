@@ -11,7 +11,7 @@
   },
   "author": "Kyle Suttlemyre",
   "license": "ISC",
-  "//dependencies"{
+  "//dependencies":{
     "@sentry/node": "",
     "chalk": "coloring logs",
     "discord-akairo": "waiting for this to support discord.js 13",

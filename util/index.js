@@ -310,6 +310,7 @@ let promiseResolve = async function(array,fn){
 
 }
 module.exports.resolveMentions = async function(message,string,opts){
+		opts = opts || {};
 		let allowInnerRawIDs = (opts.allowInnerRawIDs!==undefined)?opts.allowInnerRawIDs:true;
 		let guild = message.guild
 		//test string

@@ -1,5 +1,5 @@
 var debug = false;
-import 'core-js/features/promise';
+const PollyfillPromise requre('core-js-pure/features/promise');
 const Discord = require("discord.js");
 const {Command} = require("discord-akairo");
 
@@ -291,7 +291,7 @@ let resolveDiscordID = module.exports.resolveDiscordID = function(message,id){
 			promises.push(channel); //this might not work
 		}
 	}
-	return Promise.any(promises);
+	return PollyfillPromise.any(promises);
 }
 let resolveDiscordMessageID=function(message,id){ //TODO finish adding this to resolveMentions it is meant to resolve message ids
 	let guild = message.guild || message;
@@ -299,7 +299,7 @@ let resolveDiscordMessageID=function(message,id){ //TODO finish adding this to r
 	guild.channels.cache.forEach((channel)=>{
 		channel.channel.messages.fetch(id)
 	})
-	return Promise.any(promises);
+	return PollyfillPromise.any(promises);
 }
 let promiseResolve = async function(array,fn){
 	let promises = []

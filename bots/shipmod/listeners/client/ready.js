@@ -81,10 +81,9 @@ class CustomListener extends Listener {
 			let streamChannels = [guild.channels.cache.get('851980759203315732')];
 			
 			async function getStream(){
-			  const streams = await twitch.getStreams({ channel: "shipwash" });
+				const streams = await twitch.getStreams({ channel: "shipwash" });
 				debug && console.log(JSON.stringify(streams,null,2))
 				streamChannels.forEach(function(streamChannel){
-
 					let name = streamChannel.name
 					let live = streams && streams.data && streams.data.length && streams.data[0].type=='live'
 
@@ -95,17 +94,17 @@ class CustomListener extends Listener {
 					if(name.indexOf(liveEmoji.off)==0 || name.indexOf(liveEmoji.on)==0){
 						name = name.substring(1);
 					}
-					
+					debug && console.log('is live status? '+name)
 					if(live){
 						name = liveEmoji.on+name
 					}else{
 						//isEmoji(name.substring(0,1))
 						name = liveEmoji.off+name; 
 					}
-
+					debug && console.log('setting '+name)
 					if(name != streamChannel.name){
 						console.log('live status has changed to '+(live)?'live':'offline')
-						streamChannel.setName(name);
+						await streamChannel.setName(name);
 					}
 				})
            		 }

@@ -83,10 +83,14 @@ class CustomListener extends Listener {
 			  const streams = await twitch.getStreams({ channel: "shipwash" });
 				debug && console.log(JSON.stringify(streams,null,2))
 				streamChannels.forEach(function(streamChannel){
+
 					let name = streamChannel.name
 					let live = streams && streams.data && streams.data.length && streams.data[0].type=='live'
 
 					debug && console.log('updating '+name)
+					if(!streamChannel.permissionsFor(guild.me).has("MANAGE_CHANNELS")){
+						console.log('do not have permission to edit name of channel '+name)
+					}
 					if(name.indexOf(liveEmoji.off)==0 || name.indexOf(liveEmoji.on)==0){
 						name = name.substring(1);
 					}

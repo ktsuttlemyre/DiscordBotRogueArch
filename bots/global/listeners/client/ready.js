@@ -22,9 +22,6 @@ class CustomListener extends Listener {
 		});
 	}
 	
-	
-	
-	
 
 	async exec() {
 		let client = this.client;

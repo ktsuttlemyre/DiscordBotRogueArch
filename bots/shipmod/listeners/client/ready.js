@@ -86,7 +86,7 @@ class CustomListener extends Listener {
 				for(var i=0,l=streamChannels.length;i<l;i++){
 					let streamChannel=streamChannels[i]
 					let name = streamChannel.name
-					let live = streams && streams.data && streams.data.length && streams.data[0].type=='live'
+					let live = (streams && streams.data && streams.data.length && streams.data[0].type=='live')
 
 					debug && console.log('updating '+name)
 					if(!streamChannel.permissionsFor(guild.me).has("MANAGE_CHANNELS")){

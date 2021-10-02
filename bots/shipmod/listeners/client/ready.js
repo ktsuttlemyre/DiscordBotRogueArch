@@ -21,7 +21,7 @@ const liveEmoji = {
 }
 const isEmoji = function(str){
 	return   /\p{Extended_Pictographic}/u.test(str)
-
+}
 
 const sortAlphaNum = (a, b) => a.name.localeCompare(b.name, 'en', { numeric: true });
 let mapToArray = function(map){

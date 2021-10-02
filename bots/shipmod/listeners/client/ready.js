@@ -26,6 +26,26 @@ class CustomListener extends Listener {
 	
 
 	async exec() {
+		//start cron tasks
+		setInterval(function(){
+			const TwitchApi = require("node-twitch").default;
+
+			const twitch = new TwitchApi({
+				client_id: process.env.twitchID,
+				client_secret: process.env.twitchSecret
+			});
+
+			async function getStream(){
+			  const streams = await twitch.getStreams({ channel: "shroud" });
+			  console.log(streams);
+			}
+
+			getStream();
+		},60000)
+		
+		
+		
+		
 // 		let client = this.client;
 
 // 		var env = process.env.ENVIRONMENT;

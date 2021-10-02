@@ -48,7 +48,8 @@ class CustomListener extends Listener {
 		}
 		
 		//start cron tasks
-		setInterval(function(){
+		
+		let checkLive = function(){
 			console.log('checking live status')
 			//twitch api response if there is a user match and they are live			
 			//{
@@ -110,7 +111,9 @@ class CustomListener extends Listener {
            		 }
 
 			getStream();
-		},60000)
+		}
+		checkLive()
+		setInterval(checkLive,60000)
 		
 		
 		

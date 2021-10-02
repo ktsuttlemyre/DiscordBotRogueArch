@@ -104,7 +104,7 @@ class CustomListener extends Listener {
 					}
 					debug && console.log('setting '+name)
 					if(name != streamChannel.name){
-						console.log('live status has changed to '+((live)?'live':'offline'))
+						console.log('live status has changed to '+live)
 						await streamChannel.setName(name);
 						debug && console.log('set name complete to '+name)
 					}

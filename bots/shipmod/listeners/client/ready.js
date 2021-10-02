@@ -9,6 +9,18 @@ const commandVars = util.commandVars(__filename);
 const YAML = require('js-yaml');
 
 
+const TwitchApi = require("node-twitch").default;
+const twitch = new TwitchApi({
+	client_id: process.env.twitchID,
+	client_secret: process.env.twitchSecret
+});
+
+const liveEmoji = {
+	on:'🔴',
+	off:'⏺️'
+}
+
+
 const sortAlphaNum = (a, b) => a.name.localeCompare(b.name, 'en', { numeric: true });
 let mapToArray = function(map){
 	return Array.from(map, ([name, value]) => (value.displayName));
@@ -26,19 +38,60 @@ class CustomListener extends Listener {
 	
 
 	async exec() {
+		let client = this.client;
+
+		var env = process.env.ENVIRONMENT;
+		if (env != "production") {
+			return;
+		}
+		
 		//start cron tasks
 		setInterval(function(){
-			const TwitchApi = require("node-twitch").default;
-
-			const twitch = new TwitchApi({
-				client_id: process.env.twitchID,
-				client_secret: process.env.twitchSecret
-			});
-
+			
+			//twitch api response if there is a user match and they are live			
+			//{
+			//   "data": [
+			//     {
+			//       "id": "43910445405",
+			//       "user_id": "37402112",
+			//       "user_login": "shroud",
+			//       "user_name": "shroud",
+			//       "game_id": "493597",
+			//       "game_name": "New World",
+			//       "type": "live",
+			//       "title": "GRIND DROPS . | @shroud FOLLOW ME!!",
+			//       "viewer_count": 82826,
+			//       "started_at": "2021-10-01T18:45:17Z",
+			//       "language": "en",
+			//       "thumbnail_url": "https://static-cdn.jtvnw.net/previews-ttv/live_user_shroud-{width}x{height}.jpg",
+			//       "tag_ids": [
+			//         "6ea6bca4-4712-4ab9-a906-e3336a9d8039",
+			//         "c2542d6d-cd10-4532-919b-3d19f30a768b"
+			//       ],
+			//       "is_mature": false
+			//     }
+			//   ],
+			//   "pagination": {}
+			// }
+			let streamChannel = client.guilds.cache.get('690661623831986266').channels.cache.get('851980759203315732');
+			
 			async function getStream(){
-			  const streams = await twitch.getStreams({ channel: "shroud" });
-			  console.log(streams);
-			}
+			  const streams = await twitch.getStreams({ channel: "shipwash" });
+				debug && console.log(JSON.stringify(streams,null,2))
+				let name = streamChannel.name
+				let live = streams && streams.data && streams.data.length && streams.data[0].type=='live'
+
+				if(name.indexOf(liveEmoji.off)==0 || name.indexOf(liveEmoji.on)==0){
+					name = name.substring(1);
+				}
+				
+				name = (live)?liveEmoji.on+name:liveEmoji.off+name;
+				
+				if(name != streamChannel.name){
+					console.log('live status has changed to '+(live)?'live':'offline')
+					streamChannel.setName(name);
+				}
+           		 }
 
 			getStream();
 		},60000)
@@ -46,12 +99,7 @@ class CustomListener extends Listener {
 		
 		
 		
-// 		let client = this.client;
 
-// 		var env = process.env.ENVIRONMENT;
-// 		if (env != "production") {
-// 			return;
-// 		}
 
 // 		//trigger listeners
 // 		/* devnote

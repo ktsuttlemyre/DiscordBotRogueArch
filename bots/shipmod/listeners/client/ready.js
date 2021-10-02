@@ -83,7 +83,8 @@ class CustomListener extends Listener {
 			async function getStream(){
 				const streams = await twitch.getStreams({ channel: "shipwash" });
 				debug && console.log(JSON.stringify(streams,null,2))
-				streamChannels.forEach(function(streamChannel){
+				for(var i=0,l=streamChannels.length;i<l;i++){
+					let streamcChannel=streamChannels[i]
 					let name = streamChannel.name
 					let live = streams && streams.data && streams.data.length && streams.data[0].type=='live'
 
@@ -106,7 +107,7 @@ class CustomListener extends Listener {
 						console.log('live status has changed to '+(live)?'live':'offline')
 						await streamChannel.setName(name);
 					}
-				})
+				}
            		 }
 
 			getStream();

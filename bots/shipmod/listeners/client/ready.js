@@ -19,6 +19,8 @@ const liveEmoji = {
 	on:'🔴',
 	off:'⏺️'
 }
+const isEmoji = function(str){
+	return   /\p{Extended_Pictographic}/u.test(str)
 
 
 const sortAlphaNum = (a, b) => a.name.localeCompare(b.name, 'en', { numeric: true });
@@ -73,24 +75,33 @@ class CustomListener extends Listener {
 			//   ],
 			//   "pagination": {}
 			// }
-			let streamChannel = client.guilds.cache.get('690661623831986266').channels.cache.get('851980759203315732');
+			
+			let guild = client.guilds.cache.get('690661623831986266');
+			let streamChannels = [guild.channels.cache.get('851980759203315732')];
 			
 			async function getStream(){
 			  const streams = await twitch.getStreams({ channel: "shipwash" });
 				debug && console.log(JSON.stringify(streams,null,2))
-				let name = streamChannel.name
-				let live = streams && streams.data && streams.data.length && streams.data[0].type=='live'
+				streamChannels.forEach(function(streamChannel){
+					let name = streamChannel.name
+					let live = streams && streams.data && streams.data.length && streams.data[0].type=='live'
 
-				if(name.indexOf(liveEmoji.off)==0 || name.indexOf(liveEmoji.on)==0){
-					name = name.substring(1);
-				}
-				
-				name = (live)?liveEmoji.on+name:liveEmoji.off+name;
-				
-				if(name != streamChannel.name){
-					console.log('live status has changed to '+(live)?'live':'offline')
-					streamChannel.setName(name);
-				}
+					if(name.indexOf(liveEmoji.off)==0 || name.indexOf(liveEmoji.on)==0){
+						name = name.substring(1);
+					}
+					
+					if(live){
+						name = liveEmoji.on+name
+					}else{
+						//isEmoji(name.substring(0,1))
+						name = liveEmoji.off+name; 
+					}
+
+					if(name != streamChannel.name){
+						console.log('live status has changed to '+(live)?'live':'offline')
+						streamChannel.setName(name);
+					}
+				})
            		 }
 
 			getStream();

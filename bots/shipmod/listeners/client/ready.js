@@ -84,7 +84,7 @@ class CustomListener extends Listener {
 				const streams = await twitch.getStreams({ channel: "shipwash" });
 				debug && console.log(JSON.stringify(streams,null,2))
 				for(var i=0,l=streamChannels.length;i<l;i++){
-					let streamcChannel=streamChannels[i]
+					let streamChannel=streamChannels[i]
 					let name = streamChannel.name
 					let live = streams && streams.data && streams.data.length && streams.data[0].type=='live'
 

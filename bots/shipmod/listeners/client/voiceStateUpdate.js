@@ -128,7 +128,7 @@ class CustomListener extends Listener {
 					//now add the role to the user if they arent already a part
 					if (!member.roles.cache.some((role) => role.name === roleName)) {
 						member.roles.add(role);
-						logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send(`Assigned role \`${role.name}\` to ${member}`)
+						logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send(`Assigned role \`${role.name}\` to \`${member.displayName||member.tag}\``)
 					}
 				}
 				

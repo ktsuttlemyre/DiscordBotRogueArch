@@ -163,23 +163,25 @@ class CustomListener extends Listener {
 			console.log(`${guild.me.displayName} does not have permissions to create roles`);
 			return
 		}
-		if (!gameRole) { // Role doesn't exist, safe to create
-			//if too many roles. Find the oldest one with the fewest members and delete
-			if(guild.roles.cache.size >= 247){ 
-				let roles = guild.roles.cache.sorted(function(a, b) {          
-					if (a.members.size === b.members.size) {
-						// time is only important when members are the same
-						return a.createdTimestamp - b.createdTimestamp;
-					}
-					return a.members.size-b.members.size;
-				}); //sort lowest number of members and oldest date created
-
-				let oldestGameRole = roles.find((x) => x.name.indexOf(gamePrefix)===0); //find a role with game prefix
-				if(oldestGameRole){
-					logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send("removing old GameRole `"+oldestGameRole.name+"` with only "+ oldestGameRole.members.size+ " members")
-					oldestGameRole.delete();
+		
+		//if too many roles. Find the oldest one with the fewest members and delete
+		if(guild.roles.cache.size >= 247){ 
+			let roles = guild.roles.cache.sorted(function(a, b) {          
+				if (a.members.size === b.members.size) {
+					// time is only important when members are the same
+					return a.createdTimestamp - b.createdTimestamp;
 				}
+				return a.members.size-b.members.size;
+			}); //sort lowest number of members and oldest date created
+
+			let oldestGameRole = roles.find((x) => x.name.indexOf(gamePrefix)===0); //find a role with game prefix
+			if(oldestGameRole){
+				logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send("removing old GameRole `"+oldestGameRole.name+"` with only "+ oldestGameRole.members.size+ " members")
+				await oldestGameRole.delete();
 			}
+		}
+		
+		if (!gameRole) { // Role doesn't exist, safe to create
 			gameRole = await guild.roles.create({
 				data: {
 					name: gameRoleName,

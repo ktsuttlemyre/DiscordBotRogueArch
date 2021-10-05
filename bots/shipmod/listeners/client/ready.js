@@ -17,7 +17,7 @@ const twitch = new TwitchApi({
 
 const liveEmoji = {
 	on:'🔴',
-	off:'⏺️'
+	off:'⬛'
 }
 const isEmoji = function(str){
 	return   /\p{Extended_Pictographic}/u.test(str)

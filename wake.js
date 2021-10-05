@@ -14,7 +14,7 @@ client.login(TOKEN);
  */
 client.on("ready", () => {
 	//console.log(`${client.user.username} ready!`);
-	//client.user.setActivity(`${PREFIX}help and ${PREFIX}play`, { type: "LISTENING" });
+	//client.user.setActivity(`Hello`, { type: "LISTENING" });
 	wakeHandler(client);
 	//client.destroy();
 });

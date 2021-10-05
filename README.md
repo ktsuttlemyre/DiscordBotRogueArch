@@ -41,7 +41,6 @@ After creating a bot folder with bot code be sure to add an enviornment variable
 
  ## Envorinment Variables
  - ACTIVITY
- - ATTENTION_VOLUME
  - NODE_ENV or ENVIRONMENT
  - HEROKU_APP_NAME
  - MAX_PLAYLIST_SIZE

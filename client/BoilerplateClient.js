@@ -85,7 +85,7 @@ class BoilerplateClient extends AkairoClient {
 			directory: "./bots",
 			loadFilter: loadFilter.bind(loadFilter, opts.botPath, "commands"),
 			aliasReplacement: /-/g,
-			prefix: (message) => this.settings.get(message.guild, "prefix", "!"),
+			prefix: (message) => this.settings.get(message.guild, "prefix", "!"), //get guild specific prefix, otherwise return !
 			allowMention: true,
 			fetchMembers: true,
 			//commandUtil: false,

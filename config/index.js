@@ -11,6 +11,7 @@ let config = {
 		storage: ":memory",
 	},
 	production: {
+		handleCommandsMissedWhileSleep:false, //having trouble with this command right now
 		dialect: "sqlite",
 		storage: "./database.sqlite3",
 		actionLogChannel: "800748408741953576", //depricated

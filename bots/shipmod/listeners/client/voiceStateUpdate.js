@@ -51,6 +51,7 @@ class CustomListener extends Listener {
 		// voice-text-channel-link
 		let roomChanged = ((oldstate.channelID || newstate.channelID) && oldstate.channelID !== newstate.channelID);
 		let channelMap = config.voiceTextLinkMap;
+		console.log('checking channel map',JSON.stringify(channelMap))
 		
 		let permissionsNeeded = ['VIEW_CHANNEL','MANAGE_CHANNELS'];
 		

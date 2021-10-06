@@ -145,7 +145,7 @@ class BoilerplateClient extends AkairoClient {
 				message.channel.send(`Currently talking to ${name} please wait for them to finish.`);
 			})
 			//.on('load',function(){})
-// 			.on('messageBlocked',function(message,reason){
+// 			.on('messageBlocked',function(message,reason){ //this causes a lot of messages due to ignoring other bots messages. causes a loop when shiptunes and shipmod are in the same log channel
 // 				message.react(reactions.shipwash);
 // 				message.channel.send(`Message blocked due to ${reason}`);
 // 			})

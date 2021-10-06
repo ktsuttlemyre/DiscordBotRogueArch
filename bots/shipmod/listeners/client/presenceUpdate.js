@@ -23,7 +23,8 @@ const Discord = require('discord.js');
 const filterApps = {
 	'Google Chrome':1,
 	'SteamVR':1,
-	'Drawful':1
+	'Drawful':1,
+	'Screen Share doesnt play sound  Discord  Mozilla Firefox':1,
 };
 
 const gamingLogChannelID = "858459656058044426"

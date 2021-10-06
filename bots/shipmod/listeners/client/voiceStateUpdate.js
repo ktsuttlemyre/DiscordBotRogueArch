@@ -66,11 +66,11 @@ class CustomListener extends Listener {
 			debug && console.log('entering a hidden channel',textChannelID)
 			permissions = textChannel.permissionsFor(guild.me)
 			if(permissions.has(permissionsNeeded)){
-				textChannel.updateOverwrite(member, {
+				let promise = await textChannel.updateOverwrite(member, {
 				    //SEND_MESSAGES: false,
 				    VIEW_CHANNEL: true
 				});
-				debug && console.log('showed hidden channel',textChannelID)
+				debug && console.log('showed hidden channel',textChannel.name,promise)
 			}else{
 				console.log('bot does not have permission to change permissions in '+textChannel.name)
 			}
@@ -86,11 +86,11 @@ class CustomListener extends Listener {
 			//console.log(permissions.toArray())
 			if(permissions.has(permissionsNeeded)){
 				//leave private rooms
-				textChannel.updateOverwrite(member, {
+				let promise = await textChannel.updateOverwrite(member, {
 				    //SEND_MESSAGES: false,
 				    VIEW_CHANNEL: false
 				});
-				debug && console.log('hide hidden channel',textChannelID)
+				debug && console.log('hide hidden channel',textChannel.name,promise)
 			}else{
 				console.log('bot does not have permission to change permissions in '+textChannel.name)
 			}

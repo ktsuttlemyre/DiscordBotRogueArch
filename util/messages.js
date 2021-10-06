@@ -92,8 +92,14 @@ module.exports.encapsulate = async function (message, override, dontDelete) {
 	if (!override) {
 		override = message.content;
 	}
-
-	let doc = override || {};
+	let style = 'default';
+	if(override.style){
+		style = override.style;
+		override.style = null;
+		delete override.style;
+	}
+	
+	let doc = override || {};	
 	console.log("pre parsed encapsulation", override);
 	var type = typeof doc;
 	if (type == "string") {
@@ -109,6 +115,28 @@ module.exports.encapsulate = async function (message, override, dontDelete) {
 		message.channel.send("Can not process arrays");
 		return;
 	}
+	
+	// note these use bootstrap 4 colors
+	switch(style.error){
+		case 'error':
+			doc.color = "dc3545"
+			break;
+		case 'warning':
+			doc.color = "ffc107"
+			break;
+		case 'info':
+		case 'information':
+			doc.color = "17a2b8"
+			break;
+		case 'log':
+		case 'primary':
+			doc.color = "#007bff"
+			break;
+		case 'success':
+			doc.color = "28a745"
+			break;
+	}
+
 
 	//set author if needed
 	let user = message.member || message.author;

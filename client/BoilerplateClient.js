@@ -19,6 +19,9 @@ const Setting = require("../models/settings");
 // Logger
 const Logger = require("../util/logger");
 
+const {reactions, defaultAvatar} = require.main.require("./common");
+
+
 // Node Modules
 const path = require("path");
 require("dotenv").config();
@@ -142,7 +145,10 @@ class BoilerplateClient extends AkairoClient {
 				message.channel.send(`Currently talking to ${name} please wait for them to finish.`);
 			})
 			//.on('load',function(){})
-			//.on('messageBlocked',function(message,reason){message.channel.send(`Message blocked due to ${reason}`);})
+			.on('messageBlocked',function(message,reason){
+				message.react(reactions.shipwash);
+				message.channel.send(`Message blocked due to ${reason}`);
+			})
 			//.on('messageInvalid',function(message){message.channel.send(`Message invalid`);})
 			.on("missingPermissions", function (message, command, type, missing) {
 				let user = message.member || message.author;

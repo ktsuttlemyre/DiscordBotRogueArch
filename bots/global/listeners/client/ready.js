@@ -76,76 +76,78 @@ class CustomListener extends Listener {
 			//read all previous commands
 			let textChannels = guild.channels.cache.filter((c) => c.type == "text").array();
 			debug && console.log("checking old commands");
-			let commandMessagesQueue = [];
-			for (const channel of textChannels) {
-				if (!channel.permissionsFor(guild.me).has("VIEW_CHANNEL")) {
-					continue;
-				}
-				if (util.devChannelGate({channel})) {
-					continue;
-				}
-				debug && console.log("testing", channel.name);
-
-				let messages = null
-				try{
-				    messages = await channel.messages.fetch().catch((err) => { //TODO make this use the util.messages.fetch function so it reads further into the history
-						throw err;
-					});
-				} catch (err) {
-					console.error('caught an error in',commandVars.id+' exec','error:',err);
-				}
-				messages=messages || new Discord.Collection();
-				
-				messages = Array.from(messages.values());
-				for (const message of messages) {
-					//stop once you find a message that this bot has sent
-					debug && console.log("id check", guild.me.id, (message.member || message.author).id);
-					if (guild.me.id == (message.member || message.author).id) {
-						break; //end loop
-					}
-					if (message.author.bot) {
+			if(config.handleCommandsMissedWhileSleep){
+				let commandMessagesQueue = [];
+				for (const channel of textChannels) {
+					if (!channel.permissionsFor(guild.me).has("VIEW_CHANNEL")) {
 						continue;
 					}
-					let users = null;
+					if (util.devChannelGate({channel})) {
+						continue;
+					}
+					debug && console.log("testing", channel.name);
+
+					let messages = null
 					try{
-						users = await util.messages.getReactedUsers(message, reactions.shipwash).catch((err) => {
+					    messages = await channel.messages.fetch().catch((err) => { //TODO make this use the util.messages.fetch function so it reads further into the history
 							throw err;
 						});
 					} catch (err) {
-						console.error('caught an error in',commandVars.id+' exec getReactedUsers','error:',err);
+						console.error('caught an error in',commandVars.id+' exec','error:',err);
 					}
-					users = users || new Discord.Collection();
-					
-					if (!users.get(guild.me.id)) {
-						//console.log('processing this message v')
-						commandMessagesQueue.push(message);
-					}
-					//console.log(message.id,message.content,'reacted with shipwash',users);
-				} //end messages
-			} //end textchannels
+					messages=messages || new Discord.Collection();
 
-			console.log("sorting command messages queue");
-			//sort
-			commandMessagesQueue
-				.sort(function (a, b) { //sort the commands by time
-					return a.createdTimestamp - b.createdTimestamp;
-				})
-				.forEach(function (message) { //execute
-					debug && console.log("executing message with command", message.content);
-					client.commandHandler.handle(message);
-				});
+					messages = Array.from(messages.values());
+					for (const message of messages) {
+						//stop once you find a message that this bot has sent
+						debug && console.log("id check", guild.me.id, (message.member || message.author).id);
+						if (guild.me.id == (message.member || message.author).id) {
+							break; //end loop
+						}
+						if (message.author.bot) {
+							continue;
+						}
+						let users = null;
+						try{
+							users = await util.messages.getReactedUsers(message, reactions.shipwash).catch((err) => {
+								throw err;
+							});
+						} catch (err) {
+							console.error('caught an error in',commandVars.id+' exec getReactedUsers','error:',err);
+						}
+						users = users || new Discord.Collection();
 
-			// 			var memory=client.memory
-			// 			if(!memory){return}
-			// 			var player=memory.get({guild}, 'player');
-			// 			if(!player){return}
-			// 			var queues=memory.get({guild}, 'queues')||[];
-			// 			queues.forEach(function(queue){
-			// 				var message = queue.firstMessage
-			// 				if(player.isPlaying(message)){
-			// 				  common.nowPlaying(message,null,'I have crashed or gone to sleep!')
-			// 				}
+						if (!users.get(guild.me.id)) {
+							//console.log('processing this message v')
+							commandMessagesQueue.push(message);
+						}
+						//console.log(message.id,message.content,'reacted with shipwash',users);
+					} //end messages
+				} //end textchannels
 
+				console.log("sorting command messages queue");
+				//sort
+				commandMessagesQueue
+					.sort(function (a, b) { //sort the commands by time
+						return a.createdTimestamp - b.createdTimestamp;
+					})
+					.forEach(function (message) { //execute
+						debug && console.log("executing message with command", message.content);
+						client.commandHandler.handle(message);
+					});
+
+				// 			var memory=client.memory
+				// 			if(!memory){return}
+				// 			var player=memory.get({guild}, 'player');
+				// 			if(!player){return}
+				// 			var queues=memory.get({guild}, 'queues')||[];
+				// 			queues.forEach(function(queue){
+				// 				var message = queue.firstMessage
+				// 				if(player.isPlaying(message)){
+				// 				  common.nowPlaying(message,null,'I have crashed or gone to sleep!')
+				// 				}
+			} //end handlecommandsmissedwhilesleeping
+			
 			let logChannel = guild.channels.resolve(config.actionLogChannel);
 			let gameChannel = guild.channels.resolve(config.gameChannel);
 			if (logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES")) {

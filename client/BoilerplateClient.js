@@ -2,6 +2,7 @@ var debug = false;
 
 // Discord Stuff
 const {AkairoClient, CommandHandler, ListenerHandler, InhibitorHandler} = require("discord-akairo");
+const Discord = require("discord.js");
 const {MessageEmbed,Intents} = require("discord.js");
 
 // Import the database settings
@@ -148,11 +149,29 @@ class BoilerplateClient extends AkairoClient {
 				let name = user.displayName || user.tag;
 				let commandName = util.commandFormat(message, command);
 				//let search = (missing || "").toLowerCase();
-				let isRole = message.guild.roles.cache.find((role) => missing == role.name.toLowerCase());
-				if (isRole) {
-					return message.channel.send(`${type} must have permission ${missing} role in order to execute \`${commandName}\``);
+				
+				let botName = message.guild.me.displayName || message.guild.me.tag;
+			
+			
+				let string = ''
+				//type is either client or user
+				if(type == 'client'){
+					string += `Bot \`${botName}\``
+				}else{
+					string += `User \`${name}\``
 				}
-				message.channel.send(`${type} must have permission ${missing} in order to execute \`${commandName}\``);
+			
+				let isRole = (missing instanceof Discord.Role) || message.guild.roles.cache.find((role) => missing.toLowerCase() == role.name.toLowerCase());
+				if (isRole) {
+					let roleName = missing.name || missing
+					string += ` must have \`${roleName}\` role`;
+				}else{
+					string += ` must have permission \`${missing}\``;
+				}
+			
+				string += `in order to execute \`${commandName}\``
+			
+				return util.message.encapsulate(message, string) // message.channel.send(string);
 			});
 		//.on('remove',function(command){});
 		// Init Listener Handler

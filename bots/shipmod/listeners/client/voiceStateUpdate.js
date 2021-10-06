@@ -1,4 +1,4 @@
-var debug = true; 
+var debug = false; 
 const { Listener } = require('discord-akairo');
 const util = require.main.require('./util');
 const config = util.config;

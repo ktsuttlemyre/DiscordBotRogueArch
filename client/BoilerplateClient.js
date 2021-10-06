@@ -177,7 +177,7 @@ class BoilerplateClient extends AkairoClient {
 			
 				string += `in order to execute \`${commandName}\``
 			
-				return util.message.encapsulate(message, string) // message.channel.send(string);
+				return util.message.encapsulate(message, {content:string,style:'warning'}) // message.channel.send(string);
 			});
 		//.on('remove',function(command){});
 		// Init Listener Handler

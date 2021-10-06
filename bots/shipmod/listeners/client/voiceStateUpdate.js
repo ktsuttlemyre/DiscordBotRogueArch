@@ -1,4 +1,4 @@
-var debug = false; 
+var debug = true; 
 const { Listener } = require('discord-akairo');
 const util = require.main.require('./util');
 const config = util.config;
@@ -51,13 +51,14 @@ class CustomListener extends Listener {
 		// voice-text-channel-link
 		let roomChanged = ((oldstate.channelID || newstate.channelID) && oldstate.channelID !== newstate.channelID);
 		let channelMap = config.voiceTextLinkMap;
-		console.log('checking channel map',JSON.stringify(channelMap))
+		
 		
 		let permissionsNeeded = ['VIEW_CHANNEL','MANAGE_CHANNELS'];
 		
 		debug && console.info('voiceStateUpdate',oldstate.channelID,newstate.channelID,roomChanged,member.displayName);
 		    
 		//enter new chatroom
+		debug && console.log('checking channel map',JSON.stringify(channelMap))
 		let textChannelID = channelMap[newstate.channelID];
 		let textChannel = guild.channels.cache.get(textChannelID);
 		let permissions;

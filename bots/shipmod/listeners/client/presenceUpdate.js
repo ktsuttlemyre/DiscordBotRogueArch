@@ -11,7 +11,7 @@ newPresence	Presence
 The presence after the update
 */
 const yaml = require("js-yaml");
-const debug = true;
+const debug = false;
 const {MessageEmbed} = require("discord.js");
 const {Listener} = require("discord-akairo");
 const config = require.main.require("./config");

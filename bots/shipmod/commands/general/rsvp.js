@@ -38,6 +38,8 @@ class CustomCommand extends Command {
 		let queueTitle = roomMap[message.channel.id] || message.channel.name;
 		queueTitle = queueTitle.trim().toUpperCase();
 
+		let user = message.member || message.author;
+		
 		let queue = new Collection();
 		
 		let randomEmoji = [];
@@ -46,30 +48,39 @@ class CustomCommand extends Command {
 		let messages = await message.channel.messages.fetch({ limit: 100 });
 		debug && console.log('got messages',messages.size)
 		let today = new Date().getTime();
-		let lastPost = messages.find(function(post){
-			if(post.author.id != message.guild.me.id){ //make sure it is from me
-				return
-			}
-			let embed = post.embeds && post.embeds.length && post.embeds[0];
-			debug && console.log('post',embed,post.createdAt)
-			if(embed && embed.title && embed.title.indexOf('Event Queue') >= 0){
-				if((isAdmin || isMod) && arg && arg =="glob"){
-					return true
+		let lastPost = null;
+		if((isAdmin || isMod) && arg){
+			if (arg =="glob"){ //TODO this currently only accepts one that was posted 16 hours ago. have it sort them and choose the most recent
+				lastPost = messages.find(function(post){
+					if(post.author.id != message.guild.me.id){ //make sure it is from me
+						return
+					}
+					let embed = post.embeds && post.embeds.length && post.embeds[0];
+					debug && console.log('post',embed,post.createdAt)
+					if(embed && embed.title && embed.title.indexOf('Event Queue') >= 0){
+						debug && console.log('checking post date',post.createdAt)
+						let date = post.createdAt.getTime();
+						let diff = Math.abs(date - today);
+						let diffInHours = diff/1000/60/60;
+						if(diffInHours < 16 ){
+							return true
+						}
+
+						return false;
+					}
+				});
+			}else{
+				let args = arg.split(' ');
+				args[0]=args[0].toUpperCase();
+				if(args[0] == 'ADD'){
+					let mentions = await util.resolveMentions(message,arg);
+					user = mentions['member']||mentions['user'];
+				}else if (args[0] =='remove'){
+					throw 'implement remove funciton'
 				}
-				let date = post.createdAt.getTime();
-// 				let isSameDay = (date.getDate() === today.getDate() 
-// 					&& date.getMonth() === today.getMonth()
-// 					&& date.getFullYear() === today.getFullYear());
-				let diff = Math.abs(date - today);
-				let diffInHours = diff/1000/60/60;
-				if(diffInHours < 16 ){
-					return true
-				}
-				debug && console.log('checking post date',post.createdAt)
-				return false //isSameDay;
 			}
-		})
-		
+		}
+
 		//good we found a message. Lets parse out the names
 		if(lastPost){
 			let lastEmbed = lastPost.embeds && lastPost.embeds.length && lastPost.embeds[0];
@@ -95,7 +106,7 @@ class CustomCommand extends Command {
 		//let queue = this.client.memory.get(message, varName) || new Collection();
 		//let lastMessageID = varName + "LastMessage";
 		//let lastMessage = this.client.memory.get(message, lastMessageID);
-		let user = message.member || message.author;
+		
 		switch (queueTitle) {
 			case "AMONGUS":
 				randomEmoji = [

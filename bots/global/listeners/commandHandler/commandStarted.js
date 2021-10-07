@@ -1,3 +1,4 @@
+const debug = true;
 const {Listener} = require("discord-akairo");
 const util = require.main.require("./util");
 const config = util.config;
@@ -16,6 +17,7 @@ class CustomListener extends Listener {
 
 	exec(message, command, args) {
 		message.react(reactions.shipwash);
+		debug && console.log('User',(message.member.displayName||message.user.tag),' requested command execution: ',message.content,' in location ',message.channel.name,message.channel.type)
 		this.client.memory.channelSet(
 			message,
 			`${message.id}_promise`,

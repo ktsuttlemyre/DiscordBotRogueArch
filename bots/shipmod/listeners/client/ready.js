@@ -1,4 +1,4 @@
-let debug = true;
+let debug = false;
 const Discord = require("discord.js");
 
 const {Listener} = require("discord-akairo");
@@ -50,7 +50,7 @@ class CustomListener extends Listener {
 		//start cron tasks
 		
 		let checkLive = function(){
-			console.log('checking live status')
+			debug && console.log('checking live status')
 			//twitch api response if there is a user match and they are live			
 			//{
 			//   "data": [

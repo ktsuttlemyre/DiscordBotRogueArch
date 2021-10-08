@@ -31,6 +31,7 @@ class CustomListener extends Listener {
 		}
 		let guild = newstate.guild;
 		let client = this.client;
+		let me = client.me;
 		let logChannel = guild.channels.resolve(config.actionLogChannel);
 		
 		
@@ -72,7 +73,7 @@ class CustomListener extends Listener {
 				});
 				debug && console.log('showed hidden channel',textChannel.name)
 			}else{
-				console.log('bot does not have permission to change permissions in '+textChannel.name)
+				console.log(`${me.displayName||me.tag} does not have permission to change permissions in `+textChannel.name)
 			}
 		}
 
@@ -92,7 +93,7 @@ class CustomListener extends Listener {
 				});
 				debug && console.log('hide hidden channel',textChannel.name)
 			}else{
-				console.log('bot does not have permission to change permissions in '+textChannel.name)
+				console.log(`${me.displayName||me.tag} does not have permission to change permissions in `+textChannel.name)
 			}
 		}
 		

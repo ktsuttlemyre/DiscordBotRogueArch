@@ -48,38 +48,49 @@ class CustomCommand extends Command {
 		let messages = await message.channel.messages.fetch({ limit: 100 });
 		debug && console.log('got messages',messages.size)
 		let today = new Date().getTime();
-		let lastPost = null;
-		if((isAdmin || isMod) && arg){
-			if (arg =="glob"){ //TODO this currently only accepts one that was posted 16 hours ago. have it sort them and choose the most recent
-				lastPost = messages.find(function(post){
-					if(post.author.id != message.guild.me.id){ //make sure it is from me
-						return
-					}
-					let embed = post.embeds && post.embeds.length && post.embeds[0];
-					debug && console.log('post',embed,post.createdAt)
-					if(embed && embed.title && embed.title.indexOf('Event Queue') >= 0){
-						debug && console.log('checking post date',post.createdAt)
-						let date = post.createdAt.getTime();
-						let diff = Math.abs(date - today);
-						let diffInHours = diff/1000/60/60;
-						if(diffInHours < 16 ){
-							return true
-						}
+		let forceGlob = false
 
-						return false;
-					}
-				});
+
+
+		if((isAdmin || isMod) && arg){
+			arg = arg.trim()
+			if (arg == "glob"){ //TODO this currently only accepts one that was posted 16 hours ago. have it sort them and choose the most recent
+				forceGlob=true;
 			}else{
 				let args = arg.split(' ');
 				args[0]=args[0].toUpperCase();
 				if(args[0] == 'ADD'){
 					let mentions = await util.resolveMentions(message,arg);
-					user = mentions['member']||mentions['user'];
+					user = mentions['member'] || mentions['user'];
 				}else if (args[0] =='remove'){
 					throw 'implement remove funciton'
 				}
 			}
 		}
+
+
+		let lastPost = messages.find(function(post){
+			if(post.author.id != message.guild.me.id){ //make sure it is from me
+				return
+			}
+			let embed = post.embeds && post.embeds.length && post.embeds[0];
+			debug && console.log('post',embed,post.createdAt)
+			if(embed && embed.title && embed.title.indexOf('Event Queue') >= 0){
+				if(forceGlob){
+					return true; //if glob command was given then force accept the first found message
+				}
+				debug && console.log('checking post date',post.createdAt)
+				let date = post.createdAt.getTime();
+				let diff = Math.abs(date - today);
+				let diffInHours = diff/1000/60/60;
+				if(diffInHours < 16 ){
+					return true
+				}
+				return false;
+			}
+		});
+
+
 
 		//good we found a message. Lets parse out the names
 		if(lastPost){

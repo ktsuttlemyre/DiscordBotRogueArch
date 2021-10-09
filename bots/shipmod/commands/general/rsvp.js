@@ -1,4 +1,4 @@
-let debug = true;
+let debug = false;
 const {Client, Collection} = require("discord.js");
 const GUIMessages = require.main.require("./templates/messages");
 const {Command} = require("discord-akairo");

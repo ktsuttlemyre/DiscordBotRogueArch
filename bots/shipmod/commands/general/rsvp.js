@@ -61,7 +61,7 @@ class CustomCommand extends Command {
 				args[0]=args[0].toUpperCase();
 				if(args[0] == 'ADD'){
 					let mentions = await util.resolveMentions(message,arg);
-					user = mentions['member'] || mentions['user'];
+					user = mentions['member'] || mentions['user'] || user;
 				}else if (args[0] =='remove'){
 					throw 'implement remove funciton'
 				}

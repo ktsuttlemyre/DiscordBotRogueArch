@@ -76,10 +76,9 @@ class StatsCommand extends Command {
 			.addField(
 				"Technical2",
 				[
-					`**cpu usage**: JSON.stringify(cpuUsage),
-					`**diskinfo**: JSON.st,ringify(disKInfo),
-					`**Discord.js**: v${djsVersion}`
-					`**Akairo**: v${akairoVersion}`,
+					`**cpu usage**: ${JSON.stringify(cpuUsage)}`,
+					`**disk**: ${JSON.stringify(driveInfo)}`,
+					`**memory**: ${JSON.stringify(memInfo)}`
 				],
 				true
 			)

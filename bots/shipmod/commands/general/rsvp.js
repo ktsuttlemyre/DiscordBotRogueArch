@@ -39,6 +39,7 @@ class CustomCommand extends Command {
 		queueTitle = queueTitle.trim().toUpperCase();
 
 		let user = message.member || message.author;
+		let filterUser = null;
 		
 		let queue = new Collection();
 		
@@ -59,11 +60,11 @@ class CustomCommand extends Command {
 			}else{
 				let args = arg.split(' ');
 				args[0]=args[0].toUpperCase();
+				let mentions = await util.resolveMentions(message,arg[1]);
 				if(args[0] == 'ADD'){
-					let mentions = await util.resolveMentions(message,arg);
-					user = mentions['member'] || mentions['user'] || user;
+					user = mentions['member'] || mentions['user'];
 				}else if (args[0] =='remove'){
-					throw 'implement remove funciton'
+					filterUser = mentions['member'] || mentions['user'];
 				}
 			}
 		}
@@ -134,6 +135,9 @@ class CustomCommand extends Command {
 		}
 		if (!queue.get(user)) {
 			queue.set(user.id, user);
+		}
+		if(filterUser){
+			queue.remove(filterUser.id);
 		}
 
 

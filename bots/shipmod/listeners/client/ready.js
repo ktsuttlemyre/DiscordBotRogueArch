@@ -78,20 +78,30 @@ class CustomListener extends Listener {
 			// }
 			
 			let guild = client.guilds.cache.get('690661623831986266');
-			let streamChannels = [guild.channels.cache.get('851980759203315732')];
+			//streamchannel
+			//shiwpwash
+			let streamElements = [guild.channels.cache.get('851980759203315732'), guild.members.cache.get('500468522468507648')];
 			
 			async function getStream(){
 				const streams = await twitch.getStreams({ channel: "shipwash" });
 				debug && console.log(JSON.stringify(streams,null,2))
-				for(var i=0,l=streamChannels.length;i<l;i++){
-					let streamChannel=streamChannels[i]
-					let name = streamChannel.name
+				for(var i=0,l=streamElements.length;i<l;i++){
+					let streamElement=streamElements[i]
+					let name = streamElement.name
 					let live = (streams && streams.data && streams.data.length && streams.data[0].type=='live')
 
 					debug && console.log('updating '+name)
-					if(!streamChannel.permissionsFor(guild.me).has("MANAGE_CHANNELS")){
-						console.log('do not have permission to edit name of channel '+name)
+					if(streamElement instanceof Discord.User || streamElement instanceof Discord.GuildMember){
+						//mentionObj['members'].push(item)
+					}else if(streamElement instanceof Discord.Role){
+						//mentionObj['roles'].push(item)
+					}else if(streamElement instanceof Discord.GuildChannel || streamElement instanceof Discord.Channel){
+						if(!streamElement.permissionsFor(guild.me).has("MANAGE_CHANNELS")){
+							console.log('do not have permission to edit name of channel '+name)
+							continue
+						}
 					}
+				
 					if(name.indexOf(liveEmoji.off)==0 || name.indexOf(liveEmoji.on)==0){
 						name = name.substring(1);
 					}
@@ -103,9 +113,9 @@ class CustomListener extends Listener {
 						name = liveEmoji.off+name; 
 					}
 					debug && console.log('setting '+name)
-					if(name != streamChannel.name){
+					if(name != streamElement.name){
 						console.log('live status has changed to '+live)
-						await streamChannel.setName(name);
+						await streamElement.setName(name);
 						debug && console.log('set name complete to '+name)
 					}
 				}
@@ -113,8 +123,8 @@ class CustomListener extends Listener {
 
 			getStream();
 		}
-		checkLive()
-		setInterval(checkLive,60000)
+		//checkLive()
+		//setInterval(checkLive,60000)
 		
 		
 		

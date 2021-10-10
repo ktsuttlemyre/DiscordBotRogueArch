@@ -21,7 +21,7 @@ class CustomListener extends Listener {
 			// && returnValue.call){
 			returnValue = await returnValue;
 			setTimeout(function () {
-				resolve(returnValue);
+				resolve && resolve(returnValue);
 			}, 1);
 			returnValue = await promise;
 		}

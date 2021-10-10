@@ -199,7 +199,7 @@ class CustomListener extends Listener {
 		//now add the role to the user if they arent already a part
 		if (!member.roles.cache.some((role) => role.name === gameRoleName)) {
 			member.roles.add(gameRole);
-			logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send(`Assigned GameRrole \`${gameRole.name}\` to \`${member.displayName||member.tag}\``)
+			logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send(`Assigned GameRole \`${gameRole.name}\` to \`${member.displayName||member.tag}\``)
 		}
 		
 		//look for last message and see if it was posted already today

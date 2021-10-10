@@ -2,6 +2,11 @@ const {Command, version: akairoVersion} = require("discord-akairo");
 const {MessageEmbed, version: djsVersion} = require("discord.js");
 const {version: botVersion} = require.main.require("./package.json");
 const osu = require('node-os-utils');
+const YAML = require("js-yaml");
+YAML.stringify = function(yaml){
+	return (yaml,{noArrayIndent :true,flowLevel:1,sortKeys:true,forceQuotes:true,quotingType:'"'}) //https://www.npmjs.com/package/js-yaml
+}
+
 
 class StatsCommand extends Command {
 	constructor() {
@@ -80,9 +85,9 @@ class StatsCommand extends Command {
 			.addField(
 				"Technical2",
 				[
-					`**cpu usage**: ${JSON.stringify(cpuUsage)}`,
-					`**disk**: ${JSON.stringify(driveInfo)}`,
-					`**memory**: ${JSON.stringify(memInfo)}`
+					`**cpu usage**:\n${YAML.stringify(cpuUsage)}`,
+					`**disk**:\n${YAML.stringify(driveInfo)}`,
+					`**memory**:\n${YAML.stringify(memInfo)}`
 				],
 				true
 			)

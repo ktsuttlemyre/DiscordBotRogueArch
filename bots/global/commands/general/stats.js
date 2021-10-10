@@ -9,7 +9,7 @@ class StatsCommand extends Command {
 			aliases: ["stats"],
 			category: "general",
 			clientPermissions: ["EMBED_LINKS"],
-			description: {content: "Displays Akairo Boilerplate's statistics."},
+			description: {content: "Displays Shipbot's statistics."},
 		});
 	}
 

@@ -1,6 +1,10 @@
 const {Command, version: akairoVersion} = require("discord-akairo");
 const {MessageEmbed, version: djsVersion} = require("discord.js");
 const {version: botVersion} = require.main.require("./package.json");
+const emotes = {error: ":error:"};
+const util = require.main.require("./util");
+const config = util.config;
+
 const osu = require('node-os-utils');
 const YAML = require("js-yaml");
 YAML.stringify = function(yaml){
@@ -16,6 +20,13 @@ class StatsCommand extends Command {
 			clientPermissions: ["EMBED_LINKS"],
 			description: {content: "Displays Shipbot's statistics."},
 		});
+	}
+	
+	userPermissions(message) {
+		if (!message.member.roles.cache.some((role) => role.name === config.systemRoles.admin)) {
+			return config.systemRoles.admin;
+		}
+		return null;
 	}
 
 	formatMilliseconds(ms) {

@@ -39,7 +39,8 @@
     "scribbletune":"",
     "ytdl-core":"this might be included in discor-plyer but I am not sure",
     "get-mp3-duration":"used to get duration of mp3 for themetones",
-    "core-js":"used for promise.any in node 14.18.0"
+    "core-js":"used for promise.any in node 14.18.0",
+    "node-os-utils":"used for !stats command"
   },
   "dependencies": {
     "@sentry/node": "^5.9.0",
@@ -70,6 +71,7 @@
     "ytdl-core":"^4.5.0",
     "get-mp3-duration":"^1.0.0",
     "core-js":"^3.18.1",
-    "node-twitch":"^0.4.5"
+    "node-twitch":"^0.4.5",
+    "node-os-utils":"1.3.5"
   }
 }

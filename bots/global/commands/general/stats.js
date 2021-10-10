@@ -60,7 +60,11 @@ class StatsCommand extends Command {
 			.setTitle("Akairo Boilerplate Statistics")
 			.addField(
 				"Discord",
-				[`**Guilds**: ${client.guilds.cache.size}`, `**Channels**: ${client.channels.cache.size}`, `**Users**: ${client.users.cache.size}`],
+				[
+					`**Guilds**: ${client.guilds.cache.size}`,
+				 	`**Channels**: ${client.channels.cache.size}`,
+				 	`**Users**: ${client.users.cache.size}`
+				],
 				true
 			)
 			.addField(

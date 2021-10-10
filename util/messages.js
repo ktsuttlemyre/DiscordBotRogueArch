@@ -182,7 +182,9 @@ module.exports.encapsulate = async function (message, override, dontDelete) {
 		return reply;
 	}
 	if (!message.deleted) {
-		await message.delete();
+		await message.delete().catch(function(error){
+			console.error(error);
+		});
 	}
 	return reply;
 };

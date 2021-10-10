@@ -4,7 +4,7 @@ const {version: botVersion} = require.main.require("./package.json");
 const osu = require('node-os-utils');
 const YAML = require("js-yaml");
 YAML.stringify = function(yaml){
-	return (yaml,{noArrayIndent :true,flowLevel:1,sortKeys:true,forceQuotes:true,quotingType:'"'}) //https://www.npmjs.com/package/js-yaml
+	return YAML.dump(yaml,{noArrayIndent :true,flowLevel:1,sortKeys:true,forceQuotes:true,quotingType:'"'}) //https://www.npmjs.com/package/js-yaml
 }
 
 

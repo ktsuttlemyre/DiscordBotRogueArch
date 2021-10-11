@@ -1,9 +1,11 @@
 const {Command, version: akairoVersion} = require("discord-akairo");
 const {MessageEmbed, version: djsVersion} = require("discord.js");
-const {version: botVersion} = require.main.require("./package.json");
+const packageJSON = require.main.require("./package.json");
 const emotes = {error: ":error:"};
 const util = require.main.require("./util");
 const config = util.config;
+const botVersion = packageJSON.version;
+
 
 const osu = require('node-os-utils');
 const YAML = require("js-yaml");
@@ -11,6 +13,16 @@ YAML.stringify = function(yaml){
 	return YAML.dump(yaml,{noArrayIndent :true,flowLevel:1,sortKeys:true,forceQuotes:true,quotingType:'"'}) //https://www.npmjs.com/package/js-yaml
 }
 
+
+//https://stackoverflow.com/questions/12941083/execute-and-get-the-output-of-a-shell-command-in-node-js
+const { promisify } = require('util');
+const exec = promisify(require('child_process').exec)
+
+const getVersions = async function getVersions () {
+  const output = await exec('npm list --depth=0')
+  //const email = await exec('git config --global user.email')
+  return outputl
+};
 
 class StatsCommand extends Command {
 	constructor() {
@@ -48,6 +60,17 @@ class StatsCommand extends Command {
 
 		return `${days === "00" ? "" : `${days}:`}${hours}:${minutes}:${seconds}`;
 	}
+	
+	requireAll(){ //old method of importing all and guessing how to access the version
+		let obj = {}
+		let dep = packageJSON.dependencies
+		Object.keys(dep).forEach(function(key){
+			let lib = require(key);
+			let version = lib.version || lib.vers || undefined;
+			obj[key]={requested:dep[key]:imported:version}	
+		});
+		return obj;
+	}
 
 	async exec(message) {		
 		//returns cpu average and count
@@ -68,6 +91,8 @@ class StatsCommand extends Command {
 		let driveInfo = res[1];
 		let memInfo = res[2];
 		
+		let dep = await getVersions()
+		
 		
 		const client = this.client;
 		
@@ -79,7 +104,8 @@ class StatsCommand extends Command {
 				[
 					`**Guilds**: ${client.guilds.cache.size}`,
 				 	`**Channels**: ${client.channels.cache.size}`,
-				 	`**Users**: ${client.users.cache.size}`
+				 	`**Users**: ${client.users.cache.size}`,
+					
 				],
 				true
 			)
@@ -87,18 +113,23 @@ class StatsCommand extends Command {
 				"Technical",
 				[
 					`**Uptime**: ${this.formatMilliseconds(this.client.uptime)}`,
+					`**CPU usage**:\n${YAML.stringify(cpuUsage).trim()}`,
+					`**Disk**:\n${YAML.stringify(driveInfo).trim()}`,
+					`**Memory**:\n${YAML.stringify(memInfo).trim()}`					
 					`**Memory**: ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`,
-					`**Discord.js**: v${djsVersion}`,
-					`**Akairo**: v${akairoVersion}`,
 				],
 				true
 			)
 			.addField(
-				"Technical2",
+				"Version Info",
 				[
-					`**cpu usage**:\n${YAML.stringify(cpuUsage)}`,
-					`**disk**:\n${YAML.stringify(driveInfo)}`,
-					`**memory**:\n${YAML.stringify(memInfo)}`
+					`**Architecture**: ${process.arch}`,  
+					`**PID**: ${process.pid}`,
+					`**Platform**: ${process.platform}`,
+					`**Node Version**: ${process.version}`, 
+					`**Discord.js**: ${djsVersion}`,
+					`**Akairo**: ${akairoVersion}`,
+					`**Dep**: ${dep}`
 				],
 				true
 			)

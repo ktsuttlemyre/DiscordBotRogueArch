@@ -25,9 +25,15 @@ class HelpCommand extends Command {
 	}
 
 	exec(message, { command }) {
-		if (!command) return this.execCommandList(message);
+		
 
 		const prefix = this.handler.prefix(message);
+		const embed = this.client.util.embed()
+			.setColor(0xFFAC33)
+		
+		if (!command) return this.execCommandList(message,embed);
+		
+		
 		const description = Object.assign({
 			content: 'No description available.',
 			usage: '',
@@ -35,8 +41,7 @@ class HelpCommand extends Command {
 			fields: [],
 		}, command.description);
 
-		const embed = this.client.util.embed()
-			.setColor(0xFFAC33)
+		embed
 			.setTitle(`\`${prefix}${command.aliases[0]} ${description.usage}\``)
 			.addField('Description', description.content);
 
@@ -54,10 +59,9 @@ class HelpCommand extends Command {
 		return message.util.send({ embed });
 	}
 
-	async execCommandList(message) {
-		const embed = this.client.util.embed()
-			.setColor(0xFFAC33)
-			.addField('Command List',
+	async execCommandList(message,embed) {
+		const prefix = this.handler.prefix(message);
+		embed.addField('Command List',
 				[
 					'This is a list of commands.',
 					`The bots prefix is \`${prefix}\``,
@@ -67,7 +71,7 @@ class HelpCommand extends Command {
 		for (const category of this.handler.categories.values()) {
 			const title = {
 				general: '📝\u2000General',
-			}[category.id];
+			}[category.id]||category.id;
 
 			embed.addField(title, `\`${category.map(cmd => cmd.aliases[0]).join('` `')}\``);
 		}

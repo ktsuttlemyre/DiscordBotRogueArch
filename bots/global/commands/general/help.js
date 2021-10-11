@@ -31,32 +31,43 @@ class HelpCommand extends Command {
 		const embed = this.client.util.embed()
 			.setColor(0xFFAC33)
 		
-		if (!command) return this.execCommandList(message,embed);
+		if (!command){
+			embed = this.execCommandList(message,embed);
+		}else{
+			const description = Object.assign({
+				content: 'No description available.',
+				usage: '',
+				examples: [],
+				fields: [],
+			}, command.description);
+
+			embed
+				.setTitle(`\`${prefix}${command.aliases[0]} ${description.usage}\``)
+				.addField('Description', description.content);
+
+			for (const field of description.fields) embed.addField(field.name, field.value);
+
+			if (description.examples.length) {
+				const text = `${prefix}${command.aliases[0]}`;
+				embed.addField('Examples', `\`${text} ${description.examples.join(`\`\n\`${text} `)}\``, true);
+			}
+
+			if (command.aliases.length > 1) {
+				embed.addField('Aliases', `\`${command.aliases.join('` `')}\``, true);
+			}
+		}
 		
+		const shouldReply = message.guild && message.channel.permissionsFor(this.client.user).has('SEND_MESSAGES');
 		
-		const description = Object.assign({
-			content: 'No description available.',
-			usage: '',
-			examples: [],
-			fields: [],
-		}, command.description);
-
-		embed
-			.setTitle(`\`${prefix}${command.aliases[0]} ${description.usage}\``)
-			.addField('Description', description.content);
-
-		for (const field of description.fields) embed.addField(field.name, field.value);
-
-		if (description.examples.length) {
-			const text = `${prefix}${command.aliases[0]}`;
-			embed.addField('Examples', `\`${text} ${description.examples.join(`\`\n\`${text} `)}\``, true);
+		try {
+			await message.author.send({ embed });
+			if (shouldReply) return 'I\'ve sent you a DM with the command list.';
+		}
+		catch (err) {
+			if (shouldReply) return embed; //message.channe.send('I could not send you the command list in DMs.');
 		}
 
-		if (command.aliases.length > 1) {
-			embed.addField('Aliases', `\`${command.aliases.join('` `')}\``, true);
-		}
-
-		return message.channel.send({ embed });
+		return embed
 	}
 
 	async execCommandList(message,embed) {
@@ -76,17 +87,8 @@ class HelpCommand extends Command {
 			embed.addField(title, `\`${category.map(cmd => cmd.aliases[0]).join('` `')}\``);
 		}
 
-		const shouldReply = message.guild && message.channel.permissionsFor(this.client.user).has('SEND_MESSAGES');
-		
-		try {
-			await message.author.send({ embed });
-			if (shouldReply) return message.channel.send('I\'ve sent you a DM with the command list.');
-		}
-		catch (err) {
-			if (shouldReply) return message.channe.send('I could not send you the command list in DMs.');
-		}
 
-		return undefined;
+		return embed;
 	}
 }
 

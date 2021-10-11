@@ -96,8 +96,8 @@ class StatsCommand extends Command {
 		let list = dep.replace(/\+\-\-/ig,'').replace(/\`\-\-/ig,'').trim().split('\n')
 		const half = Math.ceil(list.length / 2);    
 
-		const firstHalf = list.substring(0, half)
-		const secondHalf = list.substring(half)
+		const firstHalf = list.slice(0, half)
+		const secondHalf = list.slice(half+1)
 		
 		
 		const client = this.client;

@@ -108,34 +108,37 @@ class StatsCommand extends Command {
 		        //.setDescription(`**dependencies**:\n${dep.stdout}`)
 		        .addField('Dependencies',firstHalf.join('\n'),true)
 			.addField(blank,secondHalf.join('\n'),true)
-			.addField(blank,blank,false)
+			.addField("Env Vars",`${YAML.stringify(process.env)}`,false)
+			.addField("Args",`${process.args}`,true)
 			.addField(
-				"Discord",
+				"Client",
 				[
 					`**Guilds**: ${client.guilds.cache.size}`,
 				 	`**Channels**: ${client.channels.cache.size}`,
 				 	`**Users**: ${client.users.cache.size}`,
+					`**Uptime**: ${this.formatMilliseconds(this.client.uptime)}`,
 					
 				],
 				true
 			)
-		        .addField(blank,blank,true)
 			.addField(
-				"Version Info",
+				"Environment",
 				[
 					`**Architecture**: ${process.arch}`,  
 					`**PID**: ${process.pid}`,
 					`**Platform**: ${process.platform}`,
 					`**Node Version**: ${process.version}`, 
-					`**Discord.js**: ${djsVersion}`,
-					`**Akairo**: ${akairoVersion}`,
+					//`**Discord.js**: ${djsVersion}`,
+					//`**Akairo**: ${akairoVersion}`,
 				],
 				true
 			)
 			.addField(
 				"Technical",
 				[
-					`**Uptime**: ${this.formatMilliseconds(this.client.uptime)}`,
+					`**wall time**: ${process.uptime()}`,
+					`**hr walltime**: ${process.hrtime()}`,
+					`**CWD**: ${process.cwd()}`,
 					`**CPU usage**: ${YAML.stringify(cpuUsage)}`,
 				],
 				true

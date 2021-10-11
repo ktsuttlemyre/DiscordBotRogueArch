@@ -24,7 +24,7 @@ class HelpCommand extends Command {
 		});
 	}
 
-	exec(message, {command}) {
+	async exec(message, {command}) {
 		let embed;
 		if (!command){
 			embed = this.execCommandList(message);
@@ -61,16 +61,16 @@ class HelpCommand extends Command {
 		}
 
 
-		const canReply = message.guild && message.channel.permissionsFor(this.client.user).has("SEND_MESSAGES");
-		try {
-			await message.author.send({embed});
-			if (canReply) return message.util.reply("I've sent you a DM with the command list.");
-		} catch (err) {
-			await message.channel.send({embed});
-			if (canReply) return message.util.reply("I could not send you the command list in DMs.");
-		}
+// 		const canReply = message.guild && message.channel.permissionsFor(this.client.user).has("SEND_MESSAGES");
+// 		try {
+// 			await message.author.send({embed});
+// 			if (canReply) return message.util.reply("I've sent you a DM with the command list.");
+// 		} catch (err) {
+// 			await message.channel.send({embed});
+// 			if (canReply) return message.util.reply("I could not send you the command list in DMs.");
+// 		}
 		
-		return undefined; //message.util.send({embed});
+		return message.util.send({embed});
 	}
 
 	async execCommandList(message) {

@@ -99,7 +99,7 @@ class StatsCommand extends Command {
 		const embed = new MessageEmbed()
 			.setColor(0xffac33)
 			.setTitle("Shipbot Statistics")
-		        .setDescription(`**Dep**: ${YAML.stringify(dep)}`)
+		        .setDescription(`**dependencies**:\n${dep.stout}`)
 			.addField(
 				"Discord",
 				[
@@ -127,7 +127,7 @@ class StatsCommand extends Command {
 				"Technical",
 				[
 					`**Uptime**: ${this.formatMilliseconds(this.client.uptime)}`,
-					`**CPU usage**:\n${YAML.stringify(cpuUsage)}`,
+					`**CPU usage**: ${YAML.stringify(cpuUsage)}`,
 				],
 				true
 			)

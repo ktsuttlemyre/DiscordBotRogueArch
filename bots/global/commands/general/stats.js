@@ -99,7 +99,7 @@ class StatsCommand extends Command {
 		const embed = new MessageEmbed()
 			.setColor(0xffac33)
 			.setTitle("Shipbot Statistics")
-		        .setDescription(`**dependencies**:\n${dep.stout}`)
+		        .setDescription(`**dependencies**:\n${dep.stdout}`)
 			.addField(
 				"Discord",
 				[

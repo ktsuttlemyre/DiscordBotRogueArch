@@ -26,14 +26,31 @@ class HelpCommand extends Command {
 
 	exec(message, { command }) {
 		
-
-		const prefix = this.handler.prefix(message);
 		const embed = this.client.util.embed()
 			.setColor(0xFFAC33)
 		
 		if (!command){
 			embed = this.execCommandList(message,embed);
 		}else{
+			embed = this.execCommandQuery(message,embed,command);
+		}
+		
+		const shouldReply = message.guild && message.channel.permissionsFor(this.client.user).has('SEND_MESSAGES');
+		
+		try {
+			await message.author.send({ embed });
+			if (shouldReply) return 'I\'ve sent you a DM with the requested information.';
+		}
+		catch (err) {
+			if (shouldReply) return embed; //message.channe.send('I could not send you the command list in DMs.');
+		}
+
+		return embed
+	}
+
+	execCommandQuery(message,embed,command) {
+			const prefix = this.handler.prefix(message);
+		
 			const description = Object.assign({
 				content: 'No description available.',
 				usage: '',
@@ -55,22 +72,11 @@ class HelpCommand extends Command {
 			if (command.aliases.length > 1) {
 				embed.addField('Aliases', `\`${command.aliases.join('` `')}\``, true);
 			}
-		}
-		
-		const shouldReply = message.guild && message.channel.permissionsFor(this.client.user).has('SEND_MESSAGES');
-		
-		try {
-			await message.author.send({ embed });
-			if (shouldReply) return 'I\'ve sent you a DM with the requested information.';
-		}
-		catch (err) {
-			if (shouldReply) return embed; //message.channe.send('I could not send you the command list in DMs.');
-		}
-
 		return embed
 	}
-
-	async execCommandList(message,embed) {
+	
+	
+	execCommandList(message,embed) {
 		const prefix = this.handler.prefix(message);
 		embed.addField('Command List',
 				[

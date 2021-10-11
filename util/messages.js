@@ -88,20 +88,29 @@ module.exports.embedParser = async function (message) {
 	}
 };
 
-module.exports.encapsulate = async function (message, override, dontDelete) {
-	if (!override) {
-		override = message.content;
-	}
-	let style = 'default';
-	if(override.style){
-		style = override.style;
-		override.style = null;
-		delete override.style;
+module.exports.encapsulate = async function (message, doc, opts) {
+	/*
+	opts is a special object usually passed via the !encapsulate command
+	includes member/user who requested the encapluate function
+	
+	doc.style = style such as info, error, log, etc
+	doc.dm, doc.dms, doc.private = sends the response as a private message
+	doc.delete = false (can be passed to keep the orignal from being deleted)
+	doc.anon, doc.anonymous = original requester wont be shown
+	*/
+	opts = opts || {}
+	if (!doc) {
+		doc = message.content;
 	}
 	
-	let doc = override || {};	
-	console.log("pre parsed encapsulation", override);
-	var type = typeof doc;
+	debug && console.log("pre parsed encapsulation", doc);
+	
+	//convert doc to embed obj
+	if (Array.isArray(doc)) {
+		doc = doc.join('\n');
+	}
+	
+	let type = typeof doc;
 	if (type == "string") {
 		let split = doc.split("\n");
 		doc = {};
@@ -111,13 +120,12 @@ module.exports.encapsulate = async function (message, override, dontDelete) {
 			doc.title = split.shift();
 			doc.description = split.join("\n");
 		}
-	} else if (Array.isArray(doc)) {
-		message.channel.send("Can not process arrays");
-		return;
-	}
+	}		
+	//add any default attributes to doc
+	doc.style = doc.style || 'default'
 	
 	// note these use bootstrap 4 colors
-	switch(style.error){
+	switch(doc.style.error){
 		case 'error':
 			doc.color = "dc3545"
 			break;
@@ -136,52 +144,73 @@ module.exports.encapsulate = async function (message, override, dontDelete) {
 			doc.color = "28a745"
 			break;
 	}
+	
+	//set aliases
+	doc.anonymous = doc.anon || doc.anonymous;
+	doc.dm = doc.dm || doc.dms || doc.private;
 
 
 	//set author if needed
-	let user = message.member || message.author;
-	let author = {
-		name: user.displayName || user.tag,
+	let author = message.member || message.author;
+	doc.author = {
+		name: author.displayName || author.tag,
 		icon_url: message.author.avatarURL() || common.defaultAvatar,
-		url: `https://discordapp.com/users/${user.id}`,
+		url: `https://discordapp.com/users/${author.id}`,
 	};
-	doc.author = author;
 
-	//if user is admin and requests anon then
-	let isAdmin = user && user.roles && user.roles.cache.find((role) => config.encapsulateAdminRoles.includes(role.name));
-	if ((isAdmin && doc.anon) || doc.anonymous) {
+	//if requester is admin and requests anon then
+	let onBehalf = opts.member || opts.user
+	let isAdmin = (!onBehalf)?true:onBehalf && onBehalf.roles && onBehalf.roles.cache.find((role) => config.encapsulateAdminRoles.includes(role.name));
+	
+	//if this isn't an admin request then delete all admin options
+	if(!isAdmin){
+		doc.anonymous = doc.channel = doc.edit = doc.dm = doc.reactions = doc.delete = undefined;
+	}
+	
+	if (doc.anonymous) {
 		doc.author = undefined;
 		delete doc.author;
 	}
 	//if channel is set then
 	let channel = message.channel;
-	if (isAdmin && doc.channel) {
+	if (doc.channel) {
 		channel = await message.client.channels.fetch(doc.channel.toString());
+		delete doc.channel;
 	}
 
 	let reply;
-	if (isAdmin && doc.edit) {
-		message = await channel.messages.fetch(doc.edit);
+	if(doc.edit) {
+		if(doc.edit !== true){
+			message = await channel.messages.fetch(doc.edit);		
+		}
 		reply = await message.edit({embed: doc});
-	} else {
-		reply = await channel.send({embed: doc});
+	}else if(doc.dm){
+		const shouldReply = message.guild && message.channel.permissionsFor(this.client.user).has('SEND_MESSAGES');
+
+		try {
+			await message.author.send({ embed });
+			if (shouldReply) embed.content= 'I\'ve sent you a DM with the requested information.';
+		}catch (err) {
+			if (shouldReply) embed.content = 'I could not send you the command list in DMs.';
+		}
 	}
 
+	reply = await channel.send({embed: doc});
+	
+
 	//if reactions are set then
-	if (isAdmin && doc.reactions) {
+	if (doc.reactions) {
 		for (var i = 0, l = doc.reactions.length; i < l; i++) {
 			let reaction = doc.reactions[i];
 			reaction = reaction.trim();
-			console.log("reacting to encapsulated message", reaction);
+			debug && console.log("reacting to encapsulated message", reaction);
 			await reply.react(reaction);
 		}
 	}
 
-	//dont delete original source
-	if (dontDelete || doc.dontDelete) {
-		return reply;
-	}
-	if (!message.deleted) {
+	//if doc.delete is false then dont delete
+	//also dont delete original source if it's already deleted
+	if (doc.delete !== false && !message.deleted) {
 		await message.delete().catch(function(error){
 			console.error(error);
 		});

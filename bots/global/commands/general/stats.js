@@ -99,7 +99,7 @@ class StatsCommand extends Command {
 		const embed = new MessageEmbed()
 			.setColor(0xffac33)
 			.setTitle("Shipbot Statistics")
-		        .setDescription(`**Dep**: ${dep}`)
+		        .setDescription(`**Dep**: ${YAML.stringify(dep)}`)
 			.addField(
 				"Discord",
 				[
@@ -110,17 +110,7 @@ class StatsCommand extends Command {
 				],
 				true
 			)
-			.addField(
-				"Technical",
-				[
-					`**Uptime**: ${this.formatMilliseconds(this.client.uptime)}`,
-					`**CPU usage**:\n${YAML.stringify(cpuUsage)}`,
-					`**Disk**:\n${YAML.stringify(driveInfo)}`,
-					`**Memory**:\n${YAML.stringify(memInfo)}`,					
-					`**Memory**: ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`,
-				],
-				true
-			)
+		        .addFiend("","",true)
 			.addField(
 				"Version Info",
 				[
@@ -130,6 +120,27 @@ class StatsCommand extends Command {
 					`**Node Version**: ${process.version}`, 
 					`**Discord.js**: ${djsVersion}`,
 					`**Akairo**: ${akairoVersion}`,
+				],
+				true
+			)
+			.addField(
+				"Technical",
+				[
+					`**Uptime**: ${this.formatMilliseconds(this.client.uptime)}`,
+					`**CPU usage**:\n${YAML.stringify(cpuUsage)}`,
+				],
+				true
+			)
+			.addField(
+				"Disk",
+				[`${YAML.stringify(driveInfo)}`],
+				true
+			)
+			.addField(
+				"Memory",
+				[
+					`${YAML.stringify(memInfo)}`,					
+					`${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`
 				],
 				true
 			)

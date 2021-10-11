@@ -185,7 +185,7 @@ module.exports.encapsulate = async function (message, doc, opts) {
 		}
 		reply = await message.edit({embed: doc});
 	}else if(doc.dm){
-		const shouldReply = message.guild && message.channel.permissionsFor(this.client.user).has('SEND_MESSAGES');
+		const shouldReply = message.guild && message.channel.permissionsFor(message.client.user).has('SEND_MESSAGES');
 
 		try {
 			await message.author.send({ embed });

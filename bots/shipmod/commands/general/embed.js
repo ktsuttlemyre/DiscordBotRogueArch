@@ -44,7 +44,11 @@ class CustomCommand extends Command {
 				}
 			}
 		}
-		await util.messages.encapsulate(message, doc);
+		let opts = {
+			user:message.user,
+			member:message.member
+		}
+		await util.messages.encapsulate(message, doc, opts);
 	}
 }
 

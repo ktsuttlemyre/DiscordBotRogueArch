@@ -110,7 +110,7 @@ class StatsCommand extends Command {
 				],
 				true
 			)
-		        .addFiend("","",true)
+		        .addField("","",true)
 			.addField(
 				"Version Info",
 				[

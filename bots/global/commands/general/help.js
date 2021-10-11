@@ -56,7 +56,7 @@ class HelpCommand extends Command {
 			embed.addField('Aliases', `\`${command.aliases.join('` `')}\``, true);
 		}
 
-		return message.util.send({ embed });
+		return message.channel.send({ embed });
 	}
 
 	async execCommandList(message,embed) {
@@ -77,13 +77,13 @@ class HelpCommand extends Command {
 		}
 
 		const shouldReply = message.guild && message.channel.permissionsFor(this.client.user).has('SEND_MESSAGES');
-
+		
 		try {
 			await message.author.send({ embed });
-			if (shouldReply) return message.util.reply('I\'ve sent you a DM with the command list.');
+			if (shouldReply) return message.channel.send('I\'ve sent you a DM with the command list.');
 		}
 		catch (err) {
-			if (shouldReply) return message.util.reply('I could not send you the command list in DMs.');
+			if (shouldReply) return message.channe.send('I could not send you the command list in DMs.');
 		}
 
 		return undefined;

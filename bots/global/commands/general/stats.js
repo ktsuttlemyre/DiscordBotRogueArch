@@ -92,6 +92,12 @@ class StatsCommand extends Command {
 		let memInfo = res[2];
 		
 		let dep = await getVersions()
+		let list = dep.replace(/\+\-\-/ig,'').replace(/\`\-\-/ig,'').split('\n')
+		const half = Math.ceil(list.length / 2);    
+
+		const firstHalf = list.slice(0, half)
+		const secondHalf = list.slice(-half)
+		
 		
 		
 		const client = this.client;
@@ -99,7 +105,9 @@ class StatsCommand extends Command {
 		const embed = new MessageEmbed()
 			.setColor(0xffac33)
 			.setTitle("Shipbot Statistics")
-		        .setDescription(`**dependencies**:\n${dep.stdout}`)
+		        //.setDescription(`**dependencies**:\n${dep.stdout}`)
+		        .addField('Dependencies',firstHalf.join('\n'),true)
+			.addField(blank,secondHalf.join('\n'),false)
 			.addField(
 				"Discord",
 				[

@@ -5,7 +5,7 @@ const emotes = {error: ":error:"};
 const util = require.main.require("./util");
 const config = util.config;
 const botVersion = packageJSON.version;
-
+const blank = "‎"
 
 const osu = require('node-os-utils');
 const YAML = require("js-yaml");
@@ -110,7 +110,7 @@ class StatsCommand extends Command {
 				],
 				true
 			)
-		        .addField(" "," ",true)
+		        .addField(blank,blank,true)
 			.addField(
 				"Version Info",
 				[

@@ -21,7 +21,7 @@ const exec = promisify(require('child_process').exec)
 const getVersions = async function getVersions () {
   const output = await exec('npm list --depth=0')
   //const email = await exec('git config --global user.email')
-  return outputl
+  return output
 };
 
 class StatsCommand extends Command {

@@ -97,7 +97,7 @@ class StatsCommand extends Command {
 		const half = Math.ceil(list.length / 2);    
 
 		const firstHalf = list.slice(0, half)
-		const secondHalf = list.slice(half+1)
+		const secondHalf = list.slice(half)
 		
 		
 		const client = this.client;

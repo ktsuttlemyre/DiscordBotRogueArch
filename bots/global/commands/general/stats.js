@@ -98,7 +98,8 @@ class StatsCommand extends Command {
 		
 		const embed = new MessageEmbed()
 			.setColor(0xffac33)
-			.setTitle("Akairo Boilerplate Statistics")
+			.setTitle("Shipbot Statistics")
+		        .setDescription(`**Dep**: ${dep}`)
 			.addField(
 				"Discord",
 				[
@@ -129,7 +130,6 @@ class StatsCommand extends Command {
 					`**Node Version**: ${process.version}`, 
 					`**Discord.js**: ${djsVersion}`,
 					`**Akairo**: ${akairoVersion}`,
-					`**Dep**: ${dep}`
 				],
 				true
 			)

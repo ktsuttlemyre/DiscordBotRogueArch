@@ -99,6 +99,11 @@ class StatsCommand extends Command {
 		const firstHalf = list.slice(0, half)
 		const secondHalf = list.slice(half)
 		
+		let opts = {
+			args:true,
+			env:false
+		}
+		
 		
 		const client = this.client;
 		
@@ -108,38 +113,47 @@ class StatsCommand extends Command {
 		        //.setDescription(`**dependencies**:\n${dep.stdout}`)
 		        .addField('Dependencies',firstHalf.join('\n'),true)
 			.addField(blank,secondHalf.join('\n'),true)
-			.addField("Env Vars",`${YAML.stringify(process.env)}`,false)
-			.addField("Args",`${process.args}`,true)
+		if(opts.env){
+			embed.addField("Env Vars",`${YAML.stringify(process.env)}`,false)
+		}else{
+			embed.addField("Env Vars",`[Hidden]`,false)
+		}
+		if(opts.env){
+			embed.addField("Args",`${process.args}`,true)
+		}else{
+			embed.addField("Args",`[Hidden]`,true)
+		}
+		embed
 			.addField(
 				"Client",
 				[
+					`**Online Time**: ${this.formatMilliseconds(this.client.uptime)}`,
 					`**Guilds**: ${client.guilds.cache.size}`,
 				 	`**Channels**: ${client.channels.cache.size}`,
 				 	`**Users**: ${client.users.cache.size}`,
-					`**Uptime**: ${this.formatMilliseconds(this.client.uptime)}`,
 					
 				],
 				true
 			)
 			.addField(
-				"Environment",
+				"Platform",
 				[
-					`**Architecture**: ${process.arch}`,  
-					`**PID**: ${process.pid}`,
+					`**Architecture**: ${process.arch}`, 
 					`**Platform**: ${process.platform}`,
-					`**Node Version**: ${process.version}`, 
+					`**Node Version**: ${process.version}`,
 					//`**Discord.js**: ${djsVersion}`,
 					//`**Akairo**: ${akairoVersion}`,
 				],
 				true
 			)
 			.addField(
-				"Technical",
+				"Process",
 				[
-					`**wall time**: ${process.uptime()}`,
-					`**hr walltime**: ${process.hrtime()}`,
-					`**CWD**: ${process.cwd()}`,
+					`**Wall-time**: ${process.uptime()}`,
 					`**CPU usage**: ${YAML.stringify(cpuUsage)}`,
+					//`**HR walltime**: ${process.hrtime()}`,
+					`**PID**: ${process.pid}`,
+					`**CWD**: ${process.cwd()}`,
 				],
 				true
 			)

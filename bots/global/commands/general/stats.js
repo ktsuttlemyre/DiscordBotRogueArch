@@ -61,16 +61,16 @@ class StatsCommand extends Command {
 		return `${days === "00" ? "" : `${days}:`}${hours}:${minutes}:${seconds}`;
 	}
 	
-	requireAll(){ //old method of importing all and guessing how to access the version
-		let obj = {}
-		let dep = packageJSON.dependencies
-		Object.keys(dep).forEach(function(key){
-			let lib = require(key);
-			let version = lib.version || lib.vers || undefined;
-			obj[key]={requested:dep[key]:imported:version}	
-		});
-		return obj;
-	}
+// 	requireAll(){ //old method of importing all and guessing how to access the version
+// 		let obj = {}
+// 		let dep = packageJSON.dependencies
+// 		Object.keys(dep).forEach(function(key){
+// 			let lib = require(key);
+// 			let version = lib.version || lib.vers || undefined;
+// 			obj[key]={requested:dep[key]:imported:version}	
+// 		});
+// 		return obj;
+// 	}
 
 	async exec(message) {		
 		//returns cpu average and count

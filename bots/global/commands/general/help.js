@@ -30,18 +30,18 @@ class HelpCommand extends Command {
 			embed = this.execCommandList(message);
 		}
 
-		const prefix = this.handler.prefix(message);
-		const description = Object.assign(
-			{
-				content: "No description available.",
-				usage: "",
-				examples: [],
-				fields: [],
-			},
-			command.description
-		);
 		
 		if(!embed){
+			const prefix = this.handler.prefix(message);
+			const description = Object.assign(
+				{
+					content: "No description available.",
+					usage: "",
+					examples: [],
+					fields: [],
+				},
+				command.description
+			);
 			embed = this.client.util
 				.embed()
 				.setColor(0xffac33)

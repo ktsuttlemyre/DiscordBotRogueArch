@@ -91,7 +91,7 @@ class StatsCommand extends Command {
 		let driveInfo = res[1];
 		let memInfo = res[2];
 		
-		let dep = await getVersions()
+		let dep = await (getVersions().stdout || '')
 		let list = dep.replace(/\+\-\-/ig,'').replace(/\`\-\-/ig,'').split('\n')
 		const half = Math.ceil(list.length / 2);    
 

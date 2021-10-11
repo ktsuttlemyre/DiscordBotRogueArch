@@ -70,7 +70,7 @@ class HelpCommand extends Command {
 // 			if (canReply) return message.util.reply("I could not send you the command list in DMs.");
 // 		}
 		
-		return message.util.send({embed});
+		return message.util.reply({embed});
 	}
 
 	async execCommandList(message) {

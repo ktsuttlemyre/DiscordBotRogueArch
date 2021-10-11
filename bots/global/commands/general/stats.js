@@ -108,7 +108,7 @@ class StatsCommand extends Command {
 		        //.setDescription(`**dependencies**:\n${dep.stdout}`)
 		        .addField('Dependencies',firstHalf.join('\n'),true)
 			.addField(blank,secondHalf.join('\n'),true)
-			.addField(blank,blank,true)
+			.addField(blank,blank,false)
 			.addField(
 				"Discord",
 				[

@@ -114,9 +114,9 @@ class StatsCommand extends Command {
 				"Technical",
 				[
 					`**Uptime**: ${this.formatMilliseconds(this.client.uptime)}`,
-					`**CPU usage**:\n${YAML.stringify(cpuUsage).trim()}`,
-					`**Disk**:\n${YAML.stringify(driveInfo).trim()}`,
-					`**Memory**:\n${YAML.stringify(memInfo).trim()}`					
+					`**CPU usage**:\n${YAML.stringify(cpuUsage)}`,
+					`**Disk**:\n${YAML.stringify(driveInfo)}`,
+					`**Memory**:\n${YAML.stringify(memInfo)}`					
 					`**Memory**: ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`,
 				],
 				true

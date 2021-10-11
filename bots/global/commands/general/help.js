@@ -24,8 +24,7 @@ class HelpCommand extends Command {
 		});
 	}
 
-	exec(message, { command }) {
-		
+	async exec(message, { command }) {
 		const embed = this.client.util.embed()
 			.setColor(0xFFAC33)
 		

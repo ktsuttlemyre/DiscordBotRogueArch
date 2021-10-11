@@ -61,7 +61,7 @@ class HelpCommand extends Command {
 		
 		try {
 			await message.author.send({ embed });
-			if (shouldReply) return 'I\'ve sent you a DM with the command list.';
+			if (shouldReply) return 'I\'ve sent you a DM with the requested information.';
 		}
 		catch (err) {
 			if (shouldReply) return embed; //message.channe.send('I could not send you the command list in DMs.');

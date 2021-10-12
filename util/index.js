@@ -50,6 +50,14 @@ module.exports.wakeupPing = _.debounce(
 	{maxWait: 25 * 60 * 1000, trailing: false, leading: true}
 );
 
+module.exports.exec = function(message,content,commandName,inhibitors){
+	const command = message.client.commandHandler.findCommand(commandName);
+	if(!command){
+		throw 'Command not found'
+	}
+        message.client.commandHandler.handleDirectCommand(message, message.content, command, !inhibitors);
+}
+
 module.exports.devChannelGate = function (message, env) {
 	env = env || process.env.ENVIRONMENT;
 

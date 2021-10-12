@@ -84,8 +84,8 @@ class CustomListener extends Listener {
 				try{
 					_.merge(settings,YAML.load(yaml));
 					message.react('✅');
-				}catch{
-					owner.send('❌ Error parsing settings on message id: '+message.id)
+				}catch(err){
+					owner.send('❌ Error parsing settings on message id: '+message.id+' '+err)
 					message.react('❌');
 					continue
 				}

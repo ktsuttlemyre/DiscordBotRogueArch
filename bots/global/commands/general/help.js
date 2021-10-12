@@ -48,9 +48,16 @@ class HelpCommand extends Command {
 				fields: [],
 			}, command.description);
 
+			const aliases =[]
+			command.aliases.forEach(function(alias){
+				aliases.push(`${prefix}${alias}`)	
+			})
+			
 			embed
-				.setTitle(`\`${prefix}${command.aliases[0]} ${description.usage}\``)
-				.addField('Description', description.content);
+				.setTitle(`How to use: \`${prefix}${command.aliases[0]}\``)
+				.addField('Aliases:',aliases.join(' '),false)
+				.addField('Usage:',`\`${description.usage}\``,false)
+				.addField('Description:', description.content,false);
 
 			for (const field of description.fields) embed.addField(field.name, field.value);
 

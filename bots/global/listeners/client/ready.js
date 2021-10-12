@@ -72,6 +72,7 @@ class CustomListener extends Listener {
 				//oldPresence, newPresencem, startupFlag
 				client.emit("presenceUpdate", null, member.user.presence, true); //true for manually triggered
 			}); //end members
+			client.emit("guildCreate", guild); //true for manually triggered
 
 			//read all previous commands
 			let textChannels = guild.channels.cache.filter((c) => c.type == "text").array();

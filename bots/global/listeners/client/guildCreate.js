@@ -1,7 +1,8 @@
 /* Emitted whenever the client joins a guild.
 PARAMETER    TYPE         DESCRIPTION
-guild        Guild        The created guild    */
+guild        Guild        The created guild
 */
+
 let debug = false;
 const Discord = require("discord.js");
 const YAML = require("js-yaml");

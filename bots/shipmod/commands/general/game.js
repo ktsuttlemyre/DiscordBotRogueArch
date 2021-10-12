@@ -16,7 +16,7 @@ let mapToArray = function(map){
 class CustomCommand extends Command {
 	constructor() {
 		super(commandVars.name, {
-			description: {content: "join a voice chat"},
+			description: {content: "Use the `@` character to choose a gaming class to query players"},
 			aliases: [commandVars.name],
 			category: commandVars.category,
 			clientPermissions: ["SEND_MESSAGES"],

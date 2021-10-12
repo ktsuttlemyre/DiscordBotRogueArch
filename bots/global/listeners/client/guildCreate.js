@@ -64,7 +64,7 @@ class CustomListener extends Listener {
 			}); //sort oldest date created
 
 			debug && console.log('messages sorted',messages.size)
-			for (const message of messages) {
+			for (var message in messages) {
 				debug && console.log('messages sorted',message)
 				if(message.reactions){
 					await message.reactions.removeAll().catch(function(error){

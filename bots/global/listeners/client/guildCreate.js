@@ -52,7 +52,7 @@ class CustomListener extends Listener {
 			})
 			if(!channel){
 				debug && console.log(`${guild.name} has no settings channel`)
-				return
+				return {}
 			}
 
 			let settingsMessages = await channel.messages.fetch({ limit: 100 });
@@ -86,8 +86,9 @@ class CustomListener extends Listener {
 
 
 			}
+			return settings
 		}
-		await setSettings();
+		let settings = await setSettings();
 
 
     

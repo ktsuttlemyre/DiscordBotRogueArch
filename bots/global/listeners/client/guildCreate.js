@@ -33,10 +33,10 @@ class CustomListener extends Listener {
 		let settingsChannelName='settings-shipbot'
 		let client = this.client;
 		if(!guild.available){
-			debug && console.log(`Bot ${client.me.tag} tried to join guild ${guild.name} and failed`);
+			debug && console.log(`Bot ${client.user.tag} tried to join guild ${guild.name} and failed`);
 			return; // Stops if unavailable
 		}
-		debug && console.log(`Bot ${client.me.tag} joined guild ${guild.name}`);
+		debug && console.log(`Bot ${client.user.tag} joined guild ${guild.name}`);
 
 		let owner = guild.owner.user
 		if(!owner){

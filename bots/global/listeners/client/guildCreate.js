@@ -63,14 +63,18 @@ class CustomListener extends Listener {
 				      message.react('❌');
 				});
 			}
-			let yaml=message.content.trim().replace(/^```/).replace(/```$/).trim();
+			let content = message.content
+			if(!content){
+				continue
+			}
+			let yaml=content.trim().replace(/^```/).replace(/```$/).trim();
 			let section;
 			try{
 				section = YAML.load(yaml);
 			}catch{
 				owner.send('❌ Error parsing settings on message id: '+message.id)
 				message.react('❌');
-				return
+				continue
 			}
 			_.merge(settings,section)
 			message.react('✅');

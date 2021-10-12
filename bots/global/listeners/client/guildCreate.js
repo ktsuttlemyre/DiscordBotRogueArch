@@ -62,9 +62,12 @@ class CustomListener extends Listener {
 			let messages = settingsMessages.sorted(function(a, b) {         
 				return b.createdTimestamp - a.createdTimestamp;
 			}); //sort oldest date created
-
-			debug && console.log('messages sorted',messages.size)
-			for (var message in messages) {
+			messages = Array.from(messages.values());
+			
+			debug && console.log('messages sorted',messages.length)
+			
+			for (var i=0,l=messages.length;i<l;i++) {
+				let message = messages[i];
 				debug && console.log('message =',message)
 				if(message.reactions){
 					await message.reactions.removeAll().catch(function(error){

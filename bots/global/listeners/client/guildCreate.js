@@ -6,6 +6,7 @@ guild        Guild        The created guild
 let debug = true;
 const Discord = require("discord.js");
 const YAML = require("js-yaml");
+const _ = require("lodash");
 
 const {Listener} = require("discord-akairo");
 const {reactions, defaultAvatar} = require.main.require("./common");

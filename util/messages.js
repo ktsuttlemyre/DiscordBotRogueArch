@@ -95,7 +95,7 @@ module.exports.encapsulate = async function (message, doc, opts) {
 	
 	doc.style = style such as info, error, log, etc
 	doc.dm, doc.dms, doc.private = sends the response as a private message
-	doc.delete = false (can be passed to keep the orignal from being deleted)
+	doc.replace = false (can be passed to keep the orignal from being deleted)
 	doc.anon, doc.anonymous = original requester wont be shown
 	*/
 	opts = opts || {}
@@ -164,7 +164,7 @@ module.exports.encapsulate = async function (message, doc, opts) {
 	
 	//if this isn't an admin request then delete all admin options
 	if(!isAdmin){
-		doc.anonymous = doc.channel = doc.edit = doc.dm = doc.reactions = doc.delete = undefined;
+		doc.anonymous = doc.channel = doc.edit = doc.dm = doc.reactions = doc.replace = undefined;
 	}
 	
 	if (doc.anonymous) {
@@ -185,13 +185,14 @@ module.exports.encapsulate = async function (message, doc, opts) {
 		}
 		reply = await message.edit({embed: doc});
 	}else if(doc.dm){
+		//let dm = (doc.dm !== true)?doc.dm:null;
 		const shouldReply = message.guild && message.channel.permissionsFor(message.client.user).has('SEND_MESSAGES');
 
 		try {
 			await message.author.send({ embed });
-			if (shouldReply) doc.content= 'I\'ve sent you a DM with the requested information.';
+			if (shouldReply) doc.content = /*dm ||*/ 'I sent you the requested information.';
 		}catch (err) {
-			if (shouldReply) doc.content = 'I could not send you the command list in DMs.';
+			if (shouldReply) doc.content = 'I could not send you the requested infomration directly.';
 		}
 	}
 
@@ -208,9 +209,9 @@ module.exports.encapsulate = async function (message, doc, opts) {
 		}
 	}
 
-	//if doc.delete is false then dont delete
+	//if doc.replace is false then dont delete
 	//also dont delete original source if it's already deleted
-	if (doc.delete !== false && !message.deleted) {
+	if (doc.replace !== false && !message.deleted) {
 		await message.delete().catch(function(error){
 			console.error(error);
 		});

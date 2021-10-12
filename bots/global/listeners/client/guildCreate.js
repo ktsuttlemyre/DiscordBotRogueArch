@@ -30,48 +30,49 @@ class CustomListener extends Listener {
 	  
 
 	async exec(guild) {
-    let client = this.client;
-    if(!guild.available){
-      debug && console.log(`Bot ${client.me.tag} tried to join guild ${guild.name} and failed`);
-      return; // Stops if unavailable
-    }
-    debug && console.log(`Bot ${client.me.tag} joined guild ${guild.name}`);
-    
+		let settingsChannelName='ettings-shipbot'
+		let client = this.client;
+		if(!guild.available){
+			debug && console.log(`Bot ${client.me.tag} tried to join guild ${guild.name} and failed`);
+			return; // Stops if unavailable
+		}
+		debug && console.log(`Bot ${client.me.tag} joined guild ${guild.name}`);
+
 		let owner = guild.owner.user
-    if(!owner){
-      owner = await guild.members.fetch(guild.ownerID) // Fetches owner
-      owner = owner.user || owner.member || owner;
-    }
-    
-    let channel = guild.channels.cache.find(function(channel){
-      return channel.name.includes('shipbot-settings');
-    })
-    
-    let settingsMessages = channel.messages.fetch({ limit: 100 });
-    let messages = settingsMessages.sorted(function(a, b) {         
-        return b.createdTimestamp - a.createdTimestamp;
-    }); //sort oldest date created
-    
-    
-    let settings = {}
-    for(var i=0,l=messages.length;i<l;i++){
-	let message = messages[i]
-	await message.reactions.removeAll().catch(function(error){
-	      owner.send('❌ Failed to clear reactions on settings messages: '+error);
-	      message.react('❌');
-	});
-	let yaml=message.content.trim().replace(/^```/).replace(/```$/).trim();
-	let section;
-	try{
-		section = YAML.load(yaml);
-	}catch{
-		owner.send('❌ Error parsing settings on message id: '+message.id)
-		message.react('❌');
-		return
-	}
-      _.merge(settings,section)
-      message.react('✅');
-    }
+		if(!owner){
+			owner = await guild.members.fetch(guild.ownerID) // Fetches owner
+			owner = owner.user || owner.member || owner;
+		}
+
+		let channel = guild.channels.cache.find(function(channel){
+			return channel.name.includes(settingsChannelName);
+		})
+
+		let settingsMessages = channel.messages.fetch({ limit: 100 });
+		let messages = settingsMessages.sorted(function(a, b) {         
+			return b.createdTimestamp - a.createdTimestamp;
+		}); //sort oldest date created
+
+
+		let settings = {}
+		for(var i=0,l=messages.length;i<l;i++){
+			let message = messages[i]
+			await message.reactions.removeAll().catch(function(error){
+			      owner.send('❌ Failed to clear reactions on settings messages: '+error);
+			      message.react('❌');
+			});
+			let yaml=message.content.trim().replace(/^```/).replace(/```$/).trim();
+			let section;
+			try{
+				section = YAML.load(yaml);
+			}catch{
+				owner.send('❌ Error parsing settings on message id: '+message.id)
+				message.react('❌');
+				return
+			}
+			_.merge(settings,section)
+			message.react('✅');
+		}
 
 
 

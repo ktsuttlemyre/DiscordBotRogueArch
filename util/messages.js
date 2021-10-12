@@ -97,6 +97,7 @@ module.exports.encapsulate = async function (message, doc, opts) {
 	doc.dm, doc.dms, doc.private = sends the response as a private message
 	doc.replace = false (can be passed to keep the orignal from being deleted)
 	doc.anon, doc.anonymous = original requester wont be shown
+	doc.original = show original request
 	*/
 	opts = opts || {}
 	if (!doc) {
@@ -178,25 +179,39 @@ module.exports.encapsulate = async function (message, doc, opts) {
 		delete doc.channel;
 	}
 
+	//append original message
+	let content = undefined;
+	if(doc.original){
+		content = message.content
+// 		doc.fields = doc.fields || {}
+// 		let fields = doc.fields
+// 		fields.push({
+// 			"name": "",
+// 			"value": message.content,
+// 			"inline": false
+// 		})
+	}
+	
+	//send the message
 	let reply;
 	if(doc.edit) {
 		if(doc.edit !== true){
 			message = await channel.messages.fetch(doc.edit);		
 		}
-		reply = await message.edit({embed: doc});
+		reply = await message.edit({content:content, embed: doc});
 	}else if(doc.dm){
 		//let dm = (doc.dm !== true)?doc.dm:null;
 		const shouldReply = message.guild && message.channel.permissionsFor(message.client.user).has('SEND_MESSAGES');
 
 		try {
-			await message.author.send({ embed });
-			if (shouldReply) doc.content = /*dm ||*/ 'I sent you the requested information.';
+			await message.author.send({content:content,  embed: doc });
+			if (shouldReply) doc.description = /*dm ||*/ 'I sent you the requested information.';
 		}catch (err) {
-			if (shouldReply) doc.content = 'I could not send you the requested infomration directly.';
+			if (shouldReply) doc.description = 'I could not send you the requested infomration directly.';
 		}
 	}
 
-	reply = await channel.send({embed: doc});
+	reply = await channel.send({content:content, embed: doc});
 	
 
 	//if reactions are set then

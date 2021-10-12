@@ -65,7 +65,7 @@ class CustomListener extends Listener {
 
 			debug && console.log('messages sorted',messages.size)
 			for (var message in messages) {
-				debug && console.log('messages sorted',message)
+				debug && console.log('message =',message)
 				if(message.reactions){
 					await message.reactions.removeAll().catch(function(error){
 					      owner.send('❌ Failed to clear reactions on settings messages: '+error);

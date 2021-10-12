@@ -56,19 +56,19 @@ class CustomListener extends Listener {
     let settings = {}
     for(var i=0,l=messages.length;i<l;i++){
 	let message = messages[i]
-      await message.reactions.removeAll().catch(function(error){
+	await message.reactions.removeAll().catch(function(error){
 	      owner.send('❌ Failed to clear reactions on settings messages: '+error);
 	      message.react('❌');
-      });
-      let yaml+=message.content.trim().replace(/^```/).replace(/```$/).trim();
-      let section;
-      try{
-        section = YAML.load(yaml);
-      }catch{
-        owner.send('❌ Error parsing settings on message id: '+message.id)
-        message.react('❌');
-        return
-      }
+	});
+	let yaml=message.content.trim().replace(/^```/).replace(/```$/).trim();
+	let section;
+	try{
+		section = YAML.load(yaml);
+	}catch{
+		owner.send('❌ Error parsing settings on message id: '+message.id)
+		message.react('❌');
+		return
+	}
       _.merge(settings,section)
       message.react('✅');
     }

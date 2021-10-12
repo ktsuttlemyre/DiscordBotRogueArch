@@ -189,9 +189,9 @@ module.exports.encapsulate = async function (message, doc, opts) {
 
 		try {
 			await message.author.send({ embed });
-			if (shouldReply) embed.content= 'I\'ve sent you a DM with the requested information.';
+			if (shouldReply) doc.content= 'I\'ve sent you a DM with the requested information.';
 		}catch (err) {
-			if (shouldReply) embed.content = 'I could not send you the command list in DMs.';
+			if (shouldReply) doc.content = 'I could not send you the command list in DMs.';
 		}
 	}
 

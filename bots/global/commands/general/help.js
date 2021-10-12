@@ -34,7 +34,7 @@ class HelpCommand extends Command {
 			embed = this.execCommandQuery(message,embed,command);
 		}
 
-		embed.private = true;
+		embed.dm = true;
 		return embed
 	}
 

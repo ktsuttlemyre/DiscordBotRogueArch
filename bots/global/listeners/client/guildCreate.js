@@ -64,14 +64,14 @@ class CustomListener extends Listener {
 
 
 			for (const message of messages) {
-				let reactions = message.reactions
-				if(reactions){
-					await reactions.removeAll().catch(function(error){
+				if(message.reactions){
+					await message.reactions.removeAll().catch(function(error){
 					      owner.send('❌ Failed to clear reactions on settings messages: '+error);
 					      message.react('❌');
 					});
 				}
 				if(!message.content){
+					debug && console.log(`no message content for ${message.id}`)
 					continue
 				}
 				debug && console.log('got message content',message.content)

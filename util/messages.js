@@ -113,13 +113,29 @@ module.exports.encapsulate = async function (message, doc, opts) {
 	
 	let type = typeof doc;
 	if (type == "string") {
-		let split = doc.split("\n");
-		doc = {};
-		if (split.length == 1) {
-			doc.title = "\t " + split[0];
-		} else {
-			doc.title = split.shift();
-			doc.description = split.join("\n");
+		doc = doc.trim();
+		let yaml = null;
+		if (doc.startsWith("---\n") || (doc.startsWith("{") && doc.endsWith("}")) || (doc.startsWith("[") && doc.endsWith("]"))) {
+			// Get document, or throw exception on error
+			try {
+				//TODO test yaml
+				yaml = YAML.load(doc);
+			} catch (e) {
+				console.error(e);
+			}
+		}
+
+		if(yaml){ //yaml parsed, set as doc and proceed
+			doc=yaml;
+		}else{ //simpla string parse
+			let split = doc.split("\n");
+			doc = {};
+			if (split.length == 1) {
+				doc.title = "\t " + split[0];
+			} else {
+				doc.title = split.shift();
+				doc.description = split.join("\n");
+			}
 		}
 	}		
 	//add any default attributes to doc

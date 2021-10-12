@@ -199,7 +199,8 @@ module.exports.encapsulate = async function (message, doc, opts) {
 			message = await channel.messages.fetch(doc.edit);		
 		}
 		reply = await message.edit({content:content, embed: doc});
-	}else if(doc.dm){
+	}
+	if(doc.dm){
 		//let dm = (doc.dm !== true)?doc.dm:null;
 		const shouldReply = message.guild && message.channel.permissionsFor(message.client.user).has('SEND_MESSAGES');
 

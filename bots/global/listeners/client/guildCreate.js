@@ -3,7 +3,7 @@ PARAMETER    TYPE         DESCRIPTION
 guild        Guild        The created guild
 */
 
-let debug = false;
+let debug = true;
 const Discord = require("discord.js");
 const YAML = require("js-yaml");
 

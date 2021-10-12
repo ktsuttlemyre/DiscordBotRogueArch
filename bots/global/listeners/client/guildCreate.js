@@ -39,7 +39,7 @@ class CustomListener extends Listener {
 		debug && console.log(`Bot ${client.user.tag} joined guild ${guild.name}`);
 
 
-		let settings = await util.setSettings(guild);
+		let settings = await util.parseSettingsFromGuild(guild);
 
 
     

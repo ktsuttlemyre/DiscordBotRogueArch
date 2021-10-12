@@ -30,7 +30,7 @@ class CustomListener extends Listener {
 	  
 
 	async exec(guild) {
-		let settingsChannelName='ettings-shipbot'
+		let settingsChannelName='settings-shipbot'
 		let client = this.client;
 		if(!guild.available){
 			debug && console.log(`Bot ${client.me.tag} tried to join guild ${guild.name} and failed`);

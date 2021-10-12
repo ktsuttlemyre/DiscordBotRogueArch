@@ -30,7 +30,7 @@ class CustomListener extends Listener {
 	  
 
 	async exec(guild) {
-		let settingsChannelName='settings-shipbot'
+		
 		let client = this.client;
 		if(!guild.available){
 			debug && console.log(`Bot ${client.user.tag} tried to join guild ${guild.name} and failed`);
@@ -38,47 +38,56 @@ class CustomListener extends Listener {
 		}
 		debug && console.log(`Bot ${client.user.tag} joined guild ${guild.name}`);
 
-		let owner = guild.owner.user
-		if(!owner){
-			owner = await guild.members.fetch(guild.ownerID) // Fetches owner
-			owner = owner.user || owner.member || owner;
+		
+		async function setSettings(){
+			let settingsChannelName='settings-shipbot'
+			let owner = guild.owner.user
+			if(!owner){
+				owner = await guild.members.fetch(guild.ownerID) // Fetches owner
+				owner = owner.user || owner.member || owner;
+			}
+
+			let channel = guild.channels.cache.find(function(channel){
+				return channel.name.includes(settingsChannelName);
+			})
+			if(!channel){
+				debug && console.log(`${guild.name} has no settings channel`)
+				return
+			}
+
+			let settingsMessages = await channel.messages.fetch({ limit: 100 });
+			let messages = settingsMessages.sorted(function(a, b) {         
+				return b.createdTimestamp - a.createdTimestamp;
+			}); //sort oldest date created
+
+
+			let settings = {}
+			for (const message of messages) {
+				let reactions = message.reactions
+				if(reactions){
+					await reactions.removeAll().catch(function(error){
+					      owner.send('❌ Failed to clear reactions on settings messages: '+error);
+					      message.react('❌');
+					});
+				}
+				if(!message.content){
+					continue
+				}
+				let yaml=message.content.trim().replace(/^```/,'').replace(/```$/,'').trim();
+				try{
+					let section = YAML.load(yaml);
+					_.merge(settings,section);
+					message.react('✅');
+				}catch{
+					owner.send('❌ Error parsing settings on message id: '+message.id)
+					message.react('❌');
+					continue
+				}
+
+
+			}
 		}
-
-		let channel = guild.channels.cache.find(function(channel){
-			return channel.name.includes(settingsChannelName);
-		})
-
-		let settingsMessages = await channel.messages.fetch({ limit: 100 });
-		let messages = settingsMessages.sorted(function(a, b) {         
-			return b.createdTimestamp - a.createdTimestamp;
-		}); //sort oldest date created
-
-
-		let settings = {}
-		for (const message of messages) {
-			let reactions = message.reactions
-			if(reactions){
-				await reactions.removeAll().catch(function(error){
-				      owner.send('❌ Failed to clear reactions on settings messages: '+error);
-				      message.react('❌');
-				});
-			}
-			if(!message.content){
-				continue
-			}
-			let yaml=message.content.trim().replace(/^```/,'').replace(/```$/,'').trim();
-			let section;
-			try{
-				section = YAML.load(yaml);
-			}catch{
-				owner.send('❌ Error parsing settings on message id: '+message.id)
-				message.react('❌');
-				continue
-			}
-			_.merge(settings,section)
-			message.react('✅');
-		}
-
+		await setSettings();
 
 
     
@@ -94,7 +103,7 @@ class CustomListener extends Listener {
 			
 		
 
-		debug && console.log(`guild ${guild.name} is now configured with ${JSON.stringify(settings,null,2)}`);
+		debug && console.log(`Bot ${client.user.tag} configured guild ${guild.name} with settings ${JSON.stringify(settings,null,2)}`);
 	} //end exec
 }
 

@@ -5,8 +5,7 @@ guild        Guild        The created guild
 
 let debug = true;
 const Discord = require("discord.js");
-const YAML = require("js-yaml");
-const _ = require("lodash");
+
 
 const {Listener} = require("discord-akairo");
 const {reactions, defaultAvatar} = require.main.require("./common");
@@ -39,64 +38,8 @@ class CustomListener extends Listener {
 		}
 		debug && console.log(`Bot ${client.user.tag} joined guild ${guild.name}`);
 
-		
-		async function setSettings(){
-			let settingsChannelName='settings-shipbot'
-			let owner = guild.owner.user
-			let settings = {}
-			
-			if(!owner){
-				owner = await guild.members.fetch(guild.ownerID) // Fetches owner
-				owner = owner.user || owner.member || owner;
-			}
 
-			let channel = guild.channels.cache.find(function(channel){
-				return channel.name.includes(settingsChannelName);
-			})
-			if(!channel){
-				debug && console.log(`${guild.name} has no settings channel`)
-				return settings
-			}
-
-			let settingsMessages = await channel.messages.fetch({ limit: 100 });
-			debug && console.log('messages found',settingsMessages.size)
-			let messages = settingsMessages.sorted(function(a, b) {         
-				return b.createdTimestamp - a.createdTimestamp;
-			}); //sort oldest date created
-			messages = Array.from(messages.values());
-			
-			debug && console.log('messages sorted',messages.length)
-			
-			for (var i=0,l=messages.length;i<l;i++) {
-				let message = messages[i];
-				debug && console.log('message =',message)
-				if(message.reactions){
-					await message.reactions.removeAll().catch(function(error){
-					      owner.send('❌ Failed to clear reactions on settings messages: '+error);
-					      message.react('❌');
-					});
-				}
-				if(!message.content){
-					debug && console.log(`no message content for ${message.id}`)
-					continue
-				}
-				debug && console.log('got message content',message.content)
-				let yaml=message.content.trim().replace(/^```/,'').replace(/```$/,'').trim();
-				try{
-					_.merge(settings,YAML.load(yaml));
-					message.react('✅');
-				}catch(err){
-					owner.send('❌ Error parsing settings on message id: '+message.id+' '+err)
-					message.react('❌');
-					continue
-				}
-				debug && console.log('Settings now look like this',JSON.stringify(settings,null,2))
-
-
-			}
-			return settings
-		}
-		let settings = await setSettings();
+		let settings = await util.setSettings(guild);
 
 
     

@@ -55,8 +55,7 @@ class CustomListener extends Listener {
 
 
 		let settings = {}
-		for(var i=0,l=messages.length;i<l;i++){
-			let message = messages[i]
+		for (const message of messages) {
 			await message.reactions.removeAll().catch(function(error){
 			      owner.send('❌ Failed to clear reactions on settings messages: '+error);
 			      message.react('❌');

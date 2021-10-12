@@ -63,11 +63,10 @@ class CustomListener extends Listener {
 				      message.react('❌');
 				});
 			}
-			let content = message.content
-			if(!content){
+			if(!message.content){
 				continue
 			}
-			let yaml=content.trim().replace(/^```/).replace(/```$/).trim();
+			let yaml=message.content.trim().replace(/^```/,'').replace(/```$/,'').trim();
 			let section;
 			try{
 				section = YAML.load(yaml);
@@ -95,7 +94,7 @@ class CustomListener extends Listener {
 			
 		
 
-		debug && console.log(`guild ${guild.name} is now configured`);
+		debug && console.log(`guild ${guild.name} is now configured with ${JSON.stringify(settings,null,2)}`);
 	} //end exec
 }
 

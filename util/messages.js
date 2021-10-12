@@ -201,7 +201,7 @@ module.exports.encapsulate = async function (message, doc, opts) {
 		reply = await message.edit({content:content, embed: doc});
 	}
 	
-	let alert = {}
+	let alert={}
 	if(doc.dm){
 		//let dm = (doc.dm !== true)?doc.dm:null;
 		const shouldReply = message.guild && message.channel.permissionsFor(message.client.user).has('SEND_MESSAGES');
@@ -225,18 +225,23 @@ module.exports.encapsulate = async function (message, doc, opts) {
 		}
 	}
 
-	reply = await channel.send({content:content, embed: doc});
-	
-
-	//if reactions are set then
-	if (doc.reactions) {
-		for (var i = 0, l = doc.reactions.length; i < l; i++) {
-			let reaction = doc.reactions[i];
-			reaction = reaction.trim();
-			debug && console.log("reacting to encapsulated message", reaction);
-			await reply.react(reaction);
+	if(alert.title){
+		reply = await channel.send({embed: alert});
+	}else{
+		reply = await channel.send({content:content, embed: doc});
+		
+		//if reactions are set then
+		if (doc.reactions) {
+			for (var i = 0, l = doc.reactions.length; i < l; i++) {
+				let reaction = doc.reactions[i];
+				reaction = reaction.trim();
+				debug && console.log("reacting to encapsulated message", reaction);
+				await reply.react(reaction);
+			}
 		}
 	}
+	
+
 
 	//if doc.replace is false then dont delete
 	//also dont delete original source if it's already deleted

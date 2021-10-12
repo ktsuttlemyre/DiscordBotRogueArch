@@ -200,15 +200,28 @@ module.exports.encapsulate = async function (message, doc, opts) {
 		}
 		reply = await message.edit({content:content, embed: doc});
 	}
+	
+	let alert = {}
 	if(doc.dm){
 		//let dm = (doc.dm !== true)?doc.dm:null;
 		const shouldReply = message.guild && message.channel.permissionsFor(message.client.user).has('SEND_MESSAGES');
-
+		
 		try {
 			await message.author.send({content:content,  embed: doc });
-			if (shouldReply) doc.description = /*dm ||*/ 'I sent you the requested information.';
+
+			if (shouldReply){
+				alert.title="Sent to DM"
+				alert.description = /*dm ||*/ 'I sent you the requested information.';
+				alert.author = doc.author
+				alert.color = "ffc107"
+			}
 		}catch (err) {
-			if (shouldReply) doc.description = 'I could not send you the requested infomration directly.';
+			if (shouldReply){
+				alert.title="Error:"
+				doc.description = 'I could not send you the requested infomration directly.';
+				alert.author = doc.author
+				alert.color = "dc3545"
+			}
 		}
 	}
 

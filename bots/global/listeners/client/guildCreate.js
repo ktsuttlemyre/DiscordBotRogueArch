@@ -54,7 +54,8 @@ class CustomListener extends Listener {
     
     
     let settings = {}
-    messages.forEach(function(message){
+    for(var i=0,l=messages.length;i<l;i++){
+	let message = messages[i]
       await message.reactions.removeAll().catch(error => owner.send('❌ Failed to clear reactions on settings messages: '+error);message.react('❌'););
       let yaml+=message.content.trim().replace(/^```/).replace(/```$/).trim();
       let section;
@@ -67,7 +68,7 @@ class CustomListener extends Listener {
       }
       _.merge(settings,section)
       message.react('✅');
-    });
+    }
 
 
 

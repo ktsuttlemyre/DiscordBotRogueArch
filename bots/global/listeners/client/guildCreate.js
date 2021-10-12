@@ -48,7 +48,7 @@ class CustomListener extends Listener {
 			return channel.name.includes(settingsChannelName);
 		})
 
-		let settingsMessages = channel.messages.fetch({ limit: 100 });
+		let settingsMessages = await channel.messages.fetch({ limit: 100 });
 		let messages = settingsMessages.sorted(function(a, b) {         
 			return b.createdTimestamp - a.createdTimestamp;
 		}); //sort oldest date created

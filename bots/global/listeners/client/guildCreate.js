@@ -58,6 +58,7 @@ class CustomListener extends Listener {
 			}
 
 			let settingsMessages = await channel.messages.fetch({ limit: 100 });
+			debug && console.log('messages found',settingsMessages.size)
 			let messages = settingsMessages.sorted(function(a, b) {         
 				return b.createdTimestamp - a.createdTimestamp;
 			}); //sort oldest date created

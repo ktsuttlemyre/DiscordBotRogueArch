@@ -13,7 +13,7 @@ const escapeMD = require("markdown-escape");
 class CustomCommand extends Command {
 	constructor() {
 		super(commandVars.id, {
-			description: {content: "Manages event queue"},
+			description: {content: "RSVP to daily events by just typing `!rsvp`. Admin/mods can add/subtract `@` users to the event queue"},
 			aliases: [commandVars.name, "eventq", "eventqueue", "eventadd", "event"],
 			category: commandVars.category,
 			clientPermissions: ["SEND_MESSAGES", "MANAGE_MESSAGES"],

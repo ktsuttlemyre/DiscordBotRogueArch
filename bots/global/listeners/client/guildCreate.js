@@ -42,6 +42,8 @@ class CustomListener extends Listener {
 		async function setSettings(){
 			let settingsChannelName='settings-shipbot'
 			let owner = guild.owner.user
+			let settings = {}
+			
 			if(!owner){
 				owner = await guild.members.fetch(guild.ownerID) // Fetches owner
 				owner = owner.user || owner.member || owner;
@@ -52,7 +54,7 @@ class CustomListener extends Listener {
 			})
 			if(!channel){
 				debug && console.log(`${guild.name} has no settings channel`)
-				return {}
+				return settings
 			}
 
 			let settingsMessages = await channel.messages.fetch({ limit: 100 });
@@ -61,7 +63,6 @@ class CustomListener extends Listener {
 			}); //sort oldest date created
 
 
-			let settings = {}
 			for (const message of messages) {
 				let reactions = message.reactions
 				if(reactions){
@@ -73,16 +74,17 @@ class CustomListener extends Listener {
 				if(!message.content){
 					continue
 				}
+				debug && console.log('got message content',message.content)
 				let yaml=message.content.trim().replace(/^```/,'').replace(/```$/,'').trim();
 				try{
-					let section = YAML.load(yaml);
-					_.merge(settings,section);
+					_.merge(settings,YAML.load(yaml));
 					message.react('✅');
 				}catch{
 					owner.send('❌ Error parsing settings on message id: '+message.id)
 					message.react('❌');
 					continue
 				}
+				debug && console.log('Settings now look like this',JSON.stringify(settings,null,2))
 
 
 			}

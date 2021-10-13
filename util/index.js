@@ -100,12 +100,12 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 	}
 	
 	//get messages
-	let settingsMessages = await channel.messages.fetch({ limit: 100 });
-	debug && console.log('messages found',settingsMessages.size)
-	let messages = settingsMessages.filter(function(a) {         
+	let messages = await channel.messages.fetch({ limit: 100 });
+	debug && console.log('messages found',messages.size)
+	messages = messages.filter(function(a) {         
 		return a.author.id == owner.id;
 	}); //only allow owner messages for now
-	messages = settingsMessages.sorted(function(a, b) {         
+	messages = messages.sorted(function(a, b) {         
 		return b.createdTimestamp - a.createdTimestamp;
 	}); //sort oldest date created
 	messages = Array.from(messages.values());

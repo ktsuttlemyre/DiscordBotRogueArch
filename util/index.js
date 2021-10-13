@@ -102,9 +102,27 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 	//get messages
 	let messages = await channel.messages.fetch({ limit: 100 });
 	debug && console.log('messages found',messages.size)
-	messages = messages.filter(function(a) {         
-		return a.author.id == owner.id;
-	}); //only allow owner messages for now
+	
+	//clear all reactions in this channel so we can use reactions to help give parse feedback
+	for (var i=0,l=messages.length;i<l;i++) {
+		let message = messages[i];
+		if(message.reactions){
+			await message.reactions.removeAll().catch(function(error){
+			      owner.send('❌ Failed to clear reactions on settings messages: '+error);
+			      message.react('❌');
+			});
+		}
+	}
+	
+	messages = messages.filter(function(message) {
+		return owner.id == message.author.id;
+	}); //only parse owner messages first
+	
+// 	let modIDs = [owner.id]
+// 	settings = parseSettings(messages,modIDs,settings);
+// 	modIDs.push.apply(modIDs,settings.admins);
+// 	settings = parseSettings(messages,modIDs,settings);
+	
 	messages = messages.sorted(function(a, b) {         
 		return b.createdTimestamp - a.createdTimestamp;
 	}); //sort oldest date created
@@ -114,12 +132,6 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 	for (var i=0,l=messages.length;i<l;i++) {
 		let message = messages[i];
 		debug && console.log('message =',message)
-		if(message.reactions){
-			await message.reactions.removeAll().catch(function(error){
-			      owner.send('❌ Failed to clear reactions on settings messages: '+error);
-			      message.react('❌');
-			});
-		}
 		if(!message.content){
 			debug && console.log(`no message content for ${message.id}`)
 			continue

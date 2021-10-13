@@ -1,3 +1,5 @@
+//https://stackoverflow.com/questions/53053334/how-to-get-guildmember-data-from-a-user-through-a-mention/53111684
+
 const {Command} = require("discord-akairo");
 const emotes = {error: ":error:"};
 const util = require.main.require("./util");

@@ -20,6 +20,7 @@ const ytdl = require("ytdl-core");
 const soundMap = config.voiceJoinLeave.tones.custom;
 
 const _ = require("lodash");
+const YAML = require("js-yaml");
 
 const request = require("request");
 
@@ -56,6 +57,89 @@ module.exports.exec = function(message,content,commandName,inhibitors){
 		throw 'Command not found'
 	}
         message.client.commandHandler.handleDirectCommand(message, message.content, command, !inhibitors);
+}
+
+module.exports.parseSettingsFromGuild = async function (guild, channel){
+	let client = guild.client;
+	if(!guild.available){
+		debug && console.log(`Bot ${client.user.tag} tried to join guild ${guild.name} and failed`);
+		return; // Stops if unavailable
+	}
+		debug && console.log(`Bot ${client.user.tag} joined guild ${guild.name}`);
+	
+	//security
+	//ensures there is a channel named `settingsChannelName`
+	//ensures channel is private
+	//only reads messages fromw `owner`
+	//	
+	
+	
+	let settingsChannelName='settings-shipbot'
+	let owner = guild.owner.user
+	let settings = {}
+
+	if(!owner){
+		owner = await guild.members.fetch(guild.ownerID) // Fetches owner
+		owner = owner.user || owner.member || owner;
+		owner = owner.user || owner; //make sure we have a user obj
+	}
+
+	channel = channel || guild.channels.cache.find(function(channel){
+		return channel.name == settingsChannelName;
+	})
+	if(!channel){
+		owner.send(`${guild.name} has no settings channel. Please make one with the title \`${settingsChannelName}\``);
+		return settings
+	}
+	let everyoneRole = guild.roles.everyone;
+
+	// see: https://discord.js.org/#/docs/main/stable/class/Permissions?scrollTo=s-FLAGS
+	if (channel.permissionsFor(everyoneRole).has("VIEW_CHANNEL")) {
+		owner.send(`${guild.name} has a settings channel but it is public. Please change the \`@everyone\` role to not have view privlages in\`${settingsChannelName}\``);
+		return settings
+	}
+	
+	//get messages
+	let settingsMessages = await channel.messages.fetch({ limit: 100 });
+	debug && console.log('messages found',settingsMessages.size)
+	let messages = settingsMessages.filter(function(a) {         
+		return a.author.id == owner.id;
+	}); //only allow owner messages for now
+	messages = settingsMessages.sorted(function(a, b) {         
+		return b.createdTimestamp - a.createdTimestamp;
+	}); //sort oldest date created
+	messages = Array.from(messages.values());
+	debug && console.log('messages sorted',messages.length)
+
+	for (var i=0,l=messages.length;i<l;i++) {
+		let message = messages[i];
+		debug && console.log('message =',message)
+		if(message.reactions){
+			await message.reactions.removeAll().catch(function(error){
+			      owner.send('❌ Failed to clear reactions on settings messages: '+error);
+			      message.react('❌');
+			});
+		}
+		if(!message.content){
+			debug && console.log(`no message content for ${message.id}`)
+			continue
+		}
+		debug && console.log('got message content',message.content)
+		let yaml=message.content.trim().replace(/^```/,'').replace(/```$/,'').trim();
+		try{
+			_.merge(settings,YAML.load(yaml));
+			message.react('✅');
+		}catch(err){
+			owner.send('❌ Error parsing settings on message id: '+message.id+' '+err)
+			message.react('❌');
+			continue
+		}
+		debug && console.log('Settings now look like this',JSON.stringify(settings,null,2))
+
+
+	}
+	debug && console.log(`Bot ${client.user.tag} configured guild ${guild.name} with settings ${JSON.stringify(settings,null,2)}`);
+	return settings
 }
 
 module.exports.devChannelGate = function (message, env) {

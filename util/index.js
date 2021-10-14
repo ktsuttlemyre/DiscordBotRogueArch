@@ -11,7 +11,7 @@ const {constants} = require("fs");
 
 module.exports.player = require("./player");
 module.exports.playlists = require("./playlists");
-module.exports.messages = require("./messages");
+const MESSAGES = module.exports.messages = require("./messages");
 module.exports.commandVars = require.main.require("./common").commandVars; //TODO move commandVars here and delete common
 const config = require.main.require("./config");
 module.exports.config = config;
@@ -121,28 +121,38 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 		}
 	}
 	
-	messages = messages.filter(function(message) {
+	/*messages = messages.filter(function(message) {
 		let reactions = message.reactions
 		let ownerApprove
 		if(reactions){
 			ownerApprove = reactions.cache.find(function(reaction){
 				console.log('emoji',reaction.emoji)
-				return reaction.emoji.name =='👍' && reaction.users.cache.get(owner.id)
+				return reaction.emoji.name =='👍' && reaction.users.fetch()!!! .cache.get(owner.id)
 			})
 		}
 		return ownerApprove || message.author.id == owner.id;
 	}); //only parse owner messages first
+	*/
+	let selectedMessages = []
+	for (const message of Array.from(messages.values())) {
+		let select = false
+		select = (message.author.id == owner.id)
+		let users = await MESSAGES.getReactedUsers(message,'👍')
+		select = (select || users.get(owner.id))
+		select && selectedMessages.push(message)
+	}
 	
 // 	let modIDs = [owner.id]
 // 	settings = parseSettings(messages,modIDs,settings);
 // 	modIDs.push.apply(modIDs,settings.admins);
 // 	settings = parseSettings(messages,modIDs,settings);
 	
-	messages = messages.sorted(function(a, b) {         
+	selectedMessages = selectedMessages.sort(function(a, b) {         
 		return b.createdTimestamp - a.createdTimestamp;
 	}); //sort oldest date created
 
-	for (const message of Array.from(messages.values())) {
+	for (var i=0,l=selectedMessages.length;i<l;i++){ //const message of Array.from(messages.values())) {
+		let message = selectedMessages[i];
 		debug && console.log('message =',message)
 		if(!message.content){
 			debug && console.log(`no message content for ${message.id}`)

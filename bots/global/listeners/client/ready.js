@@ -31,8 +31,9 @@ class CustomListener extends Listener {
 		// Log that the bot is online.
 		client.logger.info(statement, "ready");
 		// Set the bot status
-
-		client.user.setActivity(process.env.ACTIVITY || " @" + (client.user.username || client.user.tag) + " help to get started", {type: "LISTENING"});
+		let botName = client.user.username || client.user.tag;
+		
+		client.user.setActivity(process.env.ACTIVITY || `commands. To get started type: @${botName} help`, {type: "LISTENING"});
 
 		var env = process.env.ENVIRONMENT;
 		if (env != "production") {

@@ -73,8 +73,8 @@ class MemoryCache {
 	}
 
 	static getID(obj){
-		let channelID=this.constructor.getGuildID(obj);
-		let guildID=this.constructor.getChannelID(obj);
+		let channelID=MemoryCache.getGuildID(obj);
+		let guildID=MemoryCache.getChannelID(obj);
 
 			
 // 		if(obj instanceof Discord.Message){

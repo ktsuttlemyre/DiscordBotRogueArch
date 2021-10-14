@@ -120,13 +120,13 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 		embed:{
 			title:`Shipbot config file documentation`,
 			description:''+
-			`Channel requirements:\n`+
+			`__Channel requirements:__\n`+
 			` • Channel name must be the only one matching \`${settingsChannelName}\`.\n`+ 
 			` • The role \`@everyone\` must not have \`VIEW_CHANNEL\` privlage.\n`+
 			` • The guild owner \`${ownerName}\` must be present.\n`+
-			`Message requirements:\n`+
+			`__Message requirements:__\n`+
 			` • Must have owner approval via:\n`+
-			`>   • messages come directly from \`${ownerName}\`\n`+
+			`>   • sending directly from \`${ownerName}\` account\n`+
 	    		`>   • or approved by \`${ownerName}\` via a \`👍\` react\n`+
 			` • Each message must be a valid YAML config.\n`+
 			` • Multiple config messages will be merged in chronological order\n`+

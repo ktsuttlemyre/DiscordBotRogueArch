@@ -1,4 +1,4 @@
-var debug = false;
+const debug = false;
 const PollyfillPromise = require('core-js/features/promise');
 const Discord = require("discord.js");
 const {Command} = require("discord-akairo");
@@ -106,15 +106,22 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 	//clear all reactions in this channel so we can use reactions to help give parse feedback
 	for (const message of Array.from(messages.values())) {
 		if(message.reactions){
-			await message.reactions.removeAll().catch(function(error){
-			      owner.send('❌ Failed to clear reactions on settings messages: '+error);
-			      message.react('❌');
-			});
+			
+			message.reactions.cache.forEach(function(reaction){
+				reaction.users.remove(guild.user);
+			})
+			
+			
+			
+// 			await message.reactions.removeAll().catch(function(error){
+// 			      owner.send('❌ Failed to clear reactions on settings messages: '+error);
+// 			      message.react('❌');
+// 			});
 		}
 	}
 	
 	messages = messages.filter(function(message) {
-		return owner.id == message.author.id;
+		return message.author.id == owner.id;
 	}); //only parse owner messages first
 	
 // 	let modIDs = [owner.id]

@@ -122,7 +122,15 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 	}
 	
 	messages = messages.filter(function(message) {
-		return message.author.id == owner.id;
+		let reactions = message.reactions
+		if(reactions){
+			let thumb = reactions.cache.find(function(reaction){
+				console.log('emoji',reaction.emoji)
+				return reaction.emoji.name =='👍' && reaction.user.cache.get(owner.id)
+			})
+			return thumb;
+		}
+		return || message.author.id == owner.id;
 	}); //only parse owner messages first
 	
 // 	let modIDs = [owner.id]

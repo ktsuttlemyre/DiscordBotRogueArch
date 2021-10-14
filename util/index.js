@@ -59,20 +59,35 @@ module.exports.exec = function(message,content,commandName,inhibitors){
         message.client.commandHandler.handleDirectCommand(message, message.content, command, !inhibitors);
 }
 
+
 module.exports.parseSettingsFromGuild = async function (guild, channel){
 	let client = guild.client;
 	if(!guild.available){
 		debug && console.log(`Bot ${client.user.tag} tried to join guild ${guild.name} and failed`);
 		return; // Stops if unavailable
 	}
-		debug && console.log(`Bot ${client.user.tag} joined guild ${guild.name}`);
+	debug && console.log(`Bot ${client.user.tag} joined guild ${guild.name}`);
+	
+	
+	let settingsDocumentation = `**This channel has been flagged as the settings for shipbots**\n`+
+	    `\`\`\`\n`+
+	    `**For security:**\n`+
+	    `This channel must meet the following criteria:\n`+
+	    `\t The channel name is expected to be \`${settingsChannelName}\`\n`+
+	    `\t \`@everyone\` must not have \`VIEW_CHANNEL\` privlages\n`+
+	    `\t The guild owner \`${owner.username || owner.tag}\` must be present\n`+
+	    `\t Only valid YAML messages created by `\owner`\ or by messages that are 👍 reacted by owner will be accepted\n`+
+	    `\t You may create multiple messages that will be merged by chronological order (To circumvent discord's 2k message length)\n`+
+	    `\t You are allocated ${upperCharaterLimit/1000}kb of parsed settings space`+
+	    `\`\`\``
 	
 	//security
 	//ensures there is a channel named `settingsChannelName`
 	//ensures channel is private
 	//only reads messages fromw `owner`
 	//	
-	
+	let upperCharacterLimit = 2000*5
+	let settingsCharaterLength = 0
 	
 	let settingsChannelName='settings-shipbot'
 	let owner = guild.owner.user
@@ -102,6 +117,17 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 	//get messages
 	let messages = await channel.messages.fetch({ limit: 100 });
 	debug && console.log('messages found',messages.size)
+	
+	let botDocumentation = messages.find(function(message){
+		return message.author.id == guild.user.id;
+	})
+	if(botDocumentation.content == settingsDocumentation){
+		await message.delete()
+		await channel.send(settingsDocumentation).catch(function(error){
+		      owner.send(`❌ Failed to send settings documentation to ${settingsChannelName}: `+error);
+		});
+	}
+	
 	
 	//clear all reactions in this channel so we can use reactions to help give parse feedback
 	for (const message of Array.from(messages.values())) {
@@ -161,7 +187,13 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 		debug && console.log('got message content',message.content)
 		let yaml=message.content.trim().replace(/^```/,'').replace(/```$/,'').trim();
 		try{
-			_.merge(settings,YAML.load(yaml));
+			let obj = YAML.load(yaml)
+			settingsCharaterLength += JSON.stringify(obj).length
+			if(settingsCharaterLength>upperCharacterLimit){
+				throw 'Settings documents contain too many charaters. Your settings must parse out to be fewer than '+ upperCharacterLimit
+			}
+			_.merge(settings,obj);
+			
 			message.react('✅');
 		}catch(err){
 			owner.send('❌ Error parsing settings on message id: '+message.id+' '+err)

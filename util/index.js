@@ -125,8 +125,11 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 	let botDocumentation = messages.find(function(message){
 		return message.author.id == client.user.id;
 	})
-	if(!botDocumentation || botDocumentation.content == settingsDocumentation){
-		await message.delete()
+	if(botDocumentation && botDocumentation.content != settingsDocumentation){
+		await botDocumentation.delete();
+		botDocumentation=null;
+	}
+	if(!botDocumentation || botDocumentation.deleted){
 		await channel.send(settingsDocumentation).catch(function(error){
 		      owner.send(`❌ Failed to send settings documentation to ${settingsChannelName}: `+error);
 		});

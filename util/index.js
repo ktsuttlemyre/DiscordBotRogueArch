@@ -106,13 +106,14 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 	//clear all reactions in this channel so we can use reactions to help give parse feedback
 	for (const message of Array.from(messages.values())) {
 		if(message.reactions){
+			for (const reaction of Array.from(message.reactions.cache.values())) {
+				await reaction.users.remove(guild.user).catch(function(error){
+				      owner.send('❌ Failed to clear reactions on settings messages: '+error);
+				      message.react('❌');
+				});
+			}
 			
-			message.reactions.cache.forEach(function(reaction){
-				reaction.users.remove(guild.user);
-			})
-			
-			
-			
+
 // 			await message.reactions.removeAll().catch(function(error){
 // 			      owner.send('❌ Failed to clear reactions on settings messages: '+error);
 // 			      message.react('❌');

@@ -114,14 +114,18 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 	
 	let settingsDocumentation ={
 		embed:{
-		    title:'Put your shipbot config files in here',
-		    description:`>>>This channel must meet the following criteria before config will be accepted:\n`+
-		    `The channel name must be the only one matching \`${settingsChannelName}\`\n`+
-		    `The role \`@everyone\` must not have \`VIEW_CHANNEL\` privlages\n`+
-		    `The guild owner \`${owner.username || owner.tag}\` must be present\n`+
-		    `Only valid YAML messages created by \`owner\` or by messages that are 👍 reacted by owner will be accepted\n`+
-		    `You may create multiple config messages that will be merged in chronological order (To circumvent discord's 2k message length)\n`+
-		    `You are allocated ${upperCharacterLimit/1000}kb of parsed config space`,//`\`\`\``
+			title:'Shipbot config file documentation',
+			description:''+
+			`Channel requirements:\n`+
+			`>• Channel name must be the only one matching \`${settingsChannelName}\`.\n`+
+			`>• The role \`@everyone\` must not have \`VIEW_CHANNEL\` privlage.\n`+
+			`>• The guild owner \`${owner.username || owner.tag}\` must be present.\n`+
+			`Messages:\n`+
+			`>• Messages must be created by \`owner\` or approved by \`owner\` via a \`👍\` react.\n`+
+			`>• Each message must be a valid YAML config.\n`+
+			`>• You may create multiple config messages that will be merged (chronological order)\n`+
+			`>\t• This is to circumvent Discord's 2k character message length\n`,
+			footer:'Submit your shipbot config files here',
 	    }
 	};
 	
@@ -207,7 +211,7 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 			let obj = YAML.load(yaml)
 			settingsCharaterLength += JSON.stringify(obj).replace(/\\t|\\n|\\r/g).length
 			if(settingsCharaterLength>upperCharacterLimit){
-				throw 'Settings documents contain too many charaters. Your settings must parse out to be fewer than '+ upperCharacterLimit
+				throw `Settings config is too large. You are allotted ${upperCharacterLimit/1000}kb of config space`//`\`\`\``
 			}
 			_.merge(settings,obj);
 			

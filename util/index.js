@@ -117,20 +117,20 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 	let ownerName=owner.username || owner.tag
 	let settingsDocumentation ={
 		embed:{
-			title:'Shipbot config file documentation',
+			title:`Shipbot config file documentation`,
 			description:''+
 			`Channel requirements:\n`+
-			`>\t• Channel name must be the only one matching \`${settingsChannelName}\`.\n`+ 
-			`>\t• The role \`@everyone\` must not have \`VIEW_CHANNEL\` privlage.\n`+
-			`>\t• The guild owner \`${ownerName}\` must be present.\n`+
-			`Messages:\n`+
-			`>\t• Must have owner approval via:\n`+
-			`>\t\t• messages come directly from \`${ownerName}\`\n`+
-	    		`>\t\t• or approved by \`${ownerName}\` via a \`👍\` react\n`+
-			`>\t• Each message must be a valid YAML config.\n`+
-			`>\t• Multiple config messages will be merged in chronological order\n`+
-			`>\t\t• This is to circumvent Discord's 2k character message length\n`,
-			footer:{text:'Submit your shipbot config files here'},
+			`\t• Channel name must be the only one matching \`${settingsChannelName}\`.\n`+ 
+			`\t• The role \`@everyone\` must not have \`VIEW_CHANNEL\` privlage.\n`+
+			`\t• The guild owner \`${ownerName}\` must be present.\n`+
+			`Message requirements:\n`+
+			`\t• Must have owner approval via:\n`+
+			`\t\t• messages come directly from \`${ownerName}\`\n`+
+	    		`\t\t• or approved by \`${ownerName}\` via a \`👍\` react\n`+
+			`\t• Each message must be a valid YAML config.\n`+
+			`\t• Multiple config messages will be merged in chronological order\n`+
+			`\t\t• This is to circumvent Discord's 2k character message length\n`,
+			footer:{text:`Accepted config files will have a ✅ reaction`},
 	    }
 	};
 	

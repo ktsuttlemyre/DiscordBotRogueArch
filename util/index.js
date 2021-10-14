@@ -123,14 +123,14 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 	
 	messages = messages.filter(function(message) {
 		let reactions = message.reactions
-		let thumb
+		let ownerApprove
 		if(reactions){
-			thumb = reactions.cache.find(function(reaction){
+			ownerApprove = reactions.cache.find(function(reaction){
 				console.log('emoji',reaction.emoji)
 				return reaction.emoji.name =='👍' && reaction.user.cache.get(owner.id)
 			})
 		}
-		return thumb || message.author.id == owner.id;
+		return ownerApprove || message.author.id == owner.id;
 	}); //only parse owner messages first
 	
 // 	let modIDs = [owner.id]

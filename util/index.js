@@ -114,7 +114,7 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 	    `\t The guild owner \`${owner.username || owner.tag}\` must be present\n`+
 	    `\t Only valid YAML messages created by \`owner\` or by messages that are 👍 reacted by owner will be accepted\n`+
 	    `\t You may create multiple messages that will be merged by chronological order (To circumvent discord's 2k message length)\n`+
-	    `\t You are allocated ${upperCharaterLimit/1000}kb of parsed settings space`+
+	    `\t You are allocated ${upperCharacterLimit/1000}kb of parsed settings space`+
 	    `\`\`\``
 	
 	

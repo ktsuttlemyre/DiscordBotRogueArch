@@ -104,7 +104,7 @@ class MemoryCache {
 		}else if(guildID && channelID){
 			return `${guildID}/${channelID}`;
 		}
-		throw "couldn\'t construct an id for obj to store in memory"
+		throw "couldn\'t construct an id for obj to store in memory "+JSON.stringify(obj,null,2)
 	}
 
 	static getGuildID(guild) {

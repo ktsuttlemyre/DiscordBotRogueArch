@@ -181,7 +181,7 @@ class StatsCommand extends Command {
 			opts.args && embed.addField("Args",`${process.args}`,false);
 		
 			opts.dep && embed.addField('Dependencies',firstHalf.join('\n'),true);
-			opts.dep && embed.addField(blank,secondHalf.join('\n'),true);
+			opts.dep && embed.addField(blank,secondHalf.join('\n'),true)
 			
 			//opts.dep && (!opts.env && !opts.args) && embed.addField(blank,`[Hidden]`,false); //make a blank block line if we dont show env and arg
 			

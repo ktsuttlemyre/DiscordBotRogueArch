@@ -1,5 +1,4 @@
-const {Guild, Channel, BaseGuild} = require("discord.js");
-const Discord = require("discord.js");
+const {Guild, Channel} = require("discord.js");
 const cache = {};
 
 class MemoryCache {
@@ -10,41 +9,16 @@ class MemoryCache {
 		//		});
 	}
 
-	// channelGet(message, key, defaultValue) {
-	// 	let id = this.constructor.getGuildID(message.guild);
-	// 	if (!message.channel) {
-	// 		throw new Error("Memory ChannelGet needs to have a message with a proper channel object passed to it");
-	// 	}
-	// 	const channelID = this.constructor.getChannelID(message.channel);
-	// 	if (!channelID) {
-	// 		throw new Error("Channel.id must be specified if you want to get a channel value in memory");
-	// 	}
-	// 	id = `${id}/${channelID}`;
-	// 	let value = cache[id] ? cache[id][key] : (cache[id] = {}) && undefined;
-	// 	if (value === undefined) {
-	// 		return (cache[id][key] = defaultValue);
-	// 	}
-	// 	return value;
-	// }
-
-	// channelSet(message, key, value) {
-	// 	let id = this.constructor.getGuildID(message.guild);
-	// 	if (!message.channel) {
-	// 		throw new Error("Memory ChannelSet needs to have a message with a proper channel object passed to it");
-	// 	}
-	// 	const channelID = this.constructor.getChannelID(message.channel);
-	// 	if (!channelID) {
-	// 		throw new Error("Channel.id must be specified if you want to set a channel value in memory");
-	// 	}
-	// 	id = `${id}/${channelID}`;
-	// 	if (!cache[id]) {
-	// 		cache[id] = {};
-	// 	}
-	// 	return (cache[id][key] = value);
-	// }
-
-	get(obj, key, defaultValue) {
-		const id = this.constructor.getID(obj);
+	channelGet(message, key, defaultValue) {
+		let id = this.constructor.getGuildID(message.guild);
+		if (!message.channel) {
+			throw new Error("Memory ChannelGet needs to have a message with a proper channel object passed to it");
+		}
+		const channelID = this.constructor.getChannelID(message.channel);
+		if (!channelID) {
+			throw new Error("Channel.id must be specified if you want to get a channel value in memory");
+		}
+		id = `${id}/${channelID}`;
 		let value = cache[id] ? cache[id][key] : (cache[id] = {}) && undefined;
 		if (value === undefined) {
 			return (cache[id][key] = defaultValue);
@@ -52,74 +26,64 @@ class MemoryCache {
 		return value;
 	}
 
-	set(obj, key, value) {
-		const id = this.constructor.getID(obj);
+	channelSet(message, key, value) {
+		let id = this.constructor.getGuildID(message.guild);
+		if (!message.channel) {
+			throw new Error("Memory ChannelSet needs to have a message with a proper channel object passed to it");
+		}
+		const channelID = this.constructor.getChannelID(message.channel);
+		if (!channelID) {
+			throw new Error("Channel.id must be specified if you want to set a channel value in memory");
+		}
+		id = `${id}/${channelID}`;
 		if (!cache[id]) {
 			cache[id] = {};
 		}
 		return (cache[id][key] = value);
 	}
 
-	delete(obj, key) {
-		const id = this.constructor.getID(obj);
+	get(message, key, defaultValue) {
+		const id = this.constructor.getGuildID(message.guild);
+		let value = cache[id] ? cache[id][key] : (cache[id] = {}) && undefined;
+		if (value === undefined) {
+			return (cache[id][key] = defaultValue);
+		}
+		return value;
+	}
+
+	set(message, key, value) {
+		const id = this.constructor.getGuildID(message.guild);
+		if (!cache[id]) {
+			cache[id] = {};
+		}
+		return (cache[id][key] = value);
+	}
+
+	delete(message, key) {
+		const id = this.constructor.getGuildID(message.guild);
 		cache[id][key] = undefined;
 		delete cache[id][key];
 		return undefined;
 	}
 
-	clear(obj) {
-		const id = this.constructor.getID(obj);
+	clear(message) {
+		const id = this.constructor.getGuildID(message.guild);
 		return (cache[id] = {});
 	}
 
-	static getID(obj){
-		let channelID=MemoryCache.getGuildID(obj);
-		let guildID=MemoryCache.getChannelID(obj);
-
-			
-// 		if(obj instanceof Discord.Message){
-// 			throw "Trying to store an item in memory using a message as the identifier isn\'t currently allowed"
-// 		}else if(obj instanceof Discord.GuildChannel){
-// 			channelID = this.constructor.getChannelID(obj);
-// 			guildID = this.constructor.getGuildID(obj.guild);
-// 		}else if(obj instanceof Discord.Channel){
-// 			channelID = this.constructor.getChannelID(obj);
-// 			guildID = this.constructor.getGuildID(obj.guild);
-// 		}else if(obj instanceof Discord.Guild){
-// 			guildID = this.constructor.getGuildID(obj);
-// 		}
-		
-		
-
-// 		//vanilla obj
-// 		if(obj.guild){
-// 			guildID = this.constructor.getGuildID(obj.guild);
-// 		}
-// 		if(obj.channel){
-// 			channelID = this.constructor.getChannelID(obj.guild);
-// 		}
-
-		if(guildID && !channelID){
-			return `${guildID}`;
-		}else if(guildID && channelID){
-			return `${guildID}/${channelID}`;
-		}
-		throw "couldn\'t construct an id for obj to store in memory "+JSON.stringify(obj,null,2)
-	}
-
 	static getGuildID(guild) {
-		if (guild instanceof Guild || guild instanceof BaseGuild) return guild.id;
+		if (guild instanceof Guild) return guild.id;
 		if (guild === "global" || guild === null) return "global";
 		let id = guild.id || guild;
 		if (typeof id === "string" && /^\d+$/.test(id)) return id;
-		//throw new TypeError('Invalid guild specified. Must be a Guild instance, guild ID, "global", or null.');
+		throw new TypeError('Invalid guild specified. Must be a Guild instance, guild ID, "global", or null.');
 	}
 	static getChannelID(channel) {
 		if (channel instanceof Channel) return channel.id;
 		//if (guild === 'global' || guild === null) return 'global';
 		let id = channel.id || channel;
 		if (typeof id === "string" && /^\d+$/.test(id)) return id;
-		//throw new TypeError("Invalid channel specified. Must be a Channel instance"); //, guild ID, "global", or null.');
+		throw new TypeError("Invalid channel specified. Must be a Channel instance"); //, guild ID, "global", or null.');
 	}
 }
 

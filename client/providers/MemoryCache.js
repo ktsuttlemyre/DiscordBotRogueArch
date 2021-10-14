@@ -73,26 +73,31 @@ class MemoryCache {
 	}
 
 	static getID(obj){
-		let channelID='', guildID='';
+		let channelID=this.constructor.getGuildID(obj);
+		let guildID=this.constructor.getChannelID(obj);
 
-		if(obj instanceof Discord.Message){
-			throw "Trying to store an item in memory using a message as the identifier isn\'t currently allowed"
-		}else if(obj instanceof Discord.GuildChannel){
-			channelID = this.constructor.getChannelID(obj);
-			guildID = this.constructor.getGuildID(obj.guild);
-		}else if(obj instanceof Discord.Channel){
-			channelID = this.constructor.getChannelID(obj);
-			guildID = this.constructor.getGuildID(obj.guild);
-		}else if(obj instanceof Discord.Guild){
-			guildID = this.constructor.getGuildID(obj);
-		}
+			
+// 		if(obj instanceof Discord.Message){
+// 			throw "Trying to store an item in memory using a message as the identifier isn\'t currently allowed"
+// 		}else if(obj instanceof Discord.GuildChannel){
+// 			channelID = this.constructor.getChannelID(obj);
+// 			guildID = this.constructor.getGuildID(obj.guild);
+// 		}else if(obj instanceof Discord.Channel){
+// 			channelID = this.constructor.getChannelID(obj);
+// 			guildID = this.constructor.getGuildID(obj.guild);
+// 		}else if(obj instanceof Discord.Guild){
+// 			guildID = this.constructor.getGuildID(obj);
+// 		}
+		
+		
 
-		if(typeof obj.guild == 'string'){
-			guildID = this.constructor.getGuildID(obj.guild);
-		}
-		if(typeof obj.channel == 'string'){
-			channelID = this.constructor.getChannelID(obj.guild);
-		}
+// 		//vanilla obj
+// 		if(obj.guild){
+// 			guildID = this.constructor.getGuildID(obj.guild);
+// 		}
+// 		if(obj.channel){
+// 			channelID = this.constructor.getChannelID(obj.guild);
+// 		}
 
 		if(guildID && !channelID){
 			return `${guildID}`;
@@ -107,14 +112,14 @@ class MemoryCache {
 		if (guild === "global" || guild === null) return "global";
 		let id = guild.id || guild;
 		if (typeof id === "string" && /^\d+$/.test(id)) return id;
-		throw new TypeError('Invalid guild specified. Must be a Guild instance, guild ID, "global", or null.');
+		//throw new TypeError('Invalid guild specified. Must be a Guild instance, guild ID, "global", or null.');
 	}
 	static getChannelID(channel) {
 		if (channel instanceof Channel) return channel.id;
 		//if (guild === 'global' || guild === null) return 'global';
 		let id = channel.id || channel;
 		if (typeof id === "string" && /^\d+$/.test(id)) return id;
-		throw new TypeError("Invalid channel specified. Must be a Channel instance"); //, guild ID, "global", or null.');
+		//throw new TypeError("Invalid channel specified. Must be a Channel instance"); //, guild ID, "global", or null.');
 	}
 }
 

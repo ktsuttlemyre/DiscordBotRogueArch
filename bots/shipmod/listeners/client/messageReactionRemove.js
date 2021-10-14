@@ -62,9 +62,9 @@ class CustomListener extends Listener {
 
 		/** Emoji alerts **/
 		let key = `${message.id}/${userID}`;
-		let cache = this.client.memory.get(message.channel, "reactionCache", {});
-		//let cacheFunctions = this.client.memory.get(message.channel,'reactionListener',{});
-
+		let cache = this.client.memory.channelGet(message, "reactionCache", {});
+		//let cacheFunctions = this.client.memory.channelGet(message,'reactionListener',{});
+		
 		let entry = cache[key] || (cache[key] = []);
 		_.remove(entry, function (obj) {
 			return obj.emoji.name === reaction.emoji.name;

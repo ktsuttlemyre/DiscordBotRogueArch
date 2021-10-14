@@ -132,7 +132,7 @@ class StatsCommand extends Command {
 			.addField(
 				"Process",
 				[
-					`**Wall-time**: ${process.uptime()}`,
+					`**Wall-time**: ${this.formatMilliseconds(process.uptime())}`,
 					`**CPU usage**: ${YAML.stringify(cpuUsage)}`,
 					//`**HR walltime**: ${process.hrtime()}`,
 					`**PID**: ${process.pid}`,

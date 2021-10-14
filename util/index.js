@@ -123,7 +123,7 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 	debug && console.log('messages found',messages.size)
 	
 	let botDocumentation = messages.find(function(message){
-		return message.author.id == guild.user.id;
+		return message.author.id == client.user.id;
 	})
 	if(botDocumentation.content == settingsDocumentation){
 		await message.delete()

@@ -123,6 +123,7 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 		    `You may create multiple config messages that will be merged in chronological order (To circumvent discord's 2k message length)\n`+
 		    `You are allocated ${upperCharacterLimit/1000}kb of parsed config space`,//`\`\`\``
 	    }
+	};
 	
 	//get messages
 	let messages = await channel.messages.fetch({ limit: 100 });

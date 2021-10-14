@@ -14,8 +14,8 @@ class CustomListener extends Listener {
 	}
 
 	async exec(message, command, args, returnValue) {
-		let promise = this.client.memory.channelGet(message, `${message.id}_promise`);
-		let resolve = this.client.memory.channelGet(message, `${message.id}_resolve`);
+		let promise = this.client.memory.get(message.channel, `${message.id}_promise`);
+		let resolve = this.client.memory.get(message.channel, `${message.id}_resolve`);
 
 		if (returnValue !== undefined) {
 			// && returnValue.call){

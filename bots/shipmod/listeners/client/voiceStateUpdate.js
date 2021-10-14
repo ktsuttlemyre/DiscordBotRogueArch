@@ -102,7 +102,7 @@ class CustomListener extends Listener {
 		}
 		//handle amongus mute mode
 // 		if(newstate.channelID && changed.selfMute){ //if in a channel and mute state changed
-// 			let amongusMode = this.client.memory.channelGet(newstate, 'amongusMode');
+// 			let amongusMode = this.client.memory.get(newstate.channel, 'amongusMode');
 // 			//mute handler
 // 			if(amongusMode){
 // 				newstate.channel.members.forEach(function(member){

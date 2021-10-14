@@ -186,8 +186,8 @@ class StatsCommand extends Command {
 			//opts.dep && (!opts.env && !opts.args) && embed.addField(blank,`[Hidden]`,false); //make a blank block line if we dont show env and arg
 			
 			
-			.setFooter("Shipbot v" + botVersion);
-
+			embed.setFooter("Shipbot v" + botVersion);
+	
 		return embed;
 	}
 }

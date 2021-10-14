@@ -69,17 +69,7 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 	debug && console.log(`Bot ${client.user.tag} joined guild ${guild.name}`);
 	
 	
-	let settingsDocumentation = `**This channel has been flagged as the settings for shipbots**\n`+
-	    `\`\`\`\n`+
-	    `**For security:**\n`+
-	    `This channel must meet the following criteria:\n`+
-	    `\t The channel name is expected to be \`${settingsChannelName}\`\n`+
-	    `\t \`@everyone\` must not have \`VIEW_CHANNEL\` privlages\n`+
-	    `\t The guild owner \`${owner.username || owner.tag}\` must be present\n`+
-	    `\t Only valid YAML messages created by `\owner`\ or by messages that are 👍 reacted by owner will be accepted\n`+
-	    `\t You may create multiple messages that will be merged by chronological order (To circumvent discord's 2k message length)\n`+
-	    `\t You are allocated ${upperCharaterLimit/1000}kb of parsed settings space`+
-	    `\`\`\``
+
 	
 	//security
 	//ensures there is a channel named `settingsChannelName`
@@ -113,6 +103,20 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 		owner.send(`${guild.name} has a settings channel but it is public. Please change the \`@everyone\` role to not have view privlages in\`${settingsChannelName}\``);
 		return settings
 	}
+	
+	
+	let settingsDocumentation = `**This channel has been flagged as the settings for shipbots**\n`+
+	    `\`\`\`\n`+
+	    `**For security:**\n`+
+	    `This channel must meet the following criteria:\n`+
+	    `\t The channel name is expected to be \`${settingsChannelName}\`\n`+
+	    `\t \`@everyone\` must not have \`VIEW_CHANNEL\` privlages\n`+
+	    `\t The guild owner \`${owner.username || owner.tag}\` must be present\n`+
+	    `\t Only valid YAML messages created by `\owner`\ or by messages that are 👍 reacted by owner will be accepted\n`+
+	    `\t You may create multiple messages that will be merged by chronological order (To circumvent discord's 2k message length)\n`+
+	    `\t You are allocated ${upperCharaterLimit/1000}kb of parsed settings space`+
+	    `\`\`\``
+	
 	
 	//get messages
 	let messages = await channel.messages.fetch({ limit: 100 });
@@ -188,7 +192,7 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 		let yaml=message.content.trim().replace(/^```/,'').replace(/```$/,'').trim();
 		try{
 			let obj = YAML.load(yaml)
-			settingsCharaterLength += JSON.stringify(obj).length
+			settingsCharaterLength += JSON.stringify(obj).replace(/\\t|\\n|\\r/g).length
 			if(settingsCharaterLength>upperCharacterLimit){
 				throw 'Settings documents contain too many charaters. Your settings must parse out to be fewer than '+ upperCharacterLimit
 			}

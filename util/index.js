@@ -62,11 +62,12 @@ module.exports.exec = function(message,content,commandName,inhibitors){
 
 module.exports.parseSettingsFromGuild = async function (guild, channel){
 	let client = guild.client;
+	let botName = client.user.username || client.user.tag
 	if(!guild.available){
-		debug && console.log(`Bot ${client.user.tag} tried to join guild ${guild.name} and failed`);
+		debug && console.log(`Bot ${botName} tried to join guild ${guild.name} and failed`);
 		return; // Stops if unavailable
 	}
-	debug && console.log(`Bot ${client.user.tag} joined guild ${guild.name}`);
+	debug && console.log(`Bot ${botName} joined guild ${guild.name}`);
 	
 	
 
@@ -98,10 +99,12 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 			return settings
 		}
 		if(channelQuery.size>1){
-			owner.send(`${guild.name} has more than one channel with the title \`${settingsChannelName}\``);
-			return settings
+			owner.send(`${guild.name} has more than one channel with the title \`${settingsChannelName}\` ${botName} will be accepting the older one`);
+			channelQuery.sort(function(a, b) {         
+				return b.createdTimestamp - a.createdTimestamp;
+			}); //sort oldest date created	
 		}
-		channel = channelQuery.first();
+		channel = (channelQuery.first)?channelQuery.first():channelQuery;
 	}
 	let everyoneRole = guild.roles.everyone;
 
@@ -111,21 +114,23 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 		return settings
 	}
 	
-	
+	let ownerName=owner.username || owner.tag
 	let settingsDocumentation ={
 		embed:{
 			title:'Shipbot config file documentation',
 			description:''+
 			`Channel requirements:\n`+
-			`>• Channel name must be the only one matching \`${settingsChannelName}\`.\n`+
-			`>• The role \`@everyone\` must not have \`VIEW_CHANNEL\` privlage.\n`+
-			`>• The guild owner \`${owner.username || owner.tag}\` must be present.\n`+
+			`>\t• Channel name must be the only one matching \`${settingsChannelName}\`.\n`+ 
+			`>\t• The role \`@everyone\` must not have \`VIEW_CHANNEL\` privlage.\n`+
+			`>\t• The guild owner \`${ownerName}\` must be present.\n`+
 			`Messages:\n`+
-			`>• Messages must be created by \`owner\` or approved by \`owner\` via a \`👍\` react.\n`+
-			`>• Each message must be a valid YAML config.\n`+
-			`>• You may create multiple config messages that will be merged (chronological order)\n`+
-			`>\t• This is to circumvent Discord's 2k character message length\n`,
-			footer:'Submit your shipbot config files here',
+			`>\t• Must have owner approval via:\n`+
+			`>\t\t• messages come directly from \`${ownerName}\`\n`+
+	    		`>\t\t• or approved by \`${ownerName}\` via a \`👍\` react\n`+
+			`>\t• Each message must be a valid YAML config.\n`+
+			`>\t• Multiple config messages will be merged in chronological order\n`+
+			`>\t\t• This is to circumvent Discord's 2k character message length\n`,
+			footer:{text:'Submit your shipbot config files here'},
 	    }
 	};
 	

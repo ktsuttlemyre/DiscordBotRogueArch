@@ -131,7 +131,7 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 			` • Each message must be a valid YAML config.\n`+
 			` • Multiple config messages will be merged in chronological order\n`+
 			`>   • This is to circumvent Discord's 2k character message length\n`,
-			footer:{text:`Accepted config files will have a ✅ reaction`},
+			footer:{text:`Note: accepted config files will have a ✅ reaction`},
 	    }
 	};
 	

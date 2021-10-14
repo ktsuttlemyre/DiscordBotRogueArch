@@ -1,4 +1,4 @@
-const {Guild, Channel} = require("discord.js");
+const {Guild, Channel, BaseGuild} = require("discord.js");
 const Discord = require("discord.js");
 const cache = {};
 
@@ -108,7 +108,7 @@ class MemoryCache {
 	}
 
 	static getGuildID(guild) {
-		if (guild instanceof Guild) return guild.id;
+		if (guild instanceof Guild || guild instanceof BaseGuild) return guild.id;
 		if (guild === "global" || guild === null) return "global";
 		let id = guild.id || guild;
 		if (typeof id === "string" && /^\d+$/.test(id)) return id;

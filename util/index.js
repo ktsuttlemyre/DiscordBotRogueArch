@@ -104,7 +104,7 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 	debug && console.log('messages found',messages.size)
 	
 	//clear all reactions in this channel so we can use reactions to help give parse feedback
-	for (const [id, message] of Object.entries(messages)) {
+	for (const message of Array.from(messages.values())) {
 		if(message.reactions){
 			await message.reactions.removeAll().catch(function(error){
 			      owner.send('❌ Failed to clear reactions on settings messages: '+error);
@@ -126,7 +126,7 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 		return b.createdTimestamp - a.createdTimestamp;
 	}); //sort oldest date created
 
-	for (const [id, message] of Object.entries(messages)) {
+	for (const message of Array.from(messages.values())) {
 		debug && console.log('message =',message)
 		if(!message.content){
 			debug && console.log(`no message content for ${message.id}`)

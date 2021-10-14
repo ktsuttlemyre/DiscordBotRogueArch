@@ -127,7 +127,7 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 		if(reactions){
 			ownerApprove = reactions.cache.find(function(reaction){
 				console.log('emoji',reaction.emoji)
-				return reaction.emoji.name =='👍' && reaction.user.cache.get(owner.id)
+				return reaction.emoji.name =='👍' && reaction.users.cache.get(owner.id)
 			})
 		}
 		return ownerApprove || message.author.id == owner.id;

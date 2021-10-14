@@ -105,10 +105,9 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 	}
 	
 	
-	let settingsDocumentation = `**This channel has been flagged as the settings for shipbots**\n`+
+	let settingsDocumentation = `**Put your shipbot settings files in here**\n`+
 	    `\`\`\`\n`+
-	    `**For security:**\n`+
-	    `This channel must meet the following criteria:\n`+
+	    `This channel must meet the following criteria before settings will be accepted:\n`+
 	    `\t The channel name is expected to be \`${settingsChannelName}\`\n`+
 	    `\t \`@everyone\` must not have \`VIEW_CHANNEL\` privlages\n`+
 	    `\t The guild owner \`${owner.username || owner.tag}\` must be present\n`+

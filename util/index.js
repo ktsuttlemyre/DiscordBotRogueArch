@@ -1,4 +1,4 @@
-var debug = false;
+const debug = false;
 const PollyfillPromise = require('core-js/features/promise');
 const Discord = require("discord.js");
 const {Command} = require("discord-akairo");
@@ -11,7 +11,7 @@ const {constants} = require("fs");
 
 module.exports.player = require("./player");
 module.exports.playlists = require("./playlists");
-module.exports.messages = require("./messages");
+const MESSAGES = module.exports.messages = require("./messages");
 module.exports.commandVars = require.main.require("./common").commandVars; //TODO move commandVars here and delete common
 const config = require.main.require("./config");
 module.exports.config = config;
@@ -20,6 +20,7 @@ const ytdl = require("ytdl-core");
 const soundMap = config.voiceJoinLeave.tones.custom;
 
 const _ = require("lodash");
+const YAML = require("js-yaml");
 
 const request = require("request");
 
@@ -49,6 +50,176 @@ module.exports.wakeupPing = _.debounce(
 	1 * 60 * 1000,
 	{maxWait: 25 * 60 * 1000, trailing: false, leading: true}
 );
+
+module.exports.exec = function(message,content,commandName,inhibitors){
+	const command = message.client.commandHandler.findCommand(commandName);
+	if(!command){
+		throw 'Command not found'
+	}
+        message.client.commandHandler.handleDirectCommand(message, message.content, command, !inhibitors);
+}
+
+
+module.exports.parseSettingsFromGuild = async function (guild, channel){
+	let client = guild.client;
+	if(!guild.available){
+		debug && console.log(`Bot ${client.user.tag} tried to join guild ${guild.name} and failed`);
+		return; // Stops if unavailable
+	}
+	debug && console.log(`Bot ${client.user.tag} joined guild ${guild.name}`);
+	
+	
+
+	
+	//security
+	//ensures there is a channel named `settingsChannelName`
+	//ensures channel is private
+	//only reads messages fromw `owner`
+	//	
+	let upperCharacterLimit = 2000*5
+	let settingsCharaterLength = 0
+	
+	let settingsChannelName='settings-shipbot'
+	let owner = guild.owner.user
+	let settings = {}
+
+	if(!owner){
+		owner = await guild.members.fetch(guild.ownerID) // Fetches owner
+		owner = owner.user || owner.member || owner;
+		owner = owner.user || owner; //make sure we have a user obj
+	}
+
+	if(!channel){
+		let channelQuery = guild.channels.cache.filter(function(channel){
+			return channel.name == settingsChannelName;
+		})
+		if(!channelQuery || channelQuery.size<=0){
+			owner.send(`${guild.name} has no settings channel. Please make one with the title \`${settingsChannelName}\``);
+			return settings
+		}
+		if(channelQuery.size>1){
+			owner.send(`${guild.name} has more than one channel with the title \`${settingsChannelName}\``);
+			return settings
+		}
+		channel = channelQuery.first();
+	}
+	let everyoneRole = guild.roles.everyone;
+
+	// see: https://discord.js.org/#/docs/main/stable/class/Permissions?scrollTo=s-FLAGS
+	if (channel.permissionsFor(everyoneRole).has("VIEW_CHANNEL")) {
+		owner.send(`${guild.name} has a settings channel but it is public. Please change the \`@everyone\` role to not have view privlages in\`${settingsChannelName}\``);
+		return settings
+	}
+	
+	
+	let settingsDocumentation = `**Put your shipbot config files in here**\n`+
+	    //`\`\`\`\n`+
+	    `>>>This channel must meet the following criteria before config will be accepted:\n`+
+	    `The channel name must be the only one matching \`${settingsChannelName}\`\n`+
+	    `The role \`@everyone\` must not have \`VIEW_CHANNEL\` privlages\n`+
+	    `The guild owner \`${owner.username || owner.tag}\` must be present\n`+
+	    `Only valid YAML messages created by \`owner\` or by messages that are 👍 reacted by owner will be accepted\n`+
+	    `You may create multiple config messages that will be merged in chronological order (To circumvent discord's 2k message length)\n`+
+	    `You are allocated ${upperCharacterLimit/1000}kb of parsed config space`;
+	    //`\`\`\``
+	
+	
+	//get messages
+	let messages = await channel.messages.fetch({ limit: 100 });
+	debug && console.log('messages found',messages.size)
+	
+	let botDocumentation = messages.find(function(message){
+		return message.author.id == client.user.id;
+	})
+	if(botDocumentation && botDocumentation.content != settingsDocumentation){
+		await botDocumentation.delete();
+		botDocumentation=null;
+	}
+	if(!botDocumentation || botDocumentation.deleted){
+		await channel.send(settingsDocumentation).catch(function(error){
+		      owner.send(`❌ Failed to send settings documentation to ${settingsChannelName}: `+error);
+		});
+	}
+	
+	
+	//clear all reactions in this channel so we can use reactions to help give parse feedback
+	for (const message of Array.from(messages.values())) {
+		if(message.reactions){
+			for (const reaction of Array.from(message.reactions.cache.values())) {
+				await reaction.users.remove(guild.user).catch(function(error){
+				      owner.send('❌ Failed to clear reactions on settings messages: '+error);
+				      message.react('❌');
+				});
+			}
+			
+
+// 			await message.reactions.removeAll().catch(function(error){
+// 			      owner.send('❌ Failed to clear reactions on settings messages: '+error);
+// 			      message.react('❌');
+// 			});
+		}
+	}
+	
+	/*messages = messages.filter(function(message) {
+		let reactions = message.reactions
+		let ownerApprove
+		if(reactions){
+			ownerApprove = reactions.cache.find(function(reaction){
+				console.log('emoji',reaction.emoji)
+				return reaction.emoji.name =='👍' && reaction.users.fetch()!!! .cache.get(owner.id)
+			})
+		}
+		return ownerApprove || message.author.id == owner.id;
+	}); //only parse owner messages first
+	*/
+	let selectedMessages = []
+	for (const message of Array.from(messages.values())) {
+		let select = false
+		select = (message.author.id == owner.id)
+		let users = await MESSAGES.getReactedUsers(message,'👍')
+		select = (select || users.get(owner.id))
+		select && selectedMessages.push(message)
+	}
+	
+// 	let modIDs = [owner.id]
+// 	settings = parseSettings(messages,modIDs,settings);
+// 	modIDs.push.apply(modIDs,settings.admins);
+// 	settings = parseSettings(messages,modIDs,settings);
+	
+	selectedMessages = selectedMessages.sort(function(a, b) {         
+		return b.createdTimestamp - a.createdTimestamp;
+	}); //sort oldest date created
+
+	for (var i=0,l=selectedMessages.length;i<l;i++){ //const message of Array.from(messages.values())) {
+		let message = selectedMessages[i];
+		debug && console.log('message =',message)
+		if(!message.content){
+			debug && console.log(`no message content for ${message.id}`)
+			continue
+		}
+		debug && console.log('got message content',message.content)
+		let yaml=message.content.trim().replace(/^```/,'').replace(/```$/,'').trim();
+		try{
+			let obj = YAML.load(yaml)
+			settingsCharaterLength += JSON.stringify(obj).replace(/\\t|\\n|\\r/g).length
+			if(settingsCharaterLength>upperCharacterLimit){
+				throw 'Settings documents contain too many charaters. Your settings must parse out to be fewer than '+ upperCharacterLimit
+			}
+			_.merge(settings,obj);
+			
+			message.react('✅');
+		}catch(err){
+			owner.send('❌ Error parsing settings on message id: '+message.id+' '+err)
+			message.react('❌');
+			continue
+		}
+		debug && console.log('Settings now look like this',JSON.stringify(settings,null,2))
+
+
+	}
+	debug && console.log(`Bot ${client.user.tag} configured guild ${guild.name} with settings ${JSON.stringify(settings,null,2)}`);
+	return settings
+}
 
 module.exports.devChannelGate = function (message, env) {
 	env = env || process.env.ENVIRONMENT;

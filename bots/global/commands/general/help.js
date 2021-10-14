@@ -1,96 +1,97 @@
-const {Command} = require("discord-akairo");
+const { Command } = require('discord-akairo');
 
 class HelpCommand extends Command {
 	constructor() {
-		super("help", {
-			aliases: ["help", "halp", "h"],
-			category: "general",
-			clientPermissions: ["EMBED_LINKS"],
+		super('help', {
+			aliases: ['help', 'halp', 'h'],
+			category: 'general',
+			clientPermissions: ['EMBED_LINKS'],
 			args: [
 				{
-					id: "command",
-					type: "commandAlias",
+					id: 'command',
+					type: 'commandAlias',
 					prompt: {
-						start: "Which command do you need help with?",
-						retry: "Please provide a valid command.",
+						start: 'Which command do you need help with?',
+						retry: 'Please provide a valid command.',
 						optional: true,
 					},
 				},
 			],
 			description: {
-				content: "Displays a list of commands or information about a command.",
-				usage: "[command]",
+				content: 'Displays a list of commands or information about a command.',
+				usage: '[command]',
 			},
 		});
 	}
 
-	exec(message, {command}) {
-		if (!command) return this.execCommandList(message);
-
-		const prefix = this.handler.prefix(message);
-		const description = Object.assign(
-			{
-				content: "No description available.",
-				usage: "",
-				examples: [],
-				fields: [],
-			},
-			command.description
-		);
-
-		const embed = this.client.util
-			.embed()
-			.setColor(0xffac33)
-			.setTitle(`\`${prefix}${command.aliases[0]} ${description.usage}\``)
-			.addField("Description", description.content);
-
-		for (const field of description.fields) embed.addField(field.name, field.value);
-
-		if (description.examples.length) {
-			const text = `${prefix}${command.aliases[0]}`;
-			embed.addField("Examples", `\`${text} ${description.examples.join(`\`\n\`${text} `)}\``, true);
+	async exec(message, { command }) {
+		let embed = this.client.util.embed()
+			.setColor(0xFFAC33)
+		
+		if (!command){
+			embed = this.execCommandList(message,embed);
+		}else{
+			embed = this.execCommandQuery(message,embed,command);
 		}
 
-		if (command.aliases.length > 1) {
-			embed.addField("Aliases", `\`${command.aliases.join("` `")}\``, true);
-		}
-
-		return message.util.send({embed});
+		embed.dm = true;
+		return embed
 	}
 
-	async execCommandList(message) {
-		const prefix = this.handler.prefix(message);
+	execCommandQuery(message,embed,command) {
+			const prefix = this.handler.prefix(message);
+		
+			const description = Object.assign({
+				content: 'No description available.',
+				usage: '',
+				examples: [],
+				fields: [],
+			}, command.description);
 
-		const embed = this.client.util
-			.embed()
-			.setColor(0xffac33)
-			.addField("Command List", [
-				"This is a list of commands.",
-				`The bots prefix is \`${prefix}\``,
-				"To view the guide which explains how to use this Bot in depth, use `${prefix}guide`.",
-			]);
+			const aliases =[]
+			command.aliases.forEach(function(alias){
+				aliases.push(`${prefix}${alias}`)	
+			})
+			
+			embed
+				.setTitle(`How to use: \`${prefix}${command.aliases[0]}\``)
+				.addField('Aliases:',aliases.join(' '),false)
+				.addField('Usage:',`\`${description.usage}\``,false)
+				.addField('Description:', description.content,false);
+
+			for (const field of description.fields) embed.addField(field.name, field.value);
+
+			if (description.examples.length) {
+				const text = `${prefix}${command.aliases[0]}`;
+				embed.addField('Examples', `\`${text} ${description.examples.join(`\`\n\`${text} `)}\``, true);
+			}
+
+			if (command.aliases.length > 1) {
+				embed.addField('Aliases', `\`${command.aliases.join('` `')}\``, true);
+			}
+		return embed
+	}
+	
+	
+	execCommandList(message,embed) {
+		const prefix = this.handler.prefix(message);
+		embed.addField('Command List',
+				[
+					'This is a list of commands.',
+					`The bots prefix is \`${prefix}\``,
+					'To view the guide which explains how to use BoilerplateBot in depth, use `;guide`.',
+				]);
 
 		for (const category of this.handler.categories.values()) {
 			const title = {
-				general: "📝\u2000General",
-			}[category.id];
+				general: '📝\u2000General',
+			}[category.id]||category.id;
 
-			if (title) {
-				embed.addField(title, "`" + category.map((cmd) => cmd.aliases[0]).join("` `") + "`");
-			}
+			embed.addField(title, `\`${category.map(cmd => cmd.aliases[0]).join('` `')}\``);
 		}
 
-		const shouldReply = message.guild && message.channel.permissionsFor(this.client.user).has("SEND_MESSAGES");
 
-		try {
-			await message.author.send({embed});
-			if (shouldReply) return message.util.reply("I've sent you a DM with the command list.");
-		} catch (err) {
-			await message.channel.send({embed});
-			if (shouldReply) return message.util.reply("I could not send you the command list in DMs.");
-		}
-
-		return undefined;
+		return embed;
 	}
 }
 

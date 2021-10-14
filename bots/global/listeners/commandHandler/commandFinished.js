@@ -21,7 +21,7 @@ class CustomListener extends Listener {
 			// && returnValue.call){
 			returnValue = await returnValue;
 			setTimeout(function () {
-				resolve(returnValue);
+				resolve && resolve(returnValue);
 			}, 1);
 			returnValue = await promise;
 		}
@@ -37,10 +37,8 @@ class CustomListener extends Listener {
 		//respond
 		if (message && !message.deleted) { //if they deleted the message then don't do anything
 			let reply = await util.messages.encapsulate(message, returnValue);
-			let callback = returnValue.callback;
-			if (callback) {
-				callback.call && callback(reply);
-			}
+			let callback = returnValue && returnValue.callback;
+			callback && callback.call && callback(reply);
 		}
 	}
 }

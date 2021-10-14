@@ -30,21 +30,11 @@ class CustomCommand extends Command {
 	// 	}
 
 	async exec(message, {input}) {
-		let doc = input;
-		if (typeof doc == "string") {
-			doc = doc.trim();
-			if (doc.startsWith("---\n") || (doc.startsWith("{") && doc.endsWith("}")) || (doc.startsWith("[") && doc.endsWith("]"))) {
-				// Get document, or throw exception on error
-				try {
-					//TODO test yaml
-					doc = yaml.load(input);
-				} catch (e) {
-					console.error(e);
-					doc = input;
-				}
-			}
+		let opts = {
+			user:message.user,
+			member:message.member
 		}
-		await util.messages.encapsulate(message, doc);
+		await util.messages.encapsulate(message, input, opts);
 	}
 }
 

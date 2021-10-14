@@ -1,5 +1,5 @@
 const fetch = require("node-fetch");
-const yaml = require("js-yaml");
+const YAML = require("js-yaml");
 
 let config = {
 	development: {
@@ -70,7 +70,7 @@ let loadToneMap = async function (configInstance) {
 	let json = {};
 	try {
 		//TODO test yaml
-		json = yaml.load(body);
+		json = YAML.load(body);
 	} catch (e) {
 		console.error(e);
 	}

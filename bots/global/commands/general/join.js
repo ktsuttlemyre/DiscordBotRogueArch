@@ -30,7 +30,7 @@ class CustomCommand extends Command {
 	}
 
 	async exec(message) {
-		if (!message.member.voice.channel) return message.channel.send(`${emotes.error} - You're not in a voice channel !`);
+		//if (!message.member.voice.channel) return message.channel.send();
 		// 		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${emotes.error} - You are not in the same voice channel !`);
 		// 		var player = this.client.memory.get(message.guild, 'player')
 		// 		if(!player){
@@ -45,7 +45,12 @@ class CustomCommand extends Command {
 		// 		}
 		// 		player.skip(message);
 		// process.exit(0);
-		let connection = await message.member.voice.channel.join();
+		let voice = message.member.voice || {};
+		let channel = voice.channel
+		if(!channel){
+			return `${emotes.error} - You're not in a voice channel !`
+		}
+		let connection = await channel.join();
 		message.guild.me.voice.setSelfMute(false);
 		message.guild.me.voice.setSelfDeaf(false);
 

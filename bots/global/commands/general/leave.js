@@ -45,9 +45,12 @@ class CustomCommand extends Command {
 		// 		}
 		// 		player.skip(message);
 		// process.exit(0);
-		if (message.guild.me.voice.channel !== undefined) {
-			message.guild.me.voice.channel.leave();
+		let voice = message.guild.member.voice || {};
+		let channel = voice.channel
+		if (channel == null) {
+			return `${emotes.error} - I am not in a voice channel`;
 		}
+		channel.leave();
 	}
 }
 

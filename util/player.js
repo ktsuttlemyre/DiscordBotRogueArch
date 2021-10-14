@@ -228,7 +228,7 @@ const defaultFetcher = function () {
 let playBackgroundPlaylist = (module.exports.playBackgroundPlaylist = async (message, player, notice) => {
 	init(message, player, notice);
 
-	let fetchNext = message.client.memory.get(message.channel, "backgroundPlaylistFetcher") || defaultFetcher;
+		let fetchNext = message.client.memory.channelGet(message, "backgroundPlaylistFetcher") || defaultFetcher;
 	let selection = await fetchNext();
 	console.log("background playing", selection);
 
@@ -301,7 +301,7 @@ var create = (module.exports.create = function (message, client) {
 				return;
 			}
 
-			let resolve = message.client.memory.get(message.channel, `${message.id}_resolve`);
+			let resolve = message.client.memory.channelGet(message, `${message.id}_resolve`);
 			if (!resolve) {
 				return;
 			}

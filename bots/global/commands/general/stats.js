@@ -31,6 +31,13 @@ class StatsCommand extends Command {
 			category: "general",
 			clientPermissions: ["EMBED_LINKS"],
 			description: {content: "Displays Shipbot's statistics."},
+			args: [
+				{
+					id: "input",
+					default: "",
+					match: "content",
+				},
+			],
 		});
 	}
 	
@@ -72,7 +79,12 @@ class StatsCommand extends Command {
 // 		return obj;
 // 	}
 
-	async exec(message) {		
+	async exec(message, {input}) {
+		let isAdmin = message.member.roles.cache.find((role) => (role.name||'').toLowerCase() === 'admin');
+   		let isMod = message.member.roles.cache.find((role) => (role.name||'').toLowerCase() === 'mod');
+		
+		
+
 		//returns cpu average and count
 		let cpu = osu.cpu
 		let cpuAverage = cpu.average()
@@ -100,10 +112,16 @@ class StatsCommand extends Command {
 		const secondHalf = list.slice(half)
 		
 		let opts = {
-			args:true,
+			args:false,
 			env:false
 		}
 		
+		if(isAdmin){
+			input = (input ||'').split(/[\W_]+/) || [] //only words
+			input.forEach(function(word){
+				opts[word]=true
+			})
+		}
 		
 		const client = this.client;
 		
@@ -111,41 +129,6 @@ class StatsCommand extends Command {
 			.setColor(0xffac33)
 			.setTitle("Shipbot Statistics")
 		        //.setDescription(`**dependencies**:\n${dep.stdout}`)
-		        .addField('Dependencies',firstHalf.join('\n'),true)
-			.addField(blank,secondHalf.join('\n'),true)
-		if(opts.env){
-			embed.addField("Env Vars",`${YAML.stringify(process.env)}`,false)
-		}else{
-			embed.addField("Env Vars",`[Hidden]`,false)
-		}
-		if(opts.env){
-			embed.addField("Args",`${process.args}`,true)
-		}else{
-			embed.addField("Args",`[Hidden]`,true)
-		}
-		embed
-			.addField(
-				"Client",
-				[
-					`**Online Time**: ${this.formatMilliseconds(this.client.uptime)}`,
-					`**Guilds**: ${client.guilds.cache.size}`,
-				 	`**Channels**: ${client.channels.cache.size}`,
-				 	`**Users**: ${client.users.cache.size}`,
-					
-				],
-				true
-			)
-			.addField(
-				"Platform",
-				[
-					`**Architecture**: ${process.arch}`, 
-					`**Platform**: ${process.platform}`,
-					`**Node Version**: ${process.version}`,
-					//`**Discord.js**: ${djsVersion}`,
-					//`**Akairo**: ${akairoVersion}`,
-				],
-				true
-			)
 			.addField(
 				"Process",
 				[
@@ -170,6 +153,39 @@ class StatsCommand extends Command {
 				],
 				true
 			)
+			.addField(
+				"Client",
+				[
+					`**Online Time**: ${this.formatMilliseconds(this.client.uptime)}`,
+					`**Guilds**: ${client.guilds.cache.size}`,
+				 	`**Channels**: ${client.channels.cache.size}`,
+				 	`**Users**: ${client.users.cache.size}`,
+					
+				],
+				true
+			)
+			.addField(
+				"Platform",
+				[
+					`**Architecture**: ${process.arch}`, 
+					`**Platform**: ${process.platform}`,
+					`**Node Version**: ${process.version}`,
+					//`**Discord.js**: ${djsVersion}`,
+					//`**Akairo**: ${akairoVersion}`,
+				],
+				true
+			)
+			.addField(blank,blank,true); //empty field for later use
+			
+			opts.env && embed.addField("Env Vars",`${YAML.stringify(process.env)}`,false);
+			opts.args && embed.addField("Args",`${process.args}`,false);
+		
+			opts.dep && embed.addField('Dependencies',firstHalf.join('\n'),true);
+			opts.dep && embed.addField(blank,secondHalf.join('\n'),true);
+			
+			//opts.dep && (!opts.env && !opts.args) && embed.addField(blank,`[Hidden]`,false); //make a blank block line if we dont show env and arg
+			
+			
 			.setFooter("Shipbot v" + botVersion);
 
 		return embed;

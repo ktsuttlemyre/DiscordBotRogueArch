@@ -89,12 +89,19 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 		owner = owner.user || owner; //make sure we have a user obj
 	}
 
-	channel = channel || guild.channels.cache.find(function(channel){
-		return channel.name == settingsChannelName;
-	})
 	if(!channel){
-		owner.send(`${guild.name} has no settings channel. Please make one with the title \`${settingsChannelName}\``);
-		return settings
+		let channelQuery = guild.channels.cache.filter(function(channel){
+			return channel.name == settingsChannelName;
+		})
+		if(!channelQuery || channelQuery.size<=0){
+			owner.send(`${guild.name} has no settings channel. Please make one with the title \`${settingsChannelName}\``);
+			return settings
+		}
+		if(channelQuery.size>1){
+			owner.send(`${guild.name} has more than one channel with the title \`${settingsChannelName}\``);
+			return settings
+		}
+		channel = channelQuery.first();
 	}
 	let everyoneRole = guild.roles.everyone;
 
@@ -105,16 +112,16 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 	}
 	
 	
-	let settingsDocumentation = `**Put your shipbot settings files in here**\n`+
-	    `\`\`\`\n`+
-	    `This channel must meet the following criteria before settings will be accepted:\n`+
-	    `\t The channel name is expected to be \`${settingsChannelName}\`\n`+
-	    `\t \`@everyone\` must not have \`VIEW_CHANNEL\` privlages\n`+
+	let settingsDocumentation = `**Put your shipbot config files in here**\n`+
+	    //`\`\`\`\n`+
+	    `This channel must meet the following criteria before config will be accepted:\n`+
+	    `\t The channel name must be the only one matching \`${settingsChannelName}\`\n`+
+	    `\t The role \`@everyone\` must not have \`VIEW_CHANNEL\` privlages\n`+
 	    `\t The guild owner \`${owner.username || owner.tag}\` must be present\n`+
 	    `\t Only valid YAML messages created by \`owner\` or by messages that are 👍 reacted by owner will be accepted\n`+
-	    `\t You may create multiple messages that will be merged by chronological order (To circumvent discord's 2k message length)\n`+
-	    `\t You are allocated ${upperCharacterLimit/1000}kb of parsed settings space`+
-	    `\`\`\``
+	    `\t You may create multiple config messages that will be merged in chronological order (To circumvent discord's 2k message length)\n`+
+	    `\t You are allocated ${upperCharacterLimit/1000}kb of parsed config space`+
+	    //`\`\`\``
 	
 	
 	//get messages

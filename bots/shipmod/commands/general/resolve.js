@@ -36,9 +36,11 @@ class CustomCommand extends Command {
 		
 		let client = this.client;
 		let mentions = await util.resolveMentions(message,arg);
+		let string = require('util').inspect(mentions, {showHidden: false})
+		console.log('resolved:',string)
     		return {
 			title:arg,
-			description:require('util').inspect(mentions.parsed, {showHidden: false})
+			description:string
 		}
 	}
 }

@@ -176,9 +176,13 @@ class CustomListener extends Listener {
 			}); //sort lowest number of members and oldest date created
 
 			let oldestGameRole = roles.find((x) => x.name.indexOf(gamePrefix)===0); //find a role with game prefix
-			if(oldestGameRole){
-				logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send("Removing old GameRole `"+oldestGameRole.name+"` with only "+ oldestGameRole.members.size+ " members")
-				await oldestGameRole.delete();
+			if(oldestGameRole && oldestGameRole!.deleted){
+				await oldestGameRole.delete().then(function(value,error){
+					if(error){
+						throw error
+					}
+					logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send("Removed old GameRole `"+oldestGameRole.name+"` with only "+ oldestGameRole.members.size+ " members")
+				});
 			}
 		}
 		

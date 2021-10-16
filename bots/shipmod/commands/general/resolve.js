@@ -3,8 +3,10 @@ const {Client, Collection} = require("discord.js");
 const GUIMessages = require.main.require("./templates/messages");
 const {Command} = require("discord-akairo");
 const {Player} = require("discord-player");
+
 const common = require.main.require("./common");
 const util = require.main.require("./util");
+const YAML = util.YAML
 const commandVars = common.commandVars(__filename);
 const _ = require("lodash");
 const roomMap = require.main.require("./config").eventRoomMap;
@@ -36,7 +38,7 @@ class CustomCommand extends Command {
 		
 		let client = this.client;
 		let mentions = await util.resolveMentions(message,arg);
-		let string = require('util').inspect(mentions, {showHidden: false})
+		let string = YAML.stringify(mentions.args)
 		console.log('resolved:',string)
     		return {
 			title:arg,

@@ -4,14 +4,12 @@ const packageJSON = require.main.require("./package.json");
 const emotes = {error: ":error:"};
 const util = require.main.require("./util");
 const config = util.config;
+const YAML = util.YAML;
 const botVersion = packageJSON.version;
 const blank = "‎"
 
 const osu = require('node-os-utils');
-const YAML = require("js-yaml");
-YAML.stringify = function(yaml){
-	return YAML.dump(yaml,{noArrayIndent :true,flowLevel:1,sortKeys:true,forceQuotes:true,quotingType:'"'}) //https://www.npmjs.com/package/js-yaml
-}
+
 
 
 //https://stackoverflow.com/questions/12941083/execute-and-get-the-output-of-a-shell-command-in-node-js

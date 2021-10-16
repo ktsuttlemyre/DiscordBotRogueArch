@@ -4,7 +4,13 @@ const UTIL = require('util');
 const _ = require("lodash");
 
 YAML.stringify = function(obj,opts){
-	opts = _.defaults(opts||{},{
+	opts = opts || {}
+	if(Array.isArray(obj)){
+		opts = _.defaults(opts,{
+			flowLevel:2,
+		}
+	}
+	opts = _.defaults(opts,{
 		noArrayIndent:true,
 		flowLevel:1,
 		sortKeys:true,

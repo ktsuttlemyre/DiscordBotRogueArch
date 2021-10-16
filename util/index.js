@@ -21,7 +21,7 @@ const ytdl = require("ytdl-core");
 const soundMap = config.voiceJoinLeave.tones.custom;
 
 const _ = require("lodash");
-const YAML = require("js-yaml");
+const YAML = (module.exports.YAML = require.main.require("./util/YAML.js"));
 
 const request = require("request");
 

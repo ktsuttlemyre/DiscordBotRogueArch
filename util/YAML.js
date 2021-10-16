@@ -8,7 +8,7 @@ YAML.stringify = function(obj,opts){
 	if(Array.isArray(obj)){
 		opts = _.defaults(opts,{
 			flowLevel:2,
-		}
+		})
 	}
 	opts = _.defaults(opts,{
 		noArrayIndent:true,

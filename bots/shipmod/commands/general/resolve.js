@@ -41,8 +41,8 @@ class CustomCommand extends Command {
 		let string = YAML.stringify(mentions.args)
 		console.log('resolved:',string)
     		return {
-			title:arg,
-			description:string
+			title:message.content,
+			description:`\`\`\`${string}\`\`\``
 		}
 	}
 }

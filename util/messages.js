@@ -98,11 +98,18 @@ module.exports.encapsulate = async function (message, doc, opts) {
 	doc.replace = false (can be passed to keep the orignal from being deleted)
 	doc.anon, doc.anonymous = original requester wont be shown
 	doc.original = show original request
+	
+	doc.content = gets turned into a message.content
+	doc.asContent = emulates a embed?
 	*/
 	opts = opts || {}
 	if (!doc) {
 		doc = message.content;
 	}
+	
+	let content = doc.content
+	doc.content = null;
+	delete doc.content
 	
 	debug && console.log("pre parsed encapsulation", doc);
 	
@@ -196,9 +203,9 @@ module.exports.encapsulate = async function (message, doc, opts) {
 	}
 
 	//append original message
-	let content = undefined;
+	let originalText;
 	if(doc.original){
-		content = message.content
+		originalText = message.content
 // 		doc.fields = doc.fields || {}
 // 		let fields = doc.fields
 // 		fields.push({
@@ -208,14 +215,25 @@ module.exports.encapsulate = async function (message, doc, opts) {
 // 		})
 	}
 	
+	
+	let package;
+	if(doc.asContent){
+		let string = `**${doc.title}**\n`+
+		    `${content||doc.description}`;
+		package = {content:string};
+	}else{
+		package = {content:content, embed:doc};
+	
+	
 	//send the message
 	let reply;
 	if(doc.edit) {
 		if(doc.edit !== true){
 			message = await channel.messages.fetch(doc.edit);		
 		}
-		reply = await message.edit({content:content, embed: doc});
+		reply = await message.edit(package);
 	}
+	
 	
 	let alert={}
 	if(doc.dm){
@@ -223,7 +241,7 @@ module.exports.encapsulate = async function (message, doc, opts) {
 		const shouldReply = message.guild && message.channel.permissionsFor(message.client.user).has('SEND_MESSAGES');
 		
 		try {
-			await message.author.send({content:content,  embed: doc });
+			await message.author.send(package);
 
 			if (shouldReply){
 				alert.title="Sent to DM"
@@ -242,9 +260,9 @@ module.exports.encapsulate = async function (message, doc, opts) {
 	}
 
 	if(alert.title){
-		reply = await channel.send({embed: alert});
+		reply = await channel.send({content:content, embed: alert});
 	}else{
-		reply = await channel.send({content:content, embed: doc});
+		reply = await channel.send(package);
 		
 		//if reactions are set then
 		if (doc.reactions) {

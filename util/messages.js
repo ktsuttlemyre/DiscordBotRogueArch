@@ -223,7 +223,7 @@ module.exports.encapsulate = async function (message, doc, opts) {
 		package = {content:string};
 	}else{
 		package = {content:content, embed:doc};
-	
+	}
 	
 	//send the message
 	let reply;

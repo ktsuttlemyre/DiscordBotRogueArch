@@ -212,7 +212,7 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 			continue
 		}
 		debug && console.log('got message content',message.content)
-		let yaml=message.content.trim().replace(/^```/,'').replace(/```$/,'').trim();
+		let yaml=message.content.trim().replace(/^```\S*/,'').replace(/```$/,'').trim();
 		try{
 			let obj = YAML.load(yaml)
 			settingsCharaterLength += JSON.stringify(obj).replace(/\\t|\\n|\\r/g).length

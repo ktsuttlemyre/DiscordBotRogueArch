@@ -42,7 +42,8 @@ class CustomCommand extends Command {
 		console.log('resolved:',string)
     		return {
 			title:message.content,
-			content:`\`\`\`YAML\n${string}\n\`\`\``
+			content:`\`\`\`YAML\n${string}\n\`\`\``,
+			asContent:true,
 		}
 	}
 }

@@ -42,7 +42,7 @@ class CustomCommand extends Command {
 		console.log('resolved:',string)
     		return {
 			title:message.content,
-			description:`\`\`\`${string}\`\`\``
+			description:`\`\`\`YAML\n${string}\n\`\`\``
 		}
 	}
 }

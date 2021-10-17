@@ -121,16 +121,16 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 			title:`Shipbot config file documentation`,
 			description:''+
 			`__Channel requirements:__\n`+
-			` • Channel name must be the only one matching \`${settingsChannelName}\`.\n`+ 
-			` • The role \`@everyone\` must not have \`VIEW_CHANNEL\` privlage.\n`+
-			` • The guild owner \`${ownerName}\` must be present.\n`+
+			`• Channel name must be the only one matching \`${settingsChannelName}\`.\n`+ 
+			`• The role \`@everyone\` must not have \`VIEW_CHANNEL\` privlage.\n`+
+			`• The guild owner \`${ownerName}\` must be present.\n`+
 			`__Message requirements:__\n`+
-			` • Must have owner approval via:\n`+
-			`>   • sending directly from \`${ownerName}\` account\n`+
-	    		`>   • or approved by \`${ownerName}\` via a \`👍\` react\n`+
-			` • Each message must be a valid YAML config.\n`+
-			` • Multiple config messages will be merged in chronological order\n`+
-			`>   • This is to circumvent Discord's 2k character message length\n`,
+			`• Must have owner approval via:\n`+
+			`> • sending directly from \`${ownerName}\` account\n`+
+	    		`> • or approved by \`${ownerName}\` via a \`👍\` react\n`+
+			`• Each message must be a valid YAML config.\n`+
+			`• Multiple config messages will be merged in chronological order\n`+
+			`> • This is to circumvent Discord's 2k character message length\n`,
 			footer:{text:`Note: accepted config files will have a ✅ reaction`},
 	    }
 	};

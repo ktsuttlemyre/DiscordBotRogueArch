@@ -63,8 +63,9 @@ class CustomListener extends Listener {
 		debug && console.log('checking channel map',JSON.stringify(channelMap))
 		let textChannelID = channelMap[newstate.channelID];
 		let textChannel = guild.channels.cache.get(textChannelID);
+		let memberPermissionToViewChannel = textChannel.permissionsFor(member).has('VIEW_CHANNEL', false);
 		let permissions;
-		if(textChannel){
+		if(textChannel && !memberPermissionToViewChannel){
 			debug && console.log('entering a hidden channel',textChannelID)
 			permissions = textChannel.permissionsFor(bot)
 			if(permissions.has(permissionsNeeded)){
@@ -82,7 +83,8 @@ class CustomListener extends Listener {
 		//leave old chatroom (if they left a room)
 		textChannelID = channelMap[oldstate.channelID];
 		textChannel = guild.channels.cache.get(textChannelID);
-		if(roomChanged && textChannel){ //if they actually left a channel because the id changed
+		memberPermissionToViewChannel = textChannel.permissionsFor(member).has('VIEW_CHANNEL', false);
+		if(roomChanged && textChannel && memberPermissionToViewChannel){ //if they actually left a channel because the id changed
 			debug && console.log('leaving a hidden channel',textChannelID)
 			permissions = textChannel.permissionsFor(bot)
 			//console.log(permissions.toArray())

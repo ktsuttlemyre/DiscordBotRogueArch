@@ -32,7 +32,7 @@ class CustomListener extends Listener {
 		let guild = newstate.guild;
 		
 		let client = this.client;
-		let bot = client.me || client.user;
+		let bot = guild.me || client.user;
 		let logChannel = guild.channels.resolve(config.actionLogChannel);
 		let name = member.displayName || member.tag;
 		

@@ -63,19 +63,21 @@ class CustomListener extends Listener {
 		debug && console.log('checking channel map',JSON.stringify(channelMap))
 		let textChannelID = channelMap[newstate.channelID];
 		let textChannel = guild.channels.cache.get(textChannelID);
-		let memberPermissionToViewChannel = textChannel.permissionsFor(member).has('VIEW_CHANNEL', false);
-		let permissions;
-		if(textChannel && !memberPermissionToViewChannel){
-			debug && console.log('entering a hidden channel',textChannelID)
-			permissions = textChannel.permissionsFor(bot)
-			if(permissions.has(permissionsNeeded)){
-				let promise = await textChannel.updateOverwrite(member, {
-				    //SEND_MESSAGES: false,
-				    VIEW_CHANNEL: true
-				});
-				debug && console.log('showed hidden channel',textChannel.name)
-			}else{
-				console.log(`${me.displayName||me.tag} does not have permission to change permissions in `+textChannel.name)
+		
+		if(textChannel){
+			let memberPermissionToViewChannel = textChannel.permissionsFor(member).has('VIEW_CHANNEL', false);
+			if(!memberPermissionToViewChannel){
+				debug && console.log('entering a hidden channel',textChannelID)
+				let permissions = textChannel.permissionsFor(bot)
+				if(permissions.has(permissionsNeeded)){
+					let promise = await textChannel.updateOverwrite(member, {
+					    //SEND_MESSAGES: false,
+					    VIEW_CHANNEL: true
+					});
+					debug && console.log('showed hidden channel',textChannel.name)
+				}else{
+					console.log(`${me.displayName||me.tag} does not have permission to change permissions in `+textChannel.name)
+				}
 			}
 		}
 
@@ -83,20 +85,22 @@ class CustomListener extends Listener {
 		//leave old chatroom (if they left a room)
 		textChannelID = channelMap[oldstate.channelID];
 		textChannel = guild.channels.cache.get(textChannelID);
-		memberPermissionToViewChannel = textChannel.permissionsFor(member).has('VIEW_CHANNEL', false);
-		if(roomChanged && textChannel && memberPermissionToViewChannel){ //if they actually left a channel because the id changed
-			debug && console.log('leaving a hidden channel',textChannelID)
-			permissions = textChannel.permissionsFor(bot)
-			//console.log(permissions.toArray())
-			if(permissions.has(permissionsNeeded)){
-				//leave private rooms
-				let promise = await textChannel.updateOverwrite(member, {
-				    //SEND_MESSAGES: false,
-				    VIEW_CHANNEL: false
-				});
-				debug && console.log('hide hidden channel',textChannel.name)
-			}else{
-				console.log(`${bot.displayName||bot.tag} does not have permission to change permissions in `+textChannel.name)
+		if(roomChanged && textChannel){ //if they actually left a channel because the id changed
+			let let memberPermissionToViewChannel = textChannel.permissionsFor(member).has('VIEW_CHANNEL', false); = textChannel.permissionsFor(member).has('VIEW_CHANNEL', false);
+			if(memberPermissionToViewChannel){
+				debug && console.log('leaving a hidden channel',textChannelID)
+				let permissions = textChannel.permissionsFor(bot)
+				//console.log(permissions.toArray())
+				if(permissions.has(permissionsNeeded)){
+					//leave private rooms
+					let promise = await textChannel.updateOverwrite(member, {
+					    //SEND_MESSAGES: false,
+					    VIEW_CHANNEL: false
+					});
+					debug && console.log('hide hidden channel',textChannel.name)
+				}else{
+					console.log(`${bot.displayName||bot.tag} does not have permission to change permissions in `+textChannel.name)
+				}
 			}
 		}
 		

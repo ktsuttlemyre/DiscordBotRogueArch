@@ -34,6 +34,7 @@ class CustomListener extends Listener {
 		let client = this.client;
 		let bot = client.me || client.user;
 		let logChannel = guild.channels.resolve(config.actionLogChannel);
+		let name = member.displayName || member.tag;
 		
 		
 		let changed ={	
@@ -63,11 +64,10 @@ class CustomListener extends Listener {
 		debug && console.log('checking channel map',JSON.stringify(channelMap))
 		let textChannelID = channelMap[newstate.channelID];
 		let textChannel = guild.channels.cache.get(textChannelID);
-		
 		if(textChannel){
 			let memberPermissionToViewChannel = textChannel.permissionsFor(member).has('VIEW_CHANNEL', false);
 			if(!memberPermissionToViewChannel){
-				debug && console.log('entering a hidden channel',textChannelID)
+				debug && console.log(`${name} entering hidden channel ${textChannel.name} in ${guild.name}`);
 				let permissions = textChannel.permissionsFor(bot)
 				if(permissions.has(permissionsNeeded)){
 					let promise = await textChannel.updateOverwrite(member, {
@@ -76,7 +76,7 @@ class CustomListener extends Listener {
 					});
 					debug && console.log('showed hidden channel',textChannel.name)
 				}else{
-					console.log(`${me.displayName||me.tag} does not have permission to change permissions in `+textChannel.name)
+					console.log(`${bot.displayName||bot.tag} does not have permission to change permissions in ${textChannel.name}`)
 				}
 			}
 		}
@@ -86,9 +86,9 @@ class CustomListener extends Listener {
 		textChannelID = channelMap[oldstate.channelID];
 		textChannel = guild.channels.cache.get(textChannelID);
 		if(roomChanged && textChannel){ //if they actually left a channel because the id changed
-			let let memberPermissionToViewChannel = textChannel.permissionsFor(member).has('VIEW_CHANNEL', false); = textChannel.permissionsFor(member).has('VIEW_CHANNEL', false);
+			let memberPermissionToViewChannel = textChannel.permissionsFor(member).has('VIEW_CHANNEL', false);
 			if(memberPermissionToViewChannel){
-				debug && console.log('leaving a hidden channel',textChannelID)
+				debug && console.log(`${name} leaving hidden channel ${textChannel.name} in ${guild.name}`)
 				let permissions = textChannel.permissionsFor(bot)
 				//console.log(permissions.toArray())
 				if(permissions.has(permissionsNeeded)){
@@ -99,7 +99,7 @@ class CustomListener extends Listener {
 					});
 					debug && console.log('hide hidden channel',textChannel.name)
 				}else{
-					console.log(`${bot.displayName||bot.tag} does not have permission to change permissions in `+textChannel.name)
+					console.log(`${bot.displayName||bot.tag} does not have permission to change permissions in ${textChannel.name}`)
 				}
 			}
 		}

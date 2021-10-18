@@ -143,7 +143,7 @@ class CustomListener extends Listener {
 				}
 				
 			
-				permissions = newstate.channel.permissionsFor(bot);
+				let permissions = newstate.channel.permissionsFor(bot);
 				//reset the users status removing serverMute and serverDeafen if they do not have the voicemute or voicedeaf role
 				if(!newstate.member.user.bot && (joinLeaveConfig.resetUserState || oldstate.channelID == oldstate.guild.afkChannelID)){
 					if(permissions.has('MUTE_MEMBERS')){

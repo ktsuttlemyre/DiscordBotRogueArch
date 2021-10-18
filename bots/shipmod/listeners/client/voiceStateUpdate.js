@@ -30,8 +30,9 @@ class CustomListener extends Listener {
 			return
 		}
 		let guild = newstate.guild;
+		
 		let client = this.client;
-		let me = client.me;
+		let bot = client.me || client.user;
 		let logChannel = guild.channels.resolve(config.actionLogChannel);
 		
 		
@@ -65,7 +66,7 @@ class CustomListener extends Listener {
 		let permissions;
 		if(textChannel){
 			debug && console.log('entering a hidden channel',textChannelID)
-			permissions = textChannel.permissionsFor(guild.me)
+			permissions = textChannel.permissionsFor(bot)
 			if(permissions.has(permissionsNeeded)){
 				let promise = await textChannel.updateOverwrite(member, {
 				    //SEND_MESSAGES: false,
@@ -83,7 +84,7 @@ class CustomListener extends Listener {
 		textChannel = guild.channels.cache.get(textChannelID);
 		if(roomChanged && textChannel){ //if they actually left a channel because the id changed
 			debug && console.log('leaving a hidden channel',textChannelID)
-			permissions = textChannel.permissionsFor(guild.me)
+			permissions = textChannel.permissionsFor(bot)
 			//console.log(permissions.toArray())
 			if(permissions.has(permissionsNeeded)){
 				//leave private rooms
@@ -93,7 +94,7 @@ class CustomListener extends Listener {
 				});
 				debug && console.log('hide hidden channel',textChannel.name)
 			}else{
-				console.log(`${me.displayName||me.tag} does not have permission to change permissions in `+textChannel.name)
+				console.log(`${bot.displayName||bot.tag} does not have permission to change permissions in `+textChannel.name)
 			}
 		}
 		
@@ -127,27 +128,27 @@ class CustomListener extends Listener {
 				let role = guild.roles.cache.find((x) => x.name === roleName);
 
 				//can this bot manage roles?
-				if (guild.me.hasPermission("MANAGE_ROLES")) {
+				if (bot.hasPermission("MANAGE_ROLES")) {
 					//now add the role to the user if they arent already a part
 					if (!member.roles.cache.some((role) => role.name === roleName)) {
 						member.roles.add(role);
-						logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send(`Assigned role \`${role.name}\` to \`${member.displayName||member.tag}\``)
+						logChannel && logChannel.permissionsFor(bot).has("SEND_MESSAGES") && logChannel.send(`Assigned role \`${role.name}\` to \`${member.displayName||member.tag}\``)
 					}
 				}
 				
 			
-				permissions = newstate.channel.permissionsFor(guild.me);
+				permissions = newstate.channel.permissionsFor(bot);
 				//reset the users status removing serverMute and serverDeafen if they do not have the voicemute or voicedeaf role
 				if(!newstate.member.user.bot && (joinLeaveConfig.resetUserState || oldstate.channelID == oldstate.guild.afkChannelID)){
 					if(permissions.has('MUTE_MEMBERS')){
 						!member.roles.cache.some(role => role.name === config.roles.VoiceMute) && newstate.setMute(false);
 					}else{
-						console.log(`${guild.me} does not have permissions to set mute state to ${member} in ${newstate.channel.name}`)
+						console.log(`${bot} does not have permissions to set mute state to ${member} in ${newstate.channel.name}`)
 					}
 					if(permissions.has('DEAFEN_MEMBERS')){
 						!member.roles.cache.some(role => role.name === config.roles.VoiceDeaf) && newstate.setDeaf(false);
 					}else{
-						console.log(`${guild.me} does not have permissions to set deafen state to ${member} in ${newstate.channel.name}`)
+						console.log(`${bot} does not have permissions to set deafen state to ${member} in ${newstate.channel.name}`)
 					}
 				}
 				//mute if entering afkChannel
@@ -155,12 +156,12 @@ class CustomListener extends Listener {
 // 					if(permissions.has('MUTE_MEMBERS')){
 // 					   newstate.setMute(true);
 // 					}else{
-// 						console.log(`${guild.me} does not have permissions to mute ${member} in ${newstate.channel.name}`)
+// 						console.log(`${bot} does not have permissions to mute ${member} in ${newstate.channel.name}`)
 // 					}
 // 					if(permissions.has(['DEAFEN_MEMBERS'])){
 // 						newstate.setDeaf(true);
 // 					}else{
-// 						console.log(`${guild.me} does not have permissions to deafen ${member} in ${newstate.channel.name}`)
+// 						console.log(`${bot} does not have permissions to deafen ${member} in ${newstate.channel.name}`)
 // 					}
 //				}
 

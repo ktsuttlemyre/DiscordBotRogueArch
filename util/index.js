@@ -462,21 +462,49 @@ module.exports.zodiac = function (birthday) {
 		) - 1;
 	return zodiacSigns[sign];
 };
+
+//TODO optomze this more to avoid fetching
 let resolveDiscordID = module.exports.resolveDiscordID = function(message,id){
 	let guild = message.guild || message;
-	let promises = [
-		guild.members.fetch(id),
-	    	message.client.users.fetch(id),
-	    	guild.roles.fetch(id)];
-	if(guild.channels.fetch){
-		promises.push(guild.channels.fetch(id));
-	}else{
-		let channel = guild.channels.cache.get(id)
-		if(channel){
-			promises.push(channel); //this might not work
+	let client = message.client || message;
+	
+	let member = guild.members.cache.get(id) || (guild.members.fetch)?guild.members.fetch(id):null;
+	let role = guild.roles.cache.get(id) || (guild.roles.fetch)?guild.roles.fetch(id):null;
+	let channel = guild.channels.cache.get(id) || (guild.channels.fetch)?guild.channels.fetch(id):null;
+
+
+// 			if(!(err instanceof AggregateError)){
+// 			throw err
+// 		}
+	let level1Promise = PollyfillPromise.any( [member,role,channel].filter(n => n) ).then(function(result){
+		if(result){
+			return result
 		}
-	}
-	return PollyfillPromise.any(promises);
+	
+		//level2 bb
+		let users = client.users.cache.get(id) || (client.users.fetch)?client.users.fetch(id):null;
+		let guilds = client.guilds.cache.get(id) || (client.guilds.fetch)?client.guilds.fetch(id):null;
+		
+		return PollyfillPromise.any( [users,guilds].filter(n => n) ).then(function(result){
+			let promises = []
+			let found = guild.channels.cache.find(function(channel){
+				let message = channel.messages.cache.get(id);
+				if(message){
+					return message
+				}
+				message = (channel.messages.fetch)?channel.messages.fetch(id):null;
+				
+				promises.push(message);
+			})
+			if(found){
+				return found
+			}
+			return PollyfillPromise.any( promises.filter(n => n) )
+		})
+		    
+	});
+	
+	return level1Promise;
 }
 let resolveDiscordMessageID=function(message,id){ //TODO finish adding this to resolveMentions it is meant to resolve message ids
 	let guild = message.guild || message;

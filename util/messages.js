@@ -123,8 +123,8 @@ module.exports.encapsulate = async function (message, doc, opts) {
 		let err = doc;
 		doc = {
 			title: err.name,
-			description:'err.message + ' at: ' + err.at + ' text: ' + err.text + '\n'+
-			'>>> ' +err.stack;
+			description:'err.message + ' at: ' + err.at + ' text: ' + err.text + '\n'+'>>> ' +err.stack,
+			style:'error',
 		}
 	}
 	

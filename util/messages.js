@@ -50,7 +50,10 @@ module.exports.getReactedUsers = async function(msg, emoji) {
 
 
 module.exports.retrieveTrackMessage = function (message, track) {
-		var id = message.client.memory.channelGet(message, web.getYoutubeHash(track.url) + "_" + track.requestedBy.id + "_" + message); // || this.client.memory.channelSet(message, 'player', util.player.create(message,this.client));
+	if(!track || !track.requestedBy){
+		return null
+	}
+	var id = message.client.memory.channelGet(message, web.getYoutubeHash(track.url) + "_" + track.requestedBy.id + "_" + message); // || this.client.memory.channelSet(message, 'player', util.player.create(message,this.client));
 	return message.channel.messages.fetch(id);
 };
 

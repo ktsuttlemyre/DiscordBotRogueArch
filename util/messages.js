@@ -119,6 +119,13 @@ module.exports.encapsulate = async function (message, doc, opts) {
 	//convert doc to embed obj
 	if (Array.isArray(doc)) {
 		doc = doc.join('\n');
+	}else if(doc instanceof Error || doc.stack && doc.message){
+		let err = doc;
+		doc = {
+			title: err.name,
+			description:'err.message + ' at: ' + err.at + ' text: ' + err.text + '\n'+
+			'>>> ' +err.stack;
+		}
 	}
 	
 	let type = typeof doc;

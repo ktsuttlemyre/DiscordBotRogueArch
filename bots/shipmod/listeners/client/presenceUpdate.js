@@ -165,26 +165,6 @@ class CustomListener extends Listener {
 			return
 		}
 		
-		//if too many roles. Find the oldest one with the fewest members and delete
-		if(guild.roles.cache.size >= 247){ 
-			let roles = guild.roles.cache.sorted(function(a, b) {          
-				if (a.members.size === b.members.size) {
-					// time is only important when members are the same
-					return a.createdTimestamp - b.createdTimestamp;
-				}
-				return a.members.size-b.members.size;
-			}); //sort lowest number of members and oldest date created
-
-			let oldestGameRole = roles.find((x) => x.name.indexOf(gamePrefix)===0); //find a role with game prefix
-			if(oldestGameRole && oldestGameRole.deleted){
-				await oldestGameRole.delete().then(function(value,error){
-					if(error){
-						throw error
-					}
-					logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send("Removed old GameRole `"+oldestGameRole.name+"` with only "+ oldestGameRole.members.size+ " members")
-				});
-			}
-		}
 		
 		if (!gameRole) { // Role doesn't exist, safe to create
 			gameRole = await guild.roles.create({

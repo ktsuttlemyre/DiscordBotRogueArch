@@ -138,6 +138,9 @@ var nowPlayingOverloaded = async (message, player, announce) => {
 		.replace(" ┃", "|");
 
 	let trackDiscordMessage = await util.messages.retrieveTrackMessage(message, track);
+	if(!trackDiscordMessage){
+		return
+	}
 	let permalink = trackDiscordMessage ? trackDiscordMessage.permalink : "";
 	announce = announce != null ? "```" + announce + "```" : "‎";
 	let jumpToQueue = `[🡅](${permalink})`; //⮝🠉🠝🡅🡹🢁⏫

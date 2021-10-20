@@ -59,6 +59,8 @@ const routerMap = {
 //"You don't know jack":/.*Jackbox Party Pack.*/i
 const routerKeys = Object.keys(routerMap)
 
+let lock=false;
+
 class CustomListener extends Listener {
 	constructor() {
 		super(commandVars.id, {
@@ -163,6 +165,30 @@ class CustomListener extends Listener {
 		if (!guild.me.hasPermission("MANAGE_ROLES")) {
 			console.log(`${guild.me.displayName} does not have permissions to create roles`);
 			return
+		}
+		
+		//if too many roles. Find the oldest one with the fewest members and delete
+		if(!lock && guild.roles.cache.size >= 245){
+			lock = true;
+			let roles = guild.roles.cache.sorted(function(a, b) {          
+				if (a.members.size === b.members.size) {
+					// time is only important when members are the same
+					return a.createdTimestamp - b.createdTimestamp;
+				}
+				return a.members.size-b.members.size;
+			}); //sort lowest number of members and oldest date created
+
+			let oldestGameRole = roles.find((x) => x.name.indexOf(gamePrefix)===0); //find a role with game prefix
+			if(oldestGameRole && !oldestGameRole.deleted){
+				await oldestGameRole.delete().then(function(value,error){
+					if(error){
+						throw error
+					}
+					logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send("Removed old GameRole `"+oldestGameRole.name+"` with only "+ oldestGameRole.members.size+ " members")
+				});
+				
+			}
+			lock = false;
 		}
 		
 		

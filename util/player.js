@@ -410,7 +410,7 @@ var create = (module.exports.create = function (message, client) {
 			message.channel.send(`You must send a valid number between 1 and ${tracks.length}!`);
 		})
 		.on("searchCancel", (message, query, tracks) => message.channel.send("You did not provide a valid response... Please send the command again!"))
-		.on("noResults", (message, query) => message.channel.send(`No results found on YouTube for ${query}!`))
+		.on("noResults", (message, query) => util.message.encapsulate(message,`No results found on YouTube for ${query}!`))
 
 		// Send a message when the music is stopped
 		.on("queueEnd", async function (message, queue) {
@@ -452,7 +452,7 @@ var create = (module.exports.create = function (message, client) {
 					message.channel.send(`Youtube ratelimit hit. Restarting...`);
 				default:
 					console.error(error);
-					message.channel.send(`Something went wrong... ${error}`);
+					util.message.encapsulate(message,error);
 			}
 		});
 	return player;

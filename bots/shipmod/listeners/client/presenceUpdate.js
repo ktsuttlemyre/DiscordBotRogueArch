@@ -59,7 +59,7 @@ const routerMap = {
 //"You don't know jack":/.*Jackbox Party Pack.*/i
 const routerKeys = Object.keys(routerMap)
 
-let lock=false;
+let lock=false; //TODO THIS LOCK IS A GLOBAL ACROSS ALL GUILDS PLEASE EDIT THIS IN THE FUTURE! TO BE GUILD LOCAL
 
 class CustomListener extends Listener {
 	constructor() {

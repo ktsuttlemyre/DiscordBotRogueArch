@@ -180,11 +180,12 @@ class CustomListener extends Listener {
 
 			let oldestGameRole = roles.find((x) => x.name.indexOf(gamePrefix)===0); //find a role with game prefix
 			if(oldestGameRole && !oldestGameRole.deleted){
+				let memberPopulation = oldestGameRole.members.size
 				await oldestGameRole.delete().then(function(value,error){
 					if(error){
 						throw error
 					}
-					logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send("Removed old GameRole `"+oldestGameRole.name+"` with only "+ oldestGameRole.members.size+ " members")
+					logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send("Removed old GameRole `"+oldestGameRole.name+"` with only "+ memberPopulation+ " members")
 				});
 				
 			}

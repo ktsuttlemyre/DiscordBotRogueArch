@@ -45,6 +45,11 @@ function wakeHandler(client) {
 		//iterate members
 		//Guild.members.cache.some(function(member){
 		//})
+		
+		var time = new Date().getHours();
+		if (time >= 12 && time <= 22) { //if after noon before 10 always be awake
+		   return true;
+		}
 
 		//iterate voice channels
 		let voiceChannels = Guild.channels.cache.filter((c) => c.type == "voice").array();

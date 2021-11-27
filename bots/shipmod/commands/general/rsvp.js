@@ -60,8 +60,9 @@ class CustomCommand extends Command {
 			}else{
 				let args = arg.split(' ');
 				args[0]=args[0].toUpperCase();
-				let mentions = await util.resolveMentions(message,arg[1]);
+				let mentions = await util.resolveMentions(message,args[1]);
 				if(args[0] == 'ADD'){
+					console.log(mentions)
 					user = mentions['member'] || mentions['user'];
 				}else if (args[0] =='remove'){
 					filterUser = mentions['member'] || mentions['user'];

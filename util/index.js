@@ -142,17 +142,25 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 	let botDocumentation = messages.find(function(message){
 		return message.author.id == client.user.id;
 	})
-	if(botDocumentation && (botDocumentation.content != settingsDocumentation.content ||
-				botDocumentation.embed.title != settingsDocumentation.embed.title ||
-				botDocumentation.embed.description != settingsDocumentation.embed.description
-			       )){
+	let deleteOldDoc = false
+	if(botDocumentation && botDocumentation.content != settingsDocumentation.content ){
 		console.log('deleting old bot settings instructions',botDocumentation)
 		console.log('deleting old bot settings instructions',botDocumentation.content)
+		deleteOldDoc = true;
+	}
+	if(botDocumentation.embed &&
+		(botDocumentation.embed.title != settingsDocumentation.embed.title ||
+		botDocumentation.embed.description != settingsDocumentation.embed.description
+		)){
 		console.log('deleting old bot settings instructions',botDocumentation.embed.title)
 		console.log('deleting old bot settings instructions',botDocumentation.embed.description)
+		deleteOldDoc=true;
+	}
+	if(deleteOldDoc){
 		await botDocumentation.delete();
 		botDocumentation=null;
 	}
+	
 	if(!botDocumentation || botDocumentation.deleted){
 		await channel.send(settingsDocumentation).catch(function(error){
 		      owner.send(`❌ Failed to send settings documentation to ${settingsChannelName}: `+error);

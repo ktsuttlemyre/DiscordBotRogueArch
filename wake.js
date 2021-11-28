@@ -46,8 +46,11 @@ function wakeHandler(client) {
 		//Guild.members.cache.some(function(member){
 		//})
 		
-		var time = new Date().getHours();
-		if (time >= 12 && time <= 22) { //if after noon before 10 always be awake
+		let time = new Date().getHours();
+		let minTime = 12, maxTime=22;
+		if (time >= minTime && time <= maxTime) { //if after noon before 10 always be awake
+		   pinging = true;
+		   util.wakeupPing(`Time is above ${minTime} and below ${maxTime} hours`, true);
 		   return true;
 		}
 

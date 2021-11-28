@@ -46,6 +46,9 @@ const routerMap = {
 	"Assassin's Creed [Franchise]":/Assassin\'s Creed.*/i,
 	"FINAL FANTASY [Franchise]":/FINAL FANTASY.*/i,
 	"Mass Effect [Franchise]":/Mass Effect.*/i,
+	"Halflife 2 [Franchise]":/Halflife 2.*/i,
+	"PUBG BATTLEGROUNDS":/PLAYERUNKNOWNS BATTLEGROUNDS.*/i,
+	
 	//"Tekken [Franchise]":/Tekken.*/i,
 	//"Tekken [Franchise]":/Tekken.*/i,
 	//"Tekken [Franchise]":/Tekken.*/i,

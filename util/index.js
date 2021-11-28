@@ -146,6 +146,10 @@ module.exports.parseSettingsFromGuild = async function (guild, channel){
 				botDocumentation.embed.title != settingsDocumentation.embed.title ||
 				botDocumentation.embed.description != settingsDocumentation.embed.description
 			       )){
+		console.log('deleting old bot settings instructions',botDocumentation)
+		console.log('deleting old bot settings instructions',botDocumentation.content)
+		console.log('deleting old bot settings instructions',botDocumentation.embed.title)
+		console.log('deleting old bot settings instructions',botDocumentation.embed.description)
 		await botDocumentation.delete();
 		botDocumentation=null;
 	}

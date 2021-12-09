@@ -218,7 +218,9 @@ class CustomListener extends Listener {
 			logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send(`Assigned GameRole \`${gameRole.name}\` to \`${member.displayName||member.tag}\``)
 		}
 		
-		activityLogChannel && activityLogChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && activityLogChannel.send(`\`${member.displayName||member.tag}\` \t\t\tis playing\t\t\t \`${gameRole.name}\``)
+		//todo make embed and use 3 horisontal fields
+		//also check to see if previous messages are repeats for the day? hour or smething?
+		//activityLogChannel && activityLogChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && activityLogChannel.send(`\`${member.displayName||member.tag}\` \t\t\tis playing\t\t\t \`${gameRole.name}\``)
 		
 		//look for last message and see if it was posted already today
 		

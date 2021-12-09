@@ -28,6 +28,7 @@ const filterApps = {
 };
 
 const gamingLogChannelID = "858459656058044426"
+const gamingActvityLogID = "918297882854031411"
 
 const routerMap = {
 	"New World":/New World Open Beta/i,
@@ -153,6 +154,7 @@ class CustomListener extends Listener {
 		let gameRoleName = `${gamePrefix}${game}`;
 		
 		let logChannel = guild.channels.resolve(config.actionLogChannel);
+		let activityLogChannel = guild.channels.resolve(gamingActvityLogID)
 
 		let gameRole = guild.roles.cache.find((x) => x.name === gameRoleName);
 		
@@ -215,6 +217,8 @@ class CustomListener extends Listener {
 			member.roles.add(gameRole);
 			logChannel && logChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && logChannel.send(`Assigned GameRole \`${gameRole.name}\` to \`${member.displayName||member.tag}\``)
 		}
+		
+		activityLogChannel && activityLogChannel.permissionsFor(guild.me).has("SEND_MESSAGES") && activityLogChannel.send(`\`${member.displayName||member.tag}\` is playing \`${gameRole.name}\``)
 		
 		//look for last message and see if it was posted already today
 		

@@ -46,10 +46,14 @@ let defaults = {
 	encapsulateAdminRoles: "Admin",
 	DJ_Role: "DJ",
 	voiceTextLinkMap: {
-		//general: shiptunes
+		//Lounge: shiptunes (bot1)
 		"799879532856475648": "805549728099860480",
 		//social groovy
 		"690661623831986270": "800007831251189821",
+		//private room
+		//Magfest bot2
+		"927678945783083018":"927681474054996018",
+		
 	},
 	eventRoomMap: {
 		"789704651414306817": "AMONGUS",

@@ -83,6 +83,7 @@ function wakeHandler(client) {
 		var promises = [];
 		for (let channel of textChannels) {
 			if (!channel.permissionsFor(Guild.me).has("VIEW_CHANNEL")) {
+				console.log(`${client.user.username||client.user.tag} can not read channel ${channel.name||channel.id} in guild ${Guild.name||Guild.id}`)
 				continue;
 			}
 			var p = channel.messages

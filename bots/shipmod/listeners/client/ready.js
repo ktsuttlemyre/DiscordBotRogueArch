@@ -49,8 +49,10 @@ class CustomListener extends Listener {
 		
 		//start cron tasks
 		
-		let checkLive = function(){
-			debug && console.log('checking live status')
+		let cronTask = function(){
+			console.log('doing bot cron tasks')
+			checkChannelPermissions()
+			
 			//twitch api response if there is a user match and they are live			
 			//{
 			//   "data": [
@@ -83,6 +85,7 @@ class CustomListener extends Listener {
 			let streamElements = [guild.channels.cache.get('851980759203315732'), guild.members.cache.get('500468522468507648')];
 			
 			async function getStream(){
+				debug && console.log('checking live status')
 				const streams = await twitch.getStreams({ channel: "shipwash" });
 				debug && console.log(JSON.stringify(streams,null,2))
 				for(var i=0,l=streamElements.length;i<l;i++){
@@ -122,9 +125,40 @@ class CustomListener extends Listener {
            		 }
 
 			getStream();
+
 		}
-		//checkLive()
-		//setInterval(checkLive,60000)
+		let checkChannelPermissions = function(){
+			client.guilds.cache.forEach(guild => {
+				if(guild.id != '690661623831986266'){ //do this on shipwash server only
+					return
+				}
+				guild.channels.cache.forEach(channel => {
+				   //check category
+				    if (channel.type === "text" && channel.parent.name == "Community Channels") { //Check if it's a text channel
+					try {
+					   //TODO find the roles to set here
+// 					    channel.updateOverwrite(role1, {
+// 						SEND_MESSAGES: false,
+// 						SPEAK: false,
+// 						ADD_REACTIONS: false,
+// 						READ_MESSAGE_HISTORY: true
+// 					    });
+
+// 					    channel.updateOverwrite(role2, {
+// 						SEND_MESSAGES: null,
+// 						SPEAK: null,
+// 						ADD_REACTIONS: null,
+// 					    });
+					} catch (error) { //Run this if there was an error setting the permissions
+					    //Error handling code here
+					   console.log(`${client.user.username||client.user.tag} had issues setting permissions on channel ${channel.name||channel.id} in category ${channel.parent.name||channel.parent.id} in guild ${guild.name||guild.id}`)
+					};
+				    };
+				})
+			})
+		}
+		//cronTask()
+		//setInterval(cronTask,60000)
 		
 		
 		

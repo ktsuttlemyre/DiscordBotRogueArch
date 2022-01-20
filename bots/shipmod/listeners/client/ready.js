@@ -51,7 +51,7 @@ class CustomListener extends Listener {
 		
 		let cronTask = function(){
 			console.log('doing bot cron tasks')
-			checkChannelPermissions()
+
 			
 			//twitch api response if there is a user match and they are live			
 			//{
@@ -127,28 +127,44 @@ class CustomListener extends Listener {
 			getStream();
 
 		}
-		let checkChannelPermissions = function(){
+		let invitesOff = true
+		
+
+		let enforceChannelPermissions = function(){
 			client.guilds.cache.forEach(guild => {
 				if(guild.id != '690661623831986266'){ //do this on shipwash server only
 					return
 				}
+				
+				//get role objects
+				let roles={
+					bot:'799712005371330588',
+					member:'801466664314339379'
+				}
+				Object.keys(roles).forEach(key =>{
+					roles[key]=guild.roles.cache.get(roles[key])
+				})
+
+				//global enforce permission
 				guild.channels.cache.forEach(channel => {
-				   //check category
+				if(invitesOff==true){
+					//TODO find the roles to set here
+					channel.updateOverwrite(guild.roles.everyone, {
+						CREATE_INSTANT_INVITE: false,
+					});
+				}
+
+					
+				//permission by category
+				    //check category
 				    if (channel.type === "text" && channel.parent.name == "Community Channels") { //Check if it's a text channel
 					try {
-					   //TODO find the roles to set here
-// 					    channel.updateOverwrite(role1, {
-// 						SEND_MESSAGES: false,
-// 						SPEAK: false,
-// 						ADD_REACTIONS: false,
-// 						READ_MESSAGE_HISTORY: true
-// 					    });
-
-// 					    channel.updateOverwrite(role2, {
-// 						SEND_MESSAGES: null,
-// 						SPEAK: null,
-// 						ADD_REACTIONS: null,
-// 					    });
+					    channel.updateOverwrite(roles.bot, {
+						VIEW_CHANNEL: false,
+					    });
+					    channel.updateOverwrite(roles.member, {
+						MANAGE_CHANNELS : false,
+					    });
 					} catch (error) { //Run this if there was an error setting the permissions
 					    //Error handling code here
 					   console.log(`${client.user.username||client.user.tag} had issues setting permissions on channel ${channel.name||channel.id} in category ${channel.parent.name||channel.parent.id} in guild ${guild.name||guild.id}`)
@@ -157,6 +173,8 @@ class CustomListener extends Listener {
 				})
 			})
 		}
+		enforceChannelPermissions()
+		
 		//cronTask()
 		//setInterval(cronTask,60000)
 		

@@ -151,35 +151,35 @@ class CustomListener extends Listener {
 
 				//global enforce permission
 				guild.channels.cache.forEach(channel => {
-				if(invitesOff==true){
-					//TODO find the roles to set here
-					channel.updateOverwrite(guild.roles.everyone, {
-						CREATE_INSTANT_INVITE: false,
-					});
-				}
-
-					
-				//permission by category
-				    //check category
-				    if (channel.type === "text" && channel.parent.name == "Community Channels") { //Check if it's a text channel
-					try {
+					if(invitesOff==true){
+						//TODO find the roles to set here
 						channel.updateOverwrite(guild.roles.everyone, {
-							MANAGE_CHANNELS: false,
+							CREATE_INSTANT_INVITE: false,
 						});
-						channel.updateOverwrite(roles.bot, {
-							VIEW_CHANNEL: false,
-						});
-						channel.updateOverwrite(roles.member, {
-							MANAGE_CHANNELS : null,
-						});
-						channel.updateOverwrite(roles.admin, {
-							MANAGE_CHANNELS : true,
-						});
-					} catch (error) { //Run this if there was an error setting the permissions
-					    //Error handling code here
-					   console.log(`${client.user.username||client.user.tag} had issues setting permissions on channel ${channel.name||channel.id} in category ${channel.parent.name||channel.parent.id} in guild ${guild.name||guild.id}`);
 					}
-				    }
+
+
+					//permission by category
+					    //check category
+					    if (channel.type === "text" && channel.parent && channel.parent.name == "Community Channels") { //Check if it's a text channel
+						try {
+							channel.updateOverwrite(guild.roles.everyone, {
+								MANAGE_CHANNELS: false,
+							});
+							channel.updateOverwrite(roles.bot, {
+								VIEW_CHANNEL: false,
+							});
+							channel.updateOverwrite(roles.member, {
+								MANAGE_CHANNELS : null,
+							});
+							channel.updateOverwrite(roles.admin, {
+								MANAGE_CHANNELS : true,
+							});
+						} catch (error) { //Run this if there was an error setting the permissions
+						    //Error handling code here
+						   console.log(`${client.user.username||client.user.tag} had issues setting permissions on channel ${channel.name||channel.id} in category ${channel.parent.name||channel.parent.id} in guild ${guild.name||guild.id}`);
+						}
+					    }
 				});
 			});
 		};

@@ -1,3 +1,6 @@
+/*jshint esversion: 9 */
+/* jshint expr: true */
+
 let debug = false;
 const Discord = require("discord.js");
 
@@ -18,15 +21,15 @@ const twitch = new TwitchApi({
 const liveEmoji = {
 	on:'🔴',
 	off:'⬛'
-}
+};
 const isEmoji = function(str){
-	return   /\p{Extended_Pictographic}/u.test(str)
-}
+	return   /\p{Extended_Pictographic}/u.test(str);
+};
 
 const sortAlphaNum = (a, b) => a.name.localeCompare(b.name, 'en', { numeric: true });
 let mapToArray = function(map){
 	return Array.from(map, ([name, value]) => (value.displayName));
-}
+};
 
 class CustomListener extends Listener {
 	constructor() {
@@ -50,7 +53,7 @@ class CustomListener extends Listener {
 		//start cron tasks
 		
 		let cronTask = function(){
-			console.log('doing bot cron tasks')
+			console.log('doing bot cron tasks');
 
 			
 			//twitch api response if there is a user match and they are live			
@@ -85,65 +88,65 @@ class CustomListener extends Listener {
 			let streamElements = [guild.channels.cache.get('851980759203315732'), guild.members.cache.get('500468522468507648')];
 			
 			async function getStream(){
-				debug && console.log('checking live status')
+				debug && console.log('checking live status');
 				const streams = await twitch.getStreams({ channel: "shipwash" });
-				debug && console.log(JSON.stringify(streams,null,2))
+				debug && console.log(JSON.stringify(streams,null,2));
 				for(var i=0,l=streamElements.length;i<l;i++){
-					let streamElement=streamElements[i]
-					let name = streamElement.name
-					let live = (streams && streams.data && streams.data.length && streams.data[0].type=='live')
+					let streamElement=streamElements[i];
+					let name = streamElement.name;
+					let live = (streams && streams.data && streams.data.length && streams.data[0].type=='live');
 
-					debug && console.log('updating '+name)
+					debug && console.log('updating '+name);
 					if(streamElement instanceof Discord.User || streamElement instanceof Discord.GuildMember){
 						//mentionObj['members'].push(item)
 					}else if(streamElement instanceof Discord.Role){
 						//mentionObj['roles'].push(item)
 					}else if(streamElement instanceof Discord.GuildChannel || streamElement instanceof Discord.Channel){
 						if(!streamElement.permissionsFor(guild.me).has("MANAGE_CHANNELS")){
-							console.log('do not have permission to edit name of channel '+name)
-							continue
+							console.log('do not have permission to edit name of channel '+name);
+							continue;
 						}
 					}
 				
 					if(name.indexOf(liveEmoji.off)==0 || name.indexOf(liveEmoji.on)==0){
 						name = name.substring(1);
 					}
-					debug && console.log('is live status? '+name)
+					debug && console.log('is live status? '+name);
 					if(live){
-						name = liveEmoji.on+name
+						name = liveEmoji.on+name;
 					}else{
 						//isEmoji(name.substring(0,1))
 						name = liveEmoji.off+name; 
 					}
-					debug && console.log('setting '+name)
+					debug && console.log('setting '+name);
 					if(name != streamElement.name){
-						console.log('live status has changed to '+live)
+						console.log('live status has changed to '+live);
 						await streamElement.setName(name);
-						debug && console.log('set name complete to '+name)
+						debug && console.log('set name complete to '+name);
 					}
 				}
-           		 }
+           	}
 
 			getStream();
 
-		}
-		let invitesOff = true
+		};
+		let invitesOff = true;
 		
 
 		let enforceChannelPermissions = function(){
 			client.guilds.cache.forEach(guild => {
 				if(guild.id != '690661623831986266'){ //do this on shipwash server only
-					return
+					return;
 				}
 				
 				//get role objects
 				let roles={
 					bot:'799712005371330588',
 					member:'801466664314339379'
-				}
+				};
 				Object.keys(roles).forEach(key =>{
-					roles[key]=guild.roles.cache.get(roles[key])
-				})
+					roles[key]=guild.roles.cache.get(roles[key]);
+				});
 
 				//global enforce permission
 				guild.channels.cache.forEach(channel => {
@@ -167,13 +170,13 @@ class CustomListener extends Listener {
 					    });
 					} catch (error) { //Run this if there was an error setting the permissions
 					    //Error handling code here
-					   console.log(`${client.user.username||client.user.tag} had issues setting permissions on channel ${channel.name||channel.id} in category ${channel.parent.name||channel.parent.id} in guild ${guild.name||guild.id}`)
-					};
-				    };
-				})
-			})
-		}
-		enforceChannelPermissions()
+					   console.log(`${client.user.username||client.user.tag} had issues setting permissions on channel ${channel.name||channel.id} in category ${channel.parent.name||channel.parent.id} in guild ${guild.name||guild.id}`);
+					}
+				    }
+				});
+			});
+		};
+		enforceChannelPermissions();
 		
 		//cronTask()
 		//setInterval(cronTask,60000)

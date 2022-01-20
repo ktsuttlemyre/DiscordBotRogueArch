@@ -142,7 +142,8 @@ class CustomListener extends Listener {
 				//get role objects
 				let roles={
 					bot:'799712005371330588',
-					member:'801466664314339379'
+					member:'801466664314339379',
+					admin:'802685860565876777'
 				};
 				Object.keys(roles).forEach(key =>{
 					roles[key]=guild.roles.cache.get(roles[key]);
@@ -162,12 +163,18 @@ class CustomListener extends Listener {
 				    //check category
 				    if (channel.type === "text" && channel.parent.name == "Community Channels") { //Check if it's a text channel
 					try {
-					    channel.updateOverwrite(roles.bot, {
-						VIEW_CHANNEL: false,
-					    });
-					    channel.updateOverwrite(roles.member, {
-						MANAGE_CHANNELS : false,
-					    });
+						channel.updateOverwrite(guild.roles.everyone, {
+							MANAGE_CHANNELS: false,
+						});
+						channel.updateOverwrite(roles.bot, {
+							VIEW_CHANNEL: false,
+						});
+						channel.updateOverwrite(roles.member, {
+							MANAGE_CHANNELS : null,
+						});
+						channel.updateOverwrite(roles.admin, {
+							MANAGE_CHANNELS : true,
+						});
 					} catch (error) { //Run this if there was an error setting the permissions
 					    //Error handling code here
 					   console.log(`${client.user.username||client.user.tag} had issues setting permissions on channel ${channel.name||channel.id} in category ${channel.parent.name||channel.parent.id} in guild ${guild.name||guild.id}`);

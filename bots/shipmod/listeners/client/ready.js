@@ -148,6 +148,7 @@ class CustomListener extends Listener {
 				Object.keys(roles).forEach(key =>{
 					roles[key]=guild.roles.cache.get(roles[key]);
 				});
+				roles['everyone'] = guild.roles.everyone
 
 				//global enforce permission
 				guild.channels.cache.forEach(channel => {
@@ -157,29 +158,38 @@ class CustomListener extends Listener {
 							CREATE_INSTANT_INVITE: false,
 						});
 					}
+					let permissionsForChannel={
+						everyone:{},
+						bot:{},
+						member:{},
+						admin:{},
+					};
 
 
 					//permission by category
-					    //check category
-					    if (channel.type === "text" && channel.parent && channel.parent.name == "Community Channels") { //Check if it's a text channel
-						try {
-							channel.updateOverwrite(guild.roles.everyone, {
-								MANAGE_CHANNELS: false,
-							});
-							channel.updateOverwrite(roles.bot, {
-								VIEW_CHANNEL: false,
-							});
-							channel.updateOverwrite(roles.member, {
-								MANAGE_CHANNELS : null,
-							});
-							channel.updateOverwrite(roles.admin, {
-								MANAGE_CHANNELS : true,
-							});
-						} catch (error) { //Run this if there was an error setting the permissions
-						    //Error handling code here
-						   console.log(`${client.user.username||client.user.tag} had issues setting permissions on channel ${channel.name||channel.id} in category ${channel.parent.name||channel.parent.id} in guild ${guild.name||guild.id}`);
-						}
+					//check category
+					permissionsForChannel.everyone.MENTION_EVERYONE=false
+					permissionsForChannel.member.MENTION_EVERYONE=false
+					permissionsForChannel.admin.MANAGE_CHANNELS=true
+					
+					    if (channel.type === "text"){
+						    if(channel.parent && channel.parent.name == "Community Channels") { //Check if it's a text channel
+							try {
+								permissionsForChannel.everyone.MANAGE_CHANNELS=false
+								permissionsForChannel.bot.VIEW_CHANNEL=false
+								permissionsForChannel.member.MANAGE_CHANNELS=null
+								
+							} catch (error) { //Run this if there was an error setting the permissions
+							    //Error handling code here
+							   console.log(`${client.user.username||client.user.tag} had issues setting permissions on channel ${channel.name||channel.id} in category ${channel.parent.name||channel.parent.id} in guild ${guild.name||guild.id}`);
+							}
+						  }
 					    }
+					
+					//apply rules
+					Object.keys(permissionsForChannel).forEach(key =>{
+						channel.updateOverwrite(roles[key], permissionsForChannel[key]);
+					})
 				});
 			});
 		};

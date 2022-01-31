@@ -142,6 +142,12 @@ class CustomListener extends Listener {
 					}
 				}
 				
+				//alert me if they are just now joining a voice channel or coming from AFK channel (not changing voice channels)
+				if(!oldstate.channelID || oldstate.channelID == oldstate.guild.afkChannelID ){
+					guild.members.cache.get('500468522468507648').user.send(`${member} joined voice chat in ${guild}`);
+				}
+				
+				
 			
 				let permissions = newstate.channel.permissionsFor(bot);
 				//reset the users status removing serverMute and serverDeafen if they do not have the voicemute or voicedeaf role

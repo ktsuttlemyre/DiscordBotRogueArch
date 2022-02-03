@@ -145,7 +145,7 @@ class CustomListener extends Listener {
 				//alert me if they are just now joining a voice channel or coming from AFK channel (not changing voice channels)
 				if(guild.id == '690661623831986266'){
 					if(!oldstate.channelID || oldstate.channelID == oldstate.guild.afkChannelID ){
-						var shipwash = guild.members.cache.get('500468522468507648')
+						var shipwash = guild.members.cache.get('500467960914116609')
 						if(member.id != shipwash.id){
 							shipwash.user.send(`${member} joined voice chat in ${guild}`);
 						}

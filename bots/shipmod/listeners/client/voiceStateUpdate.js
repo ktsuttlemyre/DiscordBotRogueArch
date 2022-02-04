@@ -147,7 +147,7 @@ class CustomListener extends Listener {
 					if(!oldstate.channelID || oldstate.channelID == oldstate.guild.afkChannelID ){
 						var shipwash = guild.members.cache.get('500467960914116609')
 						if(member.id != shipwash.id){
-							shipwash.user.send(`${member} joined voice chat in ${guild}`);
+							shipwash.user.send(`\`${member.displayName}\` joined voice chat in ${guild}`);
 						}
 					}
 				}

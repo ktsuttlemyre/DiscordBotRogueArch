@@ -45,10 +45,11 @@ const routerMap = {
 	"The Sims [Franchise]":/The Sims.*/i,
 	"Football Manager [Franchise]":/Football Manager.*/i,
 	"Assassin's Creed [Franchise]":/Assassin\'s Creed.*/i,
-	"FINAL FANTASY [Franchise]":/FINAL FANTASY.*/i,
+	"Final Fantasy [Franchise]":/FINAL FANTASY.*/i,
 	"Mass Effect [Franchise]":/Mass Effect.*/i,
 	"Halflife 2 [Franchise]":/Halflife 2.*/i,
 	"PUBG BATTLEGROUNDS":/PLAYERUNKNOWNS BATTLEGROUNDS.*/i,
+	"Overwatch [Franchise]":/Overwatch Origins Edition|Overwatch/i,
 	
 	//"Tekken [Franchise]":/Tekken.*/i,
 	//"Tekken [Franchise]":/Tekken.*/i,

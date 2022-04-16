@@ -50,8 +50,8 @@ class CustomCommand extends Command {
 		debug && console.log('got messages',messages.size)
 		let today = new Date().getTime();
 		let forceGlob = false
-
-
+		
+		let startTime = "8pm"
 
 		if((isAdmin || isMod) && arg){
 			arg = arg.trim()
@@ -59,13 +59,20 @@ class CustomCommand extends Command {
 				forceGlob=true;
 			}else{
 				let args = arg.split(' ');
-				args[0]=args[0].toUpperCase();
 				let mentions = await util.resolveMentions(message,args[1]);
-				if(args[0] == 'ADD'){
-					console.log(mentions)
-					user = mentions['member'] || mentions['user'];
-				}else if (args[0] =='remove'){
-					filterUser = mentions['member'] || mentions['user'];
+				switch(args[0].toUpperCase()){
+					case 'ADD':
+						console.log(mentions)
+						user = mentions['member'] || mentions['user'];
+						break;
+					case 'REMOVE':
+						filterUser = mentions['member'] || mentions['user'];
+						break;
+					case 'TIME': 
+					case 'STARTTIME:
+					case 'START':
+						startTime = args[1];
+						break;
 				}
 			}
 		}
@@ -96,6 +103,7 @@ class CustomCommand extends Command {
 
 		//good we found a message. Lets parse out the names
 		if(lastPost){
+			//get old queue from last post and populate new queue
 			let lastEmbed = lastPost.embeds && lastPost.embeds.length && lastPost.embeds[0];
 			debug && console.log('got lastEmbed',lastEmbed)
 			let userIDs=[]
@@ -108,6 +116,8 @@ class CustomCommand extends Command {
 				let users = await message.guild.members.fetch(userID, { cache: true });
 				queue.set(userID,users)
 			}
+			//get old start time from last post and populate new message with old time
+			startTime=(lastEmbed.fields[0].name||'').match(/(\d|:)+\w+/gi)[0] //maches 10 or 10pm or 10:30pm
 		}else{
 			console.log('no last embed. Using empty rsvp queue')
 		}
@@ -162,6 +172,12 @@ class CustomCommand extends Command {
 					` [${name}]( https://discordapp.com/users/${user.id})`
 			);
 		});
+		
+		//render/normalize time
+		startTime = startTime.replace(/\s/,'')
+		if(!startTime.endsWith('am') || !startTime.endsWith('AM') || !startTime.endsWith('pm') || !startTime.endsWith('PM')){
+			startTime+='pm';
+		}
 
 		let suffix = ""; //((roomMap[message.channel.id]||'').toLowerCase()==queueTitle.toLowerCase())? '' : ' '+queueTitle.toLowerCase();
 		//Send
@@ -176,7 +192,7 @@ class CustomCommand extends Command {
 				fields: [
 					{
 						//name: '\u200b',
-						name: "Event starts @ 10pm EST",
+						name: `Event starts @ ${startTime} EST`,
 						value: `Type \`!rsvp${suffix}\` to be added to the queue!`,
 						inline: true,
 					},
